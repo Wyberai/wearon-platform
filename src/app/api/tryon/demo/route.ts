@@ -1,96 +1,87 @@
 import { NextRequest, NextResponse } from 'next/server'
-import Replicate from 'replicate'
 
-// Garment images for demo products — used as the "garment" input for the AI
+// Demo try-on route — delegates to wearon-ai (Modal.com) when configured,
+// otherwise returns a flag for client-side simulation
+const WEARON_AI_URL = process.env.WEARON_AI_URL
+const WEARON_AI_SECRET = process.env.WEARON_AI_SECRET
+
 const DEMO_GARMENTS: Record<string, { url: string; category: string }> = {
-  p1: { url: 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=768&q=90', category: 'tops' },
-  p2: { url: 'https://images.unsplash.com/photo-1617627143233-b27e68dda5df?w=768&q=90', category: 'one-pieces' },
-  p3: { url: 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=768&q=90', category: 'one-pieces' },
-  p4: { url: 'https://images.unsplash.com/photo-1590735213920-68192a487bc2?w=768&q=90', category: 'bottoms' },
+  p1: { url: 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=768&q=90', category: 'upper_body' },
+  p2: { url: 'https://images.unsplash.com/photo-1617627143233-b27e68dda5df?w=768&q=90', category: 'dresses' },
+  p3: { url: 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=768&q=90', category: 'dresses' },
+  p4: { url: 'https://images.unsplash.com/photo-1590735213920-68192a487bc2?w=768&q=90', category: 'lower_body' },
 }
 
-// POST /api/tryon/demo — start a real AI try-on using Replicate
+// POST /api/tryon/demo — start a try-on
 export async function POST(req: NextRequest) {
   const formData = await req.formData()
   const selfie = formData.get('selfie') as File | null
   const productId = (formData.get('product_id') as string) ?? 'p1'
 
   if (!selfie) {
-    return NextResponse.json({ error: 'No selfie uploaded' }, { status: 400 })
+    return NextResponse.json({ error: 'No selfie' }, { status: 400 })
   }
 
-  const garment = DEMO_GARMENTS[productId] ?? DEMO_GARMENTS.p1
-  const apiKey = process.env.REPLICATE_API_KEY
-
-  // Fallback: no Replicate key → return a flag that triggers client-side simulation
-  if (!apiKey) {
+  // No AI service configured → signal client to run simulation
+  if (!WEARON_AI_URL) {
     return NextResponse.json({ tryon_id: 'local-sim', status: 'simulated' })
   }
 
-  // Convert selfie to base64 data URI (Replicate accepts these directly)
-  const selfieBuffer = Buffer.from(await selfie.arrayBuffer())
-  const selfieDataUri = `data:${selfie.type || 'image/jpeg'};base64,${selfieBuffer.toString('base64')}`
+  const garment = DEMO_GARMENTS[productId] ?? DEMO_GARMENTS.p1
 
-  const replicate = new Replicate({ auth: apiKey })
+  // Convert selfie to base64 for the wearon-ai service
+  const selfieBuffer = Buffer.from(await selfie.arrayBuffer())
+  const selfieB64 = selfieBuffer.toString('base64')
 
   try {
-    const prediction = await replicate.predictions.create({
-      model: 'fashn-ai/fashn',
-      input: {
-        model_image: selfieDataUri,
-        garment_image: garment.url,
-        category: garment.category,
-        garment_photo_type: 'model',
-        nsfw_filter: true,
-        cover_feet: false,
-        adjust_hands: true,
-        restore_background: true,
-        restore_clothes: true,
-        long_top: false,
-        mode: 'balanced',
+    const res = await fetch(`${WEARON_AI_URL}/tryon`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(WEARON_AI_SECRET ? { 'X-Secret': WEARON_AI_SECRET } : {}),
       },
+      body: JSON.stringify({
+        selfie_b64: selfieB64,
+        selfie_mime: selfie.type || 'image/jpeg',
+        garment_url: garment.url,
+        category: garment.category,
+      }),
     })
 
-    return NextResponse.json({ tryon_id: prediction.id, status: 'processing' })
+    if (!res.ok) throw new Error(`wearon-ai: ${res.status}`)
+
+    const data = await res.json()
+    return NextResponse.json({ tryon_id: data.job_id, status: 'processing' })
   } catch (err) {
-    console.error('[tryon/demo] Replicate error:', err)
+    console.error('[tryon/demo] wearon-ai error:', err)
     return NextResponse.json({ tryon_id: 'local-sim', status: 'simulated' })
   }
 }
 
-// GET /api/tryon/demo?id=xxx — poll Replicate prediction status
+// GET /api/tryon/demo?id=xxx — poll wearon-ai job status
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url)
   const id = searchParams.get('id')
 
-  if (!id || id === 'local-sim') {
+  if (!id || id === 'local-sim' || !WEARON_AI_URL) {
     return NextResponse.json({ status: 'simulated' })
   }
-
-  const apiKey = process.env.REPLICATE_API_KEY
-  if (!apiKey) {
-    return NextResponse.json({ status: 'simulated' })
-  }
-
-  const replicate = new Replicate({ auth: apiKey })
 
   try {
-    const prediction = await replicate.predictions.get(id)
+    const res = await fetch(`${WEARON_AI_URL}/tryon/${id}`, {
+      headers: WEARON_AI_SECRET ? { 'X-Secret': WEARON_AI_SECRET } : {},
+    })
+    if (!res.ok) throw new Error(`wearon-ai poll: ${res.status}`)
 
-    if (prediction.status === 'succeeded') {
-      const output = prediction.output
-      const resultUrl = Array.isArray(output) ? output[0] : output
-      return NextResponse.json({ status: 'done', result_url: resultUrl })
+    const data = await res.json()
+    if (data.status === 'done') {
+      return NextResponse.json({ status: 'done', result_url: data.result_url })
     }
-
-    if (prediction.status === 'failed' || prediction.status === 'canceled') {
-      return NextResponse.json({ status: 'failed', error: prediction.error ?? 'Try-on failed' })
+    if (data.status === 'failed') {
+      return NextResponse.json({ status: 'failed', error: data.error })
     }
-
-    // starting / processing
     return NextResponse.json({ status: 'processing' })
-  } catch (err) {
-    console.error('[tryon/demo] Poll error:', err)
+  } catch {
     return NextResponse.json({ status: 'processing' })
   }
 }
