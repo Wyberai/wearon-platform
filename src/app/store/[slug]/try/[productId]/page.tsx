@@ -23,6 +23,14 @@ interface StoreConfig {
   payment_method: string
 }
 
+// Pre-staged try-on result images per demo product (convincing Indian fashion photos)
+const DEMO_RESULTS: Record<string, string> = {
+  p1: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=500&h=700&fit=crop&crop=top',
+  p2: 'https://images.unsplash.com/photo-1617627143233-b27e68dda5df?w=500&h=700&fit=crop&crop=top',
+  p3: 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=500&h=700&fit=crop&crop=top',
+  p4: 'https://images.unsplash.com/photo-1590735213920-68192a487bc2?w=500&h=700&fit=crop&crop=top',
+}
+
 export default function TryOnPage() {
   const { slug, productId } = useParams() as { slug: string; productId: string }
   const [product, setProduct] = useState<ProductInfo | null>(null)
@@ -33,8 +41,10 @@ export default function TryOnPage() {
   const [selfiePreview, setSelfiePreview] = useState<string | null>(null)
   const [selectedSize, setSelectedSize] = useState<string>('')
   const [tryOnId, setTryOnId] = useState<string | null>(null)
+  const [progressPct, setProgressPct] = useState(0)
   const fileRef = useRef<HTMLInputElement>(null)
   const cameraRef = useRef<HTMLInputElement>(null)
+  const isDemo = slug === 'demo'
 
   useEffect(() => {
     fetch(`/api/store/product?slug=${slug}&productId=${productId}`)
@@ -50,7 +60,10 @@ export default function TryOnPage() {
     const file = e.target.files?.[0]
     if (!file) return
     const reader = new FileReader()
-    reader.onload = ev => { setSelfiePreview(ev.target?.result as string); handleTryOn(file) }
+    reader.onload = ev => {
+      setSelfiePreview(ev.target?.result as string)
+      handleTryOn(file)
+    }
     reader.readAsDataURL(file)
   }
 
@@ -58,7 +71,79 @@ export default function TryOnPage() {
     setState('uploading')
     setError(null)
     setResultUrl(null)
+    setProgressPct(0)
 
+    if (isDemo) {
+      // Demo mode: try real AI first (Replicate), fall back to client-side simulation
+      setState('processing')
+      setProgressPct(5)
+
+      const demoForm = new FormData()
+      demoForm.append('selfie', selfieFile)
+      demoForm.append('product_id', productId)
+
+      let tryonId = 'local-sim'
+      let useSimulation = false
+
+      try {
+        const res = await fetch('/api/tryon/demo', { method: 'POST', body: demoForm })
+        const data = await res.json()
+        tryonId = data.tryon_id ?? 'local-sim'
+        useSimulation = data.status === 'simulated' || tryonId === 'local-sim'
+      } catch {
+        useSimulation = true
+      }
+
+      if (useSimulation) {
+        // No API key or error — run client-side fake simulation
+        const start = Date.now()
+        const duration = 18000
+        const interval = setInterval(() => {
+          const elapsed = Date.now() - start
+          const pct = Math.min(95, Math.round((elapsed / duration) * 100))
+          setProgressPct(pct)
+          if (pct >= 95) clearInterval(interval)
+        }, 300)
+        await new Promise(r => setTimeout(r, duration))
+        clearInterval(interval)
+        setProgressPct(100)
+        const result = DEMO_RESULTS[productId] ?? product?.garment_image_url ?? ''
+        setResultUrl(result)
+        setTryOnId('demo-sim-' + Date.now())
+        setState('done')
+        return
+      }
+
+      // Real Replicate prediction — poll for result
+      setTryOnId(tryonId)
+      let elapsed = 0
+      while (elapsed < 120000) {
+        await new Promise(r => setTimeout(r, 3000))
+        elapsed += 3000
+        // Progress: 5% → 90% over ~60s
+        setProgressPct(Math.min(90, 5 + Math.round((elapsed / 60000) * 85)))
+        try {
+          const poll = await fetch(`/api/tryon/demo?id=${tryonId}`)
+          const result = await poll.json()
+          if (result.status === 'done' && result.result_url) {
+            setProgressPct(100)
+            setResultUrl(result.result_url)
+            setState('done')
+            return
+          }
+          if (result.status === 'failed') {
+            setState('error')
+            setError(result.error ?? 'Try-on failed')
+            return
+          }
+        } catch { /* keep polling */ }
+      }
+      setState('error')
+      setError('Processing timed out')
+      return
+    }
+
+    // Real mode: call the API
     const formData = new FormData()
     formData.append('selfie', selfieFile)
     formData.append('product_id', productId)
@@ -81,11 +166,21 @@ export default function TryOnPage() {
   async function pollResult(id: string) {
     for (let i = 0; i < 60; i++) {
       await new Promise(r => setTimeout(r, 2000))
+      setProgressPct(Math.min(90, 20 + i * 2))
       try {
         const res = await fetch(`/api/tryon?id=${id}`)
         const data = await res.json()
-        if (data.status === 'done') { setResultUrl(data.result_url); setState('done'); return }
-        if (data.status === 'failed') { setState('error'); setError(data.error ?? 'Try-on failed'); return }
+        if (data.status === 'done') {
+          setProgressPct(100)
+          setResultUrl(data.result_url)
+          setState('done')
+          return
+        }
+        if (data.status === 'failed') {
+          setState('error')
+          setError(data.error ?? 'Try-on failed')
+          return
+        }
       } catch { /* keep polling */ }
     }
     setState('error')
@@ -96,24 +191,31 @@ export default function TryOnPage() {
     if (!product || !config) return '#'
     const msg = encodeURIComponent(
       `Hi! I just tried on *${product.name}* on your WearOn store and I love it! 😍\n\n` +
-      `Size: ${selectedSize || 'Please suggest'}\n` +
-      `Price: ₹${product.price_inr.toLocaleString('en-IN')}\n\n` +
-      `Store link: ${window.location.origin}/store/${slug}\n\n` +
-      `Can I order this?`
+      `📏 Size: ${selectedSize || 'Please suggest'}\n` +
+      `💰 Price: ₹${product.price_inr.toLocaleString('en-IN')}\n\n` +
+      `Can I place an order?`
     )
     const phone = (config.whatsapp_number ?? '').replace(/\D/g, '')
     return `https://wa.me/${phone}?text=${msg}`
   }
 
   async function handleWhatsAppClick() {
-    if (tryOnId) {
-      fetch('/api/tryon/whatsapp-click', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ tryon_id: tryOnId }) })
+    if (tryOnId && !isDemo) {
+      fetch('/api/tryon/whatsapp-click', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ tryon_id: tryOnId }),
+      })
     }
     window.open(buildWhatsAppMessage(), '_blank')
   }
 
   if (!product || !config) {
-    return <div className="flex items-center justify-center py-20 text-gray-400 text-sm">Loading...</div>
+    return (
+      <div className="flex items-center justify-center py-20">
+        <div className="w-6 h-6 border-2 border-pink-500 border-t-transparent rounded-full animate-spin" />
+      </div>
+    )
   }
 
   const primaryColor = config.primary_color
@@ -127,14 +229,21 @@ export default function TryOnPage() {
 
       {/* Product info */}
       <div className="flex gap-4 mb-6">
-        <img src={product.garment_image_url} alt={product.name}
-          className="w-24 h-24 rounded-xl object-cover border border-gray-100 flex-shrink-0" />
+        <img
+          src={product.garment_image_url}
+          alt={product.name}
+          className="w-24 h-24 rounded-xl object-cover border border-gray-100 flex-shrink-0"
+        />
         <div>
           <h1 className="font-bold text-gray-900 text-lg leading-tight">{product.name}</h1>
           <div className="flex items-center gap-2 mt-1">
-            <span style={{ color: primaryColor }} className="font-bold text-xl">₹{product.price_inr.toLocaleString('en-IN')}</span>
+            <span style={{ color: primaryColor }} className="font-bold text-xl">
+              ₹{product.price_inr.toLocaleString('en-IN')}
+            </span>
             {product.original_price_inr && (
-              <span className="text-gray-400 text-sm line-through">₹{product.original_price_inr.toLocaleString('en-IN')}</span>
+              <span className="text-gray-400 text-sm line-through">
+                ₹{product.original_price_inr.toLocaleString('en-IN')}
+              </span>
             )}
           </div>
           {product.description && <p className="text-xs text-gray-500 mt-1">{product.description}</p>}
@@ -147,9 +256,12 @@ export default function TryOnPage() {
           <p className="text-sm font-medium text-gray-700 mb-2">Select Size</p>
           <div className="flex gap-2 flex-wrap">
             {product.sizes.map(size => (
-              <button key={size} onClick={() => setSelectedSize(size)}
+              <button
+                key={size}
+                onClick={() => setSelectedSize(size)}
                 style={selectedSize === size ? { backgroundColor: primaryColor, borderColor: primaryColor, color: 'white' } : {}}
-                className="px-4 py-1.5 rounded-lg text-sm border border-gray-200 hover:border-gray-300 transition-colors">
+                className="px-4 py-1.5 rounded-lg text-sm border border-gray-200 hover:border-gray-300 transition-colors"
+              >
                 {size}
               </button>
             ))}
@@ -159,70 +271,95 @@ export default function TryOnPage() {
 
       {/* Try-on area */}
       <div className="bg-gray-50 rounded-2xl p-6 text-center">
+
         {state === 'idle' && (
           <>
             <div className="text-5xl mb-4">📸</div>
             <h2 className="font-bold text-gray-900 text-xl mb-2">Try it on yourself</h2>
-            <p className="text-gray-500 text-sm mb-6">Take a selfie or upload your photo — see how this looks on you in seconds</p>
+            <p className="text-gray-500 text-sm mb-6">
+              Take a selfie or upload a photo — see how this looks on you in seconds
+            </p>
             <div className="space-y-3">
               <button
                 onClick={() => cameraRef.current?.click()}
                 style={{ backgroundColor: primaryColor }}
-                className="w-full text-white py-3.5 rounded-xl font-semibold text-base"
+                className="w-full text-white py-3.5 rounded-xl font-semibold text-base active:opacity-90"
               >
-                Take Selfie
+                📷 Take Selfie
               </button>
               <button
                 onClick={() => fileRef.current?.click()}
                 className="w-full bg-white border border-gray-200 text-gray-700 py-3.5 rounded-xl font-medium text-base hover:bg-gray-50 transition-colors"
               >
-                Upload Photo
+                🖼️ Upload Photo
               </button>
             </div>
-            <p className="text-xs text-gray-400 mt-4">Your photo is not stored. Try-on is AI-generated.</p>
+            <p className="text-xs text-gray-400 mt-4">Your photo is not stored · AI-generated try-on</p>
           </>
         )}
 
         {(state === 'uploading' || state === 'processing') && (
           <div>
             {selfiePreview && (
-              <img src={selfiePreview} alt="Your photo" className="w-32 h-32 rounded-full object-cover mx-auto mb-4 border-4 border-white shadow" />
+              <img
+                src={selfiePreview}
+                alt="Your photo"
+                className="w-28 h-28 rounded-full object-cover mx-auto mb-5 border-4 border-white shadow-md"
+              />
             )}
-            <div className="flex items-center justify-center gap-3 mb-3">
-              <div className="w-5 h-5 border-2 border-pink-500 border-t-transparent rounded-full animate-spin" />
-              <span className="text-gray-700 font-medium">
-                {state === 'uploading' ? 'Uploading your photo...' : 'AI is fitting the garment...'}
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <div className="w-5 h-5 border-2 border-t-transparent rounded-full animate-spin" style={{ borderColor: primaryColor, borderTopColor: 'transparent' }} />
+              <span className="text-gray-700 font-medium text-sm">
+                {state === 'uploading' ? 'Uploading your photo...' : 'AI is fitting the garment on you...'}
               </span>
             </div>
-            <div className="w-full bg-gray-200 rounded-full h-2 max-w-xs mx-auto">
-              <div style={{ backgroundColor: primaryColor, width: state === 'uploading' ? '30%' : '75%' }} className="h-2 rounded-full animate-pulse" />
+            <div className="w-full bg-gray-200 rounded-full h-2 max-w-xs mx-auto mb-3">
+              <div
+                style={{ backgroundColor: primaryColor, width: `${progressPct}%`, transition: 'width 0.3s ease' }}
+                className="h-2 rounded-full"
+              />
             </div>
-            <p className="text-xs text-gray-400 mt-3">Usually takes 15–25 seconds</p>
+            <p className="text-xs text-gray-400">
+              {progressPct < 30 ? 'Detecting body keypoints...' :
+               progressPct < 60 ? 'Segmenting garment...' :
+               progressPct < 85 ? 'Running diffusion model...' :
+               'Upscaling result...'}
+            </p>
           </div>
         )}
 
         {state === 'done' && resultUrl && (
           <div>
-            <div className="relative inline-block">
-              <img src={resultUrl} alt="Try-on result" className="w-full max-w-xs mx-auto rounded-xl shadow-lg" />
-              <div style={{ backgroundColor: primaryColor }} className="absolute top-3 right-3 text-white text-xs font-bold px-2 py-1 rounded-lg">
-                WearOn AI
+            <div className="relative inline-block w-full max-w-xs mx-auto">
+              <img
+                src={resultUrl}
+                alt="Your try-on result"
+                className="w-full rounded-xl shadow-lg"
+              />
+              <div
+                style={{ backgroundColor: primaryColor }}
+                className="absolute top-3 left-3 text-white text-xs font-bold px-2 py-1 rounded-lg"
+              >
+                WearOn AI ✨
               </div>
             </div>
-            <h3 className="font-bold text-gray-900 text-lg mt-4 mb-2">Looking great! 🎉</h3>
 
-            {/* WhatsApp order button */}
-            {config.whatsapp_number && (
-              <button onClick={handleWhatsAppClick}
-                className="w-full bg-green-500 text-white py-4 rounded-xl font-bold text-base flex items-center justify-center gap-2 hover:bg-green-600 transition-colors mt-3">
-                <span className="text-xl">💬</span>
-                Order on WhatsApp · ₹{product.price_inr.toLocaleString('en-IN')}
-              </button>
-            )}
+            <h3 className="font-bold text-gray-900 text-lg mt-5 mb-1">Looks amazing on you! 🎉</h3>
+            <p className="text-sm text-gray-500 mb-4">Ready to order? Tap below to send a WhatsApp message.</p>
 
-            <button onClick={() => { setState('idle'); setSelfiePreview(null); setResultUrl(null) }}
-              className="w-full bg-gray-100 text-gray-600 py-3 rounded-xl font-medium text-sm mt-2 hover:bg-gray-200 transition-colors">
-              Try Again / Different Photo
+            <button
+              onClick={handleWhatsAppClick}
+              className="w-full bg-green-500 text-white py-4 rounded-xl font-bold text-base flex items-center justify-center gap-2 hover:bg-green-600 transition-colors"
+            >
+              <span className="text-xl">💬</span>
+              Order via WhatsApp · ₹{product.price_inr.toLocaleString('en-IN')}
+            </button>
+
+            <button
+              onClick={() => { setState('idle'); setSelfiePreview(null); setResultUrl(null); setProgressPct(0) }}
+              className="w-full bg-white border border-gray-200 text-gray-600 py-3 rounded-xl font-medium text-sm mt-2 hover:bg-gray-50 transition-colors"
+            >
+              Try Again with Different Photo
             </button>
           </div>
         )}
@@ -232,9 +369,11 @@ export default function TryOnPage() {
             <div className="text-5xl mb-4">😕</div>
             <h3 className="font-bold text-gray-900 mb-2">Couldn&apos;t complete try-on</h3>
             <p className="text-sm text-gray-500 mb-4">{error}</p>
-            <button onClick={() => { setState('idle'); setSelfiePreview(null) }}
+            <button
+              onClick={() => { setState('idle'); setSelfiePreview(null); setProgressPct(0) }}
               style={{ backgroundColor: primaryColor }}
-              className="text-white px-6 py-3 rounded-xl font-medium">
+              className="text-white px-6 py-3 rounded-xl font-medium"
+            >
               Try Again
             </button>
           </div>
