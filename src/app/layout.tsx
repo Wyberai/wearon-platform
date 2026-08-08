@@ -2,8 +2,8 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'WearOn — Virtual Try-On for Your Fashion Store',
-  description: 'Give your Instagram customers a branded fashion app with AI virtual try-on. No code needed.',
+  title: 'WearOn — Your Branded Boutique App for Instagram Sellers',
+  description: 'Give your Instagram buyers a proper branded fashion store — your logo, your colors, WhatsApp ordering. Live in 10 minutes. Free.',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
