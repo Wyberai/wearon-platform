@@ -190,7 +190,7 @@ export default function StorePage() {
             if (!rating) loadRatings(product.id)
 
             return (
-              <Link key={product.id} href={`/store/${slug}/try/${product.id}`} className="group">
+              <Link key={product.id} href={`/store/${slug}/product/${product.id}`} className="group">
                 <div className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
                   <div className="aspect-square bg-gray-50 relative overflow-hidden">
                     <img
@@ -203,7 +203,6 @@ export default function StorePage() {
                         {Math.round((1 - product.price_inr / product.original_price_inr) * 100)}% OFF
                       </div>
                     )}
-                    {/* Wishlist heart */}
                     <button
                       onClick={(e) => toggleWishlist(e, product.id)}
                       className="absolute top-2 right-2 w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center shadow-sm hover:scale-110 transition-transform"
@@ -212,9 +211,6 @@ export default function StorePage() {
                         {inWishlist ? '♥' : '♡'}
                       </span>
                     </button>
-                    <div style={{ backgroundColor: primary }} className="absolute bottom-2 right-2 text-white text-xs font-medium px-2 py-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
-                      Try On →
-                    </div>
                   </div>
                   <div className="p-3">
                     <p className="text-sm font-medium text-gray-900 truncate">{product.name}</p>
