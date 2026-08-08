@@ -12,11 +12,13 @@ interface ProductInfo {
   price_inr: number
   original_price_inr: number | null
   garment_image_url: string
+  mesh_url?: string | null
   sizes: string[]
   description: string | null
 }
 
 interface StoreConfig {
+  seller_id?: string
   brand_name: string
   primary_color: string
   whatsapp_number: string | null
@@ -42,9 +44,40 @@ export default function TryOnPage() {
   const [selectedSize, setSelectedSize] = useState<string>('')
   const [tryOnId, setTryOnId] = useState<string | null>(null)
   const [progressPct, setProgressPct] = useState(0)
+  const [reviewRating, setReviewRating] = useState(0)
+  const [reviewComment, setReviewComment] = useState('')
+  const [reviewSubmitted, setReviewSubmitted] = useState(false)
+  const [show3d, setShow3d] = useState(false)
   const fileRef = useRef<HTMLInputElement>(null)
   const cameraRef = useRef<HTMLInputElement>(null)
   const isDemo = slug === 'demo'
+
+  async function submitReview() {
+    if (!reviewRating || !config?.seller_id) return
+    const deviceToken = localStorage.getItem('wearon_device_token') ?? crypto.randomUUID()
+    await fetch('/api/store/reviews', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        product_id: productId,
+        seller_id: config.seller_id,
+        device_token: deviceToken,
+        rating: reviewRating,
+        comment: reviewComment || null,
+      }),
+    })
+    setReviewSubmitted(true)
+  }
+
+  async function shareResult() {
+    if (navigator.share && resultUrl) {
+      try {
+        await navigator.share({ text: `I just tried on ${product?.name} — check it out!`, url: resultUrl })
+        return
+      } catch { /* fall through to clipboard */ }
+    }
+    if (resultUrl) { navigator.clipboard.writeText(resultUrl) }
+  }
 
   useEffect(() => {
     fetch(`/api/store/product?slug=${slug}&productId=${productId}`)
@@ -361,6 +394,83 @@ export default function TryOnPage() {
             >
               Try Again with Different Photo
             </button>
+
+            {/* Share button */}
+            <button
+              onClick={shareResult}
+              className="w-full bg-white border border-gray-200 text-gray-600 py-3 rounded-xl font-medium text-sm mt-2 hover:bg-gray-50 transition-colors"
+            >
+              Share My Try-On →
+            </button>
+
+            {/* 3D view */}
+            {product.mesh_url && (
+              <div className="mt-4">
+                <button
+                  onClick={() => setShow3d(!show3d)}
+                  className="w-full bg-gray-900 text-white py-3 rounded-xl font-medium text-sm hover:bg-gray-800 transition-colors"
+                >
+                  {show3d ? 'Hide 3D View' : '🔄 View in 3D'}
+                </button>
+                {show3d && (
+                  <div className="mt-3 rounded-xl overflow-hidden border border-gray-200">
+                    {/* model-viewer web component */}
+                    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.3.0/model-viewer.min.js" />
+                    {/* @ts-expect-error - model-viewer is a web component */}
+                    <model-viewer
+                      src={product.mesh_url}
+                      alt={product.name}
+                      shadow-intensity="1"
+                      camera-controls
+                      auto-rotate
+                      style={{ width: '100%', height: '400px' }}
+                    />
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Review section */}
+            <div className="mt-6 pt-6 border-t border-gray-100">
+              {reviewSubmitted ? (
+                <p className="text-sm text-green-600 text-center font-medium">Thanks for your review! 🙏</p>
+              ) : (
+                <div>
+                  <p className="text-sm font-medium text-gray-700 mb-3">How did the try-on help?</p>
+                  <div className="flex gap-2 justify-center mb-3">
+                    {[1, 2, 3, 4, 5].map(star => (
+                      <button
+                        key={star}
+                        onClick={() => setReviewRating(star)}
+                        className="text-2xl transition-transform hover:scale-110"
+                        style={{ color: star <= reviewRating ? '#F59E0B' : '#D1D5DB' }}
+                      >
+                        ★
+                      </button>
+                    ))}
+                  </div>
+                  {reviewRating > 0 && (
+                    <>
+                      <textarea
+                        value={reviewComment}
+                        onChange={e => setReviewComment(e.target.value)}
+                        placeholder="Share your experience (optional)..."
+                        maxLength={500}
+                        rows={2}
+                        className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-pink-300 mb-2"
+                      />
+                      <button
+                        onClick={submitReview}
+                        style={{ backgroundColor: primaryColor }}
+                        className="w-full text-white py-2.5 rounded-lg font-medium text-sm"
+                      >
+                        Submit Review
+                      </button>
+                    </>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
         )}
 

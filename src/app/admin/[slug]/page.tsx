@@ -87,6 +87,52 @@ export default async function AdminDashboard({ params }: { params: Promise<{ slu
         </div>
       </div>
 
+      {/* 7-day try-ons chart */}
+      {analytics.length > 0 && (
+        <div className="bg-white rounded-xl border border-gray-100 p-6 mb-6">
+          <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-4">Try-Ons — Last 7 Days</h3>
+          {(() => {
+            const maxVal = Math.max(...analytics.map(d => d.try_ons), 1)
+            const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']
+            return (
+              <div className="flex items-end gap-2 h-24">
+                {[...analytics].reverse().map((d, i) => {
+                  const pct = (d.try_ons / maxVal) * 100
+                  const dayName = days[new Date(d.date).getDay()]
+                  return (
+                    <div key={i} className="flex-1 flex flex-col items-center gap-1" title={`${d.try_ons} try-ons`}>
+                      <div className="w-full rounded-t-sm bg-pink-500 transition-all" style={{ height: `${Math.max(pct, 4)}%` }} />
+                      <span className="text-xs text-gray-400">{dayName}</span>
+                    </div>
+                  )
+                })}
+              </div>
+            )
+          })()}
+        </div>
+      )}
+
+      {/* Store link card */}
+      <div className="bg-gradient-to-r from-pink-50 to-rose-50 rounded-xl border border-pink-100 p-5 mb-6 flex items-center justify-between gap-4">
+        <div>
+          <p className="text-xs text-pink-600 font-semibold uppercase tracking-wide mb-1">Your Store Link</p>
+          <code className="text-sm text-gray-700 font-mono">wearon.in/store/{slug}</code>
+        </div>
+        <div className="flex gap-2 flex-shrink-0">
+          <a
+            href={`https://api.qrserver.com/v1/create-qr-code/?size=80x80&data=https://wearon.in/store/${slug}`}
+            target="_blank" rel="noopener noreferrer"
+          >
+            <img src={`https://api.qrserver.com/v1/create-qr-code/?size=80x80&data=https://wearon.in/store/${slug}`}
+              alt="QR" className="w-16 h-16 rounded-lg border border-pink-100" />
+          </a>
+          <Link href={`/store/${slug}`} target="_blank"
+            className="self-center bg-pink-600 text-white text-xs font-medium px-3 py-2 rounded-lg hover:bg-pink-700 transition-colors">
+            Open →
+          </Link>
+        </div>
+      </div>
+
       {/* Quick actions */}
       <div className="grid grid-cols-3 gap-4">
         <Link href={`/admin/${slug}/products`} className="bg-white border border-gray-100 rounded-xl p-5 hover:border-pink-200 hover:shadow-sm transition-all">

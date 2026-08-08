@@ -1,0 +1,302 @@
+'use client'
+
+import { useState, useEffect } from 'react'
+import { useParams } from 'next/navigation'
+import Link from 'next/link'
+
+interface Config {
+  slug: string
+  brand_name: string
+  tagline: string | null
+  whatsapp_number: string | null
+  instagram_handle: string | null
+  primary_color: string
+  secondary_color: string | null
+  accent_color: string | null
+  background_color: string | null
+  font_family: string | null
+  payment_method: string | null
+  try_on_enabled: boolean
+  reviews_enabled: boolean
+  wishlist_enabled: boolean
+}
+
+const FONTS = ['poppins', 'inter', 'playfair', 'nunito', 'montserrat']
+const PAYMENT_METHODS = [
+  { value: 'whatsapp_order', label: 'WhatsApp Order (free)' },
+  { value: 'razorpay', label: 'Razorpay (direct payment)' },
+  { value: 'cod', label: 'Cash on Delivery' },
+]
+
+export default function SettingsPage() {
+  const { slug } = useParams() as { slug: string }
+  const [config, setConfig] = useState<Config | null>(null)
+  const [form, setForm] = useState<Partial<Config>>({})
+  const [saving, setSaving] = useState(false)
+  const [saved, setSaved] = useState(false)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    fetch(`/api/admin/config?slug=${slug}`)
+      .then(r => r.json())
+      .then(d => {
+        setConfig(d.config)
+        setForm(d.config ?? {})
+        setLoading(false)
+      })
+  }, [slug])
+
+  function update<K extends keyof Config>(key: K, value: Config[K]) {
+    setForm(f => ({ ...f, [key]: value }))
+  }
+
+  async function save() {
+    setSaving(true)
+    setSaved(false)
+    await fetch('/api/admin/config', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ slug, ...form }),
+    })
+    setSaving(false)
+    setSaved(true)
+    setTimeout(() => setSaved(false), 3000)
+  }
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="text-gray-400 text-sm animate-pulse">Loading settings...</div>
+      </div>
+    )
+  }
+
+  const primary = form.primary_color ?? config?.primary_color ?? '#ec4899'
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <div className="max-w-2xl mx-auto p-6 space-y-6">
+
+        {/* Header */}
+        <div className="flex items-center justify-between">
+          <div>
+            <Link href={`/admin/${slug}`} className="text-sm text-gray-500 hover:text-gray-700">
+              ← Dashboard
+            </Link>
+            <h1 className="text-2xl font-bold text-gray-900 mt-1">Settings</h1>
+          </div>
+          <button
+            onClick={save}
+            disabled={saving}
+            className="px-4 py-2 rounded-lg text-sm font-semibold text-white transition-opacity disabled:opacity-60"
+            style={{ backgroundColor: primary }}
+          >
+            {saving ? 'Saving…' : saved ? '✓ Saved' : 'Save Changes'}
+          </button>
+        </div>
+
+        {/* Brand */}
+        <Section title="Brand">
+          <Field label="Store Name">
+            <input
+              value={form.brand_name ?? ''}
+              onChange={e => update('brand_name', e.target.value)}
+              className="input"
+              placeholder="e.g. Zara Boutique"
+            />
+          </Field>
+          <Field label="Tagline">
+            <input
+              value={form.tagline ?? ''}
+              onChange={e => update('tagline', e.target.value)}
+              className="input"
+              placeholder="e.g. Fashion for every mood"
+            />
+          </Field>
+        </Section>
+
+        {/* Contact */}
+        <Section title="Contact">
+          <Field label="WhatsApp Number" hint="Include country code: +91XXXXXXXXXX">
+            <input
+              value={form.whatsapp_number ?? ''}
+              onChange={e => update('whatsapp_number', e.target.value)}
+              className="input"
+              placeholder="+919876543210"
+            />
+          </Field>
+          <Field label="Instagram Handle" hint="Without the @">
+            <input
+              value={form.instagram_handle ?? ''}
+              onChange={e => update('instagram_handle', e.target.value)}
+              className="input"
+              placeholder="yourboutique"
+            />
+          </Field>
+        </Section>
+
+        {/* Design */}
+        <Section title="Design">
+          <div className="grid grid-cols-2 gap-4">
+            <Field label="Primary Color">
+              <div className="flex items-center gap-2">
+                <input
+                  type="color"
+                  value={form.primary_color ?? '#ec4899'}
+                  onChange={e => update('primary_color', e.target.value)}
+                  className="h-9 w-14 rounded cursor-pointer border border-gray-200"
+                />
+                <input
+                  value={form.primary_color ?? '#ec4899'}
+                  onChange={e => update('primary_color', e.target.value)}
+                  className="input flex-1 font-mono uppercase"
+                  maxLength={7}
+                />
+              </div>
+            </Field>
+            <Field label="Secondary Color">
+              <div className="flex items-center gap-2">
+                <input
+                  type="color"
+                  value={form.secondary_color ?? '#f9a8d4'}
+                  onChange={e => update('secondary_color', e.target.value)}
+                  className="h-9 w-14 rounded cursor-pointer border border-gray-200"
+                />
+                <input
+                  value={form.secondary_color ?? '#f9a8d4'}
+                  onChange={e => update('secondary_color', e.target.value)}
+                  className="input flex-1 font-mono uppercase"
+                  maxLength={7}
+                />
+              </div>
+            </Field>
+          </div>
+          <Field label="Font">
+            <div className="flex flex-wrap gap-2">
+              {FONTS.map(f => (
+                <button
+                  key={f}
+                  onClick={() => update('font_family', f)}
+                  className={`px-3 py-1 rounded-lg text-sm capitalize transition-colors ${
+                    (form.font_family ?? 'poppins') === f
+                      ? 'text-white'
+                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  }`}
+                  style={(form.font_family ?? 'poppins') === f ? { backgroundColor: primary } : {}}
+                >
+                  {f}
+                </button>
+              ))}
+            </div>
+          </Field>
+        </Section>
+
+        {/* Payment */}
+        <Section title="Payment">
+          <Field label="Order Method" hint="How buyers pay or enquire">
+            <div className="space-y-2">
+              {PAYMENT_METHODS.map(m => (
+                <label key={m.value} className="flex items-center gap-3 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="payment_method"
+                    value={m.value}
+                    checked={(form.payment_method ?? 'whatsapp_order') === m.value}
+                    onChange={() => update('payment_method', m.value)}
+                    style={{ accentColor: primary }}
+                  />
+                  <span className="text-sm text-gray-700">{m.label}</span>
+                </label>
+              ))}
+            </div>
+          </Field>
+        </Section>
+
+        {/* Feature flags */}
+        <Section title="Features">
+          {([
+            { key: 'try_on_enabled', label: 'Virtual Try-on', desc: 'Buyers can try on clothes before ordering' },
+            { key: 'reviews_enabled', label: 'Product Reviews', desc: 'Buyers can rate and review products' },
+            { key: 'wishlist_enabled', label: 'Wishlist', desc: 'Buyers can save items to their wishlist' },
+          ] as { key: keyof Config; label: string; desc: string }[]).map(feat => (
+            <div key={feat.key} className="flex items-center justify-between py-2">
+              <div>
+                <div className="text-sm font-medium text-gray-900">{feat.label}</div>
+                <div className="text-xs text-gray-400">{feat.desc}</div>
+              </div>
+              <button
+                onClick={() => update(feat.key, !(form[feat.key] as boolean))}
+                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                  form[feat.key] ? 'bg-pink-600' : 'bg-gray-200'
+                }`}
+                style={form[feat.key] ? { backgroundColor: primary } : {}}
+              >
+                <span
+                  className={`inline-block h-4 w-4 rounded-full bg-white shadow transform transition-transform ${
+                    form[feat.key] ? 'translate-x-6' : 'translate-x-1'
+                  }`}
+                />
+              </button>
+            </div>
+          ))}
+        </Section>
+
+        {/* Store URL */}
+        <Section title="Your Store">
+          <div className="bg-gray-100 rounded-lg px-4 py-3 flex items-center justify-between">
+            <span className="text-sm text-gray-600 font-mono">wearon.in/store/{slug}</span>
+            <a
+              href={`/store/${slug}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm font-medium"
+              style={{ color: primary }}
+            >
+              Open →
+            </a>
+          </div>
+        </Section>
+
+        <div className="pb-8" />
+      </div>
+
+      <style jsx>{`
+        .input {
+          width: 100%;
+          border: 1px solid #e5e7eb;
+          border-radius: 8px;
+          padding: 8px 12px;
+          font-size: 14px;
+          color: #111827;
+          background: white;
+          outline: none;
+          transition: border-color 0.15s;
+        }
+        .input:focus {
+          border-color: ${primary};
+        }
+      `}</style>
+    </div>
+  )
+}
+
+function Section({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+      <div className="px-5 py-4 border-b border-gray-100">
+        <h2 className="text-sm font-semibold text-gray-900">{title}</h2>
+      </div>
+      <div className="px-5 py-4 space-y-4">{children}</div>
+    </div>
+  )
+}
+
+function Field({ label, hint, children }: { label: string; hint?: string; children: React.ReactNode }) {
+  return (
+    <div className="space-y-1">
+      <label className="block text-sm font-medium text-gray-700">{label}</label>
+      {hint && <p className="text-xs text-gray-400">{hint}</p>}
+      {children}
+    </div>
+  )
+}

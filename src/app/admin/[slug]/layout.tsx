@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { createClient, createAdminClient } from '@/lib/supabase/server'
+import { AdminNav } from '@/components/admin/AdminNav'
 
 export default async function AdminLayout({
   children,
@@ -28,7 +29,10 @@ export default async function AdminLayout({
     { href: `/admin/${slug}`, label: 'Dashboard', icon: '📊' },
     { href: `/admin/${slug}/products`, label: 'Products', icon: '👗' },
     { href: `/admin/${slug}/orders`, label: 'Orders', icon: '📦' },
+    { href: `/admin/${slug}/analytics`, label: 'Analytics', icon: '📈' },
     { href: `/admin/${slug}/customize`, label: 'Customize', icon: '🎨' },
+    { href: `/admin/${slug}/settings`, label: 'Settings', icon: '⚙️' },
+    { href: `/admin/${slug}/billing`, label: 'Billing', icon: '💳' },
   ]
 
   return (
@@ -39,18 +43,7 @@ export default async function AdminLayout({
           <Link href="/" className="text-lg font-bold text-pink-600">WearOn</Link>
           <div className="text-sm text-gray-500 mt-1 truncate">{config.brand_name}</div>
         </div>
-        <nav className="flex-1 p-4 space-y-1">
-          {navLinks.map(({ href, label, icon }) => (
-            <Link
-              key={href}
-              href={href}
-              className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors"
-            >
-              <span>{icon}</span>
-              {label}
-            </Link>
-          ))}
-        </nav>
+        <AdminNav links={navLinks} primaryColor={config.primary_color ?? '#ec4899'} />
         <div className="p-4 border-t border-gray-100 space-y-2">
           <Link
             href={`/store/${slug}`}
