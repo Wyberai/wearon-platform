@@ -1,5 +1,7 @@
 import { redirect } from 'next/navigation'
 import { createClient, createAdminClient } from '@/lib/supabase/server'
+import { sendEmail } from '@/lib/email/resend'
+import { welcomeEmail } from '@/lib/email/templates/welcome'
 
 export default async function AdminIndexPage() {
   const supabase = await createClient()
@@ -53,6 +55,14 @@ export default async function AdminIndexPage() {
     console.error('[admin] onboard error:', error.message)
     redirect('/auth/login?message=Setup error. Please try again.')
   }
+
+  // Fire-and-forget welcome email
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://wearon.in'
+  const sellerName = (user.user_metadata?.full_name ?? user.email ?? 'there').split(' ')[0]
+  sendEmail({
+    to: user.email!,
+    ...welcomeEmail({ brandName, sellerName, storeUrl: `${appUrl}/store/${slug}` }),
+  }).catch(() => {})
 
   redirect(`/admin/${slug}`)
 }

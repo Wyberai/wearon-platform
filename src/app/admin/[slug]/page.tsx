@@ -10,22 +10,35 @@ export default async function AdminDashboard({ params }: { params: Promise<{ slu
 
   const admin = createAdminClient()
 
-  const [profileResult, analyticsResult, productCountResult, orderCountResult] = await Promise.all([
+  const [profileResult, analyticsResult, productCountResult, orderCountResult, configResult] = await Promise.all([
     admin.from('profiles').select('plan, try_ons_used, try_ons_limit').eq('id', user.id).single(),
     admin.from('daily_analytics').select('*').eq('seller_id', user.id).order('date', { ascending: false }).limit(7),
     admin.from('products').select('id', { count: 'exact' }).eq('seller_id', user.id).eq('is_active', true),
     admin.from('orders').select('id', { count: 'exact' }).eq('seller_id', user.id).gte('created_at', new Date(Date.now() - 30 * 86400000).toISOString()),
+    admin.from('tenant_config').select('whatsapp_number, primary_color, brand_name, logo_url').eq('seller_id', user.id).single(),
   ])
 
   const profile = profileResult.data
   const analytics = analyticsResult.data ?? []
   const productCount = productCountResult.count ?? 0
   const orderCount = orderCountResult.count ?? 0
+  const storeConfig = configResult.data
 
   const totalTryOns = analytics.reduce((sum, d) => sum + d.try_ons, 0)
   const totalVisits = analytics.reduce((sum, d) => sum + d.store_visits, 0)
   const plan = PLANS[profile?.plan as keyof typeof PLANS ?? 'free']
   const tryOnPct = profile ? Math.round((profile.try_ons_used / profile.try_ons_limit) * 100) : 0
+
+  // Setup checklist state
+  const hasWhatsApp = !!storeConfig?.whatsapp_number
+  const hasProducts = productCount > 0
+  const setupDone = hasWhatsApp && hasProducts
+  const setupSteps = [
+    { done: hasWhatsApp, label: 'Add your WhatsApp number', href: `/admin/${slug}/customize`, action: 'Set up →' },
+    { done: hasProducts, label: 'Add your first product', href: `/admin/${slug}/products`, action: 'Add product →' },
+    { done: true, label: 'Share your store link', href: null, action: null },
+  ]
+  const completedCount = [hasWhatsApp, hasProducts].filter(Boolean).length
 
   return (
     <div>
@@ -42,6 +55,55 @@ export default async function AdminDashboard({ params }: { params: Promise<{ slu
           View My Store →
         </Link>
       </div>
+
+      {/* First-run setup wizard — shown until all steps are complete */}
+      {!setupDone && (
+        <div className="bg-gradient-to-br from-pink-50 to-rose-50 border border-pink-100 rounded-2xl p-6 mb-8">
+          <div className="flex items-start justify-between mb-5">
+            <div>
+              <h2 className="text-lg font-bold text-gray-900">
+                Welcome to WearOn{storeConfig?.brand_name ? `, ${storeConfig.brand_name}` : ''}! 🎉
+              </h2>
+              <p className="text-sm text-gray-500 mt-1">Complete these steps to launch your boutique app.</p>
+            </div>
+            <span className="text-xs font-semibold bg-pink-100 text-pink-700 px-3 py-1 rounded-full whitespace-nowrap">
+              {completedCount} / 2 done
+            </span>
+          </div>
+          <div className="space-y-3">
+            {setupSteps.map((step, i) => (
+              <div
+                key={i}
+                className={`flex items-center gap-4 bg-white rounded-xl px-5 py-4 border transition-all ${
+                  step.done ? 'border-green-100 opacity-70' : 'border-gray-100 shadow-sm'
+                }`}
+              >
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 ${
+                  step.done ? 'bg-green-100 text-green-600' : 'bg-pink-100 text-pink-600'
+                }`}>
+                  {step.done ? '✓' : i + 1}
+                </div>
+                <span className={`flex-1 text-sm font-medium ${step.done ? 'text-gray-400 line-through' : 'text-gray-800'}`}>
+                  {step.label}
+                </span>
+                {!step.done && step.href && (
+                  <Link
+                    href={step.href}
+                    className="text-xs font-semibold text-pink-600 bg-pink-50 hover:bg-pink-100 px-3 py-1.5 rounded-lg transition-colors whitespace-nowrap"
+                  >
+                    {step.action}
+                  </Link>
+                )}
+                {i === 2 && (
+                  <code className="text-xs text-gray-500 font-mono bg-gray-50 px-2 py-1 rounded">
+                    wearon.in/store/{slug}
+                  </code>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Stats */}
       <div className="grid grid-cols-4 gap-4 mb-8">
