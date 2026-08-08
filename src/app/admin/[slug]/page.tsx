@@ -10,12 +10,13 @@ export default async function AdminDashboard({ params }: { params: Promise<{ slu
 
   const admin = createAdminClient()
 
-  const [profileResult, analyticsResult, productCountResult, orderCountResult, configResult] = await Promise.all([
+  const [profileResult, analyticsResult, productCountResult, orderCountResult, configResult, igResult] = await Promise.all([
     admin.from('profiles').select('plan, try_ons_used, try_ons_limit').eq('id', user.id).single(),
     admin.from('daily_analytics').select('*').eq('seller_id', user.id).order('date', { ascending: false }).limit(7),
     admin.from('products').select('id', { count: 'exact' }).eq('seller_id', user.id).eq('is_active', true),
     admin.from('orders').select('id', { count: 'exact' }).eq('seller_id', user.id).gte('created_at', new Date(Date.now() - 30 * 86400000).toISOString()),
     admin.from('tenant_config').select('whatsapp_number, primary_color, brand_name, logo_url').eq('seller_id', user.id).single(),
+    admin.from('instagram_connections').select('ig_username').eq('seller_id', user.id).maybeSingle(),
   ])
 
   const profile = profileResult.data
@@ -23,6 +24,7 @@ export default async function AdminDashboard({ params }: { params: Promise<{ slu
   const productCount = productCountResult.count ?? 0
   const orderCount = orderCountResult.count ?? 0
   const storeConfig = configResult.data
+  const igConnected = !!igResult.data
 
   const totalTryOns = analytics.reduce((sum, d) => sum + d.try_ons, 0)
   const totalVisits = analytics.reduce((sum, d) => sum + d.store_visits, 0)
@@ -196,7 +198,7 @@ export default async function AdminDashboard({ params }: { params: Promise<{ slu
       </div>
 
       {/* Quick actions */}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-3 gap-4 mb-6">
         <Link href={`/admin/${slug}/products`} className="bg-white border border-gray-100 rounded-xl p-5 hover:border-pink-200 hover:shadow-sm transition-all">
           <div className="text-2xl mb-3">👗</div>
           <h3 className="font-semibold text-gray-900 mb-1">Add Products</h3>
@@ -216,6 +218,31 @@ export default async function AdminDashboard({ params }: { params: Promise<{ slu
             </span>
           </div>
         </div>
+      </div>
+
+      {/* Instagram DM card */}
+      <div className={`rounded-xl border p-5 flex items-center justify-between gap-4 ${igConnected ? 'bg-gradient-to-r from-purple-50 to-pink-50 border-pink-100' : 'bg-white border-gray-100'}`}>
+        <div className="flex items-center gap-4">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center text-white text-lg flex-shrink-0">
+            💬
+          </div>
+          <div>
+            <h3 className="font-semibold text-gray-900 mb-0.5">
+              {igConnected ? 'Instagram DMs connected' : 'Connect Instagram DMs'}
+            </h3>
+            <p className="text-xs text-gray-500">
+              {igConnected
+                ? 'AI agent is handling buyer queries — check your inbox'
+                : 'Let AI reply to buyer DMs automatically with your product info'}
+            </p>
+          </div>
+        </div>
+        <Link
+          href={igConnected ? `/admin/${slug}/inbox` : `/api/admin/instagram/connect?slug=${slug}`}
+          className="text-sm font-semibold text-white bg-gradient-to-r from-pink-500 to-purple-600 px-4 py-2 rounded-lg hover:opacity-90 transition-opacity whitespace-nowrap flex-shrink-0"
+        >
+          {igConnected ? 'Open Inbox →' : 'Connect →'}
+        </Link>
       </div>
     </div>
   )

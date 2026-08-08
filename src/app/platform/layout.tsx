@@ -18,6 +18,7 @@ export default async function PlatformLayout({ children }: { children: React.Rea
           </span>
           <span style={{ width: 1, height: 16, background: 'rgba(255,255,255,0.1)' }} />
           <a href="/platform" style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)', textDecoration: 'none' }}>Overview</a>
+          <a href="/platform/deployments" style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)', textDecoration: 'none' }}>Deployments</a>
         </div>
         <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.3)' }}>{user.email}</span>
       </nav>

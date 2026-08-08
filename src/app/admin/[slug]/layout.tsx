@@ -29,6 +29,7 @@ export default async function AdminLayout({
     { href: `/admin/${slug}`, label: 'Dashboard', icon: '📊' },
     { href: `/admin/${slug}/products`, label: 'Products', icon: '👗' },
     { href: `/admin/${slug}/orders`, label: 'Orders', icon: '📦' },
+    { href: `/admin/${slug}/inbox`, label: 'Instagram DMs', icon: '💬' },
     { href: `/admin/${slug}/analytics`, label: 'Analytics', icon: '📈' },
     { href: `/admin/${slug}/customize`, label: 'Customize', icon: '🎨' },
     { href: `/admin/${slug}/settings`, label: 'Settings', icon: '⚙️' },
