@@ -83,12 +83,17 @@ export async function POST(request: Request) {
   if (insertError) return NextResponse.json({ error: insertError.message }, { status: 500 })
 
   // Async: trigger garment preprocessing (background, non-blocking)
-  if (process.env.WEARON_AI_URL) {
+  // Sends garment_url + product_id as form data so wearon-ai can fetch the
+  // image, remove background, and save garment_preprocessed_url back to DB.
+  if (process.env.WEARON_AI_URL && product?.id) {
+    const preprocessForm = new FormData()
+    preprocessForm.append('garment_url', publicUrl)
+    preprocessForm.append('product_id', product.id)
     fetch(`${process.env.WEARON_AI_URL}/preprocess/garment`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-Secret': process.env.WEARON_AI_SECRET! },
-      body: JSON.stringify({ product_id: product?.id, garment_url: publicUrl }),
-    }).catch(console.error)
+      headers: { 'x-wearon-secret': process.env.WEARON_AI_SECRET ?? '' },
+      body: preprocessForm,
+    }).catch(e => console.error('[preprocess] non-fatal:', e))
   }
 
   return NextResponse.json({ ok: true, product_id: product?.id })
