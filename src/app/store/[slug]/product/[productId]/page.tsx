@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
 
@@ -25,6 +25,8 @@ interface StoreConfig {
   instagram_handle: string | null
 }
 
+type TryOnStep = 'idle' | 'upload' | 'generating' | 'done' | 'error'
+
 export default function ProductDetailPage() {
   const { slug, productId } = useParams() as { slug: string; productId: string }
   const [product, setProduct] = useState<ProductInfo | null>(null)
@@ -33,6 +35,14 @@ export default function ProductDetailPage() {
   const [selectedColor, setSelectedColor] = useState('')
   const [loading, setLoading] = useState(true)
   const [ordered, setOrdered] = useState(false)
+  const [tryOnStep, setTryOnStep] = useState<TryOnStep>('idle')
+  const [tryOnJobId, setTryOnJobId] = useState<string | null>(null)
+  const [tryOnResult, setTryOnResult] = useState<{ image_url?: string; video_url?: string } | null>(null)
+  const [tryOnError, setTryOnError] = useState('')
+  const [buyerPhotoPreview, setBuyerPhotoPreview] = useState<string | null>(null)
+  const [buyerPhotoDataUrl, setBuyerPhotoDataUrl] = useState<string | null>(null)
+  const tryOnPollRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const selfieInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     fetch(`/api/store/product?slug=${slug}&productId=${productId}`)
@@ -65,6 +75,77 @@ export default function ProductDetailPage() {
     if (!url) return
     setOrdered(true)
     window.open(url, '_blank')
+  }
+
+  function handleSelfieUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file) return
+    const reader = new FileReader()
+    reader.onload = ev => {
+      const dataUrl = ev.target?.result as string
+      setBuyerPhotoPreview(dataUrl)
+      setBuyerPhotoDataUrl(dataUrl)
+    }
+    reader.readAsDataURL(file)
+  }
+
+  async function startTryOn() {
+    if (!buyerPhotoDataUrl || !product || !config?.seller_id) return
+    setTryOnStep('generating')
+    setTryOnResult(null)
+    setTryOnError('')
+
+    const res = await fetch('/api/store/try-on', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        seller_id: config.seller_id,
+        product_id: product.id,
+        garment_image_url: product.garment_image_url,
+        buyer_image_url: buyerPhotoDataUrl,
+        output_type: 'both',
+      }),
+    })
+    const data = await res.json()
+
+    if (data.error || !data.job_id) {
+      setTryOnStep('error')
+      setTryOnError(data.error ?? 'Try-on failed')
+      return
+    }
+
+    setTryOnJobId(data.job_id)
+    tryOnPollRef.current = setInterval(async () => {
+      const pollRes = await fetch(`/api/store/try-on?job_id=${data.job_id}`)
+      const pollData = await pollRes.json()
+      if (pollData.status === 'completed') {
+        clearInterval(tryOnPollRef.current!)
+        setTryOnResult({ image_url: pollData.image_url, video_url: pollData.video_url })
+        setTryOnStep('done')
+      } else if (pollData.status === 'failed') {
+        clearInterval(tryOnPollRef.current!)
+        setTryOnStep('error')
+        setTryOnError(pollData.error ?? 'Generation failed')
+      }
+    }, 5000)
+  }
+
+  function closeTryOn() {
+    clearInterval(tryOnPollRef.current!)
+    setTryOnStep('idle')
+    setTryOnJobId(null)
+    setTryOnResult(null)
+    setBuyerPhotoPreview(null)
+    setBuyerPhotoDataUrl(null)
+    setTryOnError('')
+  }
+
+  async function shareResult() {
+    const url = tryOnResult?.video_url ?? tryOnResult?.image_url ?? window.location.href
+    if (navigator.share) {
+      try { await navigator.share({ title: `Me in ${product?.name}`, url }); return } catch { /* fall through */ }
+    }
+    await navigator.clipboard.writeText(url)
   }
 
   async function handleShare() {
@@ -210,6 +291,18 @@ export default function ProductDetailPage() {
           </div>
         )}
 
+        {/* AI Try-On button */}
+        {config.seller_id && (
+          <button
+            onClick={() => setTryOnStep('upload')}
+            style={{ borderColor: primary, color: primary }}
+            className="w-full border-2 rounded-2xl py-3.5 font-bold text-sm flex items-center justify-center gap-2 mb-4 hover:opacity-80 transition-opacity"
+          >
+            <span className="text-lg">🪄</span>
+            See yourself wearing this
+          </button>
+        )}
+
         {/* Delivery note */}
         <div className="bg-gray-50 rounded-xl px-4 py-3 mb-6 flex items-center gap-3">
           <span className="text-xl">📦</span>
@@ -219,6 +312,150 @@ export default function ProductDetailPage() {
           </div>
         </div>
       </div>
+
+      {/* AI Try-On Modal */}
+      {tryOnStep !== 'idle' && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', zIndex: 100, display: 'flex', alignItems: 'flex-end', justifyContent: 'center' }}>
+          <div style={{ background: '#fff', borderRadius: '24px 24px 0 0', width: '100%', maxWidth: 480, padding: '24px 20px 40px', maxHeight: '90vh', overflowY: 'auto' }}>
+            {/* Handle + close */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
+              <div style={{ fontSize: 16, fontWeight: 800, color: '#111827' }}>
+                {tryOnStep === 'done' ? '✨ Your try-on' : '🪄 Try it on'}
+              </div>
+              <button onClick={closeTryOn} style={{ background: '#F3F4F6', border: 'none', borderRadius: '50%', width: 32, height: 32, cursor: 'pointer', fontSize: 16 }}>✕</button>
+            </div>
+
+            {/* Upload step */}
+            {tryOnStep === 'upload' && (
+              <div>
+                <p style={{ fontSize: 13, color: '#6B7280', marginBottom: 16, lineHeight: 1.5 }}>
+                  Upload a full-length photo or selfie — AI will show you wearing this {product?.name}.
+                  <span style={{ display: 'block', marginTop: 4, fontSize: 11, color: '#9CA3AF' }}>
+                    🔒 Your photo is deleted immediately after generation. Never stored.
+                  </span>
+                </p>
+
+                <div
+                  onClick={() => selfieInputRef.current?.click()}
+                  style={{
+                    border: '2px dashed #E5E7EB', borderRadius: 16, padding: '28px 20px', textAlign: 'center', cursor: 'pointer',
+                    background: buyerPhotoPreview ? '#F9FAFB' : 'transparent', marginBottom: 16,
+                  }}
+                >
+                  {buyerPhotoPreview ? (
+                    <img src={buyerPhotoPreview} alt="your photo" style={{ maxHeight: 200, maxWidth: '100%', objectFit: 'contain', borderRadius: 12 }} />
+                  ) : (
+                    <div>
+                      <div style={{ fontSize: 36, marginBottom: 8 }}>🤳</div>
+                      <div style={{ fontSize: 13, color: '#6B7280', fontWeight: 600 }}>Tap to upload your photo</div>
+                      <div style={{ fontSize: 11, color: '#9CA3AF', marginTop: 4 }}>Full-body works best · Selfies also work</div>
+                    </div>
+                  )}
+                </div>
+                <input ref={selfieInputRef} type="file" accept="image/*" capture="user" onChange={handleSelfieUpload} style={{ display: 'none' }} />
+
+                <button
+                  onClick={startTryOn}
+                  disabled={!buyerPhotoDataUrl}
+                  style={{
+                    width: '100%', padding: '14px', borderRadius: 14, fontSize: 15, fontWeight: 800, border: 'none', cursor: 'pointer',
+                    background: buyerPhotoDataUrl ? `linear-gradient(135deg, ${primary}, #7209B7)` : '#F3F4F6',
+                    color: buyerPhotoDataUrl ? '#fff' : '#9CA3AF',
+                  }}
+                >
+                  Generate Try-On ✨
+                </button>
+                <p style={{ fontSize: 10, color: '#9CA3AF', textAlign: 'center', marginTop: 8 }}>Takes about 45–90 seconds</p>
+              </div>
+            )}
+
+            {/* Generating step */}
+            {tryOnStep === 'generating' && (
+              <div style={{ textAlign: 'center', padding: '32px 0' }}>
+                <div style={{
+                  width: 64, height: 64, borderRadius: '50%', border: '4px solid #F3F4F6',
+                  borderTopColor: primary, animation: 'spin 0.8s linear infinite', margin: '0 auto 20px',
+                }} />
+                <div style={{ fontSize: 16, fontWeight: 700, color: '#111827', marginBottom: 6 }}>Generating your look…</div>
+                <div style={{ fontSize: 13, color: '#6B7280' }}>AI is placing the garment on you</div>
+                <div style={{ fontSize: 12, color: '#9CA3AF', marginTop: 4 }}>Then creating a short video</div>
+                <style>{`@keyframes spin { to { transform: rotate(360deg) } }`}</style>
+
+                {buyerPhotoPreview && (
+                  <div style={{ display: 'flex', justifyContent: 'center', gap: 12, marginTop: 24, alignItems: 'center' }}>
+                    <img src={buyerPhotoPreview} alt="you" style={{ width: 64, height: 64, borderRadius: 12, objectFit: 'cover', opacity: 0.7 }} />
+                    <span style={{ fontSize: 20 }}>+</span>
+                    <img src={product?.garment_image_url} alt="garment" style={{ width: 64, height: 64, borderRadius: 12, objectFit: 'cover', opacity: 0.7 }} />
+                    <span style={{ fontSize: 20 }}>→</span>
+                    <div style={{ width: 64, height: 64, borderRadius: 12, background: '#F3F4F6', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24 }}>🪄</div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Result step */}
+            {tryOnStep === 'done' && tryOnResult && (
+              <div>
+                {tryOnResult.video_url ? (
+                  <video
+                    src={tryOnResult.video_url}
+                    autoPlay
+                    muted
+                    loop
+                    controls
+                    style={{ width: '100%', borderRadius: 16, marginBottom: 16 }}
+                  />
+                ) : tryOnResult.image_url ? (
+                  <img src={tryOnResult.image_url} alt="your try-on" style={{ width: '100%', borderRadius: 16, marginBottom: 16 }} />
+                ) : null}
+
+                <div style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
+                  <button
+                    onClick={shareResult}
+                    style={{ flex: 1, padding: '12px', borderRadius: 12, background: '#25D366', color: '#fff', fontWeight: 700, fontSize: 13, border: 'none', cursor: 'pointer' }}
+                  >
+                    💬 Share on WhatsApp
+                  </button>
+                  {tryOnResult.video_url && (
+                    <a
+                      href={tryOnResult.video_url}
+                      download="my-tryon.mp4"
+                      style={{ flex: 1, padding: '12px', borderRadius: 12, background: '#F3F4F6', color: '#374151', fontWeight: 700, fontSize: 13, textDecoration: 'none', textAlign: 'center' }}
+                    >
+                      ⬇ Save Video
+                    </a>
+                  )}
+                </div>
+
+                <button
+                  onClick={handleOrder}
+                  style={{
+                    width: '100%', padding: '14px', borderRadius: 14, fontSize: 15, fontWeight: 800, border: 'none', cursor: 'pointer',
+                    background: '#25D366', color: '#fff',
+                  }}
+                >
+                  💬 Love it? Order on WhatsApp · ₹{product?.price_inr.toLocaleString('en-IN')}
+                </button>
+              </div>
+            )}
+
+            {/* Error step */}
+            {tryOnStep === 'error' && (
+              <div style={{ textAlign: 'center', padding: '24px 0' }}>
+                <div style={{ fontSize: 36, marginBottom: 8 }}>😕</div>
+                <div style={{ fontSize: 14, fontWeight: 600, color: '#374151', marginBottom: 4 }}>Couldn&apos;t generate your look</div>
+                <div style={{ fontSize: 12, color: '#9CA3AF', marginBottom: 20 }}>{tryOnError || 'Please try again.'}</div>
+                <button
+                  onClick={() => { setTryOnStep('upload'); setTryOnError('') }}
+                  style={{ padding: '10px 24px', borderRadius: 10, background: primary, color: '#fff', fontWeight: 700, fontSize: 13, border: 'none', cursor: 'pointer' }}
+                >
+                  Try again
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Sticky order bar */}
       <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 px-4 py-3 shadow-lg">
