@@ -11,17 +11,11 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
-  // Verify caller is an admin
-  const adminClient = createAdminClient()
-  const { data: callerProfile, error: profileError } = await adminClient
-    .from('profiles')
-    .select('role')
-    .eq('id', user.id)
-    .single()
-
-  if (profileError || callerProfile?.role !== 'admin') {
-    return NextResponse.json({ error: 'Forbidden — admin only' }, { status: 403 })
+  if (user.email !== process.env.PLATFORM_OWNER_EMAIL) {
+    return NextResponse.json({ error: 'Forbidden — platform owner only' }, { status: 403 })
   }
+
+  const adminClient = createAdminClient()
 
   const body = await req.json()
   const { title, body: messageBody, seller_id } = body as {

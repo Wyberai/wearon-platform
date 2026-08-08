@@ -70,7 +70,7 @@ export async function POST(req: NextRequest) {
 
   // --- 2. Fetch tenant_config for payment credentials ---
   const { data: tenantConfig, error: configError } = await supabase
-    .from('tenant_configs')
+    .from('tenant_config')
     .select('payment_config, payment_method')
     .eq('seller_id', seller_id)
     .single()

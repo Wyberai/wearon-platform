@@ -52,6 +52,9 @@ export default async function AdminIndexPage() {
   })
 
   if (error) {
+    // Race: another concurrent request already created the config — find it and redirect
+    const { data: raceWinner } = await admin.from('tenant_config').select('slug').eq('seller_id', user.id).single()
+    if (raceWinner) redirect(`/admin/${raceWinner.slug}`)
     console.error('[admin] onboard error:', error.message)
     redirect('/auth/login?message=Setup error. Please try again.')
   }
