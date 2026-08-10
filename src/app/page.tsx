@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { PLANS } from '@/lib/constants'
 import { StorePreviewCapture } from '@/components/marketing/StorePreviewCapture'
+import { MarketingNav } from '@/components/marketing/MarketingNav'
 
 const STORAGE_BASE = 'https://zhrubbutcsvhcbuaalep.supabase.co/storage/v1/object/public/product-images'
 
@@ -52,6 +53,19 @@ const PRODUCT_MOCKUP = [
 const ACCENT = '#A6134A'
 const INK = '#171512'
 
+function Check({ color = ACCENT }: { color?: string }) {
+  return (
+    <span style={{
+      display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+      width: 18, height: 18, borderRadius: '50%', background: `${color}18`, flexShrink: 0,
+    }}>
+      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+        <path d="M20 6L9 17l-5-5" />
+      </svg>
+    </span>
+  )
+}
+
 export default function Home() {
   const pricingPlans = (Object.entries(PLANS) as [string, typeof PLANS[keyof typeof PLANS]][]).filter(([k]) => k !== 'enterprise')
 
@@ -65,24 +79,17 @@ export default function Home() {
           .wo-pricing { grid-template-columns: repeat(2, 1fr) !important; }
           .wo-hero-h1 { font-size: clamp(36px, 10vw, 56px) !important; }
         }
+        .wo-hover-lift { transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease; }
+        .wo-hover-lift:hover { transform: translateY(-2px); opacity: 0.92; }
+        .wo-hover-fade { transition: opacity 0.2s ease, color 0.2s ease; }
+        .wo-hover-fade:hover { opacity: 0.7; }
+        .wo-card { transition: transform 0.25s ease, box-shadow 0.25s ease; }
+        .wo-card:hover { transform: translateY(-3px); box-shadow: 0 20px 40px -18px rgba(23,21,18,0.18); }
       `}</style>
 
       <div style={{ background: '#FAF7F3', color: INK, minHeight: '100vh', fontFamily: 'var(--font-body)' }}>
 
-        {/* ── NAV ─────────────────────────────────────── */}
-        <nav style={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 50 }}>
-          <div style={{ maxWidth: 1240, margin: '0 auto', padding: '28px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <span style={{ fontFamily: 'var(--font-display)', fontSize: 22, fontWeight: 500, letterSpacing: '-0.3px', color: '#fff' }}>
-              WearOn
-            </span>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 28 }}>
-              <Link href="/auth/login" style={{ fontSize: 14, color: 'rgba(255,255,255,0.85)', textDecoration: 'none' }}>Login</Link>
-              <Link href="/auth/signup" style={{ background: '#fff', color: INK, padding: '9px 20px', borderRadius: 999, fontSize: 14, fontWeight: 600, textDecoration: 'none' }}>
-                Get started
-              </Link>
-            </div>
-          </div>
-        </nav>
+        <MarketingNav />
 
         {/* ── HERO ─────────────────────────────────────── */}
         <section style={{ position: 'relative', height: '92vh', minHeight: 620, display: 'flex', alignItems: 'flex-end', overflow: 'hidden' }}>
@@ -107,12 +114,14 @@ export default function Home() {
             <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap', alignItems: 'center' }}>
               <Link
                 href="/auth/signup"
+                className="wo-hover-lift"
                 style={{ background: '#fff', color: INK, padding: '16px 30px', borderRadius: 999, fontSize: 15, fontWeight: 600, textDecoration: 'none' }}
               >
                 Launch my store, free →
               </Link>
               <Link
                 href="/store/priyas-boutique"
+                className="wo-hover-lift"
                 style={{ color: '#fff', padding: '16px 30px', borderRadius: 999, fontSize: 15, fontWeight: 600, textDecoration: 'none', border: '1px solid rgba(255,255,255,0.4)' }}
               >
                 See a real store
@@ -122,18 +131,27 @@ export default function Home() {
         </section>
 
         {/* ── PAIN POINTS ──────────────────────────────── */}
-        <section style={{ padding: '90px 0 80px', maxWidth: 1240, margin: '0 auto' }}>
-          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(28px, 3.6vw, 40px)', fontWeight: 500, lineHeight: 1.15, letterSpacing: '-0.5px', marginBottom: 40, padding: '0 24px' }}>
+        <section style={{ position: 'relative', padding: '90px 0 80px', maxWidth: 1240, margin: '0 auto', overflow: 'hidden' }}>
+          <div aria-hidden style={{
+            position: 'absolute', top: -120, right: -80, width: 380, height: 380, borderRadius: '50%',
+            background: `radial-gradient(circle, ${ACCENT}12, transparent 70%)`, pointerEvents: 'none',
+          }} />
+          <h2 style={{ position: 'relative', fontFamily: 'var(--font-display)', fontSize: 'clamp(28px, 3.6vw, 40px)', fontWeight: 500, lineHeight: 1.15, letterSpacing: '-0.5px', marginBottom: 40, padding: '0 24px' }}>
             You built a real boutique.<br />Instagram wasn&apos;t built for it.
           </h2>
-          <div className="wo-pain-scroll" style={{ display: 'flex', gap: 20, overflowX: 'auto', padding: '4px 24px 12px', scrollSnapType: 'x mandatory' }}>
+          <div className="wo-pain-scroll" style={{ display: 'flex', gap: 20, overflowX: 'auto', padding: '4px 24px 20px', scrollSnapType: 'x mandatory' }}>
             {PAIN_POINTS.map(({ n, label, body }) => (
-              <div key={n} style={{
+              <div key={n} className="wo-card" style={{
                 flexShrink: 0, width: 320, scrollSnapAlign: 'start',
-                border: `1px solid ${INK}1a`, borderRadius: 4, padding: '28px 26px',
+                background: '#fff', borderRadius: 20, padding: '30px 28px',
+                boxShadow: '0 12px 30px -18px rgba(23,21,18,0.14)',
               }}>
-                <span style={{ fontFamily: 'var(--font-display)', fontSize: 15, color: ACCENT }}>{n}</span>
-                <p style={{ fontSize: 18, fontWeight: 600, letterSpacing: '-0.2px', margin: '14px 0 10px' }}>{label}</p>
+                <span style={{
+                  display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                  width: 32, height: 32, borderRadius: '50%', background: `${ACCENT}14`,
+                  fontFamily: 'var(--font-display)', fontSize: 13, fontWeight: 600, color: ACCENT,
+                }}>{n}</span>
+                <p style={{ fontSize: 18, fontWeight: 600, letterSpacing: '-0.2px', margin: '18px 0 10px' }}>{label}</p>
                 <p style={{ fontSize: 14.5, color: `${INK}99`, lineHeight: 1.7 }}>{body}</p>
               </div>
             ))}
@@ -149,7 +167,7 @@ export default function Home() {
             </h2>
             <div className="wo-steps" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 48 }}>
               {STEPS.map(({ n, title, body }) => (
-                <div key={n}>
+                <div key={n} style={{ borderTop: `2px solid ${ACCENT}`, paddingTop: 22 }}>
                   <span style={{ fontFamily: 'var(--font-display)', fontSize: 40, fontWeight: 500, color: `${INK}1a` }}>{n}</span>
                   <h3 style={{ fontSize: 19, fontWeight: 600, letterSpacing: '-0.2px', margin: '12px 0 10px' }}>{title}</h3>
                   <p style={{ fontSize: 15, color: `${INK}99`, lineHeight: 1.7 }}>{body}</p>
@@ -177,23 +195,31 @@ export default function Home() {
                   'WhatsApp order button on every product',
                   'Works on any phone, nothing to install',
                 ].map(f => (
-                  <div key={f} style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
-                    <span style={{ color: ACCENT, flexShrink: 0 }}>—</span>
+                  <div key={f} style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+                    <Check />
                     <span style={{ fontSize: 15, color: `${INK}cc` }}>{f}</span>
                   </div>
                 ))}
               </div>
-              <Link href="/store/priyas-boutique" style={{ display: 'inline-block', marginTop: 32, fontSize: 15, fontWeight: 600, color: INK, textDecoration: 'underline', textDecorationColor: ACCENT, textUnderlineOffset: 4 }}>
+              <Link href="/store/priyas-boutique" className="wo-hover-fade" style={{ display: 'inline-block', marginTop: 32, fontSize: 15, fontWeight: 600, color: INK, textDecoration: 'underline', textDecorationColor: ACCENT, textUnderlineOffset: 4 }}>
                 Walk through this store →
               </Link>
             </div>
 
             {/* Phone mockup — real demo store data */}
             <div style={{ position: 'relative', display: 'flex', justifyContent: 'center' }}>
-              <div style={{
-                width: 280, background: '#fff', borderRadius: 36, border: `10px solid ${INK}`,
-                overflow: 'hidden', boxShadow: '0 40px 70px -20px rgba(23,21,18,0.35)',
-              }}>
+              <div aria-hidden style={{
+                position: 'absolute', top: '10%', left: '50%', transform: 'translateX(-50%)',
+                width: 340, height: 340, borderRadius: '50%',
+                background: `radial-gradient(circle, ${ACCENT}1a, transparent 70%)`, pointerEvents: 'none', zIndex: 0,
+              }} />
+              <div
+                className="wo-card"
+                style={{
+                  position: 'relative', zIndex: 1,
+                  width: 280, background: '#fff', borderRadius: 36, border: `10px solid ${INK}`,
+                  overflow: 'hidden', boxShadow: '0 40px 70px -20px rgba(23,21,18,0.35)',
+                }}>
                 <div style={{ padding: '14px 16px 10px', display: 'flex', alignItems: 'center', gap: 10, borderBottom: `1px solid ${INK}14` }}>
                   <div style={{ width: 30, height: 30, borderRadius: '50%', background: ACCENT, color: '#fff', fontSize: 13, fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>P</div>
                   <div>
@@ -229,9 +255,9 @@ export default function Home() {
             <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(26px, 3.2vw, 36px)', fontWeight: 500, letterSpacing: '-0.4px', marginBottom: 56, maxWidth: 560 }}>
               Built for Instagram sellers. Not generic e-commerce.
             </h2>
-            <div className="wo-features" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '48px 56px', marginBottom: 56 }}>
+            <div className="wo-features" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '20px 20px', marginBottom: 40 }}>
               {FEATURES.map(({ title, body }) => (
-                <div key={title} style={{ borderTop: `1px solid ${INK}1a`, paddingTop: 20 }}>
+                <div key={title} className="wo-card" style={{ background: '#FAF7F3', borderRadius: 20, padding: '26px 28px' }}>
                   <h3 style={{ fontSize: 18, fontWeight: 600, letterSpacing: '-0.2px', marginBottom: 8 }}>{title}</h3>
                   <p style={{ fontSize: 15, color: `${INK}99`, lineHeight: 1.7, maxWidth: 420 }}>{body}</p>
                 </div>
@@ -240,16 +266,17 @@ export default function Home() {
 
             {/* AI Reels — one distinct callout, real price */}
             <div style={{
-              padding: '36px 40px', borderRadius: 4, background: '#FAF7F3',
+              padding: '36px 40px', borderRadius: 20, background: INK, color: '#fff',
               display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 28, flexWrap: 'wrap',
+              boxShadow: '0 24px 50px -24px rgba(23,21,18,0.4)',
             }}>
               <div style={{ maxWidth: 620 }}>
-                <h3 style={{ fontSize: 20, fontWeight: 600, letterSpacing: '-0.2px', marginBottom: 8 }}>{AI_REELS.title}</h3>
-                <p style={{ fontSize: 15, color: `${INK}99`, lineHeight: 1.7 }}>{AI_REELS.body}</p>
+                <h3 style={{ fontSize: 20, fontWeight: 600, letterSpacing: '-0.2px', marginBottom: 8, color: '#fff' }}>{AI_REELS.title}</h3>
+                <p style={{ fontSize: 15, color: 'rgba(255,255,255,0.65)', lineHeight: 1.7 }}>{AI_REELS.body}</p>
               </div>
               <div style={{ textAlign: 'right', flexShrink: 0 }}>
-                <div style={{ fontFamily: 'var(--font-display)', fontSize: 34, fontWeight: 500, color: ACCENT, lineHeight: 1 }}>{AI_REELS.price}</div>
-                <div style={{ fontSize: 12, color: `${INK}77`, marginTop: 2 }}>{AI_REELS.priceLabel}</div>
+                <div style={{ fontFamily: 'var(--font-display)', fontSize: 34, fontWeight: 500, color: '#F0A8BE', lineHeight: 1 }}>{AI_REELS.price}</div>
+                <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.5)', marginTop: 2 }}>{AI_REELS.priceLabel}</div>
               </div>
             </div>
           </div>
@@ -284,7 +311,7 @@ export default function Home() {
                 Buyers never see &quot;powered by WearOn.&quot; They see your boutique — your name on every page, every product, every WhatsApp message.
               </p>
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 2, borderRadius: 20, overflow: 'hidden', boxShadow: '0 20px 44px -24px rgba(23,21,18,0.2)' }}>
               {[
                 { label: 'Instagram DMs', desc: '3 hours a day answering the same questions', active: false },
                 { label: 'Linktree / bio page', desc: 'A list of links. No catalogue, no ordering.', active: false },
@@ -292,11 +319,11 @@ export default function Home() {
                 { label: 'WearOn', desc: 'Branded boutique store. WhatsApp checkout. ₹0 to start.', active: true },
               ].map(({ label, desc, active }) => (
                 <div key={label} style={{
-                  padding: '18px 22px',
-                  background: active ? INK : 'transparent',
-                  borderBottom: active ? 'none' : `1px solid ${INK}14`,
+                  padding: '20px 22px',
+                  background: active ? INK : '#FAF7F3',
+                  borderBottom: active ? 'none' : `1px solid ${INK}0f`,
                 }}>
-                  <div style={{ fontSize: 14, fontWeight: 700, color: active ? '#fff' : INK, marginBottom: 3 }}>{label}</div>
+                  <div style={{ fontSize: 14, fontWeight: 700, color: active ? '#fff' : INK, marginBottom: 3 }}>{label}{active && <span style={{ marginLeft: 8, fontSize: 11, fontWeight: 600, color: '#F0A8BE' }}>— that&apos;s us</span>}</div>
                   <div style={{ fontSize: 13, color: active ? 'rgba(255,255,255,0.65)' : `${INK}77` }}>{desc}</div>
                 </div>
               ))}
@@ -320,15 +347,20 @@ export default function Home() {
                 return (
                   <div
                     key={key}
+                    className="wo-card"
                     style={{
                       padding: '28px 24px',
+                      borderRadius: 20,
                       background: featured ? INK : '#fff',
                       color: featured ? '#fff' : INK,
                       position: 'relative',
+                      boxShadow: featured ? '0 24px 50px -20px rgba(23,21,18,0.5)' : '0 12px 30px -20px rgba(23,21,18,0.12)',
+                      outline: featured ? `2px solid ${ACCENT}` : 'none',
+                      outlineOffset: -2,
                     }}
                   >
                     {featured && (
-                      <div style={{ fontSize: 11, fontWeight: 700, color: ACCENT, letterSpacing: '0.08em', marginBottom: 10 }}>
+                      <div style={{ fontSize: 11, fontWeight: 700, color: '#F0A8BE', letterSpacing: '0.08em', marginBottom: 10 }}>
                         MOST POPULAR
                       </div>
                     )}
@@ -346,17 +378,18 @@ export default function Home() {
                         ...(key === 'growth' || key === 'pro' ? ['Native Android app + Play Store listing'] : []),
                         ...(key === 'pro' ? ['Buyer virtual try-on', 'AI Reels — from ₹50/video'] : []),
                       ].map(f => (
-                        <li key={f} style={{ fontSize: 13, color: featured ? 'rgba(255,255,255,0.8)' : `${INK}99`, display: 'flex', alignItems: 'flex-start', gap: 8 }}>
-                          <span style={{ color: featured ? ACCENT : ACCENT, flexShrink: 0 }}>—</span>
+                        <li key={f} style={{ fontSize: 13, color: featured ? 'rgba(255,255,255,0.8)' : `${INK}99`, display: 'flex', alignItems: 'center', gap: 8 }}>
+                          <Check color={featured ? '#F0A8BE' : ACCENT} />
                           {f}
                         </li>
                       ))}
                     </ul>
                     <Link
                       href="/auth/signup"
+                      className="wo-hover-lift"
                       style={{
                         display: 'block', textAlign: 'center', textDecoration: 'none',
-                        padding: '12px 0', fontSize: 14, fontWeight: 700,
+                        padding: '12px 0', fontSize: 14, fontWeight: 700, borderRadius: 999,
                         background: featured ? '#fff' : INK,
                         color: featured ? INK : '#fff',
                       }}
@@ -370,7 +403,8 @@ export default function Home() {
 
             {/* Custom design — one-time add-on, not a plan tier */}
             <div style={{
-              marginTop: 20, padding: '28px 32px', background: '#fff',
+              marginTop: 20, padding: '28px 32px', background: '#fff', borderRadius: 20,
+              boxShadow: '0 12px 30px -20px rgba(23,21,18,0.12)',
               display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 24, flexWrap: 'wrap',
             }}>
               <div>
@@ -383,6 +417,7 @@ export default function Home() {
               </div>
               <a
                 href="mailto:hello@wyberai.com?subject=Custom%20WearOn%20store%20design&body=Hi%2C%20I%27d%20like%20a%20custom%20design%20for%20my%20WearOn%20store."
+                className="wo-hover-lift"
                 style={{ flexShrink: 0, textAlign: 'center', padding: '13px 24px', borderRadius: 999, fontSize: 14, fontWeight: 700, textDecoration: 'none', background: INK, color: '#fff' }}
               >
                 ₹2,000 one-time — Get a custom design →
@@ -392,8 +427,13 @@ export default function Home() {
         </section>
 
         {/* ── FINAL CTA ────────────────────────────────── */}
-        <section style={{ padding: '130px 24px', textAlign: 'center' }}>
-          <div style={{ maxWidth: 680, margin: '0 auto' }}>
+        <section style={{ position: 'relative', padding: '130px 24px', textAlign: 'center', overflow: 'hidden' }}>
+          <div aria-hidden style={{
+            position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)',
+            width: 700, height: 500, borderRadius: '50%',
+            background: `radial-gradient(circle, ${ACCENT}10, transparent 65%)`, pointerEvents: 'none',
+          }} />
+          <div style={{ position: 'relative', maxWidth: 680, margin: '0 auto' }}>
             <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(34px, 5.5vw, 60px)', fontWeight: 500, letterSpacing: '-1px', lineHeight: 1.08, marginBottom: 22 }}>
               Stop answering DMs.<br /><em style={{ fontStyle: 'italic', color: ACCENT }}>Start getting orders.</em>
             </h2>
@@ -402,6 +442,7 @@ export default function Home() {
             </p>
             <Link
               href="/auth/signup"
+              className="wo-hover-lift"
               style={{ background: INK, color: '#fff', padding: '18px 40px', borderRadius: 999, fontSize: 16, fontWeight: 600, textDecoration: 'none', display: 'inline-block' }}
             >
               Launch my store, free →

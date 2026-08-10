@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/server'
 
+export const dynamic = 'force-dynamic'
+
 export async function GET(req: NextRequest) {
   const productId = req.nextUrl.searchParams.get('product_id')
   if (!productId) return NextResponse.json({ error: 'Missing product_id' }, { status: 400 })

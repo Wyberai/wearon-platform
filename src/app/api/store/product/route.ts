@@ -1,6 +1,9 @@
 import { createAdminClient } from '@/lib/supabase/server'
 import { NextResponse } from 'next/server'
 
+// Never cache — see store/products/route.ts for why this matters.
+export const dynamic = 'force-dynamic'
+
 const DEMO_PRODUCTS: Record<string, object> = {
   p1: { id: 'p1', name: 'Floral Cotton Kurti', price_inr: 899, original_price_inr: 1499, garment_image_url: 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=400&h=400&fit=crop', sizes: ['S', 'M', 'L', 'XL'], description: 'Light and breezy cotton fabric. Perfect for daily wear.' },
   p2: { id: 'p2', name: 'Embroidered Anarkali', price_inr: 2499, original_price_inr: 3999, garment_image_url: 'https://images.unsplash.com/photo-1617627143233-b27e68dda5df?w=400&h=400&fit=crop', sizes: ['S', 'M', 'L'], description: 'Festive embroidered anarkali for special occasions.' },

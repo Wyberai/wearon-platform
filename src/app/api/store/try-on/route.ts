@@ -4,6 +4,8 @@ import { submitTryOn, pollTryOn } from '@/lib/fal-tryon'
 import { submitAnimation, pollAnimation, fashionPrompt } from '@/lib/higgsfield'
 import { CREDIT_COSTS } from '@/lib/ai-presets'
 
+export const dynamic = 'force-dynamic'
+
 // POST — buyer submits a try-on job
 // Body: { seller_id, product_id, garment_image_url, buyer_image_url, output_type?, garment_type? }
 // Note: buyer_image_url should be a short-lived upload URL — never stored permanently

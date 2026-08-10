@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/server'
 
+export const dynamic = 'force-dynamic'
+
 // GET /api/store/wishlist?seller_id=...&device_token=...
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url)

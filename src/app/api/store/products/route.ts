@@ -1,6 +1,11 @@
 import { createAdminClient } from '@/lib/supabase/server'
 import { NextResponse } from 'next/server'
 
+// Never cache — a stale response here means every buyer sees an empty or
+// out-of-date storefront until the cache happens to expire (this is exactly
+// what masked the empty-production-env-var bug after a redeploy).
+export const dynamic = 'force-dynamic'
+
 // GET /api/store/products?slug=xxx — public, no auth. The storefront was
 // calling /api/admin/products (seller-authenticated, returns 401 for every
 // anonymous buyer) instead of a real public endpoint — this is that
