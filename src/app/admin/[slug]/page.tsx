@@ -63,7 +63,7 @@ export default async function AdminDashboard({ params }: { params: Promise<{ slu
 
       {/* Setup checklist — quiet, not a party banner */}
       {!setupDone && (
-        <div className="border rounded-xl mb-6 overflow-hidden" style={{ borderColor: `${INK}14` }}>
+        <div className="rounded-[20px] mb-6 overflow-hidden bg-white" style={{ boxShadow: '0 12px 30px -20px rgba(23,21,18,0.14)' }}>
           <div className="flex items-center justify-between px-5 py-3.5 border-b" style={{ borderColor: `${INK}0f` }}>
             <span className="text-sm font-medium" style={{ color: INK }}>Finish setting up your store</span>
             <span className="text-xs font-medium" style={{ color: `${INK}66` }}>{completedCount}/2 done</span>
@@ -84,7 +84,7 @@ export default async function AdminDashboard({ params }: { params: Promise<{ slu
                   </Link>
                 )}
                 {i === 2 && (
-                  <code className="text-xs font-mono" style={{ color: `${INK}55` }}>wearon.in/store/{slug}</code>
+                  <code className="text-xs font-mono" style={{ color: `${INK}55` }}>wearon.wyberai.com/store/{slug}</code>
                 )}
               </div>
             ))}
@@ -100,7 +100,7 @@ export default async function AdminDashboard({ params }: { params: Promise<{ slu
           { label: 'Products', value: productCount },
           { label: 'Orders (30d)', value: orderCount },
         ].map(({ label, value }) => (
-          <div key={label} className="border rounded-xl p-4" style={{ borderColor: `${INK}14` }}>
+          <div key={label} className="rounded-[20px] p-4 bg-white transition-shadow duration-200 hover:shadow-md" style={{ boxShadow: '0 8px 20px -16px rgba(23,21,18,0.12)' }}>
             <div className="text-2xl font-semibold" style={{ color: INK }}>{value.toLocaleString('en-IN')}</div>
             <div className="text-xs mt-0.5" style={{ color: `${INK}77` }}>{label}</div>
           </div>
@@ -109,7 +109,7 @@ export default async function AdminDashboard({ params }: { params: Promise<{ slu
 
       <div className="grid grid-cols-3 gap-5 mb-6">
         {/* Plan + try-on usage */}
-        <div className="border rounded-xl p-5" style={{ borderColor: `${INK}14` }}>
+        <div className="rounded-[20px] p-5 bg-white" style={{ boxShadow: '0 8px 20px -16px rgba(23,21,18,0.12)' }}>
           <div className="flex items-center justify-between mb-4">
             <div>
               <span className="text-xs" style={{ color: `${INK}77` }}>Current plan</span>
@@ -130,7 +130,7 @@ export default async function AdminDashboard({ params }: { params: Promise<{ slu
         </div>
 
         {/* 7-day chart */}
-        <div className="border rounded-xl p-5" style={{ borderColor: `${INK}14` }}>
+        <div className="rounded-[20px] p-5 bg-white" style={{ boxShadow: '0 8px 20px -16px rgba(23,21,18,0.12)' }}>
           <h3 className="text-xs font-medium mb-4" style={{ color: `${INK}77` }}>TRY-ONS · LAST 7 DAYS</h3>
           {analytics.length > 0 ? (() => {
             const maxVal = Math.max(...analytics.map(d => d.try_ons), 1)
@@ -152,25 +152,25 @@ export default async function AdminDashboard({ params }: { params: Promise<{ slu
         </div>
 
         {/* Store link */}
-        <div className="border rounded-xl p-5 flex items-center justify-between gap-3" style={{ borderColor: `${INK}14` }}>
+        <div className="rounded-[20px] p-5 flex items-center justify-between gap-3 bg-white" style={{ boxShadow: '0 8px 20px -16px rgba(23,21,18,0.12)' }}>
           <div className="min-w-0">
             <span className="text-xs" style={{ color: `${INK}77` }}>Your store link</span>
-            <code className="block text-sm font-mono mt-1 truncate" style={{ color: INK }}>wearon.in/store/{slug}</code>
+            <code className="block text-sm font-mono mt-1 truncate" style={{ color: INK }}>wearon.wyberai.com/store/{slug}</code>
           </div>
           <img
-            src={`https://api.qrserver.com/v1/create-qr-code/?size=64x64&data=https://wearon.in/store/${slug}`}
+            src={`https://api.qrserver.com/v1/create-qr-code/?size=64x64&data=https://wearon.wyberai.com/store/${slug}`}
             alt="QR" className="w-14 h-14 rounded-lg flex-shrink-0 border" style={{ borderColor: `${INK}14` }}
           />
         </div>
       </div>
 
       {/* Quick actions — quiet rows, not emoji cards */}
-      <div className="border rounded-xl mb-5 overflow-hidden" style={{ borderColor: `${INK}14` }}>
+      <div className="rounded-[20px] mb-5 overflow-hidden bg-white" style={{ boxShadow: '0 12px 30px -20px rgba(23,21,18,0.14)' }}>
         {[
           { label: 'Add products', desc: 'Upload garments to your catalogue', href: `/admin/${slug}/products` },
           { label: 'Customize store', desc: 'Logo, colors, fonts', href: `/admin/${slug}/customize` },
         ].map((a, i) => (
-          <Link key={a.label} href={a.href} className="flex items-center justify-between px-5 py-3.5 hover:bg-black/[0.015] transition-colors"
+          <Link key={a.label} href={a.href} className="flex items-center justify-between px-5 py-3.5 hover:bg-black/[0.02] transition-colors"
             style={{ borderTop: i === 0 ? 'none' : `1px solid ${INK}0a` }}>
             <div>
               <div className="text-sm font-medium" style={{ color: INK }}>{a.label}</div>
@@ -182,7 +182,7 @@ export default async function AdminDashboard({ params }: { params: Promise<{ slu
       </div>
 
       {/* Instagram DM */}
-      <div className="border rounded-xl px-5 py-4 flex items-center justify-between gap-4" style={{ borderColor: `${INK}14` }}>
+      <div className="rounded-[20px] px-5 py-4 flex items-center justify-between gap-4 bg-white" style={{ boxShadow: '0 8px 20px -16px rgba(23,21,18,0.12)' }}>
         <div>
           <h3 className="text-sm font-medium" style={{ color: INK }}>
             {igConnected ? 'Instagram DMs connected' : 'Connect Instagram DMs'}

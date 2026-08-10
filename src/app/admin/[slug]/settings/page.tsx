@@ -287,7 +287,7 @@ export default function SettingsPage() {
         {/* Store URL */}
         <Section title="Your Store">
           <div className="bg-gray-100 rounded-lg px-4 py-3 flex items-center justify-between">
-            <span className="text-sm text-gray-600 font-mono">wearon.in/store/{slug}</span>
+            <span className="text-sm text-gray-600 font-mono">wearon.wyberai.com/store/{slug}</span>
             <a
               href={`/store/${slug}`}
               target="_blank"

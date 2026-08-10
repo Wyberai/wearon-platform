@@ -96,7 +96,7 @@ export async function POST(request: Request) {
           const tpl = welcomeEmail({
             brandName: config.brand_name,
             sellerName: profile.email,
-            storeUrl: `https://wearon.in/store/${config.slug}`,
+            storeUrl: `https://wearon.wyberai.com/store/${config.slug}`,
           })
           await sendEmail({ to: profile.email, subject: tpl.subject, html: tpl.html })
         }

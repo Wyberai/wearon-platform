@@ -212,10 +212,23 @@ function StorePageContent() {
     <div className="max-w-[1400px] mx-auto" style={{ background: theme.palette.bg, color: theme.palette.ink }}>
       {/* Hero — varies by theme */}
       {theme.hero === 'text-only' ? (
-        <div className="w-full py-20 md:py-32 px-6 md:px-10 mb-6" style={{ background: theme.palette.bg }}>
-          <p className="text-xs uppercase tracking-[0.22em] opacity-60 mb-3">New this season</p>
-          <h1 className={`text-5xl md:text-8xl ${HEADING_CLASS[theme.headingStyle]}`} style={{ maxWidth: 900 }}>The full collection</h1>
-          {theme.headingStyle === 'luxury' && <div className="mt-6 w-16 h-px" style={{ background: theme.palette.accent }} />}
+        <div className="relative w-full py-20 md:py-32 px-6 md:px-10 mb-6 overflow-hidden" style={{ background: theme.palette.bg }}>
+          {theme.heroDecoration === 'blob-dots' && (
+            <>
+              <div aria-hidden className="absolute pointer-events-none" style={{
+                top: '-15%', right: '-8%', width: 480, height: 480, borderRadius: '50%',
+                background: `radial-gradient(circle, ${theme.palette.accent}22, transparent 70%)`,
+              }} />
+              <div aria-hidden className="absolute pointer-events-none hidden md:block" style={{
+                top: '12%', right: '14%', width: 140, height: 140,
+                backgroundImage: `radial-gradient(${theme.palette.ink}33 2.5px, transparent 2.5px)`,
+                backgroundSize: '18px 18px',
+              }} />
+            </>
+          )}
+          <p className="relative text-xs uppercase tracking-[0.22em] opacity-60 mb-3">New this season</p>
+          <h1 className={`relative text-5xl md:text-8xl ${HEADING_CLASS[theme.headingStyle]}`} style={{ maxWidth: 900 }}>The full collection</h1>
+          {theme.headingStyle === 'luxury' && <div className="relative mt-6 w-16 h-px" style={{ background: theme.palette.accent }} />}
         </div>
       ) : theme.hero === 'banner-strip' ? (
         <div className="w-full py-4 px-6 md:px-10 mb-6 flex items-center justify-between" style={{ background: theme.palette.accent, color: '#fff' }}>
@@ -234,37 +247,69 @@ function StorePageContent() {
         </div>
       )}
 
-      {/* Category row */}
-      <div className="px-6 md:px-10 mb-10">
-        <p className="text-xs uppercase tracking-[0.2em] mb-4" style={{ opacity: 0.5 }}>Categories</p>
-        <div className="flex gap-5 overflow-x-auto pb-2">
-          {categories.map(cat => (
-            <button
-              key={cat}
-              onClick={() => setActiveCategory(activeCategory === cat ? null : cat)}
-              className="flex flex-col items-center gap-2 flex-shrink-0 group"
-            >
-              <div
-                className="w-20 h-20 md:w-24 md:h-24 overflow-hidden"
+      {/* Category row — large photo tiles for themes with categoryDisplay
+          'tiles', the small circular avatar row for everyone else. */}
+      {theme.categoryDisplay === 'tiles' ? (
+        <div className="px-6 md:px-10 mb-12">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            {categories.map(cat => (
+              <button
+                key={cat}
+                onClick={() => setActiveCategory(activeCategory === cat ? null : cat)}
+                className="relative overflow-hidden text-left group transition-shadow duration-300 hover:shadow-xl"
                 style={{
-                  borderRadius: theme.decoration === 'stickers' ? 8 : '50%',
-                  background: theme.palette.card,
+                  aspectRatio: '4 / 3', borderRadius: 20,
                   outline: activeCategory === cat ? `2px solid ${theme.palette.accent}` : 'none',
-                  outlineOffset: '3px',
+                  outlineOffset: 2,
                 }}
               >
                 <img
                   src={categoryTiles[cat]}
                   alt={cat}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   onError={e => { e.currentTarget.style.visibility = 'hidden' }}
                 />
-              </div>
-              <span className="text-xs font-medium whitespace-nowrap">{cat}</span>
-            </button>
-          ))}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
+                <div className="absolute bottom-4 left-5 text-white">
+                  <p className={`text-lg md:text-xl ${HEADING_CLASS[theme.headingStyle]}`}>{cat}</p>
+                  <span className="text-xs font-semibold uppercase tracking-wide underline">Shop now</span>
+                </div>
+              </button>
+            ))}
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className="px-6 md:px-10 mb-10">
+          <p className="text-xs uppercase tracking-[0.2em] mb-4" style={{ opacity: 0.5 }}>Categories</p>
+          <div className="flex gap-5 overflow-x-auto pb-2">
+            {categories.map(cat => (
+              <button
+                key={cat}
+                onClick={() => setActiveCategory(activeCategory === cat ? null : cat)}
+                className="flex flex-col items-center gap-2 flex-shrink-0 group"
+              >
+                <div
+                  className="w-20 h-20 md:w-24 md:h-24 overflow-hidden"
+                  style={{
+                    borderRadius: theme.decoration === 'stickers' ? 8 : '50%',
+                    background: theme.palette.card,
+                    outline: activeCategory === cat ? `2px solid ${theme.palette.accent}` : 'none',
+                    outlineOffset: '3px',
+                  }}
+                >
+                  <img
+                    src={categoryTiles[cat]}
+                    alt={cat}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    onError={e => { e.currentTarget.style.visibility = 'hidden' }}
+                  />
+                </div>
+                <span className="text-xs font-medium whitespace-nowrap">{cat}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
 
       <div className="px-6 md:px-10 pb-16">
         {/* Filter row */}
