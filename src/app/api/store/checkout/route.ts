@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/server'
+import { sendPushToSeller } from '@/lib/push/fcm'
 
 interface CheckoutBody {
   seller_id: string
@@ -56,7 +57,7 @@ export async function POST(req: NextRequest) {
   // --- 1. Fetch and validate product ---
   const { data: product, error: productError } = await supabase
     .from('products')
-    .select('id, seller_id, name, price_inr, is_active, sizes')
+    .select('id, seller_id, name, price_inr, cost_price_inr, is_active, sizes')
     .eq('id', product_id)
     .eq('seller_id', seller_id)
     .single()
@@ -71,7 +72,7 @@ export async function POST(req: NextRequest) {
   // --- 2. Fetch tenant_config for payment credentials ---
   const { data: tenantConfig, error: configError } = await supabase
     .from('tenant_config')
-    .select('payment_config, payment_method')
+    .select('payment_config, payment_method, slug')
     .eq('seller_id', seller_id)
     .single()
 
@@ -87,11 +88,14 @@ export async function POST(req: NextRequest) {
   // Build the order id upfront so it can be used as Razorpay receipt
   const orderId = crypto.randomUUID()
 
+  // Snapshot cost at order time so margin stays accurate even if the seller
+  // edits the product's cost_price_inr later.
   const orderItem = {
     product_id,
     name: product.name,
     quantity,
     price_inr: product.price_inr,
+    ...(product.cost_price_inr != null ? { cost_price_inr: product.cost_price_inr } : {}),
     ...(size ? { size } : {}),
   }
 
@@ -167,6 +171,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Failed to record order' }, { status: 500 })
     }
 
+    sendPushToSeller(seller_id, 'New order! 🎉', `₹${total.toLocaleString('en-IN')} — ${product.name}`, { url: `/admin/${tenantConfig.slug}/orders` }).catch(() => {})
+
     return NextResponse.json({
       razorpay_order_id: razorpayOrder.id,
       razorpay_key_id,
@@ -191,6 +197,8 @@ export async function POST(req: NextRequest) {
     console.error('[checkout] DB insert error (cod):', insertError)
     return NextResponse.json({ error: 'Failed to record order' }, { status: 500 })
   }
+
+  sendPushToSeller(seller_id, 'New order! 🎉', `₹${total.toLocaleString('en-IN')} — ${product.name} (COD)`, { url: `/admin/${tenantConfig.slug}/orders` }).catch(() => {})
 
   return NextResponse.json({
     order_id: orderId,

@@ -28,12 +28,32 @@ interface RecentOrder {
   created_at: string
 }
 
+interface ProductMargin {
+  product_id: string
+  name: string
+  units: number
+  revenue_inr: number
+  cost_inr: number
+  margin_inr: number
+  margin_pct: number
+}
+
+interface MarginData {
+  revenue_inr: number
+  cost_inr: number
+  margin_inr: number
+  margin_pct: number
+  revenue_missing_cost_inr: number
+  by_product: ProductMargin[]
+}
+
 interface AnalyticsData {
   rows: AnalyticsRow[]
   totals: Totals
   conversionRate: number
   recentOrders: RecentOrder[]
   days: number
+  margin: MarginData
 }
 
 const STATUS_COLORS: Record<string, string> = {
@@ -151,6 +171,52 @@ export default function AnalyticsPage() {
                   </div>
                 )}
               </div>
+            </div>
+
+            {/* Margin */}
+            <div className="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
+              <div className="flex items-center justify-between mb-3">
+                <div className="text-sm font-semibold text-gray-700">Margins</div>
+                {(data?.margin?.revenue_missing_cost_inr ?? 0) > 0 && (
+                  <Link href={`/admin/${slug}/products`} className="text-xs text-amber-700 bg-amber-50 px-2 py-1 rounded-full hover:bg-amber-100">
+                    ₹{data!.margin.revenue_missing_cost_inr.toLocaleString('en-IN')} in sales missing a cost price →
+                  </Link>
+                )}
+              </div>
+
+              {!data?.margin || data.margin.by_product.length === 0 ? (
+                <div className="text-sm text-gray-400 py-6 text-center">
+                  Add a &ldquo;Your Cost&rdquo; to your products to see margin here.
+                </div>
+              ) : (
+                <>
+                  <div className="grid grid-cols-3 gap-4 mb-4">
+                    <div>
+                      <div className="text-xs text-gray-500">Revenue (costed)</div>
+                      <div className="text-lg font-bold text-gray-900">₹{data.margin.revenue_inr.toLocaleString('en-IN')}</div>
+                    </div>
+                    <div>
+                      <div className="text-xs text-gray-500">Cost (COGS)</div>
+                      <div className="text-lg font-bold text-gray-900">₹{data.margin.cost_inr.toLocaleString('en-IN')}</div>
+                    </div>
+                    <div>
+                      <div className="text-xs text-gray-500">Gross margin</div>
+                      <div className="text-lg font-bold text-emerald-600">₹{data.margin.margin_inr.toLocaleString('en-IN')} · {data.margin.margin_pct}%</div>
+                    </div>
+                  </div>
+
+                  <div className="text-xs font-medium text-gray-500 mb-2">By product</div>
+                  <div className="space-y-1.5">
+                    {data.margin.by_product.slice(0, 8).map(p => (
+                      <div key={p.product_id} className="flex items-center justify-between text-sm">
+                        <span className="text-gray-700 truncate flex-1">{p.name} <span className="text-gray-400">×{p.units}</span></span>
+                        <span className="text-gray-900 font-medium">₹{p.margin_inr.toLocaleString('en-IN')}</span>
+                        <span className="text-xs text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded ml-2 w-12 text-center">{p.margin_pct}%</span>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
             </div>
 
             {/* Chart */}

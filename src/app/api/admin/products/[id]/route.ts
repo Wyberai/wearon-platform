@@ -16,7 +16,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Params }) {
   if (body.sizes !== undefined && !Array.isArray(body.sizes))
     return NextResponse.json({ error: 'sizes must be an array' }, { status: 400 })
 
-  const allowed = ['name', 'description', 'category', 'price_inr', 'original_price_inr',
+  const allowed = ['name', 'description', 'category', 'price_inr', 'original_price_inr', 'cost_price_inr',
     'sizes', 'colors', 'tags', 'is_active', 'stock_by_variant', 'stock_count']
   const update: Record<string, unknown> = {}
   for (const key of allowed) {

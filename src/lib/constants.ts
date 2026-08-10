@@ -1,15 +1,39 @@
+// Plan keys are unchanged from the original 5-tier system (free/starter/growth/pro/enterprise)
+// to avoid a profiles.plan CHECK-constraint migration — only the economics, feature
+// availability, and display names changed when this was re-tiered around three
+// sellable products: Store, Store+App, and Store+App+AI Photoshoot.
+//
+// Design: the cheap-to-run feature (conversational AI replies) is available on every
+// paid tier at increasing caps. The expensive-to-run features (buyer try-on, AI Studio
+// cloth-to-model generation — both real fal.ai/Higgsfield compute) are entirely
+// unavailable below the top tier, not just rate-limited — try_ons/ai_credits are 0,
+// not small, for starter/growth.
 export const PLANS = {
-  free:       { name: 'Free',       try_ons: 20,   price_inr: 0,     products: 10,   label: 'Get Started' },
-  starter:    { name: 'Starter',    try_ons: 200,  price_inr: 999,   products: 50,   label: 'Start Selling' },
-  growth:     { name: 'Growth',     try_ons: 500,  price_inr: 1999,  products: 200,  label: 'Grow Faster' },
-  pro:        { name: 'Pro',        try_ons: 2000, price_inr: 3999,  products: 9999, label: 'Go Pro' },
-  enterprise: { name: 'Enterprise', try_ons: 99999,price_inr: 9999,  products: 9999, label: 'Contact Us' },
+  free:       { name: 'Free',                          try_ons: 0,   ai_credits: 0,   price_inr: 0,     products: 10,   label: 'Get Started' },
+  starter:    { name: 'Store',                          try_ons: 0,   ai_credits: 0,   price_inr: 3000,  products: 100,  label: 'Start Selling' },
+  growth:     { name: 'Store + App',                    try_ons: 0,   ai_credits: 0,   price_inr: 9999,  products: 500,  label: 'Get the App' },
+  pro:        { name: 'Store + App + AI Photoshoot',    try_ons: 300, ai_credits: 150, price_inr: 19999, products: 9999, label: 'Go All-In' },
+  enterprise: { name: 'Enterprise',                     try_ons: 99999, ai_credits: 99999, price_inr: 39999, products: 9999, label: 'Contact Us' },
 } as const
 
 export type Plan = keyof typeof PLANS
 
 export const PLAN_TRY_ON_LIMITS: Record<Plan, number> = {
-  free: 20, starter: 200, growth: 500, pro: 2000, enterprise: 99999,
+  free: 0, starter: 0, growth: 0, pro: 300, enterprise: 99999,
+}
+
+// AI Studio (cloth-to-model photo/video generation) — same eligibility as try-on,
+// both gated to the top tier since both carry real per-generation compute cost.
+export const PLAN_AI_CREDIT_LIMITS: Record<Plan, number> = {
+  free: 0, starter: 0, growth: 0, pro: 150, enterprise: 99999,
+}
+
+// Conversational AI replies (WhatsApp/Instagram/Messenger auto-reply +
+// suggest-draft) — available at every paid tier, unlike try-on/AI Studio,
+// since a single text reply is orders of magnitude cheaper than an image/video
+// generation. Enforced via the deduct_ai_reply RPC.
+export const PLAN_AI_REPLY_LIMITS: Record<Plan, number> = {
+  free: 20, starter: 500, growth: 2500, pro: 8000, enterprise: 999999,
 }
 
 export const FONTS = {

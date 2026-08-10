@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server'
 import { createClient, createAdminClient } from '@/lib/supabase/server'
-import { sendInstagramMessage, sendMessengerMessage } from '@/lib/instagram-agent'
+import { sendWhatsAppMessage } from '@/lib/whatsapp-agent'
 
-// GET /api/admin/instagram/messages?conversation_id=xxx
+// GET /api/admin/whatsapp/messages?conversation_id=xxx
 export async function GET(req: Request) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
@@ -16,14 +16,14 @@ export async function GET(req: Request) {
 
   const [messagesRes, conversationRes] = await Promise.all([
     admin
-      .from('instagram_messages')
+      .from('whatsapp_messages')
       .select('*')
       .eq('conversation_id', conversationId)
       .eq('seller_id', user.id)
       .order('sent_at', { ascending: true })
       .limit(100),
     admin
-      .from('instagram_conversations')
+      .from('whatsapp_conversations')
       .select('*')
       .eq('id', conversationId)
       .eq('seller_id', user.id)
@@ -32,7 +32,7 @@ export async function GET(req: Request) {
 
   // Mark conversation as read
   await admin
-    .from('instagram_conversations')
+    .from('whatsapp_conversations')
     .update({ unread_count: 0 })
     .eq('id', conversationId)
     .eq('seller_id', user.id)
@@ -43,7 +43,7 @@ export async function GET(req: Request) {
   })
 }
 
-// POST /api/admin/instagram/messages — send a reply (manual or approve AI draft)
+// POST /api/admin/whatsapp/messages — send a reply (manual or approve AI draft)
 export async function POST(req: Request) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
@@ -54,10 +54,9 @@ export async function POST(req: Request) {
 
   const admin = createAdminClient()
 
-  // Get conversation + connection
   const { data: conversation } = await admin
-    .from('instagram_conversations')
-    .select('ig_sender_id, seller_id, channel')
+    .from('whatsapp_conversations')
+    .select('buyer_phone, seller_id')
     .eq('id', conversation_id)
     .eq('seller_id', user.id)
     .single()
@@ -65,32 +64,25 @@ export async function POST(req: Request) {
   if (!conversation) return NextResponse.json({ error: 'Conversation not found' }, { status: 404 })
 
   const { data: connection } = await admin
-    .from('instagram_connections')
-    .select('page_id, ig_business_account_id, page_access_token')
+    .from('whatsapp_connections')
+    .select('phone_number_id')
     .eq('seller_id', user.id)
     .single()
 
-  if (!connection) return NextResponse.json({ error: 'Instagram not connected' }, { status: 400 })
+  if (!connection) return NextResponse.json({ error: 'WhatsApp number not assigned yet' }, { status: 400 })
 
-  // Send via the right Meta API for this conversation's channel
-  if (conversation.channel === 'messenger') {
-    await sendMessengerMessage(connection.page_id, conversation.ig_sender_id, text, connection.page_access_token)
-  } else {
-    await sendInstagramMessage(connection.ig_business_account_id, conversation.ig_sender_id, text, connection.page_access_token)
-  }
+  await sendWhatsAppMessage(connection.phone_number_id, conversation.buyer_phone, text)
 
   const now = new Date().toISOString()
 
   if (message_id) {
-    // Approving an AI draft — mark it sent
     await admin
-      .from('instagram_messages')
+      .from('whatsapp_messages')
       .update({ is_sent: true, sent_at: now })
       .eq('id', message_id)
       .eq('seller_id', user.id)
   } else {
-    // Manual reply — insert new message
-    await admin.from('instagram_messages').insert({
+    await admin.from('whatsapp_messages').insert({
       conversation_id,
       seller_id: user.id,
       direction: 'outbound',
@@ -102,7 +94,7 @@ export async function POST(req: Request) {
   }
 
   await admin
-    .from('instagram_conversations')
+    .from('whatsapp_conversations')
     .update({ last_message_at: now, last_message_preview: text.slice(0, 100) })
     .eq('id', conversation_id)
 

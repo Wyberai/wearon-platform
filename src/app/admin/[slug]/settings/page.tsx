@@ -19,6 +19,7 @@ interface Config {
   try_on_enabled: boolean
   reviews_enabled: boolean
   wishlist_enabled: boolean
+  faq_policy: string | null
 }
 
 const FONTS = ['poppins', 'inter', 'playfair', 'nunito', 'montserrat']
@@ -209,6 +210,19 @@ export default function SettingsPage() {
                 </label>
               ))}
             </div>
+          </Field>
+        </Section>
+
+        {/* Support automation */}
+        <Section title="Support Automation">
+          <Field label="Returns, exchanges & shipping policy" hint="Your AI assistant uses this to answer support questions on WhatsApp, Instagram, and Facebook automatically — write it like you'd tell a new employee.">
+            <textarea
+              value={form.faq_policy ?? ''}
+              onChange={e => update('faq_policy', e.target.value)}
+              className="input"
+              rows={4}
+              placeholder="e.g. Returns accepted within 7 days if unused with tags. Exchanges are free. Delivery takes 3-5 days across India, 7-10 days for remote areas. COD available on orders under ₹5000."
+            />
           </Field>
         </Section>
 

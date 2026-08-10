@@ -8,6 +8,7 @@ interface Product {
   name: string
   price_inr: number
   original_price_inr?: number
+  cost_price_inr?: number | null
   category: string | null
   description?: string
   garment_image_url: string
@@ -15,6 +16,11 @@ interface Product {
   sizes?: string[]
   tags?: string[]
   created_at: string
+}
+
+function marginPct(price: number, cost: number | null | undefined) {
+  if (cost == null || price <= 0) return null
+  return Math.round(((price - cost) / price) * 100)
 }
 
 export default function ProductsPage() {
@@ -33,6 +39,7 @@ export default function ProductsPage() {
     description: '',
     price_inr: '',
     original_price_inr: '',
+    cost_price_inr: '',
     category: '',
     sizes: '',
     tags: '',
@@ -119,7 +126,7 @@ export default function ProductsPage() {
     setShowForm(false)
     setGarmentFile(null)
     setGarmentPreview(null)
-    setForm({ name: '', description: '', price_inr: '', original_price_inr: '', category: '', sizes: '', tags: '' })
+    setForm({ name: '', description: '', price_inr: '', original_price_inr: '', cost_price_inr: '', category: '', sizes: '', tags: '' })
     loadProducts()
   }
 
@@ -208,6 +215,13 @@ export default function ProductsPage() {
                 placeholder="1499"
                 className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500" />
             </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Your Cost (₹) — private, for margin tracking</label>
+              <input type="number" value={form.cost_price_inr} onChange={e => setForm({ ...form, cost_price_inr: e.target.value })}
+                placeholder="450"
+                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500" />
+              <p className="text-xs text-gray-400 mt-1">Never shown to buyers — used to calculate your margin in Analytics.</p>
+            </div>
           </div>
 
           <div>
@@ -269,6 +283,13 @@ export default function ProductsPage() {
                     placeholder="Price (₹)"
                   />
                   <input
+                    value={editForm.cost_price_inr ?? product.cost_price_inr ?? ''}
+                    onChange={e => setEditForm({ ...editForm, cost_price_inr: e.target.value ? Number(e.target.value) : null })}
+                    type="number"
+                    className="w-full border border-gray-200 rounded px-2 py-1 text-xs"
+                    placeholder="Your cost (₹)"
+                  />
+                  <input
                     value={typeof editForm.sizes === 'string' ? editForm.sizes : (product.sizes ?? []).join(', ')}
                     onChange={e => setEditForm({ ...editForm, sizes: e.target.value })}
                     className="w-full border border-gray-200 rounded px-2 py-1 text-xs"
@@ -285,7 +306,14 @@ export default function ProductsPage() {
                 <div className="p-4">
                   <div className="text-sm font-semibold text-gray-900 truncate">{product.name}</div>
                   <div className="text-sm text-gray-500 mt-0.5">{product.category}</div>
-                  <div className="text-pink-600 font-bold mt-1">₹{product.price_inr.toLocaleString('en-IN')}</div>
+                  <div className="flex items-center gap-2 mt-1">
+                    <span className="text-pink-600 font-bold">₹{product.price_inr.toLocaleString('en-IN')}</span>
+                    {marginPct(product.price_inr, product.cost_price_inr) !== null && (
+                      <span className="text-xs font-medium text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded">
+                        {marginPct(product.price_inr, product.cost_price_inr)}% margin
+                      </span>
+                    )}
+                  </div>
                   <div className="flex gap-1 mt-3">
                     <button
                       onClick={() => { setEditingId(product.id); setEditForm({}) }}

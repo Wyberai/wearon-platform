@@ -1,5 +1,6 @@
 import { createClient, createAdminClient } from '@/lib/supabase/server'
 import { NextResponse } from 'next/server'
+import { PLANS } from '@/lib/constants'
 
 // GET /api/admin/products?slug=xxx
 export async function GET(request: Request) {
@@ -11,7 +12,7 @@ export async function GET(request: Request) {
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const admin = createAdminClient()
-  const { data: products } = await admin.from('products').select('id, name, price_inr, category, garment_image_url, is_active, created_at')
+  const { data: products } = await admin.from('products').select('id, name, price_inr, cost_price_inr, category, garment_image_url, is_active, created_at')
     .eq('seller_id', user.id).order('created_at', { ascending: false })
 
   return NextResponse.json({ products: products ?? [] })
@@ -31,6 +32,7 @@ export async function POST(request: Request) {
   const description = formData.get('description') as string
   const priceStr = formData.get('price_inr') as string
   const originalPriceStr = formData.get('original_price_inr') as string
+  const costPriceStr = formData.get('cost_price_inr') as string
   const category = formData.get('category') as string
   const sizesStr = formData.get('sizes') as string
 
@@ -41,8 +43,7 @@ export async function POST(request: Request) {
 
   // Check product limit
   const { data: profile } = await admin.from('profiles').select('plan').eq('id', user.id).single()
-  const LIMITS: Record<string, number> = { free: 10, starter: 50, growth: 200, pro: 9999, enterprise: 9999 }
-  const limit = LIMITS[profile?.plan ?? 'free']
+  const limit = PLANS[(profile?.plan ?? 'free') as keyof typeof PLANS]?.products ?? PLANS.free.products
   const { count } = await admin.from('products').select('id', { count: 'exact' }).eq('seller_id', user.id)
   if ((count ?? 0) >= limit) {
     return NextResponse.json({ error: `Product limit reached for your plan (${limit}). Upgrade to add more.` }, { status: 403 })
@@ -73,6 +74,7 @@ export async function POST(request: Request) {
     description: description || null,
     price_inr: priceInr,
     original_price_inr: originalPriceStr ? parseInt(originalPriceStr) : null,
+    cost_price_inr: costPriceStr ? parseInt(costPriceStr) : null,
     category: category || null,
     garment_image_url: publicUrl,
     slug: productSlug,

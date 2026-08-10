@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { createClient, createAdminClient } from '@/lib/supabase/server'
 import { AdminNav } from '@/components/admin/AdminNav'
+import { NativeBridge } from '@/components/admin/NativeBridge'
 
 export default async function AdminLayout({
   children,
@@ -29,8 +30,9 @@ export default async function AdminLayout({
     { href: `/admin/${slug}`, label: 'Dashboard', icon: '📊' },
     { href: `/admin/${slug}/products`, label: 'Products', icon: '👗' },
     { href: `/admin/${slug}/orders`, label: 'Orders', icon: '📦' },
-    { href: `/admin/${slug}/inbox`, label: 'Instagram DMs', icon: '💬' },
+    { href: `/admin/${slug}/inbox`, label: 'Inbox', icon: '💬' },
     { href: `/admin/${slug}/ai-studio`, label: 'AI Studio', icon: '✨' },
+    { href: `/admin/${slug}/content`, label: 'Content', icon: '🎬' },
     { href: `/admin/${slug}/analytics`, label: 'Analytics', icon: '📈' },
     { href: `/admin/${slug}/customize`, label: 'Customize', icon: '🎨' },
     { href: `/admin/${slug}/settings`, label: 'Settings', icon: '⚙️' },
@@ -39,6 +41,7 @@ export default async function AdminLayout({
 
   return (
     <div className="min-h-screen bg-gray-50 flex">
+      <NativeBridge />
       {/* Sidebar */}
       <aside className="w-56 bg-white border-r border-gray-100 flex flex-col fixed h-full">
         <div className="p-5 border-b border-gray-100">

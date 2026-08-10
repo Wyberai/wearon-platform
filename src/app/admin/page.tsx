@@ -2,6 +2,7 @@ import { redirect } from 'next/navigation'
 import { createClient, createAdminClient } from '@/lib/supabase/server'
 import { sendEmail } from '@/lib/email/resend'
 import { welcomeEmail } from '@/lib/email/templates/welcome'
+import { PLAN_AI_CREDIT_LIMITS, PLAN_AI_REPLY_LIMITS, PLAN_TRY_ON_LIMITS } from '@/lib/constants'
 
 export default async function AdminIndexPage() {
   const supabase = await createClient()
@@ -34,7 +35,10 @@ export default async function AdminIndexPage() {
     email: user.email!,
     plan: 'free',
     try_ons_used: 0,
-    try_ons_limit: 20,
+    try_ons_limit: PLAN_TRY_ON_LIMITS.free,
+    ai_credits: PLAN_AI_CREDIT_LIMITS.free,
+    ai_replies_used: 0,
+    ai_reply_limit: PLAN_AI_REPLY_LIMITS.free,
   }, { onConflict: 'id', ignoreDuplicates: true })
 
   // Create tenant config with defaults

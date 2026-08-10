@@ -17,7 +17,7 @@ export async function GET() {
   const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString()
 
   const [profilesRes, configsRes, productsRes, ordersRes] = await Promise.all([
-    admin.from('profiles').select('id, email, plan, try_ons_used, try_ons_limit, subscription_status, created_at').order('created_at', { ascending: false }),
+    admin.from('profiles').select('id, email, plan, try_ons_used, try_ons_limit, ai_replies_used, ai_reply_limit, subscription_status, created_at').order('created_at', { ascending: false }),
     admin.from('tenant_config').select('seller_id, brand_name, slug, primary_color'),
     admin.from('products').select('seller_id').eq('is_active', true),
     admin.from('orders').select('seller_id, total_inr, created_at').gte('created_at', thirtyDaysAgo),
@@ -49,6 +49,8 @@ export async function GET() {
     subscription_status: p.subscription_status,
     try_ons_used: p.try_ons_used ?? 0,
     try_ons_limit: p.try_ons_limit ?? 20,
+    ai_replies_used: p.ai_replies_used ?? 0,
+    ai_reply_limit: p.ai_reply_limit ?? 50,
     created_at: p.created_at,
     brand_name: configBySellerMap.get(p.id)?.brand_name ?? 'Unknown',
     slug: configBySellerMap.get(p.id)?.slug ?? null,

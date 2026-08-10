@@ -1,7 +1,9 @@
 import { type NextRequest, NextResponse } from 'next/server'
 import { updateSession } from '@/lib/supabase/middleware'
 
-const PLATFORM_HOSTS = ['wearon.in', 'www.wearon.in', 'localhost']
+// wearon.wyberai.com is a temporary demo host (see SETUP-CHECKLIST.md) —
+// remove once the real production domain is live.
+const PLATFORM_HOSTS = ['wearon.in', 'www.wearon.in', 'localhost', 'wearon.wyberai.com']
 
 export async function middleware(request: NextRequest) {
   const hostname = (request.headers.get('host') ?? '').split(':')[0]

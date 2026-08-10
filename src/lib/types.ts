@@ -4,6 +4,8 @@ export interface Profile {
   plan: 'free' | 'starter' | 'growth' | 'pro' | 'enterprise'
   try_ons_used: number
   try_ons_limit: number
+  ai_replies_used: number
+  ai_reply_limit: number
   referral_code: string
   whatsapp_number: string | null
   subscription_status: 'active' | 'inactive' | 'cancelled' | 'past_due'
@@ -49,12 +51,15 @@ export interface Product {
   category: string | null
   price_inr: number
   original_price_inr: number | null
+  cost_price_inr?: number | null
   garment_image_url: string
   garment_preprocessed_url: string | null
   slug: string
   is_active: boolean
   sizes: string[]
   colors: string[]
+  stock_by_variant?: Record<string, number>
+  stock_count?: number | null
   tags: string[]
   created_at: string
   product_images?: ProductImage[]
@@ -84,10 +89,16 @@ export interface Order {
   id: string
   seller_id: string
   status: 'pending' | 'confirmed' | 'shipped' | 'delivered' | 'cancelled'
-  items: Array<{ product_id: string; name: string; size?: string; color?: string; quantity: number; price_inr: number }>
+  items: Array<{ product_id: string; name: string; size?: string; color?: string; quantity: number; price_inr: number; cost_price_inr?: number }>
   total_inr: number
   payment_method: string
+  razorpay_order_id?: string | null
+  razorpay_payment_id?: string | null
   whatsapp_confirmed: boolean
+  buyer_name?: string | null
+  buyer_phone?: string | null
+  size_selected?: string | null
+  delivery_address?: string | null
   buyer_notes: string | null
   created_at: string
 }

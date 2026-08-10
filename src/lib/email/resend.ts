@@ -1,7 +1,5 @@
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 export async function sendEmail({
   to,
   subject,
@@ -17,8 +15,13 @@ export async function sendEmail({
   }
 
   try {
+    // Constructed lazily, after the key check above — the Resend SDK
+    // throws immediately if the key is missing, and doing this at module
+    // scope crashed the build for every page that imports this file,
+    // regardless of whether it ever calls sendEmail.
+    const resend = new Resend(process.env.RESEND_API_KEY);
     await resend.emails.send({
-      from: 'WearOn <hello@wearon.in>',
+      from: process.env.EMAIL_FROM ?? 'WearOn <hello@wearon.in>',
       to,
       subject,
       html,

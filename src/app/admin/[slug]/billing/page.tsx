@@ -1,14 +1,14 @@
 import Link from 'next/link'
 import { createClient, createAdminClient } from '@/lib/supabase/server'
-import { PLANS } from '@/lib/constants'
+import { PLAN_AI_REPLY_LIMITS, PLANS } from '@/lib/constants'
 import { ApiKeyCard } from '@/components/admin/ApiKeyCard'
 
 const PLAN_FEATURES: Record<string, string[]> = {
-  free:       ['10 products', '20 try-ons/month', 'Branded PWA store', 'WhatsApp orders'],
-  starter:    ['50 products', '200 try-ons/month', 'Branded PWA store', 'WhatsApp orders', 'Analytics dashboard'],
-  growth:     ['200 products', '500 try-ons/month', 'Branded PWA store', 'Android APK (24hr delivery)', 'Play Store listing'],
-  pro:        ['Unlimited products', '2,000 try-ons/month', 'Branded PWA + Android app', 'Play Store listing', 'Priority AI processing'],
-  enterprise: ['Unlimited everything', 'Own Play Store account', 'Custom domain', 'Dedicated support', 'White-glove onboarding'],
+  free:       ['10 products', 'Branded PWA store', 'WhatsApp orders', `${PLAN_AI_REPLY_LIMITS.free} AI replies/month`, 'No try-on / AI photoshoot'],
+  starter:    ['100 products', 'Branded PWA store', 'WhatsApp orders', 'Margin tracking & analytics', `${PLAN_AI_REPLY_LIMITS.starter} AI replies/month (WhatsApp + Instagram + Facebook)`, 'No try-on / AI photoshoot'],
+  growth:     ['500 products', 'Everything in Store', 'Native Android app for you (seller app)', 'Branded Android app for your buyers', 'Play Store listing', `${PLAN_AI_REPLY_LIMITS.growth.toLocaleString('en-IN')} AI replies/month`, 'No try-on / AI photoshoot'],
+  pro:        ['Unlimited products', 'Everything in Store + App', 'Buyer virtual try-on (300/month)', 'AI photoshoot — cloth to model photo/video (150/month)', `${PLAN_AI_REPLY_LIMITS.pro.toLocaleString('en-IN')} AI replies/month`],
+  enterprise: ['Unlimited everything', 'Unlimited try-on & AI photoshoot', 'Unlimited AI replies', 'Own Play Store account', 'Custom domain', 'Dedicated support', 'White-glove onboarding'],
 }
 
 export default async function BillingPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -18,11 +18,12 @@ export default async function BillingPage({ params }: { params: Promise<{ slug: 
   if (!user) return null
 
   const admin = createAdminClient()
-  const { data: profile } = await admin.from('profiles').select('plan, try_ons_used, try_ons_limit, subscription_status').eq('id', user.id).single()
+  const { data: profile } = await admin.from('profiles').select('plan, try_ons_used, try_ons_limit, ai_replies_used, ai_reply_limit, subscription_status').eq('id', user.id).single()
 
   const currentPlan = (profile?.plan ?? 'free') as keyof typeof PLANS
   const plan = PLANS[currentPlan]
   const tryOnPct = profile ? Math.round((profile.try_ons_used / profile.try_ons_limit) * 100) : 0
+  const aiReplyPct = profile ? Math.round((profile.ai_replies_used / (profile.ai_reply_limit || 1)) * 100) : 0
 
   const dodoBusinessId = process.env.NEXT_PUBLIC_DODO_BUSINESS_ID
   const dodoPlanIds: Record<string, string | undefined> = {
@@ -80,6 +81,26 @@ export default async function BillingPage({ params }: { params: Promise<{ slug: 
           </div>
           {tryOnPct > 80 && (
             <p className="text-xs text-red-600 mt-2">Running low! Overages are ₹3 per try-on.</p>
+          )}
+        </div>
+
+        {/* AI reply usage */}
+        <div className="mt-6 pt-6 border-t border-gray-50">
+          <div className="flex justify-between text-sm mb-2">
+            <span className="text-gray-600">AI replies this month (WhatsApp + Instagram + Messenger)</span>
+            <span className="font-semibold">{profile?.ai_replies_used ?? 0} / {profile?.ai_reply_limit ?? 50}</span>
+          </div>
+          <div className="w-full bg-gray-100 rounded-full h-2">
+            <div
+              className={`h-2 rounded-full transition-all ${aiReplyPct > 80 ? 'bg-red-500' : 'bg-blue-500'}`}
+              style={{ width: `${Math.min(aiReplyPct, 100)}%` }}
+            />
+          </div>
+          {aiReplyPct >= 100 && (
+            <p className="text-xs text-red-600 mt-2">Limit reached — new messages won&apos;t get an AI reply until you upgrade or the month resets. You can still reply manually from the Inbox.</p>
+          )}
+          {aiReplyPct > 80 && aiReplyPct < 100 && (
+            <p className="text-xs text-amber-600 mt-2">Running low on AI replies this month.</p>
           )}
         </div>
       </div>

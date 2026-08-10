@@ -2,7 +2,9 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { useParams } from 'next/navigation'
+import Link from 'next/link'
 import { PRESET_MODELS, CREDIT_COSTS } from '@/lib/ai-presets'
+import { PLAN_AI_CREDIT_LIMITS, type Plan } from '@/lib/constants'
 
 type GarmentType = 'saree' | 'lehenga' | 'kurti' | 'anarkali' | 'dress' | 'top' | 'other'
 
@@ -35,6 +37,7 @@ export default function AIStudioPage() {
   const { slug } = useParams() as { slug: string }
 
   const [credits, setCredits] = useState<number | null>(null)
+  const [plan, setPlan] = useState<Plan | null>(null)
   const [products, setProducts] = useState<Product[]>([])
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
   const [garmentUrl, setGarmentUrl] = useState('')
@@ -60,6 +63,7 @@ export default function AIStudioPage() {
       fetch('/api/admin/products').then(r => r.json()),
     ]).then(([creditsData, productsData]) => {
       setCredits(creditsData.ai_credits ?? 0)
+      setPlan((creditsData.plan ?? 'free') as Plan)
       setProducts(productsData.products ?? [])
     }).catch(() => {})
   }, [])
@@ -145,6 +149,28 @@ export default function AIStudioPage() {
     : pollCount < 12 ? 'Refining details…'
     : pollCount < 20 ? 'Generating video…'
     : 'Almost done…'
+
+  // AI Studio (cloth-to-model generation) is a Tier 3-only feature — real
+  // per-generation compute cost, not something to leave rate-limited-but-on
+  // for lower tiers. plan === null means "still loading," not "ineligible."
+  if (plan !== null && PLAN_AI_CREDIT_LIMITS[plan] === 0) {
+    return (
+      <div style={{ maxWidth: 560, margin: '80px auto', textAlign: 'center' }}>
+        <div style={{ fontSize: 48, marginBottom: 16 }}>✨</div>
+        <h1 style={{ fontSize: 22, fontWeight: 800, color: '#111827', margin: '0 0 8px' }}>AI Studio is a Store + App + AI Photoshoot feature</h1>
+        <p style={{ fontSize: 14, color: '#6B7280', margin: '0 0 24px' }}>
+          Turn any garment photo into a professional model photo or video — plus buyer virtual try-on on your storefront.
+          Upgrade to unlock it.
+        </p>
+        <Link
+          href={`/admin/${slug}/billing`}
+          style={{ display: 'inline-block', background: '#F72585', color: '#fff', fontWeight: 700, fontSize: 14, padding: '12px 28px', borderRadius: 12, textDecoration: 'none' }}
+        >
+          View plans →
+        </Link>
+      </div>
+    )
+  }
 
   return (
     <div style={{ maxWidth: 900, margin: '0 auto' }}>

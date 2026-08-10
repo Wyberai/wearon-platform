@@ -18,7 +18,7 @@ export async function GET(req: Request) {
   const metaOAuthUrl = new URL('https://www.facebook.com/v18.0/dialog/oauth')
   metaOAuthUrl.searchParams.set('client_id', process.env.META_APP_ID ?? '')
   metaOAuthUrl.searchParams.set('redirect_uri', callbackUrl)
-  metaOAuthUrl.searchParams.set('scope', 'instagram_manage_messages,pages_messaging,pages_show_list,instagram_basic')
+  metaOAuthUrl.searchParams.set('scope', 'instagram_manage_messages,pages_messaging,pages_show_list,instagram_basic,instagram_content_publish,pages_manage_posts')
   metaOAuthUrl.searchParams.set('response_type', 'code')
   metaOAuthUrl.searchParams.set('state', `${user.id}|${slug}`)
 

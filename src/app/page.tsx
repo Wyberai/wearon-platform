@@ -587,9 +587,9 @@ export default function Home() {
                         `${plan.products === 9999 ? 'Unlimited' : plan.products} products`,
                         'Branded PWA store',
                         'WhatsApp ordering',
-                        'AI style assistant',
-                        ...(key === 'growth' ? ['Android APK (24hr delivery)'] : []),
-                        ...(key === 'pro' ? ['Play Store listing', 'Android APK'] : []),
+                        ...(key !== 'free' ? ['WhatsApp + Instagram + Facebook AI automation'] : ['Basic AI DM automation']),
+                        ...(key === 'growth' || key === 'pro' ? ['Native Android app + Play Store listing'] : []),
+                        ...(key === 'pro' ? ['Buyer virtual try-on', 'AI photoshoot (cloth → model photo/video)'] : []),
                       ].map(f => (
                         <li key={f} style={{ fontSize: 13, color: 'rgba(255,255,255,0.6)', display: 'flex', alignItems: 'center', gap: 8 }}>
                           <span style={{ color: featured ? '#F72585' : '#4ADE80', flexShrink: 0 }}>✓</span>

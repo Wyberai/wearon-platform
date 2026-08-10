@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { PLANS } from '@/lib/constants'
+import { PLAN_AI_CREDIT_LIMITS, PLAN_AI_REPLY_LIMITS, PLANS } from '@/lib/constants'
 
 interface Seller {
   id: string
@@ -11,6 +11,8 @@ interface Seller {
   subscription_status: string | null
   try_ons_used: number
   try_ons_limit: number
+  ai_replies_used: number
+  ai_reply_limit: number
   created_at: string
   brand_name: string
   slug: string | null
@@ -86,12 +88,14 @@ export default function PlatformPage() {
       pro: PLANS.pro.try_ons,
       enterprise: PLANS.enterprise.try_ons,
     }
+    const aiReplyLimit = PLAN_AI_REPLY_LIMITS[plan as keyof typeof PLAN_AI_REPLY_LIMITS] ?? 20
+    const aiCredits = PLAN_AI_CREDIT_LIMITS[plan as keyof typeof PLAN_AI_CREDIT_LIMITS] ?? 0
     await fetch(`/api/platform/sellers/${sellerId}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ plan, try_ons_limit: planLimits[plan] ?? 20 }),
+      body: JSON.stringify({ plan, try_ons_limit: planLimits[plan] ?? 0, ai_credits: aiCredits, ai_reply_limit: aiReplyLimit }),
     })
-    setSellers(prev => prev.map(s => s.id === sellerId ? { ...s, plan, try_ons_limit: planLimits[plan] ?? 20 } : s))
+    setSellers(prev => prev.map(s => s.id === sellerId ? { ...s, plan, try_ons_limit: planLimits[plan] ?? 0, ai_reply_limit: aiReplyLimit } : s))
     setUpdating(null)
   }
 
