@@ -71,7 +71,7 @@ export function StorePreviewCapture() {
         type="submit"
         disabled={loading}
         style={{
-          padding: '14px 0', borderRadius: 12, background: '#F72585', color: '#fff',
+          padding: '14px 0', borderRadius: 12, background: '#A6134A', color: '#fff',
           fontWeight: 700, fontSize: 15, border: 'none', cursor: 'pointer', opacity: loading ? 0.6 : 1,
         }}
       >
