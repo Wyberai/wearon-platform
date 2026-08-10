@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 import { createAdminClient } from '@/lib/supabase/server'
 import { FONTS } from '@/lib/constants'
 import type { TenantConfig } from '@/lib/types'
+import { PreviewBanner } from '@/components/store/PreviewBanner'
 
 // Fetch tenant config server-side and inject CSS variables
 export default async function StoreLayout({
@@ -69,6 +70,7 @@ export default async function StoreLayout({
     <>
       <style dangerouslySetInnerHTML={{ __html: cssVars }} />
       <div className="store-root min-h-screen" data-tenant={slug}>
+        <PreviewBanner />
         {/* Store header */}
         <header style={{ backgroundColor: tc.primary_color }} className="px-4 py-3 flex items-center justify-between sticky top-0 z-50 shadow-sm">
           <div className="flex items-center gap-3">

@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { PLANS } from '@/lib/constants'
+import { StorePreviewCapture } from '@/components/marketing/StorePreviewCapture'
 
 const TICKER_ITEMS = [
   '💬 "No more price DMs" — Priya\'s Boutique, Surat',
@@ -496,6 +497,23 @@ export default function Home() {
                 </div>
               ))}
             </div>
+          </div>
+        </section>
+
+        {/* ── SEE YOUR OWN STORE ──────────────────────────────── */}
+        <section style={{ padding: '100px 24px', background: 'rgba(247,37,133,0.05)', borderTop: '1px solid rgba(255,255,255,0.06)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+          <div style={{ maxWidth: 700, margin: '0 auto', textAlign: 'center' }}>
+            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.12em', color: '#F472B6', textTransform: 'uppercase', marginBottom: 14 }}>
+              See it before you build it
+            </div>
+            <h2 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 800, letterSpacing: '-0.5px', marginBottom: 16 }}>
+              What would <em>your</em> store look like?
+            </h2>
+            <p style={{ fontSize: 16, color: 'rgba(255,255,255,0.5)', lineHeight: 1.7, marginBottom: 36 }}>
+              Type your boutique name and email — see a live preview of your branded store and dashboard,
+              with real orders, margins, and an AI-automated inbox already running. No signup required to look.
+            </p>
+            <StorePreviewCapture />
           </div>
         </section>
 
