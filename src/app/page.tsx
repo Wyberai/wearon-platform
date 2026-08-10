@@ -122,18 +122,19 @@ export default function Home() {
         </section>
 
         {/* ── PAIN POINTS ──────────────────────────────── */}
-        <section style={{ padding: '110px 24px 90px', maxWidth: 900, margin: '0 auto' }}>
-          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(28px, 3.6vw, 40px)', fontWeight: 500, lineHeight: 1.15, letterSpacing: '-0.5px', marginBottom: 64 }}>
+        <section style={{ padding: '90px 0 80px', maxWidth: 1240, margin: '0 auto' }}>
+          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(28px, 3.6vw, 40px)', fontWeight: 500, lineHeight: 1.15, letterSpacing: '-0.5px', marginBottom: 40, padding: '0 24px' }}>
             You built a real boutique.<br />Instagram wasn&apos;t built for it.
           </h2>
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-            {PAIN_POINTS.map(({ n, label, body }, i) => (
-              <div key={n} style={{ display: 'flex', gap: 32, padding: '36px 0', borderTop: i === 0 ? `1px solid ${INK}22` : 'none', borderBottom: `1px solid ${INK}22` }}>
-                <span style={{ fontFamily: 'var(--font-display)', fontSize: 15, color: ACCENT, flexShrink: 0, paddingTop: 4 }}>{n}</span>
-                <div>
-                  <p style={{ fontSize: 19, fontWeight: 600, letterSpacing: '-0.2px', marginBottom: 10 }}>{label}</p>
-                  <p style={{ fontSize: 16, color: `${INK}99`, lineHeight: 1.7, maxWidth: 640 }}>{body}</p>
-                </div>
+          <div className="wo-pain-scroll" style={{ display: 'flex', gap: 20, overflowX: 'auto', padding: '4px 24px 12px', scrollSnapType: 'x mandatory' }}>
+            {PAIN_POINTS.map(({ n, label, body }) => (
+              <div key={n} style={{
+                flexShrink: 0, width: 320, scrollSnapAlign: 'start',
+                border: `1px solid ${INK}1a`, borderRadius: 4, padding: '28px 26px',
+              }}>
+                <span style={{ fontFamily: 'var(--font-display)', fontSize: 15, color: ACCENT }}>{n}</span>
+                <p style={{ fontSize: 18, fontWeight: 600, letterSpacing: '-0.2px', margin: '14px 0 10px' }}>{label}</p>
+                <p style={{ fontSize: 14.5, color: `${INK}99`, lineHeight: 1.7 }}>{body}</p>
               </div>
             ))}
           </div>
