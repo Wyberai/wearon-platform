@@ -4,10 +4,12 @@ export async function sendEmail({
   to,
   subject,
   html,
+  from,
 }: {
   to: string;
   subject: string;
   html: string;
+  from?: string;
 }): Promise<void> {
   if (!process.env.RESEND_API_KEY) {
     console.log('[email] RESEND_API_KEY not set — skipping send');
@@ -21,7 +23,7 @@ export async function sendEmail({
     // regardless of whether it ever calls sendEmail.
     const resend = new Resend(process.env.RESEND_API_KEY);
     await resend.emails.send({
-      from: process.env.EMAIL_FROM ?? 'WearOn <hello@wearon.in>',
+      from: from ?? process.env.EMAIL_FROM ?? 'WearOn <hello@wearon.in>',
       to,
       subject,
       html,

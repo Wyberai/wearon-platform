@@ -7,7 +7,7 @@ import { createAdminClient } from '@/lib/supabase/server'
 // name swapped in, entirely client-side, so this route stays a simple insert.
 export async function POST(req: Request) {
   const body = await req.json()
-  const { email, brand_name } = body as { email?: string; brand_name?: string }
+  const { email, brand_name, theme_id } = body as { email?: string; brand_name?: string; theme_id?: string }
 
   if (!email || typeof email !== 'string' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return NextResponse.json({ error: 'Valid email required' }, { status: 400 })
@@ -20,6 +20,7 @@ export async function POST(req: Request) {
   const { error } = await admin.from('leads').insert({
     email: email.trim().toLowerCase(),
     brand_name: brand_name.trim().slice(0, 60),
+    theme_id: typeof theme_id === 'string' ? theme_id.slice(0, 40) : null,
   })
 
   if (error) {

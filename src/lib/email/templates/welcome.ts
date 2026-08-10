@@ -1,3 +1,7 @@
+const INK = '#171512'
+const ACCENT = '#A6134A'
+const BG = '#FAF7F3'
+
 export function welcomeEmail({
   brandName,
   sellerName,
@@ -7,7 +11,7 @@ export function welcomeEmail({
   sellerName: string;
   storeUrl: string;
 }): { subject: string; html: string } {
-  const subject = "Welcome to WearOn — your boutique is live 🎉";
+  const subject = 'Welcome to WearOn — your store is live';
 
   const html = `<!DOCTYPE html>
 <html lang="en">
@@ -16,142 +20,71 @@ export function welcomeEmail({
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>${subject}</title>
 </head>
-<body style="margin:0;padding:0;background:#09090B;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;color:#FAFAFA;">
-  <table width="100%" cellpadding="0" cellspacing="0" style="background:#09090B;padding:40px 0;">
+<body style="margin:0;padding:0;background:${BG};font-family:Georgia,'Times New Roman',serif;color:${INK};">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:${BG};padding:40px 0;">
     <tr>
       <td align="center">
         <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
 
-          <!-- Header -->
           <tr>
-            <td style="padding:0 0 32px 0;text-align:center;">
-              <span style="font-size:28px;font-weight:800;letter-spacing:-0.5px;color:#FAFAFA;">
-                Wear<span style="color:#F72585;">On</span>
-              </span>
+            <td style="padding:0 0 28px 0;text-align:center;">
+              <span style="font-size:22px;font-weight:600;letter-spacing:-0.3px;color:${INK};">WearOn</span>
             </td>
           </tr>
 
-          <!-- Hero card -->
           <tr>
-            <td style="background:#18181B;border-radius:16px;padding:40px 40px 36px 40px;border:1px solid #27272A;">
-              <p style="margin:0 0 8px 0;font-size:13px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:#F72585;">
+            <td style="background:#ffffff;border-radius:6px;padding:44px 40px;">
+              <p style="margin:0 0 10px 0;font-size:12px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:${ACCENT};font-family:Arial,sans-serif;">
                 Your store is live
               </p>
-              <h1 style="margin:0 0 16px 0;font-size:30px;font-weight:800;line-height:1.2;color:#FAFAFA;">
-                Welcome to WearOn,<br />${sellerName} 🎉
+              <h1 style="margin:0 0 16px 0;font-size:28px;font-weight:400;line-height:1.3;color:${INK};">
+                Welcome, ${sellerName}
               </h1>
-              <p style="margin:0 0 28px 0;font-size:16px;line-height:1.6;color:#A1A1AA;">
-                Your boutique <strong style="color:#FAFAFA;">${brandName}</strong> is live and ready for customers.
+              <p style="margin:0 0 28px 0;font-size:15px;line-height:1.7;color:${INK}bb;font-family:Arial,sans-serif;">
+                <strong style="color:${INK};">${brandName}</strong> is live and ready for customers.
                 Start adding your collection and watch the orders roll in.
               </p>
 
-              <!-- CTA button -->
-              <table cellpadding="0" cellspacing="0" style="margin:0 0 36px 0;">
+              <table cellpadding="0" cellspacing="0" style="margin:0 0 32px 0;">
                 <tr>
-                  <td style="border-radius:10px;background:#F72585;">
+                  <td style="border-radius:999px;background:${INK};">
                     <a href="${storeUrl}" target="_blank"
-                      style="display:inline-block;padding:14px 32px;font-size:16px;font-weight:700;color:#FFFFFF;text-decoration:none;letter-spacing:0.2px;">
+                      style="display:inline-block;padding:14px 30px;font-size:15px;font-weight:600;color:#ffffff;text-decoration:none;font-family:Arial,sans-serif;">
                       Visit your store →
                     </a>
                   </td>
                 </tr>
               </table>
 
-              <p style="margin:0 0 4px 0;font-size:12px;color:#52525B;word-break:break-all;">
+              <p style="margin:0 0 32px 0;font-size:12px;color:${INK}77;word-break:break-all;font-family:Arial,sans-serif;">
                 ${storeUrl}
               </p>
+
+              <div style="border-top:1px solid ${INK}14;padding-top:28px;">
+                <p style="margin:0 0 18px 0;font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:${INK}77;font-family:Arial,sans-serif;">
+                  Three things to do first
+                </p>
+                ${[
+                  ['Add your first product', 'Upload photos, set your price, and go live in under 2 minutes.'],
+                  ['Share your link in bio', 'Drop your store URL on Instagram, WhatsApp, anywhere your audience is.'],
+                  ['Pick a theme', 'Customize Store has 10 distinct looks — from editorial to Instagram-feed style.'],
+                ].map(([title, body]) => `
+                  <div style="padding:14px 0;border-bottom:1px solid ${INK}0f;">
+                    <p style="margin:0 0 3px 0;font-size:14px;font-weight:700;color:${INK};font-family:Arial,sans-serif;">${title}</p>
+                    <p style="margin:0;font-size:13px;line-height:1.5;color:${INK}99;font-family:Arial,sans-serif;">${body}</p>
+                  </div>
+                `).join('')}
+              </div>
             </td>
           </tr>
 
-          <!-- Quick-start tips -->
           <tr>
-            <td style="padding:32px 0 0 0;">
-              <p style="margin:0 0 20px 0;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#71717A;text-align:center;">
-                3 quick-start tips
-              </p>
-              <table width="100%" cellpadding="0" cellspacing="0">
-
-                <!-- Tip 1 -->
-                <tr>
-                  <td style="background:#18181B;border-radius:12px;padding:20px 24px;margin-bottom:12px;border:1px solid #27272A;display:block;margin-bottom:12px;">
-                    <table width="100%" cellpadding="0" cellspacing="0">
-                      <tr>
-                        <td width="40" valign="top">
-                          <span style="display:inline-block;width:32px;height:32px;border-radius:8px;background:#F72585;text-align:center;line-height:32px;font-size:16px;">
-                            👗
-                          </span>
-                        </td>
-                        <td style="padding-left:14px;">
-                          <p style="margin:0 0 4px 0;font-size:15px;font-weight:700;color:#FAFAFA;">Add your first product</p>
-                          <p style="margin:0;font-size:14px;line-height:1.5;color:#A1A1AA;">
-                            Upload photos, set your price, and go live in under 2 minutes.
-                          </p>
-                        </td>
-                      </tr>
-                    </table>
-                  </td>
-                </tr>
-
-                <tr><td style="height:10px;"></td></tr>
-
-                <!-- Tip 2 -->
-                <tr>
-                  <td style="background:#18181B;border-radius:12px;padding:20px 24px;border:1px solid #27272A;">
-                    <table width="100%" cellpadding="0" cellspacing="0">
-                      <tr>
-                        <td width="40" valign="top">
-                          <span style="display:inline-block;width:32px;height:32px;border-radius:8px;background:#7C3AED;text-align:center;line-height:32px;font-size:16px;">
-                            📲
-                          </span>
-                        </td>
-                        <td style="padding-left:14px;">
-                          <p style="margin:0 0 4px 0;font-size:15px;font-weight:700;color:#FAFAFA;">Share your link in bio</p>
-                          <p style="margin:0;font-size:14px;line-height:1.5;color:#A1A1AA;">
-                            Drop your store URL on Instagram, WhatsApp, and anywhere your audience is.
-                          </p>
-                        </td>
-                      </tr>
-                    </table>
-                  </td>
-                </tr>
-
-                <tr><td style="height:10px;"></td></tr>
-
-                <!-- Tip 3 -->
-                <tr>
-                  <td style="background:#18181B;border-radius:12px;padding:20px 24px;border:1px solid #27272A;">
-                    <table width="100%" cellpadding="0" cellspacing="0">
-                      <tr>
-                        <td width="40" valign="top">
-                          <span style="display:inline-block;width:32px;height:32px;border-radius:8px;background:#0EA5E9;text-align:center;line-height:32px;font-size:16px;">
-                            ✨
-                          </span>
-                        </td>
-                        <td style="padding-left:14px;">
-                          <p style="margin:0 0 4px 0;font-size:15px;font-weight:700;color:#FAFAFA;">Upgrade for AI try-on</p>
-                          <p style="margin:0;font-size:14px;line-height:1.5;color:#A1A1AA;">
-                            Let customers virtually try on your pieces — the fastest way to kill return anxiety and boost conversions.
-                          </p>
-                        </td>
-                      </tr>
-                    </table>
-                  </td>
-                </tr>
-
-              </table>
-            </td>
-          </tr>
-
-          <!-- Footer -->
-          <tr>
-            <td style="padding:36px 0 0 0;text-align:center;border-top:1px solid #27272A;margin-top:32px;">
-              <p style="margin:0 0 8px 0;font-size:13px;color:#52525B;">
+            <td style="padding:32px 24px 0;text-align:center;">
+              <p style="margin:0 0 8px 0;font-size:12px;color:${INK}77;font-family:Arial,sans-serif;">
                 You're receiving this because you created a store on WearOn.
               </p>
-              <p style="margin:0;font-size:13px;color:#52525B;">
-                <a href="#" style="color:#F72585;text-decoration:none;">Unsubscribe</a>
-                &nbsp;·&nbsp;
-                <a href="https://wearon.in" style="color:#71717A;text-decoration:none;">wearon.in</a>
+              <p style="margin:0;font-size:12px;color:${INK}77;font-family:Arial,sans-serif;">
+                <a href="https://wearon.wyberai.com" style="color:${INK}99;text-decoration:none;">wearon.wyberai.com</a>
               </p>
             </td>
           </tr>
