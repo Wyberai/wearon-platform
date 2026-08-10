@@ -43,7 +43,7 @@ const AI_REELS = {
 }
 
 const PRODUCT_MOCKUP = [
-  { img: `${STORAGE_BASE}/silk-banarasi-saree-demo3.jpg`, name: 'Silk Banarasi Saree', price: '₹4,999' },
+  { img: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=800&h=1000&fit=crop', name: 'Silk Banarasi Saree', price: '₹4,999' },
   { img: `${STORAGE_BASE}/velvet-lehenga-choli-demo14.jpg`, name: 'Velvet Lehenga Choli', price: '₹6,499' },
   { img: `${STORAGE_BASE}/embroidered-anarkali-demo2.jpg`, name: 'Embroidered Anarkali', price: '₹2,199' },
   { img: `${STORAGE_BASE}/handloom-cotton-saree-demo11.jpg`, name: 'Handloom Cotton Saree', price: '₹2,199' },

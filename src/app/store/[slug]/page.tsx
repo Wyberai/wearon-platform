@@ -46,7 +46,7 @@ function StorePageContent() {
     try {
       const [cfgRes, prodRes] = await Promise.all([
         fetch(`/api/store/config?slug=${slug}`),
-        fetch(`/api/admin/products?slug=${slug}`),
+        fetch(`/api/store/products?slug=${slug}`),
       ])
       const cfgData = await cfgRes.json()
       const prodData = await prodRes.json()
