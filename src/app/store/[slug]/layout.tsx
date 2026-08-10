@@ -69,38 +69,44 @@ export default async function StoreLayout({
   return (
     <>
       <style dangerouslySetInnerHTML={{ __html: cssVars }} />
-      <div className="store-root min-h-screen" data-tenant={slug}>
+      <div className="store-root min-h-screen bg-white" data-tenant={slug}>
         <PreviewBanner />
-        {/* Store header */}
-        <header style={{ backgroundColor: tc.primary_color }} className="px-4 py-3 flex items-center justify-between sticky top-0 z-50 shadow-sm">
-          <div className="flex items-center gap-3">
-            {tc.logo_url ? (
-              <img src={tc.logo_url} alt={tc.brand_name} className="h-8 w-8 rounded-full object-cover" />
-            ) : (
-              <div className="h-8 w-8 rounded-full bg-white/20 flex items-center justify-center text-white font-bold text-sm">
-                {tc.brand_name.charAt(0)}
+        {/* Store header — minimal, full-width, brand color as an accent only */}
+        <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-100">
+          <div className="max-w-[1400px] mx-auto px-6 md:px-10 py-5 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              {tc.logo_url ? (
+                <img src={tc.logo_url} alt={tc.brand_name} className="h-9 w-9 rounded-full object-cover" />
+              ) : (
+                <div style={{ backgroundColor: tc.primary_color }} className="h-9 w-9 rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
+                  {tc.brand_name.charAt(0)}
+                </div>
+              )}
+              <div>
+                <span className="font-bold text-lg tracking-tight text-gray-900">{tc.brand_name}</span>
+                {tc.tagline && <p className="text-[11px] text-gray-400 -mt-0.5 hidden sm:block">{tc.tagline}</p>}
               </div>
+            </div>
+            {tc.whatsapp_number && (
+              <a
+                href={`https://wa.me/${tc.whatsapp_number.replace(/\D/g, '')}`}
+                style={{ color: tc.primary_color }}
+                className="text-sm font-medium flex items-center gap-1.5 hover:opacity-70 transition-opacity"
+              >
+                💬 <span className="hidden sm:inline">Chat with us</span>
+              </a>
             )}
-            <span className="text-white font-bold text-lg">{tc.brand_name}</span>
           </div>
-          {tc.whatsapp_number && (
-            <a
-              href={`https://wa.me/${tc.whatsapp_number.replace(/\D/g, '')}`}
-              className="text-white/80 text-xs flex items-center gap-1 hover:text-white"
-            >
-              💬 Chat
-            </a>
-          )}
         </header>
 
         {/* Page content */}
         {children}
 
-        {/* Footer */}
-        <footer style={{ backgroundColor: tc.primary_color + '15' }} className="mt-12 py-8 text-center text-sm text-gray-500 border-t border-gray-100">
+        {/* Footer — minimal, understated */}
+        <footer className="mt-16 py-10 text-center text-xs text-gray-400 border-t border-gray-100">
           <p>
             {tc.instagram_handle && <span className="mr-4">Instagram: {tc.instagram_handle}</span>}
-            Powered by <a href="/" className="text-pink-600 font-medium">WearOn</a>
+            Powered by <a href="/" className="text-gray-500 font-medium hover:text-gray-700">WearOn</a>
           </p>
         </footer>
       </div>

@@ -124,117 +124,130 @@ export default function StorePage() {
 
   if (loading) {
     return (
-      <div className="max-w-md mx-auto px-4 py-20 text-center">
-        <div className="text-3xl mb-4">👗</div>
-        <p className="text-gray-400 text-sm">Loading store...</p>
+      <div className="max-w-[1400px] mx-auto px-6 py-32 text-center">
+        <p className="text-gray-300 text-sm tracking-wide">Loading...</p>
       </div>
     )
   }
 
+  const heroImage = products.find(p => p.is_active)?.garment_image_url
+
   return (
-    <div className="max-w-md mx-auto px-4 pb-8">
-      {/* Search bar */}
-      <div className="py-4">
-        <input
-          type="text"
-          value={search}
-          onChange={e => setSearch(e.target.value)}
-          placeholder="Search products..."
-          className="w-full bg-gray-100 rounded-xl px-4 py-2.5 text-sm text-gray-700 outline-none focus:ring-2 focus:ring-pink-300"
-        />
-      </div>
+    <div className="max-w-[1400px] mx-auto">
+      {/* Editorial hero */}
+      {heroImage && (
+        <div className="relative w-full h-[340px] md:h-[480px] overflow-hidden mb-10">
+          <img src={heroImage} alt="" className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent" />
+          <div className="absolute bottom-8 left-6 md:left-10 text-white">
+            <p className="text-xs uppercase tracking-[0.2em] opacity-80 mb-2">New this season</p>
+            <h1 className="text-3xl md:text-5xl font-bold tracking-tight">The full collection</h1>
+          </div>
+        </div>
+      )}
 
-      {/* Sort + filter row */}
-      <div className="flex items-center justify-between mb-2 gap-2">
-        <div className="flex gap-2 overflow-x-auto pb-1 flex-1 scrollbar-hide">
-          <button
-            onClick={() => setActiveCategory(null)}
-            style={!activeCategory ? { backgroundColor: primary, color: 'white' } : {}}
-            className={`px-4 py-1.5 rounded-full text-xs font-medium whitespace-nowrap flex-shrink-0 ${!activeCategory ? '' : 'bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors'}`}
-          >
-            All
-          </button>
-          {categories.map(cat => (
+      <div className="px-6 md:px-10 pb-16">
+        {/* Filter row — understated, no big search box */}
+        <div className="flex flex-wrap items-center justify-between gap-4 mb-8 pb-4 border-b border-gray-100">
+          <div className="flex gap-6 overflow-x-auto">
             <button
-              key={cat}
-              onClick={() => setActiveCategory(activeCategory === cat ? null : cat)}
-              style={activeCategory === cat ? { backgroundColor: primary, color: 'white' } : {}}
-              className={`px-4 py-1.5 rounded-full text-xs font-medium whitespace-nowrap flex-shrink-0 ${activeCategory === cat ? '' : 'bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors'}`}
+              onClick={() => setActiveCategory(null)}
+              className="text-sm font-medium whitespace-nowrap pb-1 transition-colors"
+              style={{
+                color: !activeCategory ? '#111827' : '#9CA3AF',
+                borderBottom: !activeCategory ? `2px solid ${primary}` : '2px solid transparent',
+              }}
             >
-              {cat}
+              All
             </button>
-          ))}
+            {categories.map(cat => (
+              <button
+                key={cat}
+                onClick={() => setActiveCategory(activeCategory === cat ? null : cat)}
+                className="text-sm font-medium whitespace-nowrap pb-1 transition-colors"
+                style={{
+                  color: activeCategory === cat ? '#111827' : '#9CA3AF',
+                  borderBottom: activeCategory === cat ? `2px solid ${primary}` : '2px solid transparent',
+                }}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+          <div className="flex items-center gap-3">
+            <input
+              type="text"
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              placeholder="Search"
+              className="text-sm text-gray-600 border-b border-gray-200 focus:border-gray-400 outline-none py-1 w-32 bg-transparent"
+            />
+            <select
+              value={sortBy}
+              onChange={e => setSortBy(e.target.value)}
+              className="text-xs text-gray-500 outline-none bg-transparent cursor-pointer"
+            >
+              <option value="newest">Newest</option>
+              <option value="price_asc">Price: Low to High</option>
+              <option value="price_desc">Price: High to Low</option>
+            </select>
+          </div>
         </div>
-        <select
-          value={sortBy}
-          onChange={e => setSortBy(e.target.value)}
-          className="text-xs border border-gray-200 rounded-lg px-2 py-1.5 text-gray-600 flex-shrink-0"
-        >
-          <option value="newest">Newest</option>
-          <option value="price_asc">Price ↑</option>
-          <option value="price_desc">Price ↓</option>
-        </select>
-      </div>
 
-      {/* Products grid */}
-      {filtered.length === 0 ? (
-        <div className="text-center py-20 text-gray-400">
-          <div className="text-5xl mb-4">🔍</div>
-          <p>{search ? 'No products match your search' : 'No products yet. Check back soon!'}</p>
-        </div>
-      ) : (
-        <div className="grid grid-cols-2 gap-3 mt-4">
-          {filtered.map(product => {
-            const inWishlist = wishlist.has(product.id)
-            const rating = ratings[product.id]
-            if (!rating) loadRatings(product.id)
+        {/* Products grid — portrait imagery, minimal chrome */}
+        {filtered.length === 0 ? (
+          <div className="text-center py-24 text-gray-400">
+            <p className="text-sm">{search ? 'No products match your search' : 'No products yet. Check back soon!'}</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-5 gap-y-10">
+            {filtered.map(product => {
+              const inWishlist = wishlist.has(product.id)
+              const rating = ratings[product.id]
+              if (!rating) loadRatings(product.id)
 
-            return (
-              <Link key={product.id} href={`/store/${slug}/product/${product.id}`} className="group">
-                <div className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
-                  <div className="aspect-square bg-gray-50 relative overflow-hidden">
+              return (
+                <Link key={product.id} href={`/store/${slug}/product/${product.id}`} className="group block">
+                  <div className="relative overflow-hidden bg-gray-50" style={{ aspectRatio: '4 / 5' }}>
                     <img
                       src={product.garment_image_url}
                       alt={product.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500"
                     />
                     {product.original_price_inr && product.original_price_inr > product.price_inr && (
-                      <div style={{ backgroundColor: primary }} className="absolute top-2 left-2 text-white text-xs font-bold px-1.5 py-0.5 rounded">
-                        {Math.round((1 - product.price_inr / product.original_price_inr) * 100)}% OFF
+                      <div className="absolute top-3 left-3 bg-white text-[10px] font-semibold uppercase tracking-wide px-2 py-1 text-gray-900">
+                        {Math.round((1 - product.price_inr / product.original_price_inr) * 100)}% off
                       </div>
                     )}
                     <button
                       onClick={(e) => toggleWishlist(e, product.id)}
-                      className="absolute top-2 right-2 w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center shadow-sm hover:scale-110 transition-transform"
+                      className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/90 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
                     >
-                      <span className="text-base leading-none" style={{ color: inWishlist ? primary : '#d1d5db' }}>
+                      <span className="text-base leading-none" style={{ color: inWishlist ? primary : '#9CA3AF' }}>
                         {inWishlist ? '♥' : '♡'}
                       </span>
                     </button>
                   </div>
-                  <div className="p-3">
-                    <p className="text-sm font-medium text-gray-900 truncate">{product.name}</p>
+                  <div className="pt-3">
+                    <p className="text-sm text-gray-800 truncate">{product.name}</p>
                     <div className="flex items-center gap-2 mt-1">
-                      <span style={{ color: primary }} className="font-bold text-sm">₹{product.price_inr.toLocaleString('en-IN')}</span>
+                      <span className="text-sm text-gray-900 font-medium">₹{product.price_inr.toLocaleString('en-IN')}</span>
                       {product.original_price_inr && (
                         <span className="text-gray-400 text-xs line-through">₹{product.original_price_inr.toLocaleString('en-IN')}</span>
                       )}
                     </div>
-                    {product.sizes && product.sizes.length > 0 && (
-                      <p className="text-xs text-gray-400 mt-1">{product.sizes.slice(0, 3).join(' · ')}{product.sizes.length > 3 ? ' +more' : ''}</p>
-                    )}
                     {rating && rating.count > 0 && (
-                      <p className="text-xs text-amber-500 mt-1">
+                      <p className="text-xs text-gray-400 mt-1">
                         {'★'.repeat(Math.round(rating.avg))}{'☆'.repeat(5 - Math.round(rating.avg))} ({rating.count})
                       </p>
                     )}
                   </div>
-                </div>
-              </Link>
-            )
-          })}
-        </div>
-      )}
+                </Link>
+              )
+            })}
+          </div>
+        )}
+      </div>
     </div>
   )
 }
