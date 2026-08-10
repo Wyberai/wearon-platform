@@ -16,6 +16,7 @@ interface Config {
   background_color: string | null
   font_family: string | null
   payment_method: string | null
+  payment_config: Record<string, string> | null
   try_on_enabled: boolean
   reviews_enabled: boolean
   wishlist_enabled: boolean
@@ -49,6 +50,10 @@ export default function SettingsPage() {
 
   function update<K extends keyof Config>(key: K, value: Config[K]) {
     setForm(f => ({ ...f, [key]: value }))
+  }
+
+  function updatePaymentConfig(key: string, value: string) {
+    setForm(f => ({ ...f, payment_config: { ...(f.payment_config ?? {}), [key]: value } }))
   }
 
   async function save() {
@@ -211,6 +216,30 @@ export default function SettingsPage() {
               ))}
             </div>
           </Field>
+          {(form.payment_method ?? 'whatsapp_order') === 'razorpay' && (
+            <div className="space-y-3 pt-2 border-t border-gray-100">
+              <Field label="Razorpay Key ID" hint="From your Razorpay dashboard → Settings → API Keys">
+                <input
+                  value={form.payment_config?.razorpay_key_id ?? ''}
+                  onChange={e => updatePaymentConfig('razorpay_key_id', e.target.value)}
+                  className="input font-mono"
+                  placeholder="rzp_live_xxxxxxxxxxxx"
+                />
+              </Field>
+              <Field label="Razorpay Key Secret">
+                <input
+                  type="password"
+                  value={form.payment_config?.razorpay_key_secret ?? ''}
+                  onChange={e => updatePaymentConfig('razorpay_key_secret', e.target.value)}
+                  className="input font-mono"
+                  placeholder="••••••••••••••••"
+                />
+              </Field>
+              {!(form.payment_config?.razorpay_key_id && form.payment_config?.razorpay_key_secret) && (
+                <p className="text-xs text-amber-600">Add both keys to turn on online payment. Until then, buyers on this store still see WhatsApp order.</p>
+              )}
+            </div>
+          )}
         </Section>
 
         {/* Support automation */}

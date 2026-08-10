@@ -4,19 +4,32 @@ import Link from 'next/link'
 import { useParams, useSearchParams } from 'next/navigation'
 import { Suspense, useState, useEffect, useCallback } from 'react'
 import type { Product, TenantConfig } from '@/lib/types'
-import { getTheme } from '@/lib/themes'
+import { getTheme, HEADING_TYPE, LOGO_RADIUS, type Theme } from '@/lib/themes'
 import { FONTS } from '@/lib/constants'
+import { getOrCreateDeviceToken } from '@/lib/device-token'
 import { StoreFeedLayout } from '@/components/store/StoreFeedLayout'
+import { WhatsAppBubble } from '@/components/store/WhatsAppBubble'
 
 const STORAGE_BASE = 'https://zhrubbutcsvhcbuaalep.supabase.co/storage/v1/object/public/product-images'
 
-function getOrCreateDeviceToken(): string {
-  let token = localStorage.getItem('wearon_device_token')
-  if (!token) {
-    token = crypto.randomUUID()
-    localStorage.setItem('wearon_device_token', token)
-  }
-  return token
+// Heading treatment per theme.headingStyle — case/weight/tracking only, the
+// hero's own size/layout still comes from theme.hero so the two axes compose.
+const HEADING_CLASS: Record<Theme['headingStyle'], string> = {
+  serif: 'italic font-medium tracking-tight',
+  display: 'uppercase font-black tracking-tighter',
+  minimal: 'font-normal tracking-tight',
+  rounded: 'font-extrabold tracking-tight',
+  luxury: 'uppercase font-light tracking-[0.12em]',
+}
+
+// Price-text treatment per theme.headingStyle, so the number that matters
+// most on a product card reads with the same personality as the hero.
+const PRICE_CLASS: Record<Theme['headingStyle'], string> = {
+  serif: 'text-sm font-semibold',
+  display: 'text-sm font-black',
+  minimal: 'text-xs font-normal tracking-wide',
+  rounded: 'text-sm font-bold',
+  luxury: 'text-xs font-light uppercase tracking-[0.08em]',
 }
 
 export default function StorePage() {
@@ -132,6 +145,12 @@ function StorePageContent() {
     root.style.setProperty('--primary', theme.palette.accent)
     const fontCss = FONTS[theme.font as keyof typeof FONTS]?.css
     if (fontCss) root.style.setProperty('--store-font', fontCss)
+    root.style.setProperty('--store-logo-radius', LOGO_RADIUS[theme.logoShape])
+    const brandType = HEADING_TYPE[theme.headingStyle]
+    root.style.setProperty('--store-brand-weight', brandType.weight)
+    root.style.setProperty('--store-brand-case', brandType.case)
+    root.style.setProperty('--store-brand-tracking', brandType.tracking)
+    root.style.setProperty('--store-brand-size', brandType.size)
   }, [themeOverride, theme])
 
   const primary = (config as TenantConfig & { primary_color?: string })?.primary_color ?? theme.palette.accent
@@ -168,10 +187,19 @@ function StorePageContent() {
     )
   }
 
+  const chatBubble = config?.whatsapp_number ? (
+    <WhatsAppBubble phone={config.whatsapp_number} message={`Hi! I have a question about ${config?.brand_name || 'your store'}.`} />
+  ) : null
+
   // Feed themes are a fundamentally different browsing paradigm — full-bleed
   // vertical scroll, not a grid — so they get their own renderer.
   if (theme.layout === 'feed') {
-    return <StoreFeedLayout products={filtered} slug={slug} theme={theme} />
+    return (
+      <>
+        <StoreFeedLayout products={filtered} slug={slug} theme={theme} />
+        {chatBubble}
+      </>
+    )
   }
 
   const heroImage = theme.previewImage
@@ -186,7 +214,8 @@ function StorePageContent() {
       {theme.hero === 'text-only' ? (
         <div className="w-full py-20 md:py-32 px-6 md:px-10 mb-6" style={{ background: theme.palette.bg }}>
           <p className="text-xs uppercase tracking-[0.22em] opacity-60 mb-3">New this season</p>
-          <h1 className="text-5xl md:text-8xl font-bold tracking-tight" style={{ letterSpacing: '-0.02em', maxWidth: 900 }}>The full collection</h1>
+          <h1 className={`text-5xl md:text-8xl ${HEADING_CLASS[theme.headingStyle]}`} style={{ maxWidth: 900 }}>The full collection</h1>
+          {theme.headingStyle === 'luxury' && <div className="mt-6 w-16 h-px" style={{ background: theme.palette.accent }} />}
         </div>
       ) : theme.hero === 'banner-strip' ? (
         <div className="w-full py-4 px-6 md:px-10 mb-6 flex items-center justify-between" style={{ background: theme.palette.accent, color: '#fff' }}>
@@ -199,7 +228,8 @@ function StorePageContent() {
           <div className={`absolute inset-0 bg-gradient-to-t ${isDark ? 'from-black/85 via-black/30' : 'from-black/55 via-black/10'} to-transparent`} />
           <div className="absolute bottom-8 left-6 md:left-10 text-white">
             <p className="text-xs uppercase tracking-[0.22em] opacity-85 mb-2">New this season</p>
-            <h1 className="text-4xl md:text-6xl font-semibold tracking-tight" style={{ letterSpacing: '-0.02em' }}>The full collection</h1>
+            <h1 className={`text-4xl md:text-6xl ${HEADING_CLASS[theme.headingStyle]}`}>The full collection</h1>
+            {theme.headingStyle === 'luxury' && <div className="mt-4 w-14 h-px" style={{ background: theme.palette.accent }} />}
           </div>
         </div>
       )}
@@ -239,30 +269,9 @@ function StorePageContent() {
       <div className="px-6 md:px-10 pb-16">
         {/* Filter row */}
         <div className="flex flex-wrap items-center justify-between gap-4 mb-8 pb-4 border-b" style={{ borderColor: `${theme.palette.ink}14` }}>
-          <div className="flex gap-6 overflow-x-auto">
-            <button
-              onClick={() => setActiveCategory(null)}
-              className="text-sm font-medium whitespace-nowrap pb-1 transition-colors"
-              style={{
-                color: !activeCategory ? theme.palette.ink : `${theme.palette.ink}77`,
-                borderBottom: !activeCategory ? `2px solid ${theme.palette.accent}` : '2px solid transparent',
-              }}
-            >
-              All
-            </button>
-            {categories.map(cat => (
-              <button
-                key={cat}
-                onClick={() => setActiveCategory(activeCategory === cat ? null : cat)}
-                className="text-sm font-medium whitespace-nowrap pb-1 transition-colors"
-                style={{
-                  color: activeCategory === cat ? theme.palette.ink : `${theme.palette.ink}77`,
-                  borderBottom: activeCategory === cat ? `2px solid ${theme.palette.accent}` : '2px solid transparent',
-                }}
-              >
-                {cat}
-              </button>
-            ))}
+          <div className="flex gap-6 overflow-x-auto items-center">
+            {renderNavTab(theme, 'All', !activeCategory, () => setActiveCategory(null))}
+            {categories.map(cat => renderNavTab(theme, cat, activeCategory === cat, () => setActiveCategory(activeCategory === cat ? null : cat)))}
           </div>
           <div className="flex items-center gap-3">
             <input
@@ -340,7 +349,7 @@ function StorePageContent() {
                   <div className="pt-3">
                     <p className="text-[13.5px] truncate" style={{ color: `${theme.palette.ink}dd` }}>{product.name}</p>
                     <div className="flex items-center gap-2 mt-1">
-                      <span className="text-sm font-semibold" style={{ color: theme.palette.ink }}>₹{product.price_inr.toLocaleString('en-IN')}</span>
+                      <span className={PRICE_CLASS[theme.headingStyle]} style={{ color: theme.headingStyle === 'luxury' ? theme.palette.accent : theme.palette.ink }}>₹{product.price_inr.toLocaleString('en-IN')}</span>
                       {product.original_price_inr && (
                         <span className="text-xs line-through" style={{ color: `${theme.palette.ink}55` }}>₹{product.original_price_inr.toLocaleString('en-IN')}</span>
                       )}
@@ -358,7 +367,36 @@ function StorePageContent() {
           </div>
         )}
       </div>
+      {chatBubble}
     </div>
+  )
+}
+
+// Category/filter tab, styled per theme.navStyle — underline (default),
+// pill (bold/playful themes), or ghost (utilitarian/luxury themes).
+function renderNavTab(theme: Theme, label: string, active: boolean, onClick: () => void) {
+  const dim = `${theme.palette.ink}77`
+  if (theme.navStyle === 'pill') {
+    return (
+      <button key={label} onClick={onClick} className="text-sm font-semibold whitespace-nowrap px-4 py-1.5 rounded-full transition-colors"
+        style={{ background: active ? theme.palette.accent : 'transparent', color: active ? '#fff' : theme.palette.ink, border: active ? 'none' : `1px solid ${theme.palette.ink}22` }}>
+        {label}
+      </button>
+    )
+  }
+  if (theme.navStyle === 'ghost') {
+    return (
+      <button key={label} onClick={onClick} className="text-[11px] uppercase tracking-[0.14em] font-medium whitespace-nowrap px-2.5 py-1.5 transition-colors"
+        style={{ background: active ? `${theme.palette.accent}18` : 'transparent', color: active ? theme.palette.accent : dim }}>
+        {label}
+      </button>
+    )
+  }
+  return (
+    <button key={label} onClick={onClick} className="text-sm font-medium whitespace-nowrap pb-1 transition-colors"
+      style={{ color: active ? theme.palette.ink : dim, borderBottom: active ? `2px solid ${theme.palette.accent}` : '2px solid transparent' }}>
+      {label}
+    </button>
   )
 }
 

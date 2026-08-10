@@ -9,10 +9,12 @@ const DEMO_PRODUCTS: Record<string, object> = {
 }
 
 const DEMO_CONFIG = {
+  seller_id: 'demo',
   brand_name: 'Demo Boutique',
   primary_color: '#E91E63',
   whatsapp_number: '+919876543210',
   payment_method: 'whatsapp_order',
+  razorpay_available: false,
 }
 
 // GET /api/store/product?slug=xxx&productId=xxx
@@ -30,15 +32,31 @@ export async function GET(request: Request) {
 
   const admin = createAdminClient()
 
+  // payment_config is fetched here (server-only) purely to compute the
+  // razorpay_available boolean below — it never goes into the response, so
+  // a Razorpay key_secret can't leak to the buyer's browser.
   const [configResult, productResult] = await Promise.all([
-    admin.from('tenant_config').select('brand_name, primary_color, whatsapp_number, payment_method').eq('slug', slug).single(),
-    admin.from('products').select('id, name, price_inr, original_price_inr, garment_image_url, sizes, description').eq('id', productId).eq('is_active', true).single(),
+    admin.from('tenant_config').select('seller_id, brand_name, primary_color, whatsapp_number, payment_method, payment_config').eq('slug', slug).single(),
+    admin.from('products').select('id, seller_id, name, price_inr, original_price_inr, garment_image_url, sizes, description').eq('id', productId).eq('is_active', true).single(),
   ])
 
   if (!productResult.data) return NextResponse.json({ error: 'Product not found' }, { status: 404 })
 
+  const paymentConfig = (configResult.data?.payment_config ?? {}) as Record<string, string>
+  const razorpayAvailable = configResult.data?.payment_method === 'razorpay'
+    && !!paymentConfig.razorpay_key_id && !!paymentConfig.razorpay_key_secret
+
   return NextResponse.json({
     product: productResult.data,
-    config: configResult.data ?? DEMO_CONFIG,
+    config: configResult.data
+      ? {
+          seller_id: configResult.data.seller_id,
+          brand_name: configResult.data.brand_name,
+          primary_color: configResult.data.primary_color,
+          whatsapp_number: configResult.data.whatsapp_number,
+          payment_method: configResult.data.payment_method,
+          razorpay_available: razorpayAvailable,
+        }
+      : DEMO_CONFIG,
   })
 }

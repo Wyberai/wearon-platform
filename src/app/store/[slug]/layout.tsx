@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation'
 import { createAdminClient } from '@/lib/supabase/server'
 import { FONTS } from '@/lib/constants'
+import { getTheme, HEADING_TYPE, LOGO_RADIUS } from '@/lib/themes'
 import type { TenantConfig } from '@/lib/types'
 import { PreviewBanner } from '@/components/store/PreviewBanner'
 
@@ -55,6 +56,9 @@ export default async function StoreLayout({
   }
 
   const fontCss = FONTS[tc.font_family as keyof typeof FONTS]?.css ?? "'Poppins', sans-serif"
+  const theme = getTheme(tc.theme_id)
+  const brandType = HEADING_TYPE[theme.headingStyle]
+  const logoRadius = LOGO_RADIUS[theme.logoShape]
 
   const cssVars = `
     :root {
@@ -64,13 +68,19 @@ export default async function StoreLayout({
       --store-bg: ${tc.background_color || '#FEFDFB'};
       --store-ink: #171512;
       --store-font: ${fontCss};
+      --store-logo-radius: ${logoRadius};
+      --store-brand-weight: ${brandType.weight};
+      --store-brand-case: ${brandType.case};
+      --store-brand-tracking: ${brandType.tracking};
+      --store-brand-size: ${brandType.size};
     }
     .store-root { font-family: var(--store-font); background: var(--store-bg); color: var(--store-ink); }
   `
 
-  // Header/footer read CSS vars (not tc.* literals) so a client-side theme
-  // preview override (?theme=) — set in page.tsx via a style-tag effect —
-  // recolors the whole store consistently, not just the page content.
+  // Header/footer read CSS vars (not tc.*/theme.* literals) so a client-side
+  // theme preview override (?theme=) — set in page.tsx via a style-tag effect
+  // — recolors AND reshapes (logo radius, brand-name weight/case/tracking)
+  // the whole store consistently, not just the page content underneath.
   return (
     <>
       {/* Every seller picks a font in Customize Store, but until now nothing
@@ -88,14 +98,24 @@ export default async function StoreLayout({
           <div className="max-w-[1400px] mx-auto px-6 md:px-10 py-5 flex items-center justify-between">
             <div className="flex items-center gap-3">
               {tc.logo_url ? (
-                <img src={tc.logo_url} alt={tc.brand_name} className="h-9 w-9 rounded-full object-cover" />
+                <img src={tc.logo_url} alt={tc.brand_name} className="h-9 w-9 object-cover" style={{ borderRadius: 'var(--store-logo-radius)' }} />
               ) : (
-                <div style={{ backgroundColor: 'var(--primary)' }} className="h-9 w-9 rounded-full flex items-center justify-center text-white font-semibold text-sm flex-shrink-0">
+                <div style={{ backgroundColor: 'var(--primary)', borderRadius: 'var(--store-logo-radius)' }} className="h-9 w-9 flex items-center justify-center text-white font-semibold text-sm flex-shrink-0">
                   {tc.brand_name.charAt(0)}
                 </div>
               )}
               <div>
-                <span className="font-semibold text-lg tracking-tight" style={{ color: 'var(--store-ink)' }}>{tc.brand_name}</span>
+                <span
+                  style={{
+                    color: 'var(--store-ink)',
+                    fontWeight: 'var(--store-brand-weight)' as React.CSSProperties['fontWeight'],
+                    textTransform: 'var(--store-brand-case)' as React.CSSProperties['textTransform'],
+                    letterSpacing: 'var(--store-brand-tracking)',
+                    fontSize: 'var(--store-brand-size)',
+                  }}
+                >
+                  {tc.brand_name}
+                </span>
                 {tc.tagline && <p className="text-[11px] -mt-0.5 hidden sm:block" style={{ color: 'var(--store-ink)', opacity: 0.5 }}>{tc.tagline}</p>}
               </div>
             </div>

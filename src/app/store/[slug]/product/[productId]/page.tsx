@@ -3,6 +3,30 @@
 import { useRef, useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
+import { getOrCreateDeviceToken } from '@/lib/device-token'
+
+interface RazorpayCheckoutOptions {
+  key: string
+  amount: number
+  currency: string
+  name: string
+  description?: string
+  order_id: string
+  handler: (response: { razorpay_payment_id: string; razorpay_order_id: string; razorpay_signature: string }) => void
+  theme?: { color?: string }
+  modal?: { ondismiss?: () => void }
+}
+
+function loadRazorpayCheckout(): Promise<void> {
+  return new Promise((resolve, reject) => {
+    if ((window as unknown as { Razorpay?: unknown }).Razorpay) return resolve()
+    const script = document.createElement('script')
+    script.src = 'https://checkout.razorpay.com/v1/checkout.js'
+    script.onload = () => resolve()
+    script.onerror = () => reject(new Error('Failed to load payment gateway'))
+    document.body.appendChild(script)
+  })
+}
 
 interface ProductInfo {
   id: string
@@ -23,6 +47,7 @@ interface StoreConfig {
   primary_color: string
   whatsapp_number: string | null
   instagram_handle: string | null
+  razorpay_available?: boolean
 }
 
 type TryOnStep = 'idle' | 'upload' | 'generating' | 'done' | 'error'
@@ -35,6 +60,9 @@ export default function ProductDetailPage() {
   const [selectedColor, setSelectedColor] = useState('')
   const [loading, setLoading] = useState(true)
   const [ordered, setOrdered] = useState(false)
+  const [paying, setPaying] = useState(false)
+  const [paymentDone, setPaymentDone] = useState(false)
+  const [payError, setPayError] = useState('')
   const [tryOnStep, setTryOnStep] = useState<TryOnStep>('idle')
   const [tryOnJobId, setTryOnJobId] = useState<string | null>(null)
   const [tryOnResult, setTryOnResult] = useState<{ image_url?: string; video_url?: string } | null>(null)
@@ -75,6 +103,53 @@ export default function ProductDetailPage() {
     if (!url) return
     setOrdered(true)
     window.open(url, '_blank')
+  }
+
+  // WhatsApp stays the default order path — this is an additional option
+  // shown only once the seller has actually configured Razorpay keys.
+  async function handlePayOnline() {
+    if (!product || !config?.seller_id) return
+    setPaying(true)
+    setPayError('')
+    try {
+      const res = await fetch('/api/store/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          seller_id: config.seller_id,
+          product_id: product.id,
+          quantity: 1,
+          payment_method: 'razorpay',
+          device_token: getOrCreateDeviceToken(),
+          ...(selectedSize ? { size: selectedSize } : {}),
+        }),
+      })
+      const data = await res.json()
+      if (!res.ok) {
+        setPayError(data.error ?? 'Could not start payment. Try WhatsApp instead.')
+        setPaying(false)
+        return
+      }
+
+      await loadRazorpayCheckout()
+      const RazorpayCtor = (window as unknown as { Razorpay: new (opts: RazorpayCheckoutOptions) => { open: () => void } }).Razorpay
+      const rzp = new RazorpayCtor({
+        key: data.razorpay_key_id,
+        amount: data.amount,
+        currency: 'INR',
+        name: config.brand_name,
+        description: product.name,
+        order_id: data.razorpay_order_id,
+        handler: () => setPaymentDone(true),
+        theme: { color: primary },
+        modal: { ondismiss: () => setPaying(false) },
+      })
+      rzp.open()
+      setPaying(false)
+    } catch {
+      setPayError('Payment gateway unreachable. Try WhatsApp instead.')
+      setPaying(false)
+    }
   }
 
   function handleSelfieUpload(e: React.ChangeEvent<HTMLInputElement>) {
@@ -457,21 +532,40 @@ export default function ProductDetailPage() {
         </div>
       )}
 
-      {/* Sticky order bar */}
+      {/* Sticky order bar — WhatsApp stays the default, wider action; Pay
+          Online only appears once the seller has configured Razorpay. */}
       <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 px-4 py-3 shadow-lg">
         <div className="max-w-md mx-auto">
           {whatsappUrl ? (
-            <button
-              onClick={handleOrder}
-              className="w-full bg-green-500 hover:bg-green-600 text-white py-4 rounded-2xl font-bold text-base flex items-center justify-center gap-2.5 transition-colors active:scale-98"
-            >
-              <span className="text-xl">💬</span>
-              {ordered ? 'Opening WhatsApp...' : `Order on WhatsApp · ₹${product.price_inr.toLocaleString('en-IN')}`}
-            </button>
+            <div className="flex gap-2">
+              <button
+                onClick={handleOrder}
+                className="flex-1 bg-green-500 hover:bg-green-600 text-white py-4 rounded-2xl font-bold text-base flex items-center justify-center gap-2.5 transition-colors active:scale-98"
+              >
+                <span className="text-xl">💬</span>
+                {ordered ? 'Opening WhatsApp...' : `Order on WhatsApp · ₹${product.price_inr.toLocaleString('en-IN')}`}
+              </button>
+              {config.razorpay_available && (
+                <button
+                  onClick={handlePayOnline}
+                  disabled={paying}
+                  style={{ borderColor: primary, color: primary }}
+                  className="px-4 rounded-2xl font-bold text-sm border-2 flex items-center justify-center gap-1.5 disabled:opacity-60 flex-shrink-0"
+                >
+                  💳 {paying ? '…' : 'Pay Online'}
+                </button>
+              )}
+            </div>
           ) : (
             <div className="text-center text-sm text-gray-400 py-3">
               Contact seller via Instagram to order
             </div>
+          )}
+          {paymentDone && (
+            <p className="text-center text-xs text-green-600 font-semibold mt-2">Payment received! The seller will confirm your order on WhatsApp shortly.</p>
+          )}
+          {payError && (
+            <p className="text-center text-xs text-red-500 mt-2">{payError}</p>
           )}
         </div>
       </div>

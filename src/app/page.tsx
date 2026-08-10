@@ -99,10 +99,10 @@ export default function Home() {
               for indian instagram fashion sellers
             </p>
             <h1 className="wo-hero-h1" style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(44px, 7vw, 84px)', fontWeight: 500, lineHeight: 1.02, letterSpacing: '-1.5px', color: '#fff', maxWidth: 780, margin: 0 }}>
-              Your boutique deserves <em style={{ fontStyle: 'italic' }}>its own</em> store.
+              So many likes. So few <em style={{ fontStyle: 'italic' }}>sales</em>.
             </h1>
             <p style={{ fontSize: 18, color: 'rgba(255,255,255,0.82)', lineHeight: 1.6, maxWidth: 460, marginTop: 24, marginBottom: 36 }}>
-              Buyers DM you asking price and size. Give them a real store instead — your logo, your colors, WhatsApp checkout on every product.
+              Instagram gets you the double-taps, not the checkout. Build your own branded website and app — so followers can actually buy, not just admire.
             </p>
             <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap', alignItems: 'center' }}>
               <Link

@@ -70,11 +70,13 @@ export async function POST(request: Request) {
     return new Response('OK', { status: 200 })
   }
 
-  // Find the order by the Razorpay order ID stored in payment_id at order creation
+  // Find the order by the Razorpay order ID stored at order creation —
+  // checkout writes razorpay_order_id, not the legacy payment_id column,
+  // so this used to never match and orders never auto-confirmed.
   const { data: order } = await admin
     .from('orders')
     .select('id')
-    .eq('payment_id', razorpayOrderId)
+    .eq('razorpay_order_id', razorpayOrderId)
     .eq('payment_method', 'razorpay')
     .maybeSingle()
 
@@ -83,7 +85,7 @@ export async function POST(request: Request) {
       .from('orders')
       .update({
         status: 'confirmed',
-        payment_id: razorpayPaymentId,
+        razorpay_payment_id: razorpayPaymentId,
       })
       .eq('id', order.id)
   }
