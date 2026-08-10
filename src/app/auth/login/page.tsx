@@ -3,11 +3,16 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { createClient } from '@supabase/supabase-js'
+import { createBrowserClient } from '@supabase/ssr'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? ''
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? ''
-const supabase = createClient(
+// Must be the @supabase/ssr browser client, not plain @supabase/supabase-js —
+// only this one writes the session into cookies, which is what the
+// middleware/server components read. The plain client only wrote to
+// localStorage, so login "succeeded" but the server never saw a session and
+// bounced straight back here.
+const supabase = createBrowserClient(
   supabaseUrl.startsWith('http') ? supabaseUrl : 'https://placeholder.supabase.co',
   supabaseKey || 'placeholder'
 )

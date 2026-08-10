@@ -2,11 +2,13 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { createClient } from '@supabase/supabase-js'
+import { createBrowserClient } from '@supabase/ssr'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? ''
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? ''
-const supabase = createClient(
+// See the same fix in auth/login/page.tsx — the ssr browser client is
+// required so the session lands in cookies the server can actually read.
+const supabase = createBrowserClient(
   supabaseUrl.startsWith('http') ? supabaseUrl : 'https://placeholder.supabase.co',
   supabaseKey || 'placeholder'
 )
