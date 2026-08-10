@@ -2,6 +2,9 @@ import Link from 'next/link'
 import { createClient, createAdminClient } from '@/lib/supabase/server'
 import { PLANS } from '@/lib/constants'
 
+const INK = '#171512'
+const ACCENT = '#A6134A'
+
 export default async function AdminDashboard({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
   const supabase = await createClient()
@@ -31,75 +34,57 @@ export default async function AdminDashboard({ params }: { params: Promise<{ slu
   const plan = PLANS[profile?.plan as keyof typeof PLANS ?? 'free']
   const tryOnPct = profile ? Math.round((profile.try_ons_used / profile.try_ons_limit) * 100) : 0
 
-  // Setup checklist state
   const hasWhatsApp = !!storeConfig?.whatsapp_number
   const hasProducts = productCount > 0
   const setupDone = hasWhatsApp && hasProducts
   const setupSteps = [
-    { done: hasWhatsApp, label: 'Add your WhatsApp number', href: `/admin/${slug}/customize`, action: 'Set up →' },
-    { done: hasProducts, label: 'Add your first product', href: `/admin/${slug}/products`, action: 'Add product →' },
+    { done: hasWhatsApp, label: 'Add your WhatsApp number', href: `/admin/${slug}/customize`, action: 'Set up' },
+    { done: hasProducts, label: 'Add your first product', href: `/admin/${slug}/products`, action: 'Add product' },
     { done: true, label: 'Share your store link', href: null, action: null },
   ]
   const completedCount = [hasWhatsApp, hasProducts].filter(Boolean).length
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex items-center justify-between mb-7">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
-          <p className="text-gray-500 text-sm mt-1">Last 7 days overview</p>
+          <h1 className="text-xl font-semibold" style={{ color: INK }}>Dashboard</h1>
+          <p className="text-sm mt-0.5" style={{ color: `${INK}77` }}>Last 7 days</p>
         </div>
         <Link
           href={`/store/${slug}`}
           target="_blank"
-          className="bg-pink-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-pink-700 transition-colors"
+          className="text-sm font-medium px-4 py-2 rounded-lg transition-opacity hover:opacity-85"
+          style={{ background: INK, color: '#fff' }}
         >
-          View My Store →
+          View my store →
         </Link>
       </div>
 
-      {/* First-run setup wizard — shown until all steps are complete */}
+      {/* Setup checklist — quiet, not a party banner */}
       {!setupDone && (
-        <div className="bg-gradient-to-br from-pink-50 to-rose-50 border border-pink-100 rounded-2xl p-6 mb-8">
-          <div className="flex items-start justify-between mb-5">
-            <div>
-              <h2 className="text-lg font-bold text-gray-900">
-                Welcome to WearOn{storeConfig?.brand_name ? `, ${storeConfig.brand_name}` : ''}! 🎉
-              </h2>
-              <p className="text-sm text-gray-500 mt-1">Complete these steps to launch your boutique app.</p>
-            </div>
-            <span className="text-xs font-semibold bg-pink-100 text-pink-700 px-3 py-1 rounded-full whitespace-nowrap">
-              {completedCount} / 2 done
-            </span>
+        <div className="border rounded-xl mb-6 overflow-hidden" style={{ borderColor: `${INK}14` }}>
+          <div className="flex items-center justify-between px-5 py-3.5 border-b" style={{ borderColor: `${INK}0f` }}>
+            <span className="text-sm font-medium" style={{ color: INK }}>Finish setting up your store</span>
+            <span className="text-xs font-medium" style={{ color: `${INK}66` }}>{completedCount}/2 done</span>
           </div>
-          <div className="space-y-3">
+          <div>
             {setupSteps.map((step, i) => (
-              <div
-                key={i}
-                className={`flex items-center gap-4 bg-white rounded-xl px-5 py-4 border transition-all ${
-                  step.done ? 'border-green-100 opacity-70' : 'border-gray-100 shadow-sm'
-                }`}
-              >
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 ${
-                  step.done ? 'bg-green-100 text-green-600' : 'bg-pink-100 text-pink-600'
-                }`}>
+              <div key={i} className="flex items-center gap-3 px-5 py-3 border-b last:border-0" style={{ borderColor: `${INK}0a` }}>
+                <span className="w-5 h-5 rounded-full flex items-center justify-center text-[11px] font-semibold flex-shrink-0"
+                  style={{ background: step.done ? '#e8f5e9' : `${ACCENT}14`, color: step.done ? '#2e7d32' : ACCENT }}>
                   {step.done ? '✓' : i + 1}
-                </div>
-                <span className={`flex-1 text-sm font-medium ${step.done ? 'text-gray-400 line-through' : 'text-gray-800'}`}>
+                </span>
+                <span className={`flex-1 text-sm ${step.done ? 'line-through' : ''}`} style={{ color: step.done ? `${INK}55` : INK }}>
                   {step.label}
                 </span>
                 {!step.done && step.href && (
-                  <Link
-                    href={step.href}
-                    className="text-xs font-semibold text-pink-600 bg-pink-50 hover:bg-pink-100 px-3 py-1.5 rounded-lg transition-colors whitespace-nowrap"
-                  >
-                    {step.action}
+                  <Link href={step.href} className="text-xs font-semibold" style={{ color: ACCENT }}>
+                    {step.action} →
                   </Link>
                 )}
                 {i === 2 && (
-                  <code className="text-xs text-gray-500 font-mono bg-gray-50 px-2 py-1 rounded">
-                    wearon.in/store/{slug}
-                  </code>
+                  <code className="text-xs font-mono" style={{ color: `${INK}55` }}>wearon.in/store/{slug}</code>
                 )}
               </div>
             ))}
@@ -107,141 +92,111 @@ export default async function AdminDashboard({ params }: { params: Promise<{ slu
         </div>
       )}
 
-      {/* Stats */}
-      <div className="grid grid-cols-4 gap-4 mb-8">
+      {/* KPI row */}
+      <div className="grid grid-cols-4 gap-3 mb-6">
         {[
-          { label: 'Store Visits', value: totalVisits.toLocaleString('en-IN'), icon: '👁' },
-          { label: 'Try-Ons', value: totalTryOns.toLocaleString('en-IN'), icon: '👗' },
-          { label: 'Products', value: productCount.toLocaleString('en-IN'), icon: '📦' },
-          { label: 'Orders (30d)', value: orderCount.toLocaleString('en-IN'), icon: '🛍' },
-        ].map(({ label, value, icon }) => (
-          <div key={label} className="bg-white rounded-xl p-5 border border-gray-100">
-            <div className="text-2xl mb-1">{icon}</div>
-            <div className="text-2xl font-bold text-gray-900">{value}</div>
-            <div className="text-sm text-gray-500">{label}</div>
+          { label: 'Store visits', value: totalVisits },
+          { label: 'Try-ons', value: totalTryOns },
+          { label: 'Products', value: productCount },
+          { label: 'Orders (30d)', value: orderCount },
+        ].map(({ label, value }) => (
+          <div key={label} className="border rounded-xl p-4" style={{ borderColor: `${INK}14` }}>
+            <div className="text-2xl font-semibold" style={{ color: INK }}>{value.toLocaleString('en-IN')}</div>
+            <div className="text-xs mt-0.5" style={{ color: `${INK}77` }}>{label}</div>
           </div>
         ))}
       </div>
 
-      {/* Plan status */}
-      <div className="bg-white rounded-xl border border-gray-100 p-6 mb-6">
-        <div className="flex items-center justify-between mb-4">
-          <div>
-            <span className="text-sm font-medium text-gray-500">Current Plan</span>
-            <h3 className="text-xl font-bold text-gray-900">{plan.name}</h3>
+      <div className="grid grid-cols-3 gap-5 mb-6">
+        {/* Plan + try-on usage */}
+        <div className="border rounded-xl p-5" style={{ borderColor: `${INK}14` }}>
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <span className="text-xs" style={{ color: `${INK}77` }}>Current plan</span>
+              <h3 className="text-base font-semibold mt-0.5" style={{ color: INK }}>{plan.name}</h3>
+            </div>
+            <Link href={`/admin/${slug}/billing`} className="text-xs font-semibold" style={{ color: ACCENT }}>Upgrade →</Link>
           </div>
-          <Link href={`/admin/${slug}/billing`} className="text-sm text-pink-600 font-medium hover:text-pink-700">
-            Upgrade Plan →
-          </Link>
+          <div className="space-y-1.5">
+            <div className="flex justify-between text-xs" style={{ color: `${INK}99` }}>
+              <span>Try-ons used</span>
+              <span className="font-medium" style={{ color: INK }}>{profile?.try_ons_used ?? 0} / {profile?.try_ons_limit ?? 20}</span>
+            </div>
+            <div className="w-full rounded-full h-1.5" style={{ background: `${INK}0f` }}>
+              <div className="h-1.5 rounded-full" style={{ width: `${Math.min(tryOnPct, 100)}%`, background: tryOnPct > 80 ? '#dc2626' : ACCENT }} />
+            </div>
+            {tryOnPct > 80 && <p className="text-xs mt-1" style={{ color: '#dc2626' }}>Running low — upgrade to avoid interruption.</p>}
+          </div>
         </div>
-        <div className="space-y-2">
-          <div className="flex justify-between text-sm">
-            <span className="text-gray-600">Try-ons used</span>
-            <span className="font-medium">{profile?.try_ons_used ?? 0} / {profile?.try_ons_limit ?? 20}</span>
-          </div>
-          <div className="w-full bg-gray-100 rounded-full h-2">
-            <div
-              className={`h-2 rounded-full transition-all ${tryOnPct > 80 ? 'bg-red-500' : 'bg-pink-500'}`}
-              style={{ width: `${Math.min(tryOnPct, 100)}%` }}
-            />
-          </div>
-          {tryOnPct > 80 && (
-            <p className="text-xs text-red-600">Running low! Upgrade to avoid service interruption.</p>
-          )}
-        </div>
-      </div>
 
-      {/* 7-day try-ons chart */}
-      {analytics.length > 0 && (
-        <div className="bg-white rounded-xl border border-gray-100 p-6 mb-6">
-          <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-4">Try-Ons — Last 7 Days</h3>
-          {(() => {
+        {/* 7-day chart */}
+        <div className="border rounded-xl p-5" style={{ borderColor: `${INK}14` }}>
+          <h3 className="text-xs font-medium mb-4" style={{ color: `${INK}77` }}>TRY-ONS · LAST 7 DAYS</h3>
+          {analytics.length > 0 ? (() => {
             const maxVal = Math.max(...analytics.map(d => d.try_ons), 1)
-            const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']
+            const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
             return (
-              <div className="flex items-end gap-2 h-24">
+              <div className="flex items-end gap-2 h-20">
                 {[...analytics].reverse().map((d, i) => {
                   const pct = (d.try_ons / maxVal) * 100
-                  const dayName = days[new Date(d.date).getDay()]
                   return (
-                    <div key={i} className="flex-1 flex flex-col items-center gap-1" title={`${d.try_ons} try-ons`}>
-                      <div className="w-full rounded-t-sm bg-pink-500 transition-all" style={{ height: `${Math.max(pct, 4)}%` }} />
-                      <span className="text-xs text-gray-400">{dayName}</span>
+                    <div key={i} className="flex-1 flex flex-col items-center gap-1.5" title={`${d.try_ons} try-ons`}>
+                      <div className="w-full rounded-sm" style={{ height: `${Math.max(pct, 4)}%`, background: `${ACCENT}cc` }} />
+                      <span className="text-[10px]" style={{ color: `${INK}55` }}>{days[new Date(d.date).getDay()]}</span>
                     </div>
                   )
                 })}
               </div>
             )
-          })()}
+          })() : <p className="text-xs" style={{ color: `${INK}55` }}>No data yet</p>}
         </div>
-      )}
 
-      {/* Store link card */}
-      <div className="bg-gradient-to-r from-pink-50 to-rose-50 rounded-xl border border-pink-100 p-5 mb-6 flex items-center justify-between gap-4">
-        <div>
-          <p className="text-xs text-pink-600 font-semibold uppercase tracking-wide mb-1">Your Store Link</p>
-          <code className="text-sm text-gray-700 font-mono">wearon.in/store/{slug}</code>
+        {/* Store link */}
+        <div className="border rounded-xl p-5 flex items-center justify-between gap-3" style={{ borderColor: `${INK}14` }}>
+          <div className="min-w-0">
+            <span className="text-xs" style={{ color: `${INK}77` }}>Your store link</span>
+            <code className="block text-sm font-mono mt-1 truncate" style={{ color: INK }}>wearon.in/store/{slug}</code>
+          </div>
+          <img
+            src={`https://api.qrserver.com/v1/create-qr-code/?size=64x64&data=https://wearon.in/store/${slug}`}
+            alt="QR" className="w-14 h-14 rounded-lg flex-shrink-0 border" style={{ borderColor: `${INK}14` }}
+          />
         </div>
-        <div className="flex gap-2 flex-shrink-0">
-          <a
-            href={`https://api.qrserver.com/v1/create-qr-code/?size=80x80&data=https://wearon.in/store/${slug}`}
-            target="_blank" rel="noopener noreferrer"
-          >
-            <img src={`https://api.qrserver.com/v1/create-qr-code/?size=80x80&data=https://wearon.in/store/${slug}`}
-              alt="QR" className="w-16 h-16 rounded-lg border border-pink-100" />
-          </a>
-          <Link href={`/store/${slug}`} target="_blank"
-            className="self-center bg-pink-600 text-white text-xs font-medium px-3 py-2 rounded-lg hover:bg-pink-700 transition-colors">
-            Open →
+      </div>
+
+      {/* Quick actions — quiet rows, not emoji cards */}
+      <div className="border rounded-xl mb-5 overflow-hidden" style={{ borderColor: `${INK}14` }}>
+        {[
+          { label: 'Add products', desc: 'Upload garments to your catalogue', href: `/admin/${slug}/products` },
+          { label: 'Customize store', desc: 'Logo, colors, fonts', href: `/admin/${slug}/customize` },
+        ].map((a, i) => (
+          <Link key={a.label} href={a.href} className="flex items-center justify-between px-5 py-3.5 hover:bg-black/[0.015] transition-colors"
+            style={{ borderTop: i === 0 ? 'none' : `1px solid ${INK}0a` }}>
+            <div>
+              <div className="text-sm font-medium" style={{ color: INK }}>{a.label}</div>
+              <div className="text-xs mt-0.5" style={{ color: `${INK}77` }}>{a.desc}</div>
+            </div>
+            <span style={{ color: `${INK}55` }}>→</span>
           </Link>
-        </div>
+        ))}
       </div>
 
-      {/* Quick actions */}
-      <div className="grid grid-cols-3 gap-4 mb-6">
-        <Link href={`/admin/${slug}/products`} className="bg-white border border-gray-100 rounded-xl p-5 hover:border-pink-200 hover:shadow-sm transition-all">
-          <div className="text-2xl mb-3">👗</div>
-          <h3 className="font-semibold text-gray-900 mb-1">Add Products</h3>
-          <p className="text-xs text-gray-500">Upload your garments for try-on</p>
-        </Link>
-        <Link href={`/admin/${slug}/customize`} className="bg-white border border-gray-100 rounded-xl p-5 hover:border-pink-200 hover:shadow-sm transition-all">
-          <div className="text-2xl mb-3">🎨</div>
-          <h3 className="font-semibold text-gray-900 mb-1">Customize Store</h3>
-          <p className="text-xs text-gray-500">Logo, colors, fonts, and more</p>
-        </Link>
-        <div className="bg-white border border-gray-100 rounded-xl p-5">
-          <div className="text-2xl mb-3">🔗</div>
-          <h3 className="font-semibold text-gray-900 mb-1">Share Your Store</h3>
-          <div className="flex items-center gap-2 mt-2">
-            <span className="text-xs text-gray-500 bg-gray-50 border border-gray-200 px-2 py-1 rounded font-mono truncate">
-              wearon.in/store/{slug}
-            </span>
-          </div>
-        </div>
-      </div>
-
-      {/* Instagram DM card */}
-      <div className={`rounded-xl border p-5 flex items-center justify-between gap-4 ${igConnected ? 'bg-gradient-to-r from-purple-50 to-pink-50 border-pink-100' : 'bg-white border-gray-100'}`}>
-        <div className="flex items-center gap-4">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center text-white text-lg flex-shrink-0">
-            💬
-          </div>
-          <div>
-            <h3 className="font-semibold text-gray-900 mb-0.5">
-              {igConnected ? 'Instagram DMs connected' : 'Connect Instagram DMs'}
-            </h3>
-            <p className="text-xs text-gray-500">
-              {igConnected
-                ? 'AI agent is handling buyer queries — check your inbox'
-                : 'Let AI reply to buyer DMs automatically with your product info'}
-            </p>
-          </div>
+      {/* Instagram DM */}
+      <div className="border rounded-xl px-5 py-4 flex items-center justify-between gap-4" style={{ borderColor: `${INK}14` }}>
+        <div>
+          <h3 className="text-sm font-medium" style={{ color: INK }}>
+            {igConnected ? 'Instagram DMs connected' : 'Connect Instagram DMs'}
+          </h3>
+          <p className="text-xs mt-0.5" style={{ color: `${INK}77` }}>
+            {igConnected ? 'AI agent is handling buyer queries — check your inbox' : 'Let AI reply to buyer DMs automatically'}
+          </p>
         </div>
         <Link
           href={igConnected ? `/admin/${slug}/inbox` : `/api/admin/instagram/connect?slug=${slug}`}
-          className="text-sm font-semibold text-white bg-gradient-to-r from-pink-500 to-purple-600 px-4 py-2 rounded-lg hover:opacity-90 transition-opacity whitespace-nowrap flex-shrink-0"
+          className="text-sm font-semibold px-4 py-2 rounded-lg flex-shrink-0"
+          style={{ background: INK, color: '#fff' }}
         >
-          {igConnected ? 'Open Inbox →' : 'Connect →'}
+          {igConnected ? 'Open inbox →' : 'Connect →'}
         </Link>
       </div>
     </div>

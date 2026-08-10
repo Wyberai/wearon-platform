@@ -146,10 +146,10 @@ export default function StorePage() {
       {/* Editorial hero */}
       <div className="relative w-full h-[340px] md:h-[480px] overflow-hidden mb-10">
         <img src={heroImage} alt="" className="w-full h-full object-cover" onError={e => { e.currentTarget.style.display = 'none' }} />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent" />
         <div className="absolute bottom-8 left-6 md:left-10 text-white">
-          <p className="text-xs uppercase tracking-[0.2em] opacity-80 mb-2">New this season</p>
-          <h1 className="text-3xl md:text-5xl font-bold tracking-tight">The full collection</h1>
+          <p className="text-xs uppercase tracking-[0.22em] opacity-85 mb-2">New this season</p>
+          <h1 className="text-4xl md:text-6xl font-semibold tracking-tight" style={{ letterSpacing: '-0.02em' }}>The full collection</h1>
         </div>
       </div>
 
@@ -255,25 +255,26 @@ export default function StorePage() {
                     )}
                     <button
                       onClick={(e) => toggleWishlist(e, product.id)}
-                      className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/90 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                      className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/95 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-sm"
                     >
-                      <span className="text-base leading-none" style={{ color: inWishlist ? primary : '#9CA3AF' }}>
-                        {inWishlist ? '♥' : '♡'}
-                      </span>
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill={inWishlist ? primary : 'none'} stroke={inWishlist ? primary : '#9CA3AF'} strokeWidth="2" aria-hidden>
+                        <path d="M12 21s-7.5-4.6-10-9.2C.5 8.4 2.2 5 5.6 5c2 0 3.6 1.2 4.4 2.6C10.8 6.2 12.4 5 14.4 5c3.4 0 5.1 3.4 3.6 6.8-2.5 4.6-10 9.2-10 9.2z"/>
+                      </svg>
                     </button>
                   </div>
                   <div className="pt-3">
-                    <p className="text-sm text-gray-800 truncate">{product.name}</p>
+                    <p className="text-[13.5px] text-gray-800 truncate">{product.name}</p>
                     <div className="flex items-center gap-2 mt-1">
-                      <span className="text-sm text-gray-900 font-medium">₹{product.price_inr.toLocaleString('en-IN')}</span>
+                      <span className="text-sm text-gray-900 font-semibold">₹{product.price_inr.toLocaleString('en-IN')}</span>
                       {product.original_price_inr && (
                         <span className="text-gray-400 text-xs line-through">₹{product.original_price_inr.toLocaleString('en-IN')}</span>
                       )}
                     </div>
                     {rating && rating.count > 0 && (
-                      <p className="text-xs text-gray-400 mt-1">
-                        {'★'.repeat(Math.round(rating.avg))}{'☆'.repeat(5 - Math.round(rating.avg))} ({rating.count})
-                      </p>
+                      <div className="flex items-center gap-1 mt-1.5">
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="#171512" aria-hidden><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7-6.3-3.9-6.3 3.9 1.7-7L2 9.5l7.1-.6z"/></svg>
+                        <span className="text-xs text-gray-500">{rating.avg.toFixed(1)} ({rating.count})</span>
+                      </div>
                     )}
                   </div>
                 </Link>
