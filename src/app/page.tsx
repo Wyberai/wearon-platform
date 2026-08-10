@@ -367,6 +367,27 @@ export default function Home() {
                 )
               })}
             </div>
+
+            {/* Custom design — one-time add-on, not a plan tier */}
+            <div style={{
+              marginTop: 20, padding: '28px 32px', background: '#fff',
+              display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 24, flexWrap: 'wrap',
+            }}>
+              <div>
+                <p style={{ fontSize: 13, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: ACCENT, marginBottom: 6 }}>
+                  Don&apos;t want to pick from our themes?
+                </p>
+                <p style={{ fontSize: 15, color: `${INK}99`, maxWidth: 480 }}>
+                  Our team designs a completely custom look for your store — your colors, your layout, built from scratch. One-time, not a subscription.
+                </p>
+              </div>
+              <a
+                href="mailto:hello@wyberai.com?subject=Custom%20WearOn%20store%20design&body=Hi%2C%20I%27d%20like%20a%20custom%20design%20for%20my%20WearOn%20store."
+                style={{ flexShrink: 0, textAlign: 'center', padding: '13px 24px', borderRadius: 999, fontSize: 14, fontWeight: 700, textDecoration: 'none', background: INK, color: '#fff' }}
+              >
+                ₹2,000 one-time — Get a custom design →
+              </a>
+            </div>
           </div>
         </section>
 
