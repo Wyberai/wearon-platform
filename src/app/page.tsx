@@ -277,7 +277,7 @@ export default function Home() {
                 One platform. Every boutique looks like its own.
               </h2>
               <p style={{ fontSize: 16, color: `${INK}99`, lineHeight: 1.75, marginBottom: 20, maxWidth: 460 }}>
-                Think of how RedBus or Goibibo run on shared tech but every operator looks like a separate brand. WearOn works the same way — you get your own storefront, we run the platform underneath it.
+                You focus on your boutique — the sourcing, the styling, the customers who trust you. We handle everything that makes it feel like a real app: hosting, uptime, updates, security. That&apos;s our job so it doesn&apos;t have to be yours.
               </p>
               <p style={{ fontSize: 15, color: `${INK}77`, lineHeight: 1.75, maxWidth: 460 }}>
                 Buyers never see &quot;powered by WearOn.&quot; They see your boutique — your name on every page, every product, every WhatsApp message.
