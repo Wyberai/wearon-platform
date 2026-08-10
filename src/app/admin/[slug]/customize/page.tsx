@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
 import { FONTS } from '@/lib/constants'
+import { THEMES, getTheme } from '@/lib/themes'
 
 export default function CustomizePage() {
   const { slug } = useParams() as { slug: string }
@@ -14,6 +15,7 @@ export default function CustomizePage() {
     accent_color: '#880E4F',
     background_color: '#FFFFFF',
     font_family: 'poppins',
+    theme_id: 'editorial',
     whatsapp_number: '',
     instagram_handle: '',
     payment_method: 'whatsapp_order',
@@ -41,6 +43,19 @@ export default function CustomizePage() {
     setTimeout(() => setSaved(false), 3000)
   }
 
+  function applyTheme(themeId: string) {
+    const t = getTheme(themeId)
+    setConfig({
+      ...config,
+      theme_id: themeId,
+      primary_color: t.palette.accent,
+      secondary_color: t.palette.card,
+      accent_color: t.palette.accent,
+      background_color: t.palette.bg,
+      font_family: t.font,
+    })
+  }
+
   if (loading) return <div className="text-gray-400 text-sm">Loading...</div>
 
   return (
@@ -49,6 +64,34 @@ export default function CustomizePage() {
       <p className="text-gray-500 text-sm mb-8">Changes appear on your store within seconds.</p>
 
       <form onSubmit={handleSave} className="space-y-6">
+        {/* Theme picker */}
+        <div className="bg-white rounded-xl border border-gray-100 p-6">
+          <h2 className="font-semibold text-gray-900 mb-1">Store Theme</h2>
+          <p className="text-xs text-gray-500 mb-4">Picking a theme sets colors and font below — tweak them after if you want.</p>
+          <div className="grid grid-cols-5 gap-3">
+            {THEMES.map(t => {
+              const active = t.id === config.theme_id
+              return (
+                <button
+                  key={t.id}
+                  type="button"
+                  onClick={() => applyTheme(t.id)}
+                  title={t.blurb}
+                  className="text-left"
+                >
+                  <div
+                    className="aspect-[4/5] rounded-lg overflow-hidden relative"
+                    style={{ outline: active ? '2px solid #A6134A' : '1px solid #e5e7eb', outlineOffset: 2 }}
+                  >
+                    <img src={t.previewImage} alt={t.name} className="w-full h-full object-cover" />
+                  </div>
+                  <p className={`text-xs mt-1.5 ${active ? 'font-semibold text-gray-900' : 'text-gray-500'}`}>{t.name}</p>
+                </button>
+              )
+            })}
+          </div>
+        </div>
+
         {/* Brand basics */}
         <div className="bg-white rounded-xl border border-gray-100 p-6 space-y-4">
           <h2 className="font-semibold text-gray-900">Brand Identity</h2>

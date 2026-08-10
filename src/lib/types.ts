@@ -24,7 +24,8 @@ export interface TenantConfig {
   secondary_color: string
   accent_color: string
   background_color: string
-  font_family: 'poppins' | 'playfair' | 'inter' | 'nunito' | 'raleway'
+  font_family: 'poppins' | 'playfair' | 'inter' | 'nunito' | 'raleway' | 'fraunces' | 'bebas' | 'spacegrotesk' | 'cormorant'
+  theme_id: string
   dark_mode_default: boolean
   currency: string
   payment_method: 'whatsapp_order' | 'razorpay' | 'dodo' | 'cod'

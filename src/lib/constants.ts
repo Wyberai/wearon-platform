@@ -37,11 +37,15 @@ export const PLAN_AI_REPLY_LIMITS: Record<Plan, number> = {
 }
 
 export const FONTS = {
-  poppins:  { label: 'Poppins',   css: "'Poppins', sans-serif" },
-  playfair: { label: 'Playfair',  css: "'Playfair Display', serif" },
-  inter:    { label: 'Inter',     css: "'Inter', sans-serif" },
-  nunito:   { label: 'Nunito',    css: "'Nunito', sans-serif" },
-  raleway:  { label: 'Raleway',   css: "'Raleway', sans-serif" },
+  poppins:      { label: 'Poppins',       css: "'Poppins', sans-serif" },
+  playfair:     { label: 'Playfair',      css: "'Playfair Display', serif" },
+  inter:        { label: 'Inter',         css: "'Inter', sans-serif" },
+  nunito:       { label: 'Nunito',        css: "'Nunito', sans-serif" },
+  raleway:      { label: 'Raleway',       css: "'Raleway', sans-serif" },
+  fraunces:     { label: 'Fraunces',      css: "'Fraunces', serif" },
+  bebas:        { label: 'Bebas Neue',    css: "'Bebas Neue', sans-serif" },
+  spacegrotesk: { label: 'Space Grotesk', css: "'Space Grotesk', sans-serif" },
+  cormorant:    { label: 'Cormorant',     css: "'Cormorant', serif" },
 } as const
 
 export const OVERAGE_PRICE_PER_TRY_ON = 3 // ₹3 per extra try-on
