@@ -107,6 +107,14 @@ const FEATURES = [
   },
 ]
 
+const AI_REELS = {
+  icon: '🎬',
+  title: 'AI Reels, not just product photos.',
+  body: 'No photoshoot, no model, no studio. Upload one flat-lay of your garment — we put an AI model in it and hand you a Reel-ready video.',
+  price: '₹50',
+  priceLabel: 'per video',
+}
+
 const PROOF_STATS = [
   { n: '10 min', label: 'to go live', source: 'no code, no tech team needed' },
   { n: '1 link', label: 'changes everything', source: 'Instagram bio → full branded store' },
@@ -497,6 +505,26 @@ export default function Home() {
                 </div>
               ))}
             </div>
+
+            {/* AI Reels — highlighted, full-width */}
+            <div style={{
+              marginTop: 20, padding: '32px 36px', borderRadius: 20,
+              background: 'linear-gradient(120deg, rgba(247,37,133,0.14) 0%, rgba(255,255,255,0.03) 100%)',
+              border: '1px solid rgba(247,37,133,0.3)',
+              display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 28, flexWrap: 'wrap',
+            }}>
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: 18, maxWidth: 640 }}>
+                <div style={{ fontSize: 36, flexShrink: 0 }}>{AI_REELS.icon}</div>
+                <div>
+                  <h3 style={{ fontSize: 19, fontWeight: 800, marginBottom: 8, letterSpacing: '-0.3px' }}>{AI_REELS.title}</h3>
+                  <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.55)', lineHeight: 1.7 }}>{AI_REELS.body}</p>
+                </div>
+              </div>
+              <div style={{ textAlign: 'center', flexShrink: 0, padding: '14px 26px', borderRadius: 14, background: 'rgba(247,37,133,0.15)', border: '1px solid rgba(247,37,133,0.35)' }}>
+                <div style={{ fontSize: 30, fontWeight: 900, color: '#F72585', letterSpacing: '-1px', lineHeight: 1 }}>{AI_REELS.price}</div>
+                <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.5)', marginTop: 2 }}>{AI_REELS.priceLabel}</div>
+              </div>
+            </div>
           </div>
         </section>
 
@@ -607,7 +635,7 @@ export default function Home() {
                         'WhatsApp ordering',
                         ...(key !== 'free' ? ['WhatsApp + Instagram + Facebook AI automation'] : ['Basic AI DM automation']),
                         ...(key === 'growth' || key === 'pro' ? ['Native Android app + Play Store listing'] : []),
-                        ...(key === 'pro' ? ['Buyer virtual try-on', 'AI photoshoot (cloth → model photo/video)'] : []),
+                        ...(key === 'pro' ? ['Buyer virtual try-on', 'AI Reels — from ₹50/video'] : []),
                       ].map(f => (
                         <li key={f} style={{ fontSize: 13, color: 'rgba(255,255,255,0.6)', display: 'flex', alignItems: 'center', gap: 8 }}>
                           <span style={{ color: featured ? '#F72585' : '#4ADE80', flexShrink: 0 }}>✓</span>
