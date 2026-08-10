@@ -18,6 +18,15 @@ interface Product {
   created_at: string
 }
 
+interface IgMedia {
+  id: string
+  caption: string
+  media_type: string
+  image_url: string
+  permalink: string
+  timestamp: string
+}
+
 function marginPct(price: number, cost: number | null | undefined) {
   if (cost == null || price <= 0) return null
   return Math.round(((price - cost) / price) * 100)
@@ -47,6 +56,56 @@ export default function ProductsPage() {
   const [garmentFile, setGarmentFile] = useState<File | null>(null)
   const [garmentPreview, setGarmentPreview] = useState<string | null>(null)
   const fileRef = useRef<HTMLInputElement>(null)
+
+  const [showImport, setShowImport] = useState(false)
+  const [igMedia, setIgMedia] = useState<IgMedia[]>([])
+  const [igLoading, setIgLoading] = useState(false)
+  const [igError, setIgError] = useState<string | null>(null)
+  const [selected, setSelected] = useState<Set<string>>(new Set())
+  const [importing, setImporting] = useState(false)
+
+  async function openImport() {
+    setShowImport(true)
+    setIgLoading(true)
+    setIgError(null)
+    const res = await fetch('/api/admin/instagram/media')
+    const data = await res.json()
+    setIgLoading(false)
+    if (!res.ok) {
+      setIgError(data.code === 'NOT_CONNECTED'
+        ? 'Connect Instagram in Settings first, then come back to import your posts.'
+        : (data.error ?? 'Could not load your Instagram posts'))
+      return
+    }
+    setIgMedia(data.media ?? [])
+  }
+
+  function toggleSelected(id: string) {
+    setSelected(prev => {
+      const next = new Set(prev)
+      if (next.has(id)) next.delete(id)
+      else next.add(id)
+      return next
+    })
+  }
+
+  async function importSelected() {
+    const items = igMedia.filter(m => selected.has(m.id)).map(m => ({ id: m.id, caption: m.caption, image_url: m.image_url }))
+    if (items.length === 0) return
+    setImporting(true)
+    const res = await fetch('/api/admin/instagram/media/import', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ items }),
+    })
+    const data = await res.json()
+    setImporting(false)
+    if (!res.ok) { alert(data.error ?? 'Import failed'); return }
+    setShowImport(false)
+    setSelected(new Set())
+    setIgMedia([])
+    loadProducts()
+  }
 
   const filtered = products
     .filter(p => {
@@ -137,11 +196,71 @@ export default function ProductsPage() {
           <h1 className="text-2xl font-bold text-gray-900">Products</h1>
           <p className="text-gray-500 text-sm">{products.length} product{products.length !== 1 ? 's' : ''} in your store</p>
         </div>
-        <button onClick={() => setShowForm(!showForm)}
-          className="bg-pink-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-pink-700 transition-colors">
-          {showForm ? 'Cancel' : '+ Add Product'}
-        </button>
+        <div className="flex gap-2">
+          <button onClick={openImport}
+            className="border border-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors">
+            📷 Import from Instagram
+          </button>
+          <button onClick={() => setShowForm(!showForm)}
+            className="bg-pink-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-pink-700 transition-colors">
+            {showForm ? 'Cancel' : '+ Add Product'}
+          </button>
+        </div>
       </div>
+
+      {/* Import from Instagram modal */}
+      {showImport && (
+        <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4" onClick={() => setShowImport(false)}>
+          <div className="bg-white rounded-xl max-w-3xl w-full max-h-[85vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
+            <div className="flex items-center justify-between p-5 border-b border-gray-100">
+              <div>
+                <h2 className="font-semibold text-gray-900">Import from Instagram</h2>
+                <p className="text-xs text-gray-500 mt-0.5">Pick posts to turn into products — you already have the photos, no need to re-upload.</p>
+              </div>
+              <button onClick={() => setShowImport(false)} className="text-gray-400 hover:text-gray-600 text-xl leading-none">✕</button>
+            </div>
+            <div className="p-5">
+              {igLoading ? (
+                <div className="text-center py-16 text-gray-400 text-sm">Loading your Instagram posts...</div>
+              ) : igError ? (
+                <div className="text-center py-16 text-gray-500 text-sm max-w-sm mx-auto">{igError}</div>
+              ) : igMedia.length === 0 ? (
+                <div className="text-center py-16 text-gray-400 text-sm">No importable posts found on your Instagram.</div>
+              ) : (
+                <>
+                  <div className="grid grid-cols-4 gap-3 mb-5">
+                    {igMedia.map(m => {
+                      const isSelected = selected.has(m.id)
+                      return (
+                        <button
+                          key={m.id}
+                          onClick={() => toggleSelected(m.id)}
+                          className={`relative rounded-lg overflow-hidden border-2 ${isSelected ? 'border-pink-500' : 'border-transparent'}`}
+                        >
+                          <img src={m.image_url} alt="" className="w-full aspect-square object-cover" />
+                          <div className={`absolute top-1.5 right-1.5 w-5 h-5 rounded-full flex items-center justify-center text-xs ${isSelected ? 'bg-pink-500 text-white' : 'bg-white/80 text-transparent'}`}>
+                            ✓
+                          </div>
+                        </button>
+                      )
+                    })}
+                  </div>
+                  <div className="flex items-center justify-between border-t border-gray-100 pt-4">
+                    <span className="text-xs text-gray-500">{selected.size} selected</span>
+                    <button
+                      onClick={importSelected}
+                      disabled={selected.size === 0 || importing}
+                      className="bg-pink-600 text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-pink-700 disabled:opacity-40 transition-colors"
+                    >
+                      {importing ? 'Importing...' : `Import ${selected.size || ''} as draft products`}
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Search + sort */}
       {!showForm && products.length > 0 && (
