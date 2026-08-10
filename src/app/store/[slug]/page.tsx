@@ -5,6 +5,8 @@ import { useParams } from 'next/navigation'
 import { useState, useEffect, useCallback } from 'react'
 import type { Product, TenantConfig } from '@/lib/types'
 
+const STORAGE_BASE = 'https://zhrubbutcsvhcbuaalep.supabase.co/storage/v1/object/public/product-images'
+
 function getOrCreateDeviceToken(): string {
   let token = localStorage.getItem('wearon_device_token')
   if (!token) {
@@ -105,6 +107,13 @@ export default function StorePage() {
 
   const primary = (config as TenantConfig & { primary_color?: string })?.primary_color ?? '#F72585'
   const categories: string[] = (config?.categories as string[]) ?? ['Kurtas', 'Sarees', 'Lehengas', 'Western', 'Accessories']
+  const categoryTiles: Record<string, string> = {
+    Kurtas: `${STORAGE_BASE}/cat-kurtas.jpg`,
+    Sarees: `${STORAGE_BASE}/cat-sarees.jpg`,
+    Lehengas: `${STORAGE_BASE}/cat-lehengas.jpg`,
+    Western: `${STORAGE_BASE}/cat-western.jpg`,
+    Accessories: `${STORAGE_BASE}/cat-accessories.jpg`,
+  }
 
   const filtered = products
     .filter(p => {
@@ -130,21 +139,46 @@ export default function StorePage() {
     )
   }
 
-  const heroImage = products.find(p => p.is_active)?.garment_image_url
+  const heroImage = `${STORAGE_BASE}/hero-banner.jpg`
 
   return (
     <div className="max-w-[1400px] mx-auto">
       {/* Editorial hero */}
-      {heroImage && (
-        <div className="relative w-full h-[340px] md:h-[480px] overflow-hidden mb-10">
-          <img src={heroImage} alt="" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent" />
-          <div className="absolute bottom-8 left-6 md:left-10 text-white">
-            <p className="text-xs uppercase tracking-[0.2em] opacity-80 mb-2">New this season</p>
-            <h1 className="text-3xl md:text-5xl font-bold tracking-tight">The full collection</h1>
-          </div>
+      <div className="relative w-full h-[340px] md:h-[480px] overflow-hidden mb-10">
+        <img src={heroImage} alt="" className="w-full h-full object-cover" onError={e => { e.currentTarget.style.display = 'none' }} />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent" />
+        <div className="absolute bottom-8 left-6 md:left-10 text-white">
+          <p className="text-xs uppercase tracking-[0.2em] opacity-80 mb-2">New this season</p>
+          <h1 className="text-3xl md:text-5xl font-bold tracking-tight">The full collection</h1>
         </div>
-      )}
+      </div>
+
+      {/* Category row */}
+      <div className="px-6 md:px-10 mb-10">
+        <p className="text-xs uppercase tracking-[0.2em] text-gray-400 mb-4">Categories</p>
+        <div className="flex gap-5 overflow-x-auto pb-2">
+          {categories.map(cat => (
+            <button
+              key={cat}
+              onClick={() => setActiveCategory(activeCategory === cat ? null : cat)}
+              className="flex flex-col items-center gap-2 flex-shrink-0 group"
+            >
+              <div
+                className="w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden bg-gray-50"
+                style={{ outline: activeCategory === cat ? `2px solid ${primary}` : 'none', outlineOffset: '3px' }}
+              >
+                <img
+                  src={categoryTiles[cat]}
+                  alt={cat}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  onError={e => { e.currentTarget.style.visibility = 'hidden' }}
+                />
+              </div>
+              <span className="text-xs font-medium text-gray-700 whitespace-nowrap">{cat}</span>
+            </button>
+          ))}
+        </div>
+      </div>
 
       <div className="px-6 md:px-10 pb-16">
         {/* Filter row — understated, no big search box */}
