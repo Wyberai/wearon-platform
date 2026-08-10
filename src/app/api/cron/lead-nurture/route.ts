@@ -4,18 +4,14 @@ import { sendEmail } from '@/lib/email/resend'
 import { leadNurtureEmail } from '@/lib/email/templates/lead-nurture'
 import { getTheme } from '@/lib/themes'
 
-// Sent from WearOn's own identity on WyberAi's verified domain — never the
-// hello@wyberai.com address WyberAi's own customers already know, to avoid
-// any mixup between the two products' communications.
-//
-// wearon@wyberai.com has no real inbox yet, so replies would otherwise
-// bounce — Reply-To routes them to hello@wyberai.com as a stopgap. This
-// still mixes WearOn lead replies into the same inbox as WyberAi customer
-// mail; the real fix is adding wearon@wyberai.com as an actual mailbox/alias
-// (e.g. in Google Workspace admin), at which point this Reply-To should
-// be removed.
-const FROM = 'WearOn <wearon@wyberai.com>'
-const REPLY_TO = 'hello@wyberai.com'
+// wearon@wyberai.com isn't a real mailbox — sending from an address with no
+// inbox means any reply bounces. Using hello@wyberai.com (the real, working
+// mailbox) as the actual address, with "WearOn" as the display name so
+// recipients still see it as WearOn, not a personal email. Replies land in
+// the same inbox as WyberAi customer mail — a real but smaller tradeoff than
+// bounced replies, unless/until a dedicated wearon@wyberai.com mailbox
+// actually exists.
+const FROM = 'WearOn <hello@wyberai.com>'
 const STEP_INTERVAL_DAYS = 7
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'https://wearon.wyberai.com'
 
@@ -65,7 +61,7 @@ export async function GET(req: Request) {
     })
     const unsubscribeUrl = `${APP_URL}/api/leads/unsubscribe?id=${lead.id}`
 
-    await sendEmail({ to: lead.email, subject, html: html.replace('{{UNSUBSCRIBE_URL}}', unsubscribeUrl), from: FROM, replyTo: REPLY_TO })
+    await sendEmail({ to: lead.email, subject, html: html.replace('{{UNSUBSCRIBE_URL}}', unsubscribeUrl), from: FROM })
     await admin.from('leads').update({ sequence_step: nextStep, last_email_sent_at: new Date().toISOString() }).eq('id', lead.id)
     results.push({ email: lead.email, action: `sent-step-${nextStep}` })
   }
