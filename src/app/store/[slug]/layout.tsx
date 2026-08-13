@@ -15,11 +15,10 @@ export default async function StoreLayout({
 }) {
   const { slug } = await params
   const admin = createAdminClient()
-  const { data: config } = await admin
-    .from('tenant_config')
-    .select('*')
-    .eq('slug', slug)
-    .single() as { data: TenantConfig | null }
+  // 'demo' always uses the fallback config so it shows US content regardless of any DB record
+  const { data: config } = slug === 'demo'
+    ? { data: null }
+    : await admin.from('tenant_config').select('*').eq('slug', slug).single() as { data: TenantConfig | null }
 
   if (!config && slug !== 'demo') notFound()
 
@@ -27,26 +26,26 @@ export default async function StoreLayout({
   const tc: TenantConfig = config ?? {
     seller_id: 'demo',
     slug: 'demo',
-    brand_name: 'Demo Boutique',
-    tagline: 'Try before you buy',
+    brand_name: 'Luna Boutique',
+    tagline: 'Curated fashion for the modern woman',
     logo_url: null,
     favicon_url: null,
-    primary_color: '#E91E63',
-    secondary_color: '#FCE4EC',
-    accent_color: '#880E4F',
+    primary_color: '#1A1A1A',
+    secondary_color: '#F5F5F5',
+    accent_color: '#A6134A',
     background_color: '#FFFFFF',
     font_family: 'poppins',
     theme_id: 'editorial',
     dark_mode_default: false,
-    currency: 'INR',
-    payment_method: 'whatsapp_order',
+    currency: 'USD',
+    payment_method: 'stripe',
     payment_config: {},
-    whatsapp_number: '+919876543210',
-    instagram_handle: '@demoboutique',
+    whatsapp_number: null,
+    instagram_handle: '@lunaboutique',
     try_on_enabled: true,
     reviews_enabled: true,
     wishlist_enabled: true,
-    categories: ['Kurtas', 'Sarees', 'Lehengas', 'Western', 'Accessories'],
+    categories: ['Dresses', 'Tops', 'Denim', 'Outerwear', 'Accessories'],
     size_guide_url: null,
     banners: [],
     custom_domain: null,
@@ -93,54 +92,88 @@ export default async function StoreLayout({
       <style dangerouslySetInnerHTML={{ __html: cssVars }} />
       <div className="store-root min-h-screen" data-tenant={slug}>
         <PreviewBanner />
-        {/* Store header — minimal, full-width, brand color as an accent only */}
-        <header className="sticky top-0 z-50 backdrop-blur-md border-b" style={{ background: 'var(--store-bg)', borderColor: 'color-mix(in srgb, var(--store-ink) 8%, transparent)' }}>
-          <div className="max-w-[1400px] mx-auto px-6 md:px-10 py-5 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              {tc.logo_url ? (
-                <img src={tc.logo_url} alt={tc.brand_name} className="h-9 w-9 object-cover" style={{ borderRadius: 'var(--store-logo-radius)' }} />
-              ) : (
-                <div style={{ backgroundColor: 'var(--primary)', borderRadius: 'var(--store-logo-radius)' }} className="h-9 w-9 flex items-center justify-center text-white font-semibold text-sm flex-shrink-0">
-                  {tc.brand_name.charAt(0)}
-                </div>
+
+        {/* Announcement bar — shown when the store has a banner configured */}
+        {Array.isArray(tc.banners) && tc.banners.length > 0 && (
+          <div className="w-full py-2.5 px-4 text-center text-xs tracking-wide" style={{ background: 'var(--store-ink)', color: 'var(--store-bg)' }}>
+            {String((tc.banners as string[])[0])}
+          </div>
+        )}
+
+        {/* Store header — Farfetch/F21 style: hamburger | centered brand | icons */}
+        <header className="sticky top-0 z-50 border-b" style={{ background: 'var(--store-bg)', borderColor: 'color-mix(in srgb, var(--store-ink) 8%, transparent)' }}>
+          <div className="max-w-[1400px] mx-auto px-5 md:px-8 h-14 md:h-16 flex items-center justify-between gap-4">
+
+            {/* Left — hamburger (opens category nav; no-op for now) */}
+            <div className="flex items-center gap-5 flex-shrink-0 w-20 md:w-32">
+              <button aria-label="Menu" className="transition-opacity hover:opacity-50" style={{ color: 'var(--store-ink)' }}>
+                <svg width="20" height="14" viewBox="0 0 20 14" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" aria-hidden>
+                  <line x1="0" y1="1" x2="20" y2="1"/>
+                  <line x1="0" y1="7" x2="20" y2="7"/>
+                  <line x1="0" y1="13" x2="20" y2="13"/>
+                </svg>
+              </button>
+              {/* Logo image — hidden on very small screens, shown md+ beside hamburger */}
+              {tc.logo_url && (
+                <img src={tc.logo_url} alt={tc.brand_name} className="hidden md:block h-7 w-7 object-cover flex-shrink-0" style={{ borderRadius: 'var(--store-logo-radius)' }} />
               )}
-              <div>
-                <span
-                  style={{
-                    color: 'var(--store-ink)',
-                    fontWeight: 'var(--store-brand-weight)' as React.CSSProperties['fontWeight'],
-                    textTransform: 'var(--store-brand-case)' as React.CSSProperties['textTransform'],
-                    letterSpacing: 'var(--store-brand-tracking)',
-                    fontSize: 'var(--store-brand-size)',
-                  }}
-                >
+            </div>
+
+            {/* Center — brand name, always centered */}
+            <div className="flex-1 text-center">
+              <a href={`/store/${slug}`} style={{ textDecoration: 'none' }}>
+                <span style={{
+                  color: 'var(--store-ink)',
+                  fontWeight: 'var(--store-brand-weight)' as React.CSSProperties['fontWeight'],
+                  textTransform: 'var(--store-brand-case)' as React.CSSProperties['textTransform'],
+                  letterSpacing: 'var(--store-brand-tracking)',
+                  fontSize: 'clamp(15px, 2.5vw, 20px)',
+                }}>
                   {tc.brand_name}
                 </span>
-                {tc.tagline && <p className="text-[11px] -mt-0.5 hidden sm:block" style={{ color: 'var(--store-ink)', opacity: 0.5 }}>{tc.tagline}</p>}
-              </div>
-            </div>
-            {tc.whatsapp_number && (
-              <a
-                href={`https://wa.me/${tc.whatsapp_number.replace(/\D/g, '')}`}
-                style={{ color: 'var(--primary)' }}
-                className="text-sm font-medium flex items-center gap-2 hover:opacity-70 transition-opacity"
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21 5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm5.83 14.02c-.24.68-1.4 1.3-1.94 1.38-.5.08-1.12.11-1.8-.11-.42-.13-.95-.31-1.64-.6-2.88-1.24-4.76-4.14-4.9-4.34-.14-.2-1.17-1.55-1.17-2.96 0-1.4.73-2.09 1-2.38.27-.28.58-.35.78-.35.2 0 .4 0 .57.01.18.01.43-.07.67.51.25.6.85 2.08.92 2.23.08.15.13.32.03.51-.1.19-.15.31-.3.48-.15.17-.31.37-.44.5-.15.14-.3.3-.13.59.17.29.77 1.27 1.66 2.06 1.14 1.02 2.11 1.33 2.41 1.48.3.15.47.13.65-.05.18-.19.75-.87.95-1.17.2-.3.4-.24.66-.14.27.09 1.71.81 2 .95.29.15.48.22.55.35.07.13.07.72-.17 1.4z"/></svg>
-                <span className="hidden sm:inline">Chat with us</span>
               </a>
-            )}
+            </div>
+
+            {/* Right — search + wishlist icons */}
+            <div className="flex items-center gap-4 flex-shrink-0 w-20 md:w-32 justify-end">
+              <button aria-label="Search" className="transition-opacity hover:opacity-50" style={{ color: 'var(--store-ink)' }}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" aria-hidden>
+                  <circle cx="11" cy="11" r="7.5"/>
+                  <path d="M21 21l-4.8-4.8"/>
+                </svg>
+              </button>
+              <button aria-label="Saved items" className="transition-opacity hover:opacity-50" style={{ color: 'var(--store-ink)' }}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                  <path d="M12 21s-7.5-4.6-10-9.2C.5 8.4 2.2 5 5.6 5c2 0 3.6 1.2 4.4 2.6C10.8 6.2 12.4 5 14.4 5c3.4 0 5.1 3.4 3.6 6.8-2.5 4.6-10 9.2-10 9.2z"/>
+                </svg>
+              </button>
+            </div>
           </div>
         </header>
 
         {/* Page content */}
         {children}
 
-        {/* Footer — minimal, understated */}
-        <footer className="mt-16 py-10 text-center text-xs border-t" style={{ color: 'var(--store-ink)', opacity: 0.55, borderColor: 'color-mix(in srgb, var(--store-ink) 8%, transparent)' }}>
-          <p>
-            {tc.instagram_handle && <span className="mr-4">Instagram: {tc.instagram_handle}</span>}
-            Powered by <a href="/" className="font-medium hover:opacity-70" style={{ color: 'var(--store-ink)' }}>WearOn</a>
-          </p>
+        {/* Footer */}
+        <footer className="mt-20 border-t" style={{ borderColor: 'color-mix(in srgb, var(--store-ink) 8%, transparent)' }}>
+          <div className="max-w-[1400px] mx-auto px-6 md:px-10 py-12 flex flex-col items-center gap-4 text-center">
+            <span style={{
+              color: 'var(--store-ink)',
+              fontWeight: 'var(--store-brand-weight)' as React.CSSProperties['fontWeight'],
+              textTransform: 'var(--store-brand-case)' as React.CSSProperties['textTransform'],
+              letterSpacing: 'var(--store-brand-tracking)',
+              fontSize: 'clamp(16px, 2vw, 20px)',
+            }}>
+              {tc.brand_name}
+            </span>
+            <div className="flex items-center gap-6 text-xs" style={{ color: 'color-mix(in srgb, var(--store-ink) 45%, transparent)' }}>
+              {tc.instagram_handle && <a href={`https://instagram.com/${tc.instagram_handle.replace('@','')}`} target="_blank" rel="noopener noreferrer" className="hover:opacity-70 transition-opacity" style={{ color: 'inherit', textDecoration: 'none' }}>Instagram</a>}
+              {tc.whatsapp_number && <a href={`https://wa.me/${tc.whatsapp_number.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer" className="hover:opacity-70 transition-opacity" style={{ color: 'inherit', textDecoration: 'none' }}>Contact</a>}
+            </div>
+            <p className="text-[11px]" style={{ color: 'color-mix(in srgb, var(--store-ink) 30%, transparent)' }}>
+              Powered by <a href="/" className="hover:opacity-70 transition-opacity" style={{ color: 'inherit' }}>WearOn</a>
+            </p>
+          </div>
         </footer>
       </div>
     </>

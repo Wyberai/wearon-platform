@@ -58,7 +58,7 @@ export const THEMES: Theme[] = [
     heroDecoration: 'none', categoryDisplay: 'circles',
     headingStyle: 'serif', navStyle: 'underline', logoShape: 'circle',
     palette: { bg: '#FAF7F3', ink: '#171512', accent: '#A6134A', card: '#F4F1EC' },
-    previewImage: `${STORAGE_BASE}/velvet-lehenga-choli-demo14.jpg`,
+    previewImage: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=1200&h=900&fit=crop',
   },
   {
     id: 'feed',
@@ -69,7 +69,7 @@ export const THEMES: Theme[] = [
     heroDecoration: 'none', categoryDisplay: 'circles',
     headingStyle: 'minimal', navStyle: 'ghost', logoShape: 'circle',
     palette: { bg: '#000000', ink: '#ffffff', accent: '#F72585', card: '#111111' },
-    previewImage: `${STORAGE_BASE}/party-wear-gown-demo9.jpg`,
+    previewImage: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=1200&h=900&fit=crop',
   },
   {
     id: 'dawn',
@@ -80,7 +80,7 @@ export const THEMES: Theme[] = [
     heroDecoration: 'none', categoryDisplay: 'circles',
     headingStyle: 'minimal', navStyle: 'underline', logoShape: 'square',
     palette: { bg: '#FFFFFF', ink: '#161616', accent: '#161616', card: '#FAFAFA' },
-    previewImage: `${STORAGE_BASE}/chikankari-kurti-demo6.jpg`,
+    previewImage: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?w=1200&h=900&fit=crop',
   },
   {
     id: 'soft',
@@ -91,7 +91,7 @@ export const THEMES: Theme[] = [
     heroDecoration: 'none', categoryDisplay: 'circles',
     headingStyle: 'rounded', navStyle: 'pill', logoShape: 'circle',
     palette: { bg: '#FFF5F8', ink: '#4A2E39', accent: '#FF6FA5', card: '#FFFFFF' },
-    previewImage: `${STORAGE_BASE}/sharara-set-demo12.jpg`,
+    previewImage: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=1200&h=900&fit=crop',
   },
   {
     id: 'craft',
@@ -102,7 +102,7 @@ export const THEMES: Theme[] = [
     heroDecoration: 'none', categoryDisplay: 'circles',
     headingStyle: 'serif', navStyle: 'underline', logoShape: 'circle',
     palette: { bg: '#F3ECE1', ink: '#3D2E1F', accent: '#8B5E34', card: '#FFFDF9' },
-    previewImage: `${STORAGE_BASE}/handloom-cotton-saree-demo11.jpg`,
+    previewImage: 'https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=1200&h=900&fit=crop',
   },
   {
     id: 'streetwear',
@@ -113,7 +113,7 @@ export const THEMES: Theme[] = [
     heroDecoration: 'none', categoryDisplay: 'circles',
     headingStyle: 'display', navStyle: 'pill', logoShape: 'square',
     palette: { bg: '#FFE600', ink: '#0A0A0A', accent: '#FF3366', card: '#FFFFFF' },
-    previewImage: `${STORAGE_BASE}/denim-jacket-coord-demo10.jpg`,
+    previewImage: 'https://images.unsplash.com/photo-1551232864-3f0890e1776c?w=1200&h=900&fit=crop',
   },
   {
     id: 'marketplace',
@@ -124,7 +124,7 @@ export const THEMES: Theme[] = [
     heroDecoration: 'none', categoryDisplay: 'circles',
     headingStyle: 'minimal', navStyle: 'ghost', logoShape: 'square',
     palette: { bg: '#F1F3F6', ink: '#212121', accent: '#FF3E6C', card: '#FFFFFF' },
-    previewImage: `${STORAGE_BASE}/crop-top-skirt-demo18.jpg`,
+    previewImage: 'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=1200&h=900&fit=crop',
   },
   {
     id: 'noir',
@@ -135,7 +135,7 @@ export const THEMES: Theme[] = [
     heroDecoration: 'none', categoryDisplay: 'circles',
     headingStyle: 'luxury', navStyle: 'ghost', logoShape: 'square',
     palette: { bg: '#0A0A0A', ink: '#F0EDE8', accent: '#C9A66B', card: '#141414' },
-    previewImage: `${STORAGE_BASE}/designer-bridal-lehenga-demo5.jpg`,
+    previewImage: 'https://images.unsplash.com/photo-1558171813-7fa2b10c2135?w=1200&h=900&fit=crop',
   },
   {
     id: 'retro',
@@ -146,7 +146,7 @@ export const THEMES: Theme[] = [
     heroDecoration: 'none', categoryDisplay: 'circles',
     headingStyle: 'display', navStyle: 'pill', logoShape: 'circle',
     palette: { bg: '#D6F5E3', ink: '#1A1A1A', accent: '#FF5A36', card: '#FFF9E8' },
-    previewImage: `${STORAGE_BASE}/georgette-sequin-saree-demo8.jpg`,
+    previewImage: 'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=1200&h=900&fit=crop',
   },
   {
     id: 'lookbook',
@@ -157,7 +157,7 @@ export const THEMES: Theme[] = [
     heroDecoration: 'none', categoryDisplay: 'circles',
     headingStyle: 'serif', navStyle: 'underline', logoShape: 'circle',
     palette: { bg: '#FFFFFF', ink: '#0A0A0A', accent: '#0A0A0A', card: '#F7F7F7' },
-    previewImage: `${STORAGE_BASE}/embroidered-anarkali-demo2.jpg`,
+    previewImage: 'https://images.unsplash.com/photo-1520367445093-50dc08a59d9d?w=1200&h=900&fit=crop',
   },
   {
     id: 'atelier',
@@ -168,7 +168,7 @@ export const THEMES: Theme[] = [
     heroDecoration: 'blob-dots', categoryDisplay: 'tiles',
     headingStyle: 'rounded', navStyle: 'underline', logoShape: 'square',
     palette: { bg: '#FAF7F3', ink: '#171512', accent: '#A6134A', card: '#F4F1EC' },
-    previewImage: `${STORAGE_BASE}/velvet-lehenga-choli-demo14.jpg`,
+    previewImage: 'https://images.unsplash.com/photo-1487222477894-8943e31ef7b2?w=1200&h=900&fit=crop',
   },
 ]
 

@@ -4,6 +4,7 @@ import { useRef, useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { getOrCreateDeviceToken } from '@/lib/device-token'
+import { ArrowLeft, Share2 } from 'lucide-react'
 
 interface RazorpayCheckoutOptions {
   key: string
@@ -48,6 +49,7 @@ interface StoreConfig {
   whatsapp_number: string | null
   instagram_handle: string | null
   razorpay_available?: boolean
+  currency?: string
 }
 
 type TryOnStep = 'idle' | 'upload' | 'generating' | 'done' | 'error'
@@ -92,7 +94,7 @@ export default function ProductDetailPage() {
       `Hi! I'd like to order *${product.name}* from ${config.brand_name}.`,
       selectedSize ? `📏 Size: ${selectedSize}` : null,
       selectedColor ? `🎨 Colour: ${selectedColor}` : null,
-      `💰 Price: ₹${product.price_inr.toLocaleString('en-IN')}`,
+      `💰 Price: ${config?.currency === 'USD' ? '$' : '₹'}${product.price_inr.toLocaleString(config?.currency === 'USD' ? 'en-US' : 'en-IN')}`,
       `\nCan you confirm availability and share payment details?`,
     ].filter(Boolean).join('\n')
     return `https://wa.me/${phone}?text=${encodeURIComponent(parts)}`
@@ -136,7 +138,7 @@ export default function ProductDetailPage() {
       const rzp = new RazorpayCtor({
         key: data.razorpay_key_id,
         amount: data.amount,
-        currency: 'INR',
+        currency: config.currency ?? 'INR',
         name: config.brand_name,
         description: product.name,
         order_id: data.razorpay_order_id,
@@ -236,18 +238,18 @@ export default function ProductDetailPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center py-20">
-        <div className="w-6 h-6 border-2 border-pink-500 border-t-transparent rounded-full animate-spin" />
+      <div className="flex items-center justify-center py-20" style={{ color: 'var(--store-ink)' }}>
+        <div className="w-6 h-6 border-2 border-t-transparent rounded-full animate-spin" style={{ borderColor: 'var(--primary)', borderTopColor: 'transparent' }} />
       </div>
     )
   }
 
   if (!product || !config) {
     return (
-      <div className="max-w-md mx-auto px-4 py-20 text-center text-gray-400">
+      <div className="max-w-md mx-auto px-4 py-20 text-center" style={{ color: 'color-mix(in srgb, var(--store-ink) 45%, transparent)' }}>
         <div className="text-5xl mb-4">😕</div>
         <p>Product not found.</p>
-        <Link href={`/store/${slug}`} className="mt-4 inline-block text-sm text-pink-600 font-medium">
+        <Link href={`/store/${slug}`} className="mt-4 inline-block text-sm font-medium" style={{ color: 'var(--primary)' }}>
           ← Back to store
         </Link>
       </div>
@@ -255,135 +257,178 @@ export default function ProductDetailPage() {
   }
 
   const primary = config.primary_color || '#F72585'
+  const currencySymbol = config.currency === 'USD' ? '$' : '₹'
+  const priceLocale = config.currency === 'USD' ? 'en-US' : 'en-IN'
   const discount = product.original_price_inr && product.original_price_inr > product.price_inr
     ? Math.round((1 - product.price_inr / product.original_price_inr) * 100)
     : null
   const whatsappUrl = buildWhatsAppUrl()
+  const borderMuted = 'color-mix(in srgb, var(--store-ink) 12%, transparent)'
+  const textMuted = 'color-mix(in srgb, var(--store-ink) 50%, transparent)'
+  const textDim = 'color-mix(in srgb, var(--store-ink) 35%, transparent)'
 
   return (
-    <div className="max-w-md mx-auto pb-32">
-      {/* Product image */}
-      <div className="relative bg-gray-50">
-        <img
-          src={product.garment_image_url}
-          alt={product.name}
-          className="w-full aspect-square object-cover"
-        />
-        {/* Back button */}
-        <Link
-          href={`/store/${slug}`}
-          className="absolute top-4 left-4 w-9 h-9 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-sm text-gray-700 hover:bg-white transition-colors"
-        >
-          ←
-        </Link>
-        {/* Share */}
-        <button
-          onClick={handleShare}
-          className="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-sm text-gray-700 hover:bg-white transition-colors"
-        >
-          ↑
-        </button>
-        {discount && (
-          <div
-            style={{ backgroundColor: primary }}
-            className="absolute bottom-4 left-4 text-white text-xs font-bold px-2.5 py-1 rounded-full"
+    <div style={{ background: 'var(--store-bg)', color: 'var(--store-ink)' }}>
+      {/* Desktop: 2-col grid. Mobile: stacked. */}
+      <div className="max-w-screen-lg mx-auto md:grid md:grid-cols-2 md:gap-12 md:px-10 md:py-12 pb-32 md:pb-16">
+
+        {/* Left / Top — product image */}
+        <div className="relative" style={{ background: 'color-mix(in srgb, var(--store-bg) 80%, var(--store-ink))' }}>
+          <img
+            src={product.garment_image_url}
+            alt={product.name}
+            className="w-full aspect-square object-cover md:rounded-2xl"
+          />
+          <Link
+            href={`/store/${slug}`}
+            className="absolute top-4 left-4 w-9 h-9 rounded-full backdrop-blur-sm flex items-center justify-center shadow-sm transition-opacity hover:opacity-80"
+            style={{ background: 'color-mix(in srgb, var(--store-bg) 92%, transparent)', color: 'var(--store-ink)' }}
           >
-            {discount}% OFF
-          </div>
-        )}
-      </div>
-
-      {/* Product details */}
-      <div className="px-4 pt-5">
-        {product.category && (
-          <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-1">{product.category}</p>
-        )}
-        <h1 className="text-xl font-bold text-gray-900 leading-tight mb-2">{product.name}</h1>
-
-        {/* Price */}
-        <div className="flex items-baseline gap-3 mb-4">
-          <span style={{ color: primary }} className="text-2xl font-bold">
-            ₹{product.price_inr.toLocaleString('en-IN')}
-          </span>
-          {product.original_price_inr && (
-            <span className="text-gray-400 text-base line-through">
-              ₹{product.original_price_inr.toLocaleString('en-IN')}
-            </span>
-          )}
+            <ArrowLeft size={16} />
+          </Link>
+          <button
+            onClick={handleShare}
+            className="absolute top-4 right-4 w-9 h-9 rounded-full backdrop-blur-sm flex items-center justify-center shadow-sm transition-opacity hover:opacity-80"
+            style={{ background: 'color-mix(in srgb, var(--store-bg) 92%, transparent)', color: 'var(--store-ink)' }}
+          >
+            <Share2 size={16} />
+          </button>
           {discount && (
-            <span style={{ color: primary }} className="text-sm font-semibold">
-              Save ₹{(product.original_price_inr! - product.price_inr).toLocaleString('en-IN')}
-            </span>
+            <div
+              style={{ backgroundColor: primary }}
+              className="absolute bottom-4 left-4 text-white text-xs font-bold px-2.5 py-1 rounded-full"
+            >
+              {discount}% OFF
+            </div>
           )}
         </div>
 
-        {/* Description */}
-        {product.description && (
-          <p className="text-sm text-gray-500 leading-relaxed mb-5">{product.description}</p>
-        )}
+        {/* Right / Bottom — product details, sticky on desktop */}
+        <div className="px-4 pt-5 md:px-0 md:pt-0 md:sticky md:top-24 md:self-start">
+          {product.category && (
+            <p className="text-xs font-semibold uppercase tracking-widest mb-1" style={{ color: textDim }}>{product.category}</p>
+          )}
+          <h1 className="text-xl font-bold leading-tight mb-2" style={{ color: 'var(--store-ink)' }}>{product.name}</h1>
 
-        {/* Size picker */}
-        {product.sizes && product.sizes.length > 0 && (
-          <div className="mb-5">
-            <div className="flex items-center justify-between mb-2">
-              <p className="text-sm font-semibold text-gray-800">Size</p>
-              <span className="text-xs text-gray-400">{selectedSize || 'Select a size'}</span>
+          {/* Price */}
+          <div className="flex items-baseline gap-3 mb-4">
+            <span style={{ color: primary }} className="text-2xl font-bold">
+              {currencySymbol}{product.price_inr.toLocaleString(priceLocale)}
+            </span>
+            {product.original_price_inr && (
+              <span className="text-base line-through" style={{ color: textMuted }}>
+                {currencySymbol}{product.original_price_inr.toLocaleString(priceLocale)}
+              </span>
+            )}
+            {discount && (
+              <span style={{ color: primary }} className="text-sm font-semibold">
+                Save {currencySymbol}{(product.original_price_inr! - product.price_inr).toLocaleString(priceLocale)}
+              </span>
+            )}
+          </div>
+
+          {/* Description */}
+          {product.description && (
+            <p className="text-sm leading-relaxed mb-5" style={{ color: textMuted }}>{product.description}</p>
+          )}
+
+          {/* Size picker */}
+          {product.sizes && product.sizes.length > 0 && (
+            <div className="mb-5">
+              <div className="flex items-center justify-between mb-2">
+                <p className="text-sm font-semibold" style={{ color: 'var(--store-ink)' }}>Size</p>
+                <span className="text-xs" style={{ color: textDim }}>{selectedSize || 'Select a size'}</span>
+              </div>
+              <div className="flex gap-2 flex-wrap">
+                {product.sizes.map(size => (
+                  <button
+                    key={size}
+                    onClick={() => setSelectedSize(size)}
+                    className="px-4 py-2 rounded-xl text-sm font-medium border-2 transition-all"
+                    style={selectedSize === size
+                      ? { backgroundColor: primary, borderColor: primary, color: 'white' }
+                      : { borderColor: borderMuted, color: 'var(--store-ink)' }
+                    }
+                  >
+                    {size}
+                  </button>
+                ))}
+              </div>
             </div>
-            <div className="flex gap-2 flex-wrap">
-              {product.sizes.map(size => (
-                <button
-                  key={size}
-                  onClick={() => setSelectedSize(size)}
-                  style={selectedSize === size ? { backgroundColor: primary, borderColor: primary, color: 'white' } : {}}
-                  className={`px-4 py-2 rounded-xl text-sm font-medium border-2 transition-all ${
-                    selectedSize === size ? '' : 'border-gray-200 text-gray-700 hover:border-gray-300'
-                  }`}
-                >
-                  {size}
-                </button>
-              ))}
+          )}
+
+          {/* Color picker */}
+          {product.colors && product.colors.length > 0 && (
+            <div className="mb-5">
+              <p className="text-sm font-semibold mb-2" style={{ color: 'var(--store-ink)' }}>Colour</p>
+              <div className="flex gap-2 flex-wrap">
+                {product.colors.map(color => (
+                  <button
+                    key={color}
+                    onClick={() => setSelectedColor(color)}
+                    className="px-4 py-2 rounded-xl text-sm font-medium border-2 transition-all"
+                    style={selectedColor === color
+                      ? { borderColor: 'var(--store-ink)', color: 'var(--store-ink)' }
+                      : { borderColor: borderMuted, color: textMuted }
+                    }
+                  >
+                    {color}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* AI Try-On button */}
+          {config.seller_id && (
+            <button
+              onClick={() => setTryOnStep('upload')}
+              style={{ borderColor: primary, color: primary }}
+              className="w-full border-2 rounded-2xl py-3.5 font-bold text-sm flex items-center justify-center gap-2 mb-4 hover:opacity-80 transition-opacity"
+            >
+              <span className="text-lg">🪄</span>
+              See yourself wearing this
+            </button>
+          )}
+
+          {/* Delivery note */}
+          <div className="rounded-xl px-4 py-3 mb-6 flex items-center gap-3" style={{ background: `color-mix(in srgb, var(--store-bg) 60%, color-mix(in srgb, var(--store-ink) 8%, transparent))` }}>
+            <span className="text-xl">📦</span>
+            <div>
+              <p className="text-xs font-semibold" style={{ color: 'var(--store-ink)' }}>Free shipping on orders over $75</p>
+              <p className="text-xs" style={{ color: textMuted }}>Confirm delivery time via message</p>
             </div>
           </div>
-        )}
 
-        {/* Color picker */}
-        {product.colors && product.colors.length > 0 && (
-          <div className="mb-5">
-            <p className="text-sm font-semibold text-gray-800 mb-2">Colour</p>
-            <div className="flex gap-2 flex-wrap">
-              {product.colors.map(color => (
+          {/* Desktop inline order bar */}
+          <div className="hidden md:block">
+            {whatsappUrl ? (
+              <div className="flex gap-2">
                 <button
-                  key={color}
-                  onClick={() => setSelectedColor(color)}
-                  className={`px-4 py-2 rounded-xl text-sm font-medium border-2 transition-all ${
-                    selectedColor === color ? 'border-gray-800 text-gray-900' : 'border-gray-200 text-gray-600 hover:border-gray-300'
-                  }`}
+                  onClick={handleOrder}
+                  className="flex-1 bg-green-500 hover:bg-green-600 text-white py-4 rounded-2xl font-bold text-base flex items-center justify-center gap-2.5 transition-colors"
                 >
-                  {color}
+                  <span className="text-xl">💬</span>
+                  {ordered ? 'Opening WhatsApp...' : `Order on WhatsApp · ${currencySymbol}${product.price_inr.toLocaleString(priceLocale)}`}
                 </button>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* AI Try-On button */}
-        {config.seller_id && (
-          <button
-            onClick={() => setTryOnStep('upload')}
-            style={{ borderColor: primary, color: primary }}
-            className="w-full border-2 rounded-2xl py-3.5 font-bold text-sm flex items-center justify-center gap-2 mb-4 hover:opacity-80 transition-opacity"
-          >
-            <span className="text-lg">🪄</span>
-            See yourself wearing this
-          </button>
-        )}
-
-        {/* Delivery note */}
-        <div className="bg-gray-50 rounded-xl px-4 py-3 mb-6 flex items-center gap-3">
-          <span className="text-xl">📦</span>
-          <div>
-            <p className="text-xs font-semibold text-gray-700">Ships pan-India</p>
-            <p className="text-xs text-gray-400">Confirm delivery time on WhatsApp</p>
+                {config.razorpay_available && (
+                  <button
+                    onClick={handlePayOnline}
+                    disabled={paying}
+                    style={{ borderColor: primary, color: primary }}
+                    className="px-4 rounded-2xl font-bold text-sm border-2 flex items-center justify-center gap-1.5 disabled:opacity-60 flex-shrink-0"
+                  >
+                    💳 {paying ? '…' : 'Pay Online'}
+                  </button>
+                )}
+              </div>
+            ) : (
+              <div className="text-center text-sm py-3" style={{ color: textDim }}>
+                Contact seller via Instagram to order
+              </div>
+            )}
+            {paymentDone && <p className="text-center text-xs text-green-600 font-semibold mt-2">Payment received! Seller will confirm your order shortly.</p>}
+            {payError && <p className="text-center text-xs text-red-500 mt-2">{payError}</p>}
           </div>
         </div>
       </div>
@@ -509,7 +554,7 @@ export default function ProductDetailPage() {
                     background: '#25D366', color: '#fff',
                   }}
                 >
-                  💬 Love it? Order on WhatsApp · ₹{product?.price_inr.toLocaleString('en-IN')}
+                  💬 Love it? Order on WhatsApp · {currencySymbol}{product?.price_inr.toLocaleString(priceLocale)}
                 </button>
               </div>
             )}
@@ -532,9 +577,9 @@ export default function ProductDetailPage() {
         </div>
       )}
 
-      {/* Sticky order bar — WhatsApp stays the default, wider action; Pay
-          Online only appears once the seller has configured Razorpay. */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 px-4 py-3 shadow-lg">
+      {/* Sticky order bar — mobile only; desktop shows inline in details col */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 px-4 py-3 shadow-lg border-t"
+        style={{ background: 'var(--store-bg)', borderColor: 'color-mix(in srgb, var(--store-ink) 10%, transparent)' }}>
         <div className="max-w-md mx-auto">
           {whatsappUrl ? (
             <div className="flex gap-2">
@@ -543,7 +588,7 @@ export default function ProductDetailPage() {
                 className="flex-1 bg-green-500 hover:bg-green-600 text-white py-4 rounded-2xl font-bold text-base flex items-center justify-center gap-2.5 transition-colors active:scale-98"
               >
                 <span className="text-xl">💬</span>
-                {ordered ? 'Opening WhatsApp...' : `Order on WhatsApp · ₹${product.price_inr.toLocaleString('en-IN')}`}
+                {ordered ? 'Opening WhatsApp...' : `Order on WhatsApp · ${currencySymbol}${product.price_inr.toLocaleString(priceLocale)}`}
               </button>
               {config.razorpay_available && (
                 <button
@@ -557,7 +602,7 @@ export default function ProductDetailPage() {
               )}
             </div>
           ) : (
-            <div className="text-center text-sm text-gray-400 py-3">
+            <div className="text-center text-sm py-3" style={{ color: 'color-mix(in srgb, var(--store-ink) 45%, transparent)' }}>
               Contact seller via Instagram to order
             </div>
           )}

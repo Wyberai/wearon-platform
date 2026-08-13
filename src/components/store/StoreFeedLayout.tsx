@@ -9,10 +9,12 @@ export function StoreFeedLayout({
   products,
   slug,
   theme,
+  currency,
 }: {
   products: Product[]
   slug: string
   theme: Theme
+  currency?: string
 }) {
   return (
     <div className="h-[calc(100vh-73px)] overflow-y-scroll snap-y snap-mandatory" style={{ background: theme.palette.bg }}>
@@ -22,15 +24,17 @@ export function StoreFeedLayout({
         </div>
       ) : (
         products.map(product => (
-          <FeedSlide key={product.id} product={product} slug={slug} theme={theme} />
+          <FeedSlide key={product.id} product={product} slug={slug} theme={theme} currency={currency} />
         ))
       )}
     </div>
   )
 }
 
-function FeedSlide({ product, slug, theme }: { product: Product; slug: string; theme: Theme }) {
+function FeedSlide({ product, slug, theme, currency }: { product: Product; slug: string; theme: Theme; currency?: string }) {
   const [showTag, setShowTag] = useState(false)
+  const currencySymbol = currency === 'USD' ? '$' : '₹'
+  const priceLocale = currency === 'USD' ? 'en-US' : 'en-IN'
 
   return (
     <section className="relative h-full w-full snap-start snap-always flex items-center justify-center overflow-hidden">
@@ -51,7 +55,7 @@ function FeedSlide({ product, slug, theme }: { product: Product; slug: string; t
             <img src={product.garment_image_url} alt="" className="w-12 h-14 rounded-lg object-cover flex-shrink-0" />
             <div className="min-w-0">
               <p className="text-white text-xs font-medium truncate">{product.name}</p>
-              <p className="text-white/60 text-xs">₹{product.price_inr.toLocaleString('en-IN')}</p>
+              <p className="text-white/60 text-xs">{currencySymbol}{product.price_inr.toLocaleString(priceLocale)}</p>
             </div>
           </div>
           <Link
@@ -66,7 +70,7 @@ function FeedSlide({ product, slug, theme }: { product: Product; slug: string; t
 
       <div className="absolute bottom-0 left-0 right-16 p-5 pb-10 z-10 pointer-events-none text-white">
         <p className="font-semibold text-sm mb-1">{product.name}</p>
-        <p className="text-sm opacity-85">₹{product.price_inr.toLocaleString('en-IN')}{product.category ? ` · ${product.category}` : ''}</p>
+        <p className="text-sm opacity-85">{currencySymbol}{product.price_inr.toLocaleString(priceLocale)}{product.category ? ` · ${product.category}` : ''}</p>
       </div>
     </section>
   )

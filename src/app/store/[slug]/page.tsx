@@ -132,6 +132,8 @@ function StorePageContent() {
   }
 
   const theme = getTheme(themeOverride || config?.theme_id)
+  const currencySymbol = config?.currency === 'USD' ? '$' : '₹'
+  const priceLocale = config?.currency === 'USD' ? 'en-US' : 'en-IN'
 
   // Preview override (?theme=) only reaches this client component — push it
   // up to the shared CSS vars so the server-rendered header/footer (which
@@ -154,13 +156,13 @@ function StorePageContent() {
   }, [themeOverride, theme])
 
   const primary = (config as TenantConfig & { primary_color?: string })?.primary_color ?? theme.palette.accent
-  const categories: string[] = (config?.categories as string[]) ?? ['Kurtas', 'Sarees', 'Lehengas', 'Western', 'Accessories']
+  const categories: string[] = (config?.categories as string[]) ?? ['Dresses', 'Tops', 'Denim', 'Outerwear', 'Accessories']
   const categoryTiles: Record<string, string> = {
-    Kurtas: `${STORAGE_BASE}/cat-kurtas.jpg`,
-    Sarees: `${STORAGE_BASE}/cat-sarees.jpg`,
-    Lehengas: `${STORAGE_BASE}/cat-lehengas.jpg`,
-    Western: `${STORAGE_BASE}/cat-western.jpg`,
-    Accessories: `${STORAGE_BASE}/cat-accessories.jpg`,
+    Dresses: 'https://images.unsplash.com/photo-1496747611176-843222e1e57c?w=400&h=400&fit=crop',
+    Tops: 'https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=400&h=400&fit=crop',
+    Denim: 'https://images.unsplash.com/photo-1542272604-787c3835535d?w=400&h=400&fit=crop',
+    Outerwear: 'https://images.unsplash.com/photo-1539533018447-63fcce2678e3?w=400&h=400&fit=crop',
+    Accessories: 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=400&h=400&fit=crop',
   }
 
   const filtered = products
@@ -196,7 +198,7 @@ function StorePageContent() {
   if (theme.layout === 'feed') {
     return (
       <>
-        <StoreFeedLayout products={filtered} slug={slug} theme={theme} />
+        <StoreFeedLayout products={filtered} slug={slug} theme={theme} currency={config?.currency} />
         {chatBubble}
       </>
     )
@@ -227,22 +229,24 @@ function StorePageContent() {
             </>
           )}
           <p className="relative text-xs uppercase tracking-[0.22em] opacity-60 mb-3">New this season</p>
-          <h1 className={`relative text-5xl md:text-8xl ${HEADING_CLASS[theme.headingStyle]}`} style={{ maxWidth: 900 }}>The full collection</h1>
+          <h1 className={`relative text-5xl md:text-8xl ${HEADING_CLASS[theme.headingStyle]}`} style={{ maxWidth: 900 }}>{config?.brand_name ?? 'The Collection'}</h1>
+          <a href="#products" className="relative inline-block mt-6 px-6 py-2.5 text-sm font-semibold" style={{ background: theme.palette.accent, color: '#fff', textDecoration: 'none' }}>Shop now</a>
           {theme.headingStyle === 'luxury' && <div className="relative mt-6 w-16 h-px" style={{ background: theme.palette.accent }} />}
         </div>
       ) : theme.hero === 'banner-strip' ? (
         <div className="w-full py-4 px-6 md:px-10 mb-6 flex items-center justify-between" style={{ background: theme.palette.accent, color: '#fff' }}>
           <span className="text-sm font-semibold">🔥 New arrivals this week</span>
-          <span className="text-xs opacity-85">Free shipping over ₹999</span>
+          <span className="text-xs opacity-85">Free shipping over {currencySymbol}{config?.currency === 'USD' ? '75' : '999'}</span>
         </div>
       ) : (
-        <div className="relative w-full h-[340px] md:h-[480px] overflow-hidden mb-10">
+        <div className="relative w-full h-[430px] md:h-[520px] overflow-hidden mb-10">
           <img src={heroImage} alt="" className="w-full h-full object-cover" onError={e => { e.currentTarget.style.display = 'none' }} />
           <div className={`absolute inset-0 bg-gradient-to-t ${isDark ? 'from-black/85 via-black/30' : 'from-black/55 via-black/10'} to-transparent`} />
           <div className="absolute bottom-8 left-6 md:left-10 text-white">
             <p className="text-xs uppercase tracking-[0.22em] opacity-85 mb-2">New this season</p>
-            <h1 className={`text-4xl md:text-6xl ${HEADING_CLASS[theme.headingStyle]}`}>The full collection</h1>
+            <h1 className={`text-4xl md:text-6xl ${HEADING_CLASS[theme.headingStyle]}`}>{config?.brand_name ?? 'The Collection'}</h1>
             {theme.headingStyle === 'luxury' && <div className="mt-4 w-14 h-px" style={{ background: theme.palette.accent }} />}
+            <a href="#products" className="inline-block mt-4 px-5 py-2 text-sm font-semibold" style={{ background: theme.palette.accent, color: '#fff', textDecoration: 'none' }}>Shop now</a>
           </div>
         </div>
       )}
@@ -272,7 +276,7 @@ function StorePageContent() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
                 <div className="absolute bottom-4 left-5 text-white">
                   <p className={`text-lg md:text-xl ${HEADING_CLASS[theme.headingStyle]}`}>{cat}</p>
-                  <span className="text-xs font-semibold uppercase tracking-wide underline">Shop now</span>
+                  <span className="text-xs font-semibold uppercase tracking-wide underline">Shop now →</span>
                 </div>
               </button>
             ))}
@@ -280,38 +284,31 @@ function StorePageContent() {
         </div>
       ) : (
         <div className="px-6 md:px-10 mb-10">
-          <p className="text-xs uppercase tracking-[0.2em] mb-4" style={{ opacity: 0.5 }}>Categories</p>
-          <div className="flex gap-5 overflow-x-auto pb-2">
-            {categories.map(cat => (
-              <button
-                key={cat}
-                onClick={() => setActiveCategory(activeCategory === cat ? null : cat)}
-                className="flex flex-col items-center gap-2 flex-shrink-0 group"
-              >
-                <div
-                  className="w-20 h-20 md:w-24 md:h-24 overflow-hidden"
+          <div className="flex gap-2 overflow-x-auto pb-1" style={{ scrollbarWidth: 'none' }}>
+            {categories.map(cat => {
+              const active = activeCategory === cat
+              return (
+                <button
+                  key={cat}
+                  onClick={() => setActiveCategory(active ? null : cat)}
+                  className="flex-shrink-0 transition-all duration-200"
                   style={{
-                    borderRadius: theme.decoration === 'stickers' ? 8 : '50%',
-                    background: theme.palette.card,
-                    outline: activeCategory === cat ? `2px solid ${theme.palette.accent}` : 'none',
-                    outlineOffset: '3px',
+                    padding: '7px 18px', fontSize: 13, fontWeight: 500,
+                    borderRadius: 999, whiteSpace: 'nowrap',
+                    background: active ? theme.palette.accent : 'transparent',
+                    color: active ? '#fff' : theme.palette.ink,
+                    border: `1.5px solid ${active ? theme.palette.accent : `color-mix(in srgb, ${theme.palette.ink} 20%, transparent)`}`,
                   }}
                 >
-                  <img
-                    src={categoryTiles[cat]}
-                    alt={cat}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    onError={e => { e.currentTarget.style.visibility = 'hidden' }}
-                  />
-                </div>
-                <span className="text-xs font-medium whitespace-nowrap">{cat}</span>
-              </button>
-            ))}
+                  {cat}
+                </button>
+              )
+            })}
           </div>
         </div>
       )}
 
-      <div className="px-6 md:px-10 pb-16">
+      <div id="products" className="px-6 md:px-10 pb-16">
         {/* Filter row */}
         <div className="flex flex-wrap items-center justify-between gap-4 mb-8 pb-4 border-b" style={{ borderColor: `${theme.palette.ink}14` }}>
           <div className="flex gap-6 overflow-x-auto items-center">
@@ -357,7 +354,7 @@ function StorePageContent() {
 
               return (
                 <Link key={product.id} href={`/store/${slug}/product/${product.id}`} className="group block">
-                  <div className="relative overflow-hidden" style={{ aspectRatio: aspect, background: theme.palette.card, borderRadius: theme.decoration === 'rounded' ? 16 : 0 }}>
+                  <div className="relative overflow-hidden" style={{ aspectRatio: aspect, background: theme.palette.card, borderRadius: theme.decoration === 'rounded' ? 12 : 0 }}>
                     <img
                       src={product.garment_image_url}
                       alt={product.name}
@@ -381,6 +378,10 @@ function StorePageContent() {
                         {discountPct}% off
                       </div>
                     )}
+                    <div className="absolute inset-x-0 bottom-0 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out px-3 py-2.5 pointer-events-none"
+                      style={{ background: `linear-gradient(to top, ${theme.palette.accent} 0%, color-mix(in srgb, ${theme.palette.accent} 70%, transparent) 100%)` }}>
+                      <span className="text-white text-[11px] font-semibold tracking-wide uppercase">View →</span>
+                    </div>
                     <button
                       onClick={(e) => toggleWishlist(e, product.id)}
                       className="absolute top-3 right-3 w-8 h-8 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-sm"
@@ -394,14 +395,14 @@ function StorePageContent() {
                   <div className="pt-3">
                     <p className="text-[13.5px] truncate" style={{ color: `${theme.palette.ink}dd` }}>{product.name}</p>
                     <div className="flex items-center gap-2 mt-1">
-                      <span className={PRICE_CLASS[theme.headingStyle]} style={{ color: theme.headingStyle === 'luxury' ? theme.palette.accent : theme.palette.ink }}>₹{product.price_inr.toLocaleString('en-IN')}</span>
+                      <span className={PRICE_CLASS[theme.headingStyle]} style={{ color: theme.headingStyle === 'luxury' ? theme.palette.accent : theme.palette.ink }}>{currencySymbol}{product.price_inr.toLocaleString(priceLocale)}</span>
                       {product.original_price_inr && (
-                        <span className="text-xs line-through" style={{ color: `${theme.palette.ink}55` }}>₹{product.original_price_inr.toLocaleString('en-IN')}</span>
+                        <span className="text-xs line-through" style={{ color: `${theme.palette.ink}55` }}>{currencySymbol}{product.original_price_inr.toLocaleString(priceLocale)}</span>
                       )}
                     </div>
                     {rating && rating.count > 0 && (
                       <div className="flex items-center gap-1 mt-1.5">
-                        <svg width="11" height="11" viewBox="0 0 24 24" fill={theme.palette.ink} aria-hidden><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7-6.3-3.9-6.3 3.9 1.7-7L2 9.5l7.1-.6z"/></svg>
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill={theme.palette.accent} aria-hidden><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7-6.3-3.9-6.3 3.9 1.7-7L2 9.5l7.1-.6z"/></svg>
                         <span className="text-xs" style={{ color: `${theme.palette.ink}77` }}>{rating.avg.toFixed(1)} ({rating.count})</span>
                       </div>
                     )}
@@ -445,11 +446,24 @@ function renderNavTab(theme: Theme, label: string, active: boolean, onClick: () 
   )
 }
 
+const _U = (id: string) => `https://images.unsplash.com/${id}?w=800&h=1000&fit=crop`
+
 function getDemoProducts(): Product[] {
   return [
-    { id: 'p1', seller_id: 'demo', name: 'Floral Cotton Kurti', description: 'Light and breezy', category: 'Kurtas', price_inr: 899, original_price_inr: 1499, garment_image_url: 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=400&h=400&fit=crop', garment_preprocessed_url: null, slug: 'floral-kurti', is_active: true, sizes: ['S', 'M', 'L', 'XL'], colors: [], tags: [], created_at: '' },
-    { id: 'p2', seller_id: 'demo', name: 'Embroidered Anarkali', description: 'For special occasions', category: 'Kurtas', price_inr: 2499, original_price_inr: 3999, garment_image_url: 'https://images.unsplash.com/photo-1617627143233-b27e68dda5df?w=400&h=400&fit=crop', garment_preprocessed_url: null, slug: 'anarkali', is_active: true, sizes: ['S', 'M', 'L'], colors: [], tags: [], created_at: '' },
-    { id: 'p3', seller_id: 'demo', name: 'Silk Saree', description: 'Premium quality', category: 'Sarees', price_inr: 4999, original_price_inr: null, garment_image_url: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=400&h=400&fit=crop', garment_preprocessed_url: null, slug: 'silk-saree', is_active: true, sizes: ['Free Size'], colors: [], tags: [], created_at: '' },
-    { id: 'p4', seller_id: 'demo', name: 'Casual Palazzo Set', description: 'Everyday comfort', category: 'Western', price_inr: 1299, original_price_inr: 1799, garment_image_url: 'https://images.unsplash.com/photo-1590735213920-68192a487bc2?w=400&h=400&fit=crop', garment_preprocessed_url: null, slug: 'palazzo', is_active: true, sizes: ['S', 'M', 'L', 'XL', 'XXL'], colors: [], tags: [], created_at: '' },
+    { id: 'demo-01', seller_id: 'demo', name: 'Satin Slip Maxi Dress', description: 'Fluid satin with adjustable straps. Runs true to size.', category: 'Dresses', price_inr: 89, original_price_inr: 120, garment_image_url: _U('photo-1496747611176-843222e1e57c'), garment_preprocessed_url: null, slug: 'satin-slip-maxi-dress', is_active: true, sizes: ['XS','S','M','L','XL'], colors: ['Champagne','Black','Sage'], tags: ['bestseller'], created_at: '' },
+    { id: 'demo-02', seller_id: 'demo', name: 'Floral Wrap Midi Dress', description: 'Lightweight wrap silhouette, adjustable tie waist.', category: 'Dresses', price_inr: 72, original_price_inr: null, garment_image_url: _U('photo-1572804013309-59a88b7e92f1'), garment_preprocessed_url: null, slug: 'floral-wrap-midi-dress', is_active: true, sizes: ['XS','S','M','L'], colors: ['Floral Print'], tags: [], created_at: '' },
+    { id: 'demo-03', seller_id: 'demo', name: 'Off-Shoulder Mini Dress', description: 'Clean off-shoulder cut, structured bodice, stretch hem.', category: 'Dresses', price_inr: 65, original_price_inr: null, garment_image_url: _U('photo-1496440737103-cd596325d314'), garment_preprocessed_url: null, slug: 'off-shoulder-mini-dress', is_active: true, sizes: ['XS','S','M','L','XL'], colors: ['White','Black'], tags: ['new'], created_at: '' },
+    { id: 'demo-04', seller_id: 'demo', name: 'Oversized Linen Shirt', description: 'Boxy relaxed fit, 100% European linen, coconut buttons.', category: 'Tops', price_inr: 55, original_price_inr: null, garment_image_url: _U('photo-1434389677669-e08b4cac3105'), garment_preprocessed_url: null, slug: 'oversized-linen-shirt', is_active: true, sizes: ['XS','S','M','L','XL','XXL'], colors: ['Ivory','Sand','Navy'], tags: [], created_at: '' },
+    { id: 'demo-05', seller_id: 'demo', name: 'Cropped Ribbed Tank', description: 'Fitted crop in thick-rib jersey. Pairs with everything.', category: 'Tops', price_inr: 32, original_price_inr: null, garment_image_url: _U('photo-1509631179647-0177331693ae'), garment_preprocessed_url: null, slug: 'cropped-ribbed-tank', is_active: true, sizes: ['XS','S','M','L'], colors: ['Black','White','Cream','Mocha'], tags: ['bestseller'], created_at: '' },
+    { id: 'demo-06', seller_id: 'demo', name: 'Satin Cowl-Neck Cami', description: 'Draped cowl neck, adjustable straps, relaxed fit.', category: 'Tops', price_inr: 48, original_price_inr: 60, garment_image_url: _U('photo-1469334031218-e382a71b716b'), garment_preprocessed_url: null, slug: 'satin-cowl-neck-cami', is_active: true, sizes: ['XS','S','M','L','XL'], colors: ['Champagne','Dusty Rose','Slate'], tags: ['sale'], created_at: '' },
+    { id: 'demo-07', seller_id: 'demo', name: 'High-Rise Straight Jeans', description: 'Classic high-rise with a straight leg. 98% cotton, slight stretch.', category: 'Denim', price_inr: 98, original_price_inr: null, garment_image_url: _U('photo-1542272604-787c3835535d'), garment_preprocessed_url: null, slug: 'high-rise-straight-jeans', is_active: true, sizes: ['24','25','26','27','28','29','30','31','32'], colors: ['Mid Wash','Dark Wash','Light Wash'], tags: ['bestseller'], created_at: '' },
+    { id: 'demo-08', seller_id: 'demo', name: 'Wide-Leg Barrel Jeans', description: 'Relaxed barrel silhouette, low to mid rise.', category: 'Denim', price_inr: 110, original_price_inr: null, garment_image_url: _U('photo-1475178626620-a4d074967452'), garment_preprocessed_url: null, slug: 'wide-leg-barrel-jeans', is_active: true, sizes: ['24','25','26','27','28','29','30'], colors: ['Ecru','Mid Wash'], tags: ['new'], created_at: '' },
+    { id: 'demo-09', seller_id: 'demo', name: 'Classic Denim Jacket', description: 'Structured denim jacket with chest pockets and button closure.', category: 'Denim', price_inr: 115, original_price_inr: 145, garment_image_url: _U('photo-1591047139829-d91aecb6caea'), garment_preprocessed_url: null, slug: 'classic-denim-jacket', is_active: true, sizes: ['XS','S','M','L','XL'], colors: ['Light Wash','Dark Wash'], tags: ['sale'], created_at: '' },
+    { id: 'demo-10', seller_id: 'demo', name: 'Camel Trench Coat', description: 'Belted trench in a water-repellent shell. Timeless silhouette.', category: 'Outerwear', price_inr: 195, original_price_inr: null, garment_image_url: _U('photo-1539533018447-63fcce2678e3'), garment_preprocessed_url: null, slug: 'camel-trench-coat', is_active: true, sizes: ['XS','S','M','L','XL'], colors: ['Camel','Khaki'], tags: ['new'], created_at: '' },
+    { id: 'demo-11', seller_id: 'demo', name: 'Oversized Wool Blazer', description: 'Boyfriend-fit blazer in a herringbone wool blend.', category: 'Outerwear', price_inr: 155, original_price_inr: 200, garment_image_url: _U('photo-1490481651871-ab68de25d43d'), garment_preprocessed_url: null, slug: 'oversized-wool-blazer', is_active: true, sizes: ['XS','S','M','L','XL'], colors: ['Black','Charcoal','Cream'], tags: ['sale'], created_at: '' },
+    { id: 'demo-12', seller_id: 'demo', name: 'Quilted Puffer Vest', description: 'Lightweight quilted fill, cropped length, snap buttons.', category: 'Outerwear', price_inr: 88, original_price_inr: null, garment_image_url: _U('photo-1548624313-0396c75e4b1a'), garment_preprocessed_url: null, slug: 'quilted-puffer-vest', is_active: true, sizes: ['XS','S','M','L','XL'], colors: ['Black','Cream','Olive'], tags: [], created_at: '' },
+    { id: 'demo-13', seller_id: 'demo', name: 'Mini Crossbody Bag', description: 'Structured mini bag in pebbled faux leather. Adjustable strap.', category: 'Accessories', price_inr: 79, original_price_inr: null, garment_image_url: _U('photo-1548036328-c9fa89d128fa'), garment_preprocessed_url: null, slug: 'mini-crossbody-bag', is_active: true, sizes: [], colors: ['Black','Tan','Burgundy'], tags: ['bestseller'], created_at: '' },
+    { id: 'demo-14', seller_id: 'demo', name: 'Gold Chain Hoops', description: 'Lightweight chunky chain hoops, 18k gold-plated brass.', category: 'Accessories', price_inr: 34, original_price_inr: null, garment_image_url: _U('photo-1606760227091-3dd870d97f1d'), garment_preprocessed_url: null, slug: 'gold-chain-hoops', is_active: true, sizes: [], colors: ['Gold'], tags: ['new'], created_at: '' },
+    { id: 'demo-15', seller_id: 'demo', name: 'Ribbed Knit Beanie', description: 'Chunky ribbed knit in a one-size-fits-all style.', category: 'Accessories', price_inr: 28, original_price_inr: null, garment_image_url: _U('photo-1516762689617-e1cffcef479d'), garment_preprocessed_url: null, slug: 'ribbed-knit-beanie', is_active: true, sizes: [], colors: ['Oatmeal','Black','Camel','Sage'], tags: [], created_at: '' },
   ]
 }

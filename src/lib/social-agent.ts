@@ -145,7 +145,7 @@ export async function generateReply(
 
   const productCatalogue = ctx.products.length > 0
     ? ctx.products.map(p =>
-        `- ${p.name}${p.category ? ` (${p.category})` : ''}: ₹${p.price_inr.toLocaleString('en-IN')}` +
+        `- ${p.name}${p.category ? ` (${p.category})` : ''}: $${p.price_inr.toLocaleString('en-US')}` +
         (p.sizes?.length ? `, sizes: ${p.sizes.join('/')}` : '') +
         (p.colors?.length ? `, colors: ${p.colors.join('/')}` : '') +
         (p.description ? ` — ${p.description.slice(0, 80)}` : '')
@@ -154,22 +154,21 @@ export async function generateReply(
 
   const orderHistory = ctx.recentOrders.length > 0
     ? ctx.recentOrders.map(o =>
-        `- Placed ${new Date(o.created_at).toLocaleDateString('en-IN')}, status: ${o.status}, ₹${o.total_inr}: ${o.items.map(i => `${i.name} x${i.quantity}`).join(', ')}`
+        `- Placed ${new Date(o.created_at).toLocaleDateString('en-US')}, status: ${o.status}, $${o.total_inr}: ${o.items.map(i => `${i.name} x${i.quantity}`).join(', ')}`
       ).join('\n')
     : null
 
-  const systemPrompt = `You are the ${CHANNEL_LABEL[channel]} assistant for "${ctx.brandName}", an Indian fashion boutique. Your job is to reply to customer messages in a ${ctx.agentConfig.brand_voice} tone — this includes both sales questions and support questions (order status, returns, delivery issues).
+  const systemPrompt = `You are the ${CHANNEL_LABEL[channel]} assistant for "${ctx.brandName}", a fashion boutique. Your job is to reply to customer messages in a ${ctx.agentConfig.brand_voice} tone — this includes both sales questions and support questions (order status, returns, delivery issues).
 
 CATALOGUE:
 ${productCatalogue}
 ${ctx.faqPolicy ? `\nSTORE POLICY (returns, exchanges, shipping — answer support questions from this):\n${ctx.faqPolicy}\n` : ''}${orderHistory ? `\nTHIS CUSTOMER'S RECENT ORDERS (use this to answer "where's my order" style questions):\n${orderHistory}\n` : ''}
 RULES:
-- Keep replies short (2-4 sentences max), conversational, and in the same language as the customer (Hindi/English mix is fine)
+- Keep replies short (2-4 sentences max), conversational, and match the customer's tone
 - For price queries: state the price clearly and add a friendly call to action to order
 - For ordering: direct them to WhatsApp${ctx.whatsappNumber ? ` at ${ctx.whatsappNumber}` : ''} for placing orders${channel === 'whatsapp' ? ' — since you are already talking to them on WhatsApp, just help them place the order directly in this chat' : ''}
-- For size/availability: answer based on catalogue; if unsure, say "DM on WhatsApp for exact stock"
+- For size/availability: answer based on catalogue; if unsure, say "message us for exact stock"
 - Never promise delivery timelines you can't guarantee
-- Use "ji" occasionally for warmth if customer uses Hindi
 - Do NOT mention AI, bots, or automated replies
 - Do NOT make up prices or products not in the catalogue`
 

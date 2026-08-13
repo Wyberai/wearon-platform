@@ -23,14 +23,15 @@ interface StoreConfig {
   primary_color: string
   whatsapp_number: string | null
   payment_method: string
+  currency?: string
 }
 
-// Pre-staged try-on result images per demo product (convincing Indian fashion photos)
+// Pre-staged try-on result images per demo product
 const DEMO_RESULTS: Record<string, string> = {
-  p1: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=500&h=700&fit=crop&crop=top',
-  p2: 'https://images.unsplash.com/photo-1617627143233-b27e68dda5df?w=500&h=700&fit=crop&crop=top',
-  p3: 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=500&h=700&fit=crop&crop=top',
-  p4: 'https://images.unsplash.com/photo-1590735213920-68192a487bc2?w=500&h=700&fit=crop&crop=top',
+  p1: 'https://images.unsplash.com/photo-1496747611176-843222e1e57c?w=500&h=700&fit=crop&crop=top',
+  p2: 'https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?w=500&h=700&fit=crop&crop=top',
+  p3: 'https://images.unsplash.com/photo-1542272604-787c3835535d?w=500&h=700&fit=crop&crop=top',
+  p4: 'https://images.unsplash.com/photo-1539533018447-63fcce2678e3?w=500&h=700&fit=crop&crop=top',
 }
 
 export default function TryOnPage() {
@@ -225,7 +226,7 @@ export default function TryOnPage() {
     const msg = encodeURIComponent(
       `Hi! I just tried on *${product.name}* on your WearOn store and I love it! 😍\n\n` +
       `📏 Size: ${selectedSize || 'Please suggest'}\n` +
-      `💰 Price: ₹${product.price_inr.toLocaleString('en-IN')}\n\n` +
+      `💰 Price: ${config?.currency === 'USD' ? '$' : '₹'}${product.price_inr.toLocaleString(config?.currency === 'USD' ? 'en-US' : 'en-IN')}\n\n` +
       `Can I place an order?`
     )
     const phone = (config.whatsapp_number ?? '').replace(/\D/g, '')
@@ -252,6 +253,8 @@ export default function TryOnPage() {
   }
 
   const primaryColor = config.primary_color
+  const currencySymbol = config.currency === 'USD' ? '$' : '₹'
+  const priceLocale = config.currency === 'USD' ? 'en-US' : 'en-IN'
 
   return (
     <div className="max-w-md mx-auto px-4 pb-12">
@@ -271,11 +274,11 @@ export default function TryOnPage() {
           <h1 className="font-bold text-gray-900 text-lg leading-tight">{product.name}</h1>
           <div className="flex items-center gap-2 mt-1">
             <span style={{ color: primaryColor }} className="font-bold text-xl">
-              ₹{product.price_inr.toLocaleString('en-IN')}
+              {currencySymbol}{product.price_inr.toLocaleString(priceLocale)}
             </span>
             {product.original_price_inr && (
               <span className="text-gray-400 text-sm line-through">
-                ₹{product.original_price_inr.toLocaleString('en-IN')}
+                {currencySymbol}{product.original_price_inr.toLocaleString(priceLocale)}
               </span>
             )}
           </div>
@@ -385,7 +388,7 @@ export default function TryOnPage() {
               className="w-full bg-green-500 text-white py-4 rounded-xl font-bold text-base flex items-center justify-center gap-2 hover:bg-green-600 transition-colors"
             >
               <span className="text-xl">💬</span>
-              Order via WhatsApp · ₹{product.price_inr.toLocaleString('en-IN')}
+              Add to Cart · {currencySymbol}{product.price_inr.toLocaleString(priceLocale)}
             </button>
 
             <button

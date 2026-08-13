@@ -52,7 +52,7 @@ export default async function AdminIndexPage() {
     background_color: '#FFFFFF',
     font_family: 'poppins',
     payment_method: 'whatsapp_order',
-    categories: ['Kurtas', 'Sarees', 'Lehengas', 'Western', 'Accessories'],
+    categories: ['Dresses', 'Tops', 'Denim', 'Outerwear', 'Accessories'],
   })
 
   if (error) {

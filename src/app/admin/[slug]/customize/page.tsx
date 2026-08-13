@@ -103,7 +103,7 @@ export default function CustomizePage() {
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Tagline</label>
             <input type="text" value={config.tagline} onChange={e => setConfig({ ...config, tagline: e.target.value })}
-              placeholder="e.g. Handpicked kurtas for every occasion"
+              placeholder="e.g. Curated fashion for the modern woman"
               className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500" />
           </div>
           <div>

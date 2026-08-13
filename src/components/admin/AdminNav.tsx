@@ -2,11 +2,12 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import type { ReactNode } from 'react'
 
 interface NavLink {
   href: string
   label: string
-  icon: string
+  icon: ReactNode
 }
 
 interface AdminNavProps {
@@ -31,7 +32,7 @@ export function AdminNav({ links, primaryColor = '#ec4899' }: AdminNavProps) {
               : { color: '#4b5563' }
             }
           >
-            <span>{icon}</span>
+            <span className="w-4 h-4 flex-shrink-0">{icon}</span>
             {label}
           </Link>
         )

@@ -10,7 +10,7 @@ export async function POST(req: NextRequest) {
   const apiKey = process.env.OPENAI_API_KEY
   if (!apiKey) {
     // Demo fallback when key not configured
-    const demoText = `Based on your style preference for "${query}", here are curated picks:\n\n✨ **Floral Cotton Kurti** — Perfect for your aesthetic. Light, breathable, and effortlessly chic. Pairs beautifully with palazzo pants.\n\n🌟 **Embroidered Anarkali** — Elevate your look with this hand-crafted design. The intricate embroidery adds depth without being overwhelming.\n\n💫 **Silk Saree** — For moments that call for timeless elegance. The drape is everything.`
+    const demoText = `Based on your style preference for "${query}", here are curated picks:\n\n✨ **Satin Slip Maxi Dress** — Perfect for your aesthetic. Fluid satin with adjustable straps — effortlessly chic for any occasion.\n\n🌟 **Floral Wrap Midi Dress** — Elevate your look with this lightweight wrap silhouette. The adjustable tie waist flatters every figure.\n\n💫 **Oversized Wool Blazer** — For moments that call for polished elegance. A herringbone wool blend that works from brunch to boardroom.`
     const encoder = new TextEncoder()
     const stream = new ReadableStream({
       start(controller) {
@@ -31,13 +31,13 @@ export async function POST(req: NextRequest) {
     messages: [
       {
         role: 'system',
-        content: `You are a personal AI stylist for an Indian fashion brand. Given a style preference or occasion, suggest 3 specific outfit picks from this catalog in a warm, editorial tone. Keep it concise and impactful — max 180 words. Format each suggestion with an emoji, bold name, and one compelling sentence. No filler text.
+        content: `You are a personal AI stylist for a boutique fashion brand. Given a style preference or occasion, suggest 3 specific outfit picks from this catalog in a warm, editorial tone. Keep it concise and impactful — max 180 words. Format each suggestion with an emoji, bold name, and one compelling sentence. No filler text.
 
 Catalog items:
-- Floral Cotton Kurti (₹899) — casual, breathable, Indian summer essential
-- Embroidered Anarkali (₹2,199) — festive, hand-crafted, semi-formal
-- Silk Saree (₹4,500) — formal, timeless, wedding-ready
-- Casual Palazzo Set (₹1,299) — relaxed, modern, everyday wear`,
+- Satin Slip Maxi Dress ($89) — fluid, elegant, adjustable straps, day-to-night
+- Floral Wrap Midi Dress ($72) — lightweight wrap silhouette, adjustable tie waist
+- High-Rise Straight Jeans ($98) — classic high-rise, 98% cotton, slight stretch
+- Oversized Wool Blazer ($155) — boyfriend-fit, herringbone wool blend, polished`,
       },
       {
         role: 'user',

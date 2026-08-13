@@ -48,7 +48,7 @@ export async function POST(request: Request) {
     background_color: '#FFFFFF',
     font_family: 'poppins',
     payment_method: 'whatsapp_order',
-    categories: ['Kurtas', 'Sarees', 'Lehengas', 'Western', 'Accessories'],
+    categories: ['Dresses', 'Tops', 'Denim', 'Outerwear', 'Accessories'],
   })
 
   return NextResponse.json({ ok: true, slug })
