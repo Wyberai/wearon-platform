@@ -13,17 +13,23 @@ export async function PATCH(req: NextRequest, { params }: { params: Params }) {
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const body = await req.json()
-  const status = body.status as OrderStatus
+  const { status, tracking_number, tracking_url } = body as { status?: OrderStatus; tracking_number?: string; tracking_url?: string }
 
-  if (!VALID_STATUSES.includes(status)) {
+  if (status && !VALID_STATUSES.includes(status)) {
     return NextResponse.json({
       error: `Invalid status. Must be one of: ${VALID_STATUSES.join(', ')}`
     }, { status: 400 })
   }
 
   const admin = createAdminClient()
-  const update: Record<string, unknown> = { status }
-  if (status === 'confirmed') update.whatsapp_confirmed = true
+  const update: Record<string, unknown> = {}
+  if (status) {
+    update.status = status
+    if (status === 'confirmed') update.whatsapp_confirmed = true
+    if (status === 'shipped') update.shipped_at = new Date().toISOString()
+  }
+  if (tracking_number !== undefined) update.tracking_number = tracking_number
+  if (tracking_url !== undefined) update.tracking_url = tracking_url
 
   const { data, error } = await admin
     .from('orders')

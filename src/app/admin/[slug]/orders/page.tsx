@@ -5,6 +5,16 @@ import { useParams } from 'next/navigation'
 
 type OrderStatus = 'pending' | 'confirmed' | 'shipped' | 'delivered' | 'cancelled'
 
+interface ShippingAddress {
+  name?: string
+  line1?: string
+  line2?: string
+  city?: string
+  state?: string
+  pincode?: string
+  country?: string
+}
+
 interface Order {
   id: string
   status: OrderStatus
@@ -15,6 +25,9 @@ interface Order {
   buyer_phone?: string
   buyer_name?: string
   size_selected?: string
+  shipping_address?: ShippingAddress | null
+  tracking_number?: string | null
+  tracking_url?: string | null
   created_at: string
 }
 
@@ -34,6 +47,8 @@ export default function OrdersPage() {
   const [loading, setLoading] = useState(true)
   const [filter, setFilter] = useState<OrderStatus | 'all'>('all')
   const [expandedId, setExpandedId] = useState<string | null>(null)
+  const [trackingDraft, setTrackingDraft] = useState<Record<string, { number: string; url: string }>>({})
+  const [savingTracking, setSavingTracking] = useState<string | null>(null)
 
   async function loadOrders() {
     const res = await fetch(`/api/admin/orders?slug=${slug}`)
@@ -51,6 +66,19 @@ export default function OrdersPage() {
       body: JSON.stringify({ status }),
     })
     setOrders(prev => prev.map(o => o.id === orderId ? { ...o, status } : o))
+  }
+
+  async function saveTracking(orderId: string) {
+    const draft = trackingDraft[orderId]
+    if (!draft) return
+    setSavingTracking(orderId)
+    await fetch(`/api/admin/orders/${orderId}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tracking_number: draft.number, tracking_url: draft.url }),
+    })
+    setOrders(prev => prev.map(o => o.id === orderId ? { ...o, tracking_number: draft.number, tracking_url: draft.url } : o))
+    setSavingTracking(null)
   }
 
   function exportCsv() {
@@ -187,7 +215,7 @@ export default function OrdersPage() {
                     {isExpanded && (
                       <tr key={`${order.id}-detail`}>
                         <td colSpan={5} className="px-5 py-4 bg-gray-50 border-b border-gray-100">
-                          <div className="grid grid-cols-2 gap-4 text-sm">
+                          <div className="grid grid-cols-2 gap-6 text-sm">
                             <div>
                               <p className="font-medium text-gray-700 mb-2">Items</p>
                               {order.items.map((item, i) => (
@@ -196,12 +224,60 @@ export default function OrdersPage() {
                                   <span>₹{(item.price * item.qty).toLocaleString('en-IN')}</span>
                                 </div>
                               ))}
+                              <div className="mt-3 text-gray-600 space-y-1">
+                                {order.buyer_name && <p><span className="font-medium">Name:</span> {order.buyer_name}</p>}
+                                {order.buyer_phone && <p><span className="font-medium">Phone:</span> {order.buyer_phone}</p>}
+                                {order.size_selected && <p><span className="font-medium">Size:</span> {order.size_selected}</p>}
+                                <p><span className="font-medium">Payment:</span> {order.payment_method}</p>
+                              </div>
                             </div>
-                            <div className="text-gray-600 space-y-1">
-                              {order.buyer_name && <p><span className="font-medium">Name:</span> {order.buyer_name}</p>}
-                              {order.buyer_phone && <p><span className="font-medium">Phone:</span> {order.buyer_phone}</p>}
-                              {order.size_selected && <p><span className="font-medium">Size:</span> {order.size_selected}</p>}
-                              <p><span className="font-medium">Payment:</span> {order.payment_method}</p>
+                            <div>
+                              {order.shipping_address && (
+                                <div className="mb-3">
+                                  <p className="font-medium text-gray-700 mb-1">Ship to</p>
+                                  <p className="text-gray-600 text-xs leading-5">
+                                    {order.shipping_address.name && <>{order.shipping_address.name}<br /></>}
+                                    {order.shipping_address.line1 && <>{order.shipping_address.line1}<br /></>}
+                                    {order.shipping_address.line2 && <>{order.shipping_address.line2}<br /></>}
+                                    {[order.shipping_address.city, order.shipping_address.state, order.shipping_address.pincode].filter(Boolean).join(', ')}
+                                  </p>
+                                </div>
+                              )}
+                              <div>
+                                <p className="font-medium text-gray-700 mb-1">Tracking</p>
+                                {order.tracking_number ? (
+                                  <div className="text-xs text-gray-600 space-y-0.5">
+                                    <p>#{order.tracking_number}</p>
+                                    {order.tracking_url && <a href={order.tracking_url} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">Track package →</a>}
+                                  </div>
+                                ) : (
+                                  <div className="space-y-2">
+                                    <input
+                                      type="text"
+                                      placeholder="Tracking number"
+                                      value={trackingDraft[order.id]?.number ?? ''}
+                                      onChange={e => setTrackingDraft(d => ({ ...d, [order.id]: { number: e.target.value, url: d[order.id]?.url ?? '' } }))}
+                                      className="w-full border border-gray-200 rounded px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-pink-400"
+                                    />
+                                    <input
+                                      type="text"
+                                      placeholder="Tracking URL (optional)"
+                                      value={trackingDraft[order.id]?.url ?? ''}
+                                      onChange={e => setTrackingDraft(d => ({ ...d, [order.id]: { number: d[order.id]?.number ?? '', url: e.target.value } }))}
+                                      className="w-full border border-gray-200 rounded px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-pink-400"
+                                    />
+                                    {trackingDraft[order.id]?.number && (
+                                      <button
+                                        onClick={() => saveTracking(order.id)}
+                                        disabled={savingTracking === order.id}
+                                        className="text-xs bg-pink-600 text-white px-3 py-1 rounded hover:bg-pink-700 disabled:opacity-50"
+                                      >
+                                        {savingTracking === order.id ? 'Saving…' : 'Save tracking'}
+                                      </button>
+                                    )}
+                                  </div>
+                                )}
+                              </div>
                             </div>
                           </div>
                         </td>
