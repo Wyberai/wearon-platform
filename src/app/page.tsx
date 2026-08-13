@@ -615,20 +615,23 @@ function USHomePage() {
             alt="" aria-hidden
             style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top' }}
           />
-          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, transparent 30%, rgba(0,0,0,0.65) 100%)' }} />
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, transparent 30%, rgba(0,0,0,0.72) 100%)' }} />
           <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '0 32px 52px' }}>
             <p style={{ fontSize: 11, letterSpacing: '0.22em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.65)', marginBottom: 14 }}>
-              For boutique sellers on Instagram, TikTok &amp; Facebook
+              The AI-native store for boutique fashion sellers
             </p>
-            <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(40px, 7vw, 88px)', fontWeight: 400, lineHeight: 1.02, letterSpacing: '-2px', color: '#fff', margin: '0 0 28px', maxWidth: 780 }}>
-              Everything Shopify charges $150/mo for. We charge $49.
+            <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(38px, 6.5vw, 82px)', fontWeight: 400, lineHeight: 1.02, letterSpacing: '-2px', color: '#fff', margin: '0 0 22px', maxWidth: 820 }}>
+              Your boutique, discoverable<br />by every AI that shops.
             </h1>
+            <p style={{ fontSize: 16, color: 'rgba(255,255,255,0.72)', maxWidth: 520, marginBottom: 32, lineHeight: 1.6 }}>
+              Claude, ChatGPT, and Google AI Mode now drive more conversions than search. WearOn is the only store platform built for that world — with AI-curated collections, DM checkout, and your own MCP endpoint.
+            </p>
             <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
               <Link href="/auth/signup" style={{ background: '#fff', color: US_INK, padding: '14px 28px', fontSize: 12, fontWeight: 700, letterSpacing: '0.08em', textDecoration: 'none', textTransform: 'uppercase' }}>
-                Start free →
+                Launch my store, free →
               </Link>
               <a href="https://cal.com/wyberai/wearon-consultation-with-the-founder" target="_blank" rel="noopener noreferrer" style={{ color: '#fff', padding: '14px 28px', fontSize: 12, fontWeight: 600, letterSpacing: '0.08em', textDecoration: 'none', textTransform: 'uppercase', border: '1px solid rgba(255,255,255,0.5)' }}>
-                Book a demo
+                Book a founder demo
               </a>
             </div>
           </div>
@@ -638,7 +641,7 @@ function USHomePage() {
         <div style={{ background: US_INK, color: '#fff', padding: '13px 0', overflow: 'hidden', whiteSpace: 'nowrap' }}>
           <style>{`@keyframes wo-scroll { from { transform: translateX(0) } to { transform: translateX(-50%) } }`}</style>
           <div style={{ display: 'inline-block', animation: 'wo-scroll 24s linear infinite' }}>
-            {['STRIPE CHECKOUT', 'AI PRODUCT PHOTOS', 'YOUR OWN DOMAIN', 'INSTAGRAM SYNC', 'TIKTOK SHOP', 'FREE TO START', 'NO SHOPIFY FEES', 'REAL ANALYTICS', 'STRIPE CHECKOUT', 'AI PRODUCT PHOTOS', 'YOUR OWN DOMAIN', 'INSTAGRAM SYNC', 'TIKTOK SHOP', 'FREE TO START', 'NO SHOPIFY FEES', 'REAL ANALYTICS'].map((item, i) => (
+            {['AI BUYER — SEASONAL EDITS', 'MCP ENDPOINT FOR CLAUDE', 'DM CHECKOUT', 'AI VISIBILITY DASHBOARD', 'STRIPE + RAZORPAY', 'YOUR OWN DOMAIN', 'AI PRODUCT PHOTOS', 'OPENAPI FOR CHATGPT', 'FREE TO START', 'AI BUYER — SEASONAL EDITS', 'MCP ENDPOINT FOR CLAUDE', 'DM CHECKOUT', 'AI VISIBILITY DASHBOARD', 'STRIPE + RAZORPAY', 'YOUR OWN DOMAIN', 'AI PRODUCT PHOTOS', 'OPENAPI FOR CHATGPT', 'FREE TO START'].map((item, i) => (
               <span key={i} style={{ fontSize: 11, letterSpacing: '0.18em', fontWeight: 500 }}>
                 {item}<span style={{ margin: '0 28px', opacity: 0.3 }}>·</span>
               </span>
@@ -720,20 +723,29 @@ function USHomePage() {
           </div>
         </section>
 
-        {/* 3-COLUMN FEATURES */}
-        <section style={{ borderTop: `1px solid ${US_INK}0E`, borderBottom: `1px solid ${US_INK}0E`, padding: '80px 24px' }}>
-          <div className="wo-us-features" style={{ maxWidth: 900, margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 48 }}>
-            {[
-              { label: 'CHECKOUT', title: 'Card. Apple Pay. Google Pay.', body: 'Stripe built in. No payment setup, no DM invoice. Buyer taps, pays, done.' },
-              { label: 'OWNERSHIP', title: 'Your domain. Your customers.', body: "yourboutique.com. Your email list. Not Meta's algorithm, not Shopify's platform." },
-              { label: 'AI STUDIO', title: 'Studio photos from a flat-lay.', body: 'Upload your garment. Get a styled model photo in 60 seconds. $0.60/clip for video.' },
-            ].map(f => (
-              <div key={f.label}>
-                <p style={{ fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: `${US_INK}44`, marginBottom: 14 }}>{f.label}</p>
-                <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 20, fontWeight: 500, letterSpacing: '-0.2px', lineHeight: 1.25, marginBottom: 10, color: US_INK }}>{f.title}</h3>
-                <p style={{ fontSize: 14, color: `${US_INK}88`, lineHeight: 1.7 }}>{f.body}</p>
-              </div>
-            ))}
+        {/* 6-FEATURE GRID — AI-native differentiators */}
+        <section style={{ borderTop: `1px solid ${US_INK}0E`, padding: '80px 24px' }}>
+          <div style={{ maxWidth: 960, margin: '0 auto' }}>
+            <p style={{ fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: `${US_INK}44`, marginBottom: 14, textAlign: 'center' }}>What makes WearOn different in 2026</p>
+            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(26px, 3.5vw, 40px)', fontWeight: 400, letterSpacing: '-1px', textAlign: 'center', marginBottom: 56, color: US_INK }}>
+              Built for agents. Owned by you.
+            </h2>
+            <div className="wo-us-features" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '40px 48px' }}>
+              {[
+                { label: 'AI BUYER', title: 'AI curates your seasonal edits.', body: 'Describe a vibe — "Summer Beach Edit", "Wedding Guest" — and your AI Buyer selects the products, writes editorial copy, and publishes the collection.' },
+                { label: 'MCP ENDPOINT', title: 'Claude can shop your store.', body: 'Every WearOn store gets a live MCP endpoint. When a buyer asks Claude to find a dress, it browses your catalog, checks sizes, and routes to checkout.' },
+                { label: 'DM CHECKOUT', title: 'Instagram → payment in one thread.', body: '"I want this" in a DM. AI detects intent, asks for size, sends a payment link — all without leaving the conversation. No app, no redirect.' },
+                { label: 'AI VISIBILITY', title: 'See how AI describes your products.', body: 'Your AI Discoverability Score shows whether Rufus, Perplexity, and Google AI Mode can find you — and fixes the gaps with one click.' },
+                { label: 'BRAND DNA', title: 'Every AI output sounds like you.', body: "Set your tone, aesthetic, and buyer philosophy once. Every caption, reply, and collection description carries your voice — not a generic AI's." },
+                { label: 'CHECKOUT', title: 'Stripe, Razorpay, COD. Zero setup.', body: 'Card, Apple Pay, UPI, COD — all built in. Buyers tap, pick size, pay. You get the order. No DM invoice, no payment-link chase.' },
+              ].map(f => (
+                <div key={f.label} style={{ borderTop: `1.5px solid ${US_INK}12`, paddingTop: 24 }}>
+                  <p style={{ fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: US_ACCENT, marginBottom: 14, fontWeight: 700 }}>{f.label}</p>
+                  <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 19, fontWeight: 500, letterSpacing: '-0.2px', lineHeight: 1.25, marginBottom: 10, color: US_INK }}>{f.title}</h3>
+                  <p style={{ fontSize: 14, color: `${US_INK}77`, lineHeight: 1.75 }}>{f.body}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </section>
 
