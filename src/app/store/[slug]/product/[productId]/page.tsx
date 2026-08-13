@@ -41,6 +41,7 @@ interface ProductInfo {
   description: string | null
   category: string | null
   tags: string[]
+  stock_by_variant?: Record<string, number> | null
 }
 
 interface StoreConfig {
@@ -365,20 +366,37 @@ export default function ProductDetailPage() {
                 <span className="text-xs" style={{ color: textDim }}>{selectedSize || 'Select a size'}</span>
               </div>
               <div className="flex gap-2 flex-wrap">
-                {product.sizes.map(size => (
-                  <button
-                    key={size}
-                    onClick={() => setSelectedSize(size)}
-                    className="px-4 py-2 rounded-xl text-sm font-medium border-2 transition-all"
-                    style={selectedSize === size
-                      ? { backgroundColor: primary, borderColor: primary, color: 'white' }
-                      : { borderColor: borderMuted, color: 'var(--store-ink)' }
-                    }
-                  >
-                    {size}
-                  </button>
-                ))}
+                {product.sizes.map(size => {
+                  const stock = product.stock_by_variant?.[size]
+                  const isOos = stock === 0
+                  const isLow = typeof stock === 'number' && stock > 0 && stock <= 3
+                  return (
+                    <div key={size} className="relative">
+                      <button
+                        onClick={() => !isOos && setSelectedSize(size)}
+                        disabled={isOos}
+                        className="px-4 py-2 rounded-xl text-sm font-medium border-2 transition-all"
+                        style={isOos
+                          ? { borderColor: borderMuted, color: '#9ca3af', cursor: 'not-allowed', opacity: 0.5 }
+                          : selectedSize === size
+                          ? { backgroundColor: primary, borderColor: primary, color: 'white' }
+                          : { borderColor: borderMuted, color: 'var(--store-ink)' }
+                        }
+                      >
+                        {size}
+                      </button>
+                      {isLow && (
+                        <span className="absolute -top-1.5 -right-1.5 text-xs bg-amber-500 text-white px-1 rounded-full leading-4">
+                          {stock}
+                        </span>
+                      )}
+                    </div>
+                  )
+                })}
               </div>
+              {product.stock_by_variant && selectedSize && (product.stock_by_variant[selectedSize] ?? Infinity) <= 3 && product.stock_by_variant[selectedSize] > 0 && (
+                <p className="text-xs text-amber-600 mt-1.5">Only {product.stock_by_variant[selectedSize]} left in {selectedSize}!</p>
+              )}
             </div>
           )}
 

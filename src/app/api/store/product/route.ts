@@ -32,7 +32,7 @@ export async function GET(request: Request) {
 
   const [configResult, productResult] = await Promise.all([
     admin.from('tenant_config').select('seller_id, brand_name, primary_color, whatsapp_number, payment_method, payment_config, currency').eq('slug', slug).single(),
-    admin.from('products').select('id, seller_id, name, price_inr, original_price_inr, garment_image_url, sizes, colors, description, category, tags, slug').eq('id', productId).eq('is_active', true).single(),
+    admin.from('products').select('id, seller_id, name, price_inr, original_price_inr, garment_image_url, sizes, colors, description, category, tags, slug, stock_by_variant').eq('id', productId).eq('is_active', true).single(),
   ])
 
   if (!productResult.data) return NextResponse.json({ error: 'Product not found' }, { status: 404 })
