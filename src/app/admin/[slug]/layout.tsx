@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation'
 import { createClient, createAdminClient } from '@/lib/supabase/server'
 import { AdminNav } from '@/components/admin/AdminNav'
 import { NativeBridge } from '@/components/admin/NativeBridge'
-import { LayoutDashboard, Package, ShoppingBag, MessageSquare, Sparkles, Film, BarChart2, Palette, Settings, CreditCard, ExternalLink, LogOut } from 'lucide-react'
+import { LayoutDashboard, Package, ShoppingBag, MessageSquare, Sparkles, Film, BarChart2, Palette, Settings, CreditCard, ExternalLink, LogOut, BookOpen } from 'lucide-react'
 
 export default async function AdminLayout({
   children,
@@ -33,6 +33,7 @@ export default async function AdminLayout({
     { href: `/admin/${slug}/orders`, label: 'Orders', icon: <ShoppingBag size={16} /> },
     { href: `/admin/${slug}/inbox`, label: 'Inbox', icon: <MessageSquare size={16} /> },
     { href: `/admin/${slug}/ai-studio`, label: 'AI Studio', icon: <Sparkles size={16} /> },
+    { href: `/admin/${slug}/ai-buyer`, label: 'AI Buyer', icon: <BookOpen size={16} /> },
     { href: `/admin/${slug}/content`, label: 'Content', icon: <Film size={16} /> },
     { href: `/admin/${slug}/analytics`, label: 'Analytics', icon: <BarChart2 size={16} /> },
     { href: `/admin/${slug}/customize`, label: 'Customize', icon: <Palette size={16} /> },
