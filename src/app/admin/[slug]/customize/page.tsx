@@ -105,21 +105,34 @@ export default function CustomizePage() {
             {THEMES.map(t => {
               const active = t.id === config.theme_id
               return (
-                <button
-                  key={t.id}
-                  type="button"
-                  onClick={() => applyTheme(t.id)}
-                  title={t.blurb}
-                  className="text-left"
-                >
-                  <div
-                    className="aspect-[4/5] rounded-lg overflow-hidden relative"
-                    style={{ outline: active ? '2px solid #A6134A' : '1px solid #e5e7eb', outlineOffset: 2 }}
+                <div key={t.id} className="text-left group">
+                  <button
+                    type="button"
+                    onClick={() => applyTheme(t.id)}
+                    title={t.blurb}
+                    className="w-full text-left"
                   >
-                    <img src={t.previewImage} alt={t.name} className="w-full h-full object-cover" />
-                  </div>
-                  <p className={`text-xs mt-1.5 ${active ? 'font-semibold text-gray-900' : 'text-gray-500'}`}>{t.name}</p>
-                </button>
+                    <div
+                      className="aspect-[4/5] rounded-lg overflow-hidden relative"
+                      style={{ outline: active ? '2px solid #A6134A' : '1px solid #e5e7eb', outlineOffset: 2 }}
+                    >
+                      <img src={t.previewImage} alt={t.name} className="w-full h-full object-cover" />
+                      {/* Color swatch strip */}
+                      <div className="absolute bottom-0 left-0 right-0 flex h-4">
+                        <div className="flex-1" style={{ background: t.palette.bg }} />
+                        <div className="flex-1" style={{ background: t.palette.accent }} />
+                        <div className="flex-1" style={{ background: t.palette.ink }} />
+                      </div>
+                    </div>
+                    <p className={`text-xs mt-1.5 ${active ? 'font-semibold text-gray-900' : 'text-gray-500'}`}>{t.name}</p>
+                  </button>
+                  <a
+                    href={`/store/demo?theme=${t.id}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[10px] text-pink-500 hover:underline"
+                  >Preview →</a>
+                </div>
               )
             })}
           </div>
