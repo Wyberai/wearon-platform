@@ -15,6 +15,7 @@ interface Product {
   is_active: boolean
   sizes?: string[]
   tags?: string[]
+  stock_by_variant?: Record<string, number> | null
   created_at: string
 }
 
@@ -41,7 +42,7 @@ export default function ProductsPage() {
   const [search, setSearch] = useState('')
   const [sortBy, setSortBy] = useState('newest')
   const [editingId, setEditingId] = useState<string | null>(null)
-  type EditFormState = Omit<Partial<Product>, 'sizes'> & { sizes?: string | string[] }
+  type EditFormState = Omit<Partial<Product>, 'sizes'> & { sizes?: string | string[]; stock_by_variant?: Record<string, number> | null }
   const [editForm, setEditForm] = useState<EditFormState>({})
   const [form, setForm] = useState({
     name: '',
@@ -414,6 +415,35 @@ export default function ProductsPage() {
                     className="w-full border border-gray-200 rounded px-2 py-1 text-xs"
                     placeholder="Sizes (S, M, L)"
                   />
+                  {/* Stock per size */}
+                  {(() => {
+                    const sizesStr = typeof editForm.sizes === 'string' ? editForm.sizes : (product.sizes ?? []).join(', ')
+                    const sizeList = sizesStr.split(',').map(s => s.trim()).filter(Boolean)
+                    if (sizeList.length === 0) return null
+                    const stock = editForm.stock_by_variant ?? product.stock_by_variant ?? {}
+                    return (
+                      <div>
+                        <p className="text-xs text-gray-400 mb-1">Stock per size</p>
+                        <div className="grid grid-cols-3 gap-1">
+                          {sizeList.map(size => (
+                            <div key={size} className="flex items-center gap-1">
+                              <span className="text-xs text-gray-500 w-5">{size}</span>
+                              <input
+                                type="number" min="0"
+                                value={stock[size] ?? ''}
+                                onChange={e => setEditForm(f => ({
+                                  ...f,
+                                  stock_by_variant: { ...(f.stock_by_variant ?? product.stock_by_variant ?? {}), [size]: e.target.value === '' ? undefined as unknown as number : Number(e.target.value) },
+                                }))}
+                                placeholder="∞"
+                                className="w-full border border-gray-200 rounded px-1.5 py-1 text-xs"
+                              />
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )
+                  })()}
                   <div className="flex gap-1">
                     <button onClick={() => saveEdit(product.id)}
                       className="flex-1 bg-pink-600 text-white text-xs py-1 rounded hover:bg-pink-700">Save</button>
@@ -433,6 +463,17 @@ export default function ProductsPage() {
                       </span>
                     )}
                   </div>
+                  {product.stock_by_variant && (() => {
+                    const entries = Object.entries(product.stock_by_variant)
+                    const outOfStock = entries.filter(([, qty]) => qty === 0).map(([s]) => s)
+                    const lowStock = entries.filter(([, qty]) => qty > 0 && qty <= 3).map(([s]) => s)
+                    return (outOfStock.length > 0 || lowStock.length > 0) ? (
+                      <div className="mt-1.5 flex flex-wrap gap-1">
+                        {outOfStock.map(s => <span key={s} className="text-xs px-1.5 py-0.5 rounded bg-red-50 text-red-500">{s}: OOS</span>)}
+                        {lowStock.map(s => <span key={s} className="text-xs px-1.5 py-0.5 rounded bg-amber-50 text-amber-600">{s}: {product.stock_by_variant![s]} left</span>)}
+                      </div>
+                    ) : null
+                  })()}
                   <div className="flex gap-1 mt-3">
                     <button
                       onClick={() => { setEditingId(product.id); setEditForm({}) }}
