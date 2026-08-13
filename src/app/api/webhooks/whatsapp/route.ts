@@ -3,6 +3,52 @@ import { createAdminClient } from '@/lib/supabase/server'
 import { notifySellerOfMessage } from '@/lib/social-agent'
 import { buildSellerContext, classifyIntent, generateWhatsAppReply, isEscalation, sendWhatsAppMessage, shouldAutoReply } from '@/lib/whatsapp-agent'
 
+// ── Conversational Checkout helpers ─────────────────────────────────────────
+
+const PURCHASE_INTENT_KEYWORDS = [
+  'buy', 'order', 'purchase', 'want to buy', 'i\'ll take', 'add to cart',
+  'how to pay', 'how do i pay', 'book', 'place order', 'checkout',
+  'want this', 'i want', 'lena hai', 'kharidna', 'order karna',
+]
+
+const SIZE_WORDS = new Set(['xs', 's', 'm', 'l', 'xl', 'xxl', 'xxxl', 'xsmall', 'small', 'medium', 'large', 'xlarge', 'free', 'free size'])
+
+function hasPurchaseIntent(text: string): boolean {
+  const lower = text.toLowerCase()
+  return PURCHASE_INTENT_KEYWORDS.some(kw => lower.includes(kw))
+}
+
+function extractSize(text: string, validSizes: string[]): string | null {
+  const lower = text.toLowerCase().trim()
+  // Exact match first
+  for (const s of validSizes) {
+    if (lower === s.toLowerCase() || lower === s.toLowerCase() + ' size') return s
+  }
+  // Word in message
+  const words = lower.split(/\s+/)
+  for (const w of words) {
+    if (SIZE_WORDS.has(w)) {
+      const matched = validSizes.find(s => s.toLowerCase() === w) ?? validSizes.find(s => s.toLowerCase().startsWith(w[0]))
+      if (matched) return matched
+    }
+  }
+  return null
+}
+
+function findProductInMessage(text: string, products: { id: string; name: string; price_inr: number; sizes: string[] | null; slug: string }[]): (typeof products)[0] | null {
+  const lower = text.toLowerCase()
+  return products.find(p => lower.includes(p.name.toLowerCase()) || (p.name.split(' ').filter(w => w.length > 4).some(w => lower.includes(w.toLowerCase())))) ?? null
+}
+
+interface PendingCheckout {
+  state: 'awaiting_size' | 'link_sent'
+  product_id: string
+  product_name: string
+  price_inr: number
+  sizes: string[]
+  slug: string
+}
+
 // Meta webhook verification (same shared Meta App/verify token as Instagram)
 export async function GET(req: Request) {
   const url = new URL(req.url)
@@ -152,6 +198,98 @@ async function handleInboundMessage(
 
   if (config.mode === 'off') return
   if (isEscalation(messageText, config)) return
+
+  // ── Conversational Checkout flow ─────────────────────────────────────────
+  // Read conversation with pending_checkout
+  const { data: convRow } = await admin
+    .from('whatsapp_conversations')
+    .select('pending_checkout')
+    .eq('id', conversation.id)
+    .single()
+
+  const pending = convRow?.pending_checkout as PendingCheckout | null
+
+  if (pending?.state === 'awaiting_size') {
+    const chosenSize = extractSize(messageText, pending.sizes)
+    if (chosenSize) {
+      // Generate checkout URL and create a pending order
+      const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://wearon.store'
+      const checkoutUrl = `${baseUrl}/store/${pending.slug}/checkout?product=${pending.product_id}&size=${encodeURIComponent(chosenSize)}&source=whatsapp`
+      const confirmMsg = `Perfect! Here's your secure checkout link for *${pending.product_name}* (Size: ${chosenSize}) — ₹${pending.price_inr.toLocaleString('en-IN')}:\n\n${checkoutUrl}\n\nComplete payment there and we'll confirm your order right away! 🛍️`
+
+      if (config.mode === 'auto') {
+        await sendWhatsAppMessage(phoneNumberId, buyerPhone, confirmMsg)
+        await admin.from('whatsapp_messages').insert({
+          conversation_id: conversation.id, seller_id: connection.seller_id,
+          direction: 'outbound', content: confirmMsg, is_ai_generated: true, is_sent: true,
+          sent_at: new Date().toISOString(),
+        })
+      } else {
+        await admin.from('whatsapp_messages').insert({
+          conversation_id: conversation.id, seller_id: connection.seller_id,
+          direction: 'outbound', content: confirmMsg, is_ai_generated: true, is_sent: false,
+          sent_at: new Date().toISOString(),
+        })
+      }
+
+      await admin.from('whatsapp_conversations').update({
+        pending_checkout: { ...pending, state: 'link_sent', size: chosenSize },
+        last_message_at: new Date().toISOString(),
+      }).eq('id', conversation.id)
+
+      return // handled — skip normal AI reply
+    }
+    // Unrecognised size — fall through to normal AI reply which will ask again
+  }
+
+  if (hasPurchaseIntent(messageText) && config.mode !== 'off') {
+    // Load products to find which one they want
+    const { data: products } = await admin
+      .from('products')
+      .select('id, name, price_inr, sizes, slug')
+      .eq('seller_id', connection.seller_id)
+      .eq('is_active', true)
+      .limit(60)
+
+    const matched = findProductInMessage(messageText, (products ?? []) as { id: string; name: string; price_inr: number; sizes: string[] | null; slug: string }[])
+    if (matched && (matched.sizes?.length ?? 0) > 0) {
+      const sizeList = (matched.sizes as string[]).join(', ')
+      const sizePrompt = `Great choice! 🛍️ *${matched.name}* is ₹${matched.price_inr.toLocaleString('en-IN')}.\n\nWhich size would you like? Available: *${sizeList}*`
+
+      if (config.mode === 'auto') {
+        await sendWhatsAppMessage(phoneNumberId, buyerPhone, sizePrompt)
+        await admin.from('whatsapp_messages').insert({
+          conversation_id: conversation.id, seller_id: connection.seller_id,
+          direction: 'outbound', content: sizePrompt, is_ai_generated: true, is_sent: true,
+          sent_at: new Date().toISOString(),
+        })
+      } else {
+        await admin.from('whatsapp_messages').insert({
+          conversation_id: conversation.id, seller_id: connection.seller_id,
+          direction: 'outbound', content: sizePrompt, is_ai_generated: true, is_sent: false,
+          sent_at: new Date().toISOString(),
+        })
+      }
+
+      // Look up the store slug
+      const { data: tc } = await admin.from('tenant_config').select('slug').eq('seller_id', connection.seller_id).single()
+      await admin.from('whatsapp_conversations').update({
+        pending_checkout: {
+          state: 'awaiting_size',
+          product_id: matched.id,
+          product_name: matched.name,
+          price_inr: matched.price_inr,
+          sizes: matched.sizes as string[],
+          slug: tc?.slug ?? '',
+        } satisfies PendingCheckout,
+        last_message_at: new Date().toISOString(),
+      }).eq('id', conversation.id)
+
+      return // handled — skip normal AI reply
+    }
+  }
+  // ── End conversational checkout ────────────────────────────────────────────
+
   if (!shouldAutoReply(messageText, config)) return
 
   // Enforce the seller's monthly AI reply quota (see PLAN_AI_REPLY_LIMITS) —
