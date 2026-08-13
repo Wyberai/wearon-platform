@@ -10,13 +10,13 @@ comment on column products.aeo_content is
 
 -- Agent source tracking on orders
 alter table orders
-  add column if not exists source text default ''human'' check (source in (''human'', ''mcp'', ''openapi'', ''whatsapp'', ''instagram''));
+  add column if not exists source text default 'human' check (source in ('human', 'mcp', 'openapi', 'whatsapp', 'instagram'));
 
 -- Query log for AI agent traffic dashboard
 create table if not exists agent_queries (
   id uuid primary key default gen_random_uuid(),
   seller_id uuid not null references profiles(id) on delete cascade,
-  source text not null check (source in (''mcp'', ''openapi'')),
+  source text not null check (source in ('mcp', 'openapi')),
   tool text not null,
   query_text text,
   result_count int default 0,
