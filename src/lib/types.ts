@@ -28,7 +28,7 @@ export interface TenantConfig {
   theme_id: string
   dark_mode_default: boolean
   currency: string
-  payment_method: 'whatsapp_order' | 'razorpay' | 'dodo' | 'cod'
+  payment_method: 'whatsapp_order' | 'razorpay' | 'dodo' | 'cod' | 'stripe'
   payment_config: Record<string, string>
   whatsapp_number: string | null
   instagram_handle: string | null

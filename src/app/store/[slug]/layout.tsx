@@ -96,7 +96,7 @@ export default async function StoreLayout({
         {/* Announcement bar — shown when the store has a banner configured */}
         {Array.isArray(tc.banners) && tc.banners.length > 0 && (
           <div className="w-full py-2.5 px-4 text-center text-xs tracking-wide" style={{ background: 'var(--store-ink)', color: 'var(--store-bg)' }}>
-            {String((tc.banners as string[])[0])}
+            {tc.banners[0].caption ?? ''}
           </div>
         )}
 
