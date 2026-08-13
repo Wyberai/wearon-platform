@@ -43,6 +43,7 @@ export interface Theme {
   logoShape: 'circle' | 'square'
   font: string // key into FONTS
   palette: { bg: string; ink: string; accent: string; card: string }
+  heroGradient: string // CSS gradient used as hero fallback when photo doesn't load
   previewImage: string
 }
 
@@ -58,6 +59,7 @@ export const THEMES: Theme[] = [
     heroDecoration: 'none', categoryDisplay: 'circles',
     headingStyle: 'serif', navStyle: 'underline', logoShape: 'circle',
     palette: { bg: '#FAF7F3', ink: '#171512', accent: '#A6134A', card: '#F4F1EC' },
+    heroGradient: 'linear-gradient(135deg, #e8ddd4 0%, #c9b8a8 50%, #a6134a22 100%)',
     previewImage: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=1200&h=900&fit=crop',
   },
   {
@@ -69,6 +71,7 @@ export const THEMES: Theme[] = [
     heroDecoration: 'none', categoryDisplay: 'circles',
     headingStyle: 'minimal', navStyle: 'ghost', logoShape: 'circle',
     palette: { bg: '#000000', ink: '#ffffff', accent: '#F72585', card: '#111111' },
+    heroGradient: 'linear-gradient(135deg, #1a0010 0%, #0d0d0d 60%, #2d0020 100%)',
     previewImage: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=1200&h=900&fit=crop',
   },
   {
@@ -80,6 +83,7 @@ export const THEMES: Theme[] = [
     heroDecoration: 'none', categoryDisplay: 'circles',
     headingStyle: 'minimal', navStyle: 'underline', logoShape: 'square',
     palette: { bg: '#FFFFFF', ink: '#161616', accent: '#161616', card: '#FAFAFA' },
+    heroGradient: 'linear-gradient(180deg, #f0f0f0 0%, #ffffff 100%)',
     previewImage: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?w=1200&h=900&fit=crop',
   },
   {
@@ -91,6 +95,7 @@ export const THEMES: Theme[] = [
     heroDecoration: 'none', categoryDisplay: 'circles',
     headingStyle: 'rounded', navStyle: 'pill', logoShape: 'circle',
     palette: { bg: '#FFF5F8', ink: '#4A2E39', accent: '#FF6FA5', card: '#FFFFFF' },
+    heroGradient: 'linear-gradient(135deg, #ffd6e7 0%, #ffb3d1 50%, #ff6fa533 100%)',
     previewImage: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=1200&h=900&fit=crop',
   },
   {
@@ -102,6 +107,7 @@ export const THEMES: Theme[] = [
     heroDecoration: 'none', categoryDisplay: 'circles',
     headingStyle: 'serif', navStyle: 'underline', logoShape: 'circle',
     palette: { bg: '#F3ECE1', ink: '#3D2E1F', accent: '#8B5E34', card: '#FFFDF9' },
+    heroGradient: 'linear-gradient(135deg, #d4c4a8 0%, #b8976a 50%, #8b5e3444 100%)',
     previewImage: 'https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=1200&h=900&fit=crop',
   },
   {
@@ -113,6 +119,7 @@ export const THEMES: Theme[] = [
     heroDecoration: 'none', categoryDisplay: 'circles',
     headingStyle: 'display', navStyle: 'pill', logoShape: 'square',
     palette: { bg: '#FFE600', ink: '#0A0A0A', accent: '#FF3366', card: '#FFFFFF' },
+    heroGradient: 'linear-gradient(135deg, #ffe600 0%, #ffcc00 60%, #ff336633 100%)',
     previewImage: 'https://images.unsplash.com/photo-1551232864-3f0890e1776c?w=1200&h=900&fit=crop',
   },
   {
@@ -124,6 +131,7 @@ export const THEMES: Theme[] = [
     heroDecoration: 'none', categoryDisplay: 'circles',
     headingStyle: 'minimal', navStyle: 'ghost', logoShape: 'square',
     palette: { bg: '#F1F3F6', ink: '#212121', accent: '#FF3E6C', card: '#FFFFFF' },
+    heroGradient: 'linear-gradient(135deg, #e0e4ea 0%, #c8cdd6 100%)',
     previewImage: 'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=1200&h=900&fit=crop',
   },
   {
@@ -135,6 +143,7 @@ export const THEMES: Theme[] = [
     heroDecoration: 'none', categoryDisplay: 'circles',
     headingStyle: 'luxury', navStyle: 'ghost', logoShape: 'square',
     palette: { bg: '#0A0A0A', ink: '#F0EDE8', accent: '#C9A66B', card: '#141414' },
+    heroGradient: 'linear-gradient(160deg, #1a1208 0%, #0a0a0a 40%, #1f160a 100%)',
     previewImage: 'https://images.unsplash.com/photo-1558171813-7fa2b10c2135?w=1200&h=900&fit=crop',
   },
   {
@@ -146,6 +155,7 @@ export const THEMES: Theme[] = [
     heroDecoration: 'none', categoryDisplay: 'circles',
     headingStyle: 'display', navStyle: 'pill', logoShape: 'circle',
     palette: { bg: '#D6F5E3', ink: '#1A1A1A', accent: '#FF5A36', card: '#FFF9E8' },
+    heroGradient: 'linear-gradient(135deg, #a8f0c8 0%, #d6f5e3 40%, #ff5a3622 100%)',
     previewImage: 'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=1200&h=900&fit=crop',
   },
   {
@@ -157,6 +167,7 @@ export const THEMES: Theme[] = [
     heroDecoration: 'none', categoryDisplay: 'circles',
     headingStyle: 'serif', navStyle: 'underline', logoShape: 'circle',
     palette: { bg: '#FFFFFF', ink: '#0A0A0A', accent: '#0A0A0A', card: '#F7F7F7' },
+    heroGradient: 'linear-gradient(135deg, #d0d0d0 0%, #e8e8e8 50%, #f7f7f7 100%)',
     previewImage: 'https://images.unsplash.com/photo-1520367445093-50dc08a59d9d?w=1200&h=900&fit=crop',
   },
   {
@@ -168,6 +179,7 @@ export const THEMES: Theme[] = [
     heroDecoration: 'blob-dots', categoryDisplay: 'tiles',
     headingStyle: 'rounded', navStyle: 'underline', logoShape: 'square',
     palette: { bg: '#FAF7F3', ink: '#171512', accent: '#A6134A', card: '#F4F1EC' },
+    heroGradient: 'linear-gradient(135deg, #e8ddd4 0%, #f4f1ec 60%, #a6134a11 100%)',
     previewImage: 'https://images.unsplash.com/photo-1487222477894-8943e31ef7b2?w=1200&h=900&fit=crop',
   },
 ]

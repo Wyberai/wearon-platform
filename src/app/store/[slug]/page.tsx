@@ -261,8 +261,8 @@ function StorePageContent() {
           <span className="text-xs opacity-85">Free shipping over {currencySymbol}{config?.currency === 'USD' ? '75' : '999'}</span>
         </div>
       ) : (
-        <div className="relative w-full h-[430px] md:h-[520px] overflow-hidden mb-10">
-          <img src={heroImage} alt="" className="w-full h-full object-cover" onError={e => { e.currentTarget.style.display = 'none' }} />
+        <div className="relative w-full h-[430px] md:h-[520px] overflow-hidden mb-10" style={{ background: theme.heroGradient }}>
+          <img src={heroImage} alt="" className="w-full h-full object-cover absolute inset-0" onError={e => { e.currentTarget.style.opacity = '0' }} style={{ transition: 'opacity 0.3s' }} />
           <div className={`absolute inset-0 bg-gradient-to-t ${isDark ? 'from-black/85 via-black/30' : 'from-black/55 via-black/10'} to-transparent`} />
           <div className="absolute bottom-8 left-6 md:left-10 text-white">
             <p className="text-xs uppercase tracking-[0.22em] opacity-85 mb-2">New this season</p>
