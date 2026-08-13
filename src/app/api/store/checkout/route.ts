@@ -10,7 +10,9 @@ interface CheckoutBody {
   device_token: string
   buyer_phone?: string
   buyer_name?: string
+  buyer_email?: string
   size?: string
+  shipping_address?: { name?: string; line1?: string; line2?: string; city?: string; state?: string; pincode?: string; country?: string }
 }
 
 interface RazorpayOrderResponse {
@@ -39,7 +41,7 @@ export async function POST(req: NextRequest) {
     return badRequest('Invalid JSON body')
   }
 
-  const { seller_id, product_id, quantity, payment_method, device_token, buyer_phone, buyer_name, size } = body
+  const { seller_id, product_id, quantity, payment_method, device_token, buyer_phone, buyer_name, buyer_email, size, shipping_address } = body
 
   // --- Validate required fields ---
   if (!seller_id || typeof seller_id !== 'string') return badRequest('seller_id is required')
@@ -72,7 +74,7 @@ export async function POST(req: NextRequest) {
   // --- 2. Fetch tenant_config for payment credentials ---
   const { data: tenantConfig, error: configError } = await supabase
     .from('tenant_config')
-    .select('payment_config, payment_method, slug')
+    .select('payment_config, payment_method, slug, brand_name, primary_color')
     .eq('seller_id', seller_id)
     .single()
 
@@ -102,7 +104,26 @@ export async function POST(req: NextRequest) {
   const buyerNotes = {
     ...(buyer_name ? { buyer_name } : {}),
     ...(buyer_phone ? { buyer_phone } : {}),
+    ...(buyer_email ? { buyer_email } : {}),
     device_token,
+  }
+
+  async function sendBuyerEmail(orderId: string) {
+    if (!buyer_email) return
+    try {
+      const { sendEmail } = await import('@/lib/email/resend')
+      const { buyerConfirmationEmail } = await import('@/lib/email/templates/buyer-confirmation')
+      const tpl = buyerConfirmationEmail({
+        brandName: tenantConfig!.brand_name ?? 'Our Boutique',
+        primaryColor: tenantConfig!.primary_color ?? '#F72585',
+        orderId,
+        items: [{ name: product.name, qty: quantity, price: product.price_inr }],
+        totalInr: total,
+        size,
+        storeSlug: tenantConfig!.slug,
+      })
+      await sendEmail({ to: buyer_email, subject: tpl.subject, html: tpl.html })
+    } catch { /* email is best-effort */ }
   }
 
   // --- 4a. Razorpay payment flow ---
@@ -163,6 +184,7 @@ export async function POST(req: NextRequest) {
       payment_method: 'razorpay',
       razorpay_order_id: razorpayOrder.id,
       whatsapp_confirmed: false,
+      shipping_address: shipping_address ?? null,
       buyer_notes: Object.keys(buyerNotes).length > 0 ? JSON.stringify(buyerNotes) : null,
     })
 
@@ -172,6 +194,7 @@ export async function POST(req: NextRequest) {
     }
 
     sendPushToSeller(seller_id, 'New order! 🎉', `₹${total.toLocaleString('en-IN')} — ${product.name}`, { url: `/admin/${tenantConfig.slug}/orders` }).catch(() => {})
+    sendBuyerEmail(orderId).catch(() => {})
 
     return NextResponse.json({
       razorpay_order_id: razorpayOrder.id,
@@ -190,6 +213,7 @@ export async function POST(req: NextRequest) {
     total_inr: total,
     payment_method: 'cod',
     whatsapp_confirmed: false,
+    shipping_address: shipping_address ?? null,
     buyer_notes: Object.keys(buyerNotes).length > 0 ? JSON.stringify(buyerNotes) : null,
   })
 
@@ -199,6 +223,7 @@ export async function POST(req: NextRequest) {
   }
 
   sendPushToSeller(seller_id, 'New order! 🎉', `₹${total.toLocaleString('en-IN')} — ${product.name} (COD)`, { url: `/admin/${tenantConfig.slug}/orders` }).catch(() => {})
+  sendBuyerEmail(orderId).catch(() => {})
 
   return NextResponse.json({
     order_id: orderId,
