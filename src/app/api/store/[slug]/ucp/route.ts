@@ -6,7 +6,7 @@
 // Docs: universal-checkout-protocol.dev
 
 import { NextResponse } from 'next/server'
-import { getStoreContext } from '@/lib/store-agent-tools'
+import { getStoreContext, type RawProduct } from '@/lib/store-agent-tools'
 
 type Params = Promise<{ slug: string }>
 
@@ -23,18 +23,18 @@ export async function GET(request: Request, { params }: { params: Params }) {
 
   const baseUrl = new URL(request.url).origin
 
-  let products = ctx.products
+  let products = ctx.products as RawProduct[]
   if (q) {
     const lower = q.toLowerCase()
-    products = products.filter(p =>
+    products = products.filter((p: RawProduct) =>
       p.name.toLowerCase().includes(lower) ||
       (p.description ?? '').toLowerCase().includes(lower) ||
       (p.category ?? '').toLowerCase().includes(lower) ||
       ((p.tags as string[] | null) ?? []).some((t: string) => t.toLowerCase().includes(lower))
     )
   }
-  if (category) products = products.filter(p => p.category?.toLowerCase() === category.toLowerCase())
-  if (maxPrice) products = products.filter(p => p.price_inr <= maxPrice)
+  if (category) products = products.filter((p: RawProduct) => p.category?.toLowerCase() === category.toLowerCase())
+  if (maxPrice) products = products.filter((p: RawProduct) => p.price_inr <= maxPrice)
 
   const currency = ctx.config?.currency ?? 'INR'
 
@@ -46,7 +46,7 @@ export async function GET(request: Request, { params }: { params: Params }) {
       currency,
       checkout_url: `${baseUrl}/api/store/${slug}/ucp`,
     },
-    products: products.map(p => ({
+    products: products.map((p: RawProduct) => ({
       id: p.id,
       name: p.name,
       description: p.description,
@@ -89,7 +89,7 @@ export async function POST(request: Request, { params }: { params: Params }) {
   const ctx = await getStoreContext(slug)
   if (!ctx) return NextResponse.json({ error: 'Store not found' }, { status: 404 })
 
-  const product = ctx.products.find(p => p.id === product_id || p.slug === product_id)
+  const product = (ctx.products as RawProduct[]).find((p: RawProduct) => p.id === product_id || p.slug === product_id)
   if (!product) return NextResponse.json({ error: 'Product not found' }, { status: 404 })
 
   const size = variant_id?.replace(`${product_id}_`, '') ?? null

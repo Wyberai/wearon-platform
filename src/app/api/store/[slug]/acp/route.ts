@@ -3,7 +3,7 @@
 // Follows the OpenAI Agent Commerce spec: purchase intent → payment URL.
 
 import { NextResponse } from 'next/server'
-import { getStoreContext } from '@/lib/store-agent-tools'
+import { getStoreContext, type RawProduct } from '@/lib/store-agent-tools'
 
 type Params = Promise<{ slug: string }>
 
@@ -57,7 +57,7 @@ export async function POST(request: Request, { params }: { params: Params }) {
   if (action === 'purchase_intent') {
     if (!product_id) return NextResponse.json({ error: 'product_id required for purchase_intent' }, { status: 400 })
 
-    const product = ctx.products.find(p => p.id === product_id || p.slug === product_id)
+    const product = (ctx.products as RawProduct[]).find((p: RawProduct) => p.id === product_id || p.slug === product_id)
     if (!product) return NextResponse.json({ error: 'Product not found' }, { status: 404 })
 
     const total = product.price_inr * quantity

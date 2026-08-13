@@ -47,7 +47,7 @@ export interface TenantConfig {
   banners: Array<{ image_url: string; link_url?: string; caption?: string }>
   custom_domain: string | null
   play_store_url: string | null
-  brand_voice: BrandVoice | null
+  brand_voice?: BrandVoice | null
   created_at: string
   updated_at: string
 }

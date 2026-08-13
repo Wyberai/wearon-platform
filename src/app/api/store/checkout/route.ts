@@ -117,7 +117,7 @@ export async function POST(req: NextRequest) {
         brandName: tenantConfig!.brand_name ?? 'Our Boutique',
         primaryColor: tenantConfig!.primary_color ?? '#F72585',
         orderId,
-        items: [{ name: product.name, qty: quantity, price: product.price_inr }],
+        items: [{ name: product!.name, qty: quantity, price: product!.price_inr }],
         totalInr: total,
         size,
         storeSlug: tenantConfig!.slug,

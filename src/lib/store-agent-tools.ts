@@ -43,7 +43,7 @@ export interface CheckoutResult {
 
 const BASE_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'https://wearon.wyberai.com'
 
-interface RawProduct {
+export interface RawProduct {
   id: string
   name: string
   slug: string
@@ -76,7 +76,7 @@ function formatProduct(p: RawProduct, currency: string, storeSlug: string): Agen
   }
 }
 
-async function getStoreContext(slug: string) {
+export async function getStoreContext(slug: string) {
   if (slug === 'demo') {
     return {
       products: US_DEMO_PRODUCTS,
