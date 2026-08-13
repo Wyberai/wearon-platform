@@ -4,6 +4,32 @@ import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
 import { FONTS } from '@/lib/constants'
 import { THEMES, getTheme } from '@/lib/themes'
+import type { BrandVoice } from '@/lib/types'
+
+const TONE_OPTIONS: { value: BrandVoice['tone']; label: string; desc: string }[] = [
+  { value: 'playful',       label: 'Playful',       desc: 'Fun, energetic, uses humour' },
+  { value: 'sophisticated', label: 'Sophisticated',  desc: 'Elegant, refined, confident' },
+  { value: 'bold',          label: 'Bold',           desc: 'Direct, strong, action-driven' },
+  { value: 'minimal',       label: 'Minimal',        desc: 'Clean, restrained, lets product shine' },
+  { value: 'warm',          label: 'Warm',           desc: 'Personal, caring, like a friend' },
+]
+
+const AESTHETIC_OPTIONS = [
+  'Coastal', 'Quiet Luxury', 'Y2K', 'Dark Luxury', 'Artisanal',
+  'Streetwear', 'Cottagecore', 'Preppy', 'Boho', 'Editorial',
+]
+
+const OCCASION_OPTIONS = [
+  'Beach', 'Wedding Guest', 'Office', 'Date Night', 'Travel',
+  'Winter', 'Festival', 'Brunch', 'Gym', 'Casual',
+]
+
+const DEFAULT_BRAND_VOICE: BrandVoice = {
+  tone: 'warm',
+  aesthetic: [],
+  buyer_philosophy: '',
+  occasion_tags: [],
+}
 
 export default function CustomizePage() {
   const { slug } = useParams() as { slug: string }
@@ -20,6 +46,7 @@ export default function CustomizePage() {
     instagram_handle: '',
     payment_method: 'whatsapp_order',
   })
+  const [brandVoice, setBrandVoice] = useState<BrandVoice>(DEFAULT_BRAND_VOICE)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
@@ -27,7 +54,13 @@ export default function CustomizePage() {
   useEffect(() => {
     fetch(`/api/admin/config?slug=${slug}`)
       .then(r => r.json())
-      .then(data => { if (data.config) setConfig({ ...config, ...data.config }); setLoading(false) })
+      .then(data => {
+        if (data.config) {
+          setConfig({ ...config, ...data.config })
+          if (data.config.brand_voice) setBrandVoice(data.config.brand_voice)
+        }
+        setLoading(false)
+      })
   }, [slug])
 
   async function handleSave(e: React.FormEvent) {
@@ -36,7 +69,7 @@ export default function CustomizePage() {
     await fetch('/api/admin/config', {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ slug, ...config }),
+      body: JSON.stringify({ slug, ...config, brand_voice: brandVoice }),
     })
     setSaving(false)
     setSaved(true)
@@ -153,6 +186,106 @@ export default function CustomizePage() {
               </button>
             </div>
           </div>
+        </div>
+
+        {/* Brand Voice */}
+        <div className="bg-white rounded-xl border border-gray-100 p-6 space-y-5">
+          <div>
+            <h2 className="font-semibold text-gray-900">Brand Voice</h2>
+            <p className="text-xs text-gray-500 mt-0.5">Every AI output — captions, replies, product copy — will sound like your brand.</p>
+          </div>
+
+          {/* Tone */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Tone</label>
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+              {TONE_OPTIONS.map(t => (
+                <button
+                  key={t.value}
+                  type="button"
+                  onClick={() => setBrandVoice(v => ({ ...v, tone: t.value }))}
+                  className={`text-left p-3 rounded-lg border-2 transition-all ${brandVoice.tone === t.value ? 'border-pink-500 bg-pink-50' : 'border-gray-100 hover:border-gray-300'}`}
+                >
+                  <p className={`text-sm font-semibold ${brandVoice.tone === t.value ? 'text-pink-700' : 'text-gray-800'}`}>{t.label}</p>
+                  <p className="text-xs text-gray-400 mt-0.5">{t.desc}</p>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Aesthetic */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Aesthetic <span className="text-gray-400 font-normal">(pick up to 3)</span></label>
+            <div className="flex flex-wrap gap-2">
+              {AESTHETIC_OPTIONS.map(a => {
+                const active = brandVoice.aesthetic.includes(a)
+                return (
+                  <button
+                    key={a}
+                    type="button"
+                    onClick={() => setBrandVoice(v => ({
+                      ...v,
+                      aesthetic: active
+                        ? v.aesthetic.filter(x => x !== a)
+                        : v.aesthetic.length < 3 ? [...v.aesthetic, a] : v.aesthetic,
+                    }))}
+                    className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-all ${active ? 'bg-pink-600 border-pink-600 text-white' : 'border-gray-200 text-gray-600 hover:border-pink-400'}`}
+                  >
+                    {a}
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+
+          {/* Buyer philosophy */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">We curate for…</label>
+            <input
+              type="text"
+              value={brandVoice.buyer_philosophy}
+              onChange={e => setBrandVoice(v => ({ ...v, buyer_philosophy: e.target.value }))}
+              placeholder="e.g. the modern professional who wants effortless style"
+              className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500"
+            />
+          </div>
+
+          {/* Occasions */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Key Occasions <span className="text-gray-400 font-normal">(select all that apply)</span></label>
+            <div className="flex flex-wrap gap-2">
+              {OCCASION_OPTIONS.map(o => {
+                const active = brandVoice.occasion_tags.includes(o)
+                return (
+                  <button
+                    key={o}
+                    type="button"
+                    onClick={() => setBrandVoice(v => ({
+                      ...v,
+                      occasion_tags: active
+                        ? v.occasion_tags.filter(x => x !== o)
+                        : [...v.occasion_tags, o],
+                    }))}
+                    className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-all ${active ? 'bg-gray-900 border-gray-900 text-white' : 'border-gray-200 text-gray-600 hover:border-gray-400'}`}
+                  >
+                    {o}
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+
+          {/* Preview */}
+          {(brandVoice.tone || brandVoice.aesthetic.length > 0) && (
+            <div className="bg-gray-50 rounded-lg p-3 text-xs text-gray-600 italic border border-gray-100">
+              <span className="font-semibold not-italic text-gray-700 block mb-0.5">AI will sound like:</span>
+              {brandVoice.tone === 'playful' && '"Love that pick! The Satin Slip Maxi is giving serious date-night energy 💫 Grab it in champagne before it sells out!"'}
+              {brandVoice.tone === 'sophisticated' && '"An excellent choice. The Satin Slip Maxi Dress pairs beautifully with minimal accessories for an evening event."'}
+              {brandVoice.tone === 'bold' && '"This one sells out fast. Order in your size now — the Satin Slip Maxi is a staple."'}
+              {brandVoice.tone === 'minimal' && '"The slip maxi. $89. It works."'}
+              {brandVoice.tone === 'warm' && '"Oh this one is so good! The Satin Slip Maxi is honestly one of my favourite pieces — it works for so many occasions."'}
+            </div>
+          )}
         </div>
 
         {/* Contact */}

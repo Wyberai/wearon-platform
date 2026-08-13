@@ -27,7 +27,7 @@ export async function PATCH(request: Request) {
 
   const allowed = ['brand_name', 'tagline', 'primary_color', 'secondary_color', 'accent_color', 'background_color',
     'font_family', 'theme_id', 'whatsapp_number', 'instagram_handle', 'payment_method', 'payment_config', 'categories', 'banners',
-    'try_on_enabled', 'reviews_enabled', 'wishlist_enabled', 'faq_policy']
+    'try_on_enabled', 'reviews_enabled', 'wishlist_enabled', 'faq_policy', 'brand_voice']
   const safe: Record<string, unknown> = {}
   for (const key of allowed) {
     if (key in updates) safe[key] = updates[key]

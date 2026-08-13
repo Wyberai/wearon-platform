@@ -1,5 +1,7 @@
 import { createAdminClient } from '@/lib/supabase/server'
 import { sendPushToSeller } from '@/lib/push/fcm'
+import { buildBrandPersona } from '@/lib/brand-voice'
+import type { BrandVoice } from '@/lib/types'
 
 // Channel-agnostic core shared by Instagram DMs, Facebook Messenger, and
 // WhatsApp — each channel keeps its own connection/send logic (different
@@ -53,6 +55,7 @@ export interface SellerContext {
   products: CatalogueProduct[]
   agentConfig: AgentConfig
   recentOrders: RecentOrder[]
+  brandVoice?: BrandVoice | null
 }
 
 const DEFAULT_AGENT_CONFIG: AgentConfig = {
@@ -71,7 +74,7 @@ export async function buildSellerContext(sellerId: string, channel: Channel, buy
   const configTable = AGENT_CONFIG_TABLE[channel]
 
   const [configRes, productsRes, agentRes, ordersRes] = await Promise.all([
-    admin.from('tenant_config').select('brand_name, whatsapp_number, faq_policy').eq('seller_id', sellerId).single(),
+    admin.from('tenant_config').select('brand_name, whatsapp_number, faq_policy, brand_voice').eq('seller_id', sellerId).single(),
     admin.from('products').select('name, description, price_inr, category, sizes, colors, is_active').eq('seller_id', sellerId).eq('is_active', true).limit(50),
     admin.from(configTable).select('*').eq('seller_id', sellerId).single(),
     buyerPhone
@@ -87,6 +90,7 @@ export async function buildSellerContext(sellerId: string, channel: Channel, buy
     products: productsRes.data ?? [],
     agentConfig: agentRes.data ?? DEFAULT_AGENT_CONFIG,
     recentOrders: ordersRes.data ?? [],
+    brandVoice: (configRes.data?.brand_voice as BrandVoice | null) ?? null,
   }
 }
 
@@ -158,7 +162,10 @@ export async function generateReply(
       ).join('\n')
     : null
 
-  const systemPrompt = `You are the ${CHANNEL_LABEL[channel]} assistant for "${ctx.brandName}", a fashion boutique. Your job is to reply to customer messages in a ${ctx.agentConfig.brand_voice} tone — this includes both sales questions and support questions (order status, returns, delivery issues).
+  const persona = buildBrandPersona(ctx.brandVoice, ctx.brandName)
+  const systemPrompt = `${persona}
+
+You are answering a ${CHANNEL_LABEL[channel]} message for "${ctx.brandName}". Handle both sales questions and support questions (order status, returns, delivery issues).
 
 CATALOGUE:
 ${productCatalogue}
