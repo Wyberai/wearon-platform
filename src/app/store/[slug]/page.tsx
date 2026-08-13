@@ -4,6 +4,17 @@ import Link from 'next/link'
 import { useParams, useSearchParams } from 'next/navigation'
 import { Suspense, useState, useEffect, useCallback } from 'react'
 import type { Product, TenantConfig } from '@/lib/types'
+
+interface FeaturedCollection {
+  id: string
+  title: string
+  description?: string
+  editorial_copy: unknown
+  product_ids: string[]
+  occasion_tags: string[]
+  hero_image_url?: string
+  products?: { id: string; name: string; garment_image_url: string; price_inr: number }[]
+}
 import { getTheme, HEADING_TYPE, LOGO_RADIUS, type Theme } from '@/lib/themes'
 import { FONTS } from '@/lib/constants'
 import { getOrCreateDeviceToken } from '@/lib/device-token'
@@ -51,21 +62,26 @@ function StorePageContent() {
   const [wishlist, setWishlist] = useState<Set<string>>(new Set())
   const [ratings, setRatings] = useState<Record<string, { avg: number; count: number }>>({})
   const [loading, setLoading] = useState(true)
+  const [collections, setCollections] = useState<FeaturedCollection[]>([])
+  const [activeCollection, setActiveCollection] = useState<string | null>(null)
 
   const isDemoStore = slug === 'demo'
   const themeOverride = searchParams.get('theme')
 
   const loadData = useCallback(async () => {
     try {
-      const [cfgRes, prodRes] = await Promise.all([
+      const [cfgRes, prodRes, colRes] = await Promise.all([
         fetch(`/api/store/config?slug=${slug}`),
         fetch(`/api/store/products?slug=${slug}`),
+        fetch(`/api/store/${slug}/collections`),
       ])
       const cfgData = await cfgRes.json()
       const prodData = await prodRes.json()
+      const colData = await colRes.json()
 
       setConfig(cfgData.config ?? null)
       setProducts(isDemoStore ? getDemoProducts() : (prodData.products ?? []))
+      setCollections(colData.collections ?? [])
     } catch {
       if (isDemoStore) setProducts(getDemoProducts())
     }
@@ -165,9 +181,15 @@ function StorePageContent() {
     Accessories: 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=400&h=400&fit=crop',
   }
 
+  const activeCollectionData = collections.find(c => c.id === activeCollection) ?? null
+  const activeCollectionProductIds = activeCollectionData
+    ? new Set((activeCollectionData.product_ids as string[]))
+    : null
+
   const filtered = products
     .filter(p => {
       if (!p.is_active) return false
+      if (activeCollectionProductIds && !activeCollectionProductIds.has(p.id)) return false
       const q = search.toLowerCase()
       const matchSearch = !q || p.name.toLowerCase().includes(q) ||
         (p.category ?? '').toLowerCase().includes(q) ||
@@ -301,6 +323,79 @@ function StorePageContent() {
                   }}
                 >
                   {cat}
+                </button>
+              )
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* Featured Collections — shown when AI Buyer has curated edits */}
+      {collections.length > 0 && (
+        <div className="px-6 md:px-10 mb-12">
+          <div className="flex items-baseline justify-between mb-5">
+            <h2 className={`text-xl ${HEADING_CLASS[theme.headingStyle]}`} style={{ color: theme.palette.ink }}>
+              Shop the Edit
+            </h2>
+            {activeCollection && (
+              <button
+                onClick={() => { setActiveCollection(null); setActiveCategory(null) }}
+                className="text-xs underline"
+                style={{ color: `${theme.palette.ink}77` }}
+              >
+                Clear filter ×
+              </button>
+            )}
+          </div>
+          <div className="flex gap-4 overflow-x-auto pb-2" style={{ scrollbarWidth: 'none' }}>
+            {collections.map(col => {
+              const isActive = activeCollection === col.id
+              const editorial = col.editorial_copy as { intro?: string; product_captions?: Record<string, string> } | null
+              const thumbs = (col.products as { id: string; garment_image_url: string; name: string }[] | undefined) ?? []
+              return (
+                <button
+                  key={col.id}
+                  onClick={() => {
+                    setActiveCollection(isActive ? null : col.id)
+                    setActiveCategory(null)
+                    if (!isActive) {
+                      setTimeout(() => document.getElementById('products')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100)
+                    }
+                  }}
+                  className="flex-shrink-0 text-left transition-all duration-200"
+                  style={{
+                    width: 240,
+                    background: isActive ? theme.palette.accent : theme.palette.card ?? `${theme.palette.ink}08`,
+                    color: isActive ? '#fff' : theme.palette.ink,
+                    borderRadius: theme.decoration === 'rounded' ? 16 : 4,
+                    padding: '16px',
+                    border: isActive ? 'none' : `1.5px solid ${theme.palette.ink}14`,
+                  }}
+                >
+                  {/* Product thumbnails strip */}
+                  {thumbs.length > 0 && (
+                    <div className="flex gap-1.5 mb-3">
+                      {thumbs.slice(0, 4).map(p => (
+                        <img
+                          key={p.id}
+                          src={p.garment_image_url}
+                          alt={p.name}
+                          className="object-cover flex-1"
+                          style={{ height: 60, borderRadius: theme.decoration === 'rounded' ? 8 : 2 }}
+                          onError={e => { e.currentTarget.style.display = 'none' }}
+                        />
+                      ))}
+                    </div>
+                  )}
+                  <p className="text-sm font-semibold truncate">{col.title}</p>
+                  {editorial?.intro && (
+                    <p className="text-xs mt-1 leading-relaxed line-clamp-2" style={{ opacity: isActive ? 0.85 : 0.6 }}>
+                      {editorial.intro}
+                    </p>
+                  )}
+                  <p className="text-[11px] mt-2 font-medium" style={{ opacity: 0.75 }}>
+                    {(col.product_ids as string[]).length} pieces {isActive ? '— showing ↓' : '→'}
+                  </p>
                 </button>
               )
             })}

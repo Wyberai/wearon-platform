@@ -185,6 +185,8 @@ export async function POST(req: NextRequest) {
       razorpay_order_id: razorpayOrder.id,
       whatsapp_confirmed: false,
       shipping_address: shipping_address ?? null,
+      buyer_email: buyer_email ?? null,
+      buyer_phone: buyer_phone ?? null,
       buyer_notes: Object.keys(buyerNotes).length > 0 ? JSON.stringify(buyerNotes) : null,
     })
 
@@ -214,6 +216,8 @@ export async function POST(req: NextRequest) {
     payment_method: 'cod',
     whatsapp_confirmed: false,
     shipping_address: shipping_address ?? null,
+    buyer_email: buyer_email ?? null,
+    buyer_phone: buyer_phone ?? null,
     buyer_notes: Object.keys(buyerNotes).length > 0 ? JSON.stringify(buyerNotes) : null,
   })
 
