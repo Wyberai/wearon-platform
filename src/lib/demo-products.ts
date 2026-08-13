@@ -1,0 +1,37 @@
+const U = (id: string) => `https://images.unsplash.com/${id}?w=800&h=1000&fit=crop`
+
+export const US_DEMO_PRODUCTS = [
+  // Dresses
+  { id: 'demo-01', name: 'Satin Slip Maxi Dress', description: 'Fluid satin with adjustable straps. Runs true to size.', category: 'Dresses', price_inr: 89, original_price_inr: 120, garment_image_url: U('photo-1496747611176-843222e1e57c'), garment_preprocessed_url: null, slug: 'satin-slip-maxi-dress', is_active: true, sizes: ['XS','S','M','L','XL'], colors: ['Champagne','Black','Sage'], tags: ['bestseller'], created_at: '2026-08-01T00:00:00Z', stock_by_variant: {} },
+  { id: 'demo-02', name: 'Floral Wrap Midi Dress', description: 'Lightweight wrap silhouette, adjustable tie waist.', category: 'Dresses', price_inr: 72, original_price_inr: null, garment_image_url: U('photo-1572804013309-59a88b7e92f1'), garment_preprocessed_url: null, slug: 'floral-wrap-midi-dress', is_active: true, sizes: ['XS','S','M','L'], colors: ['Floral Print'], tags: [], created_at: '2026-08-01T00:01:00Z', stock_by_variant: {} },
+  { id: 'demo-03', name: 'Off-Shoulder Mini Dress', description: 'Clean off-shoulder cut, structured bodice, stretch hem.', category: 'Dresses', price_inr: 65, original_price_inr: null, garment_image_url: U('photo-1496440737103-cd596325d314'), garment_preprocessed_url: null, slug: 'off-shoulder-mini-dress', is_active: true, sizes: ['XS','S','M','L','XL'], colors: ['White','Black'], tags: ['new'], created_at: '2026-08-01T00:02:00Z', stock_by_variant: {} },
+  // Tops
+  { id: 'demo-04', name: 'Oversized Linen Shirt', description: 'Boxy relaxed fit, 100% European linen, coconut buttons.', category: 'Tops', price_inr: 55, original_price_inr: null, garment_image_url: U('photo-1434389677669-e08b4cac3105'), garment_preprocessed_url: null, slug: 'oversized-linen-shirt', is_active: true, sizes: ['XS','S','M','L','XL','XXL'], colors: ['Ivory','Sand','Navy'], tags: [], created_at: '2026-08-01T00:03:00Z', stock_by_variant: {} },
+  { id: 'demo-05', name: 'Cropped Ribbed Tank', description: 'Fitted crop in thick-rib jersey. Pairs with everything.', category: 'Tops', price_inr: 32, original_price_inr: null, garment_image_url: U('photo-1509631179647-0177331693ae'), garment_preprocessed_url: null, slug: 'cropped-ribbed-tank', is_active: true, sizes: ['XS','S','M','L'], colors: ['Black','White','Cream','Mocha'], tags: ['bestseller'], created_at: '2026-08-01T00:04:00Z', stock_by_variant: {} },
+  { id: 'demo-06', name: 'Satin Cowl-Neck Cami', description: 'Draped cowl neck, adjustable straps, relaxed fit.', category: 'Tops', price_inr: 48, original_price_inr: 60, garment_image_url: U('photo-1469334031218-e382a71b716b'), garment_preprocessed_url: null, slug: 'satin-cowl-neck-cami', is_active: true, sizes: ['XS','S','M','L','XL'], colors: ['Champagne','Dusty Rose','Slate'], tags: ['sale'], created_at: '2026-08-01T00:05:00Z', stock_by_variant: {} },
+  // Denim
+  { id: 'demo-07', name: 'High-Rise Straight Jeans', description: 'Classic high-rise with a straight leg. 98% cotton, slight stretch.', category: 'Denim', price_inr: 98, original_price_inr: null, garment_image_url: U('photo-1542272604-787c3835535d'), garment_preprocessed_url: null, slug: 'high-rise-straight-jeans', is_active: true, sizes: ['24','25','26','27','28','29','30','31','32'], colors: ['Mid Wash','Dark Wash','Light Wash'], tags: ['bestseller'], created_at: '2026-08-01T00:06:00Z', stock_by_variant: {} },
+  { id: 'demo-08', name: 'Wide-Leg Barrel Jeans', description: 'Relaxed barrel silhouette, low to mid rise. Very on trend.', category: 'Denim', price_inr: 110, original_price_inr: null, garment_image_url: U('photo-1475178626620-a4d074967452'), garment_preprocessed_url: null, slug: 'wide-leg-barrel-jeans', is_active: true, sizes: ['24','25','26','27','28','29','30'], colors: ['Ecru','Mid Wash'], tags: ['new'], created_at: '2026-08-01T00:07:00Z', stock_by_variant: {} },
+  { id: 'demo-09', name: 'Classic Denim Jacket', description: 'Structured denim jacket with chest pockets and button closure.', category: 'Denim', price_inr: 115, original_price_inr: 145, garment_image_url: U('photo-1591047139829-d91aecb6caea'), garment_preprocessed_url: null, slug: 'classic-denim-jacket', is_active: true, sizes: ['XS','S','M','L','XL'], colors: ['Light Wash','Dark Wash'], tags: ['sale'], created_at: '2026-08-01T00:08:00Z', stock_by_variant: {} },
+  // Outerwear
+  { id: 'demo-10', name: 'Camel Trench Coat', description: 'Belted trench in a water-repellent shell. Timeless silhouette.', category: 'Outerwear', price_inr: 195, original_price_inr: null, garment_image_url: U('photo-1539533018447-63fcce2678e3'), garment_preprocessed_url: null, slug: 'camel-trench-coat', is_active: true, sizes: ['XS','S','M','L','XL'], colors: ['Camel','Khaki'], tags: ['new'], created_at: '2026-08-01T00:09:00Z', stock_by_variant: {} },
+  { id: 'demo-11', name: 'Oversized Wool Blazer', description: 'Boyfriend-fit blazer in a herringbone wool blend.', category: 'Outerwear', price_inr: 155, original_price_inr: 200, garment_image_url: U('photo-1490481651871-ab68de25d43d'), garment_preprocessed_url: null, slug: 'oversized-wool-blazer', is_active: true, sizes: ['XS','S','M','L','XL'], colors: ['Black','Charcoal','Cream'], tags: ['sale'], created_at: '2026-08-01T00:10:00Z', stock_by_variant: {} },
+  { id: 'demo-12', name: 'Quilted Puffer Vest', description: 'Lightweight quilted fill, cropped length, snap buttons.', category: 'Outerwear', price_inr: 88, original_price_inr: null, garment_image_url: U('photo-1548624313-0396c75e4b1a'), garment_preprocessed_url: null, slug: 'quilted-puffer-vest', is_active: true, sizes: ['XS','S','M','L','XL'], colors: ['Black','Cream','Olive'], tags: [], created_at: '2026-08-01T00:11:00Z', stock_by_variant: {} },
+  // Accessories
+  { id: 'demo-13', name: 'Mini Crossbody Bag', description: 'Structured mini bag in pebbled faux leather. Adjustable strap.', category: 'Accessories', price_inr: 79, original_price_inr: null, garment_image_url: U('photo-1548036328-c9fa89d128fa'), garment_preprocessed_url: null, slug: 'mini-crossbody-bag', is_active: true, sizes: [], colors: ['Black','Tan','Burgundy'], tags: ['bestseller'], created_at: '2026-08-01T00:12:00Z', stock_by_variant: {} },
+  { id: 'demo-14', name: 'Gold Chain Hoops', description: 'Lightweight chunky chain hoops, 18k gold-plated brass.', category: 'Accessories', price_inr: 34, original_price_inr: null, garment_image_url: U('photo-1606760227091-3dd870d97f1d'), garment_preprocessed_url: null, slug: 'gold-chain-hoops', is_active: true, sizes: [], colors: ['Gold'], tags: ['new'], created_at: '2026-08-01T00:13:00Z', stock_by_variant: {} },
+  { id: 'demo-15', name: 'Ribbed Knit Beanie', description: 'Chunky ribbed knit in a one-size-fits-all style.', category: 'Accessories', price_inr: 28, original_price_inr: null, garment_image_url: U('photo-1516762689617-e1cffcef479d'), garment_preprocessed_url: null, slug: 'ribbed-knit-beanie', is_active: true, sizes: [], colors: ['Oatmeal','Black','Camel','Sage'], tags: [], created_at: '2026-08-01T00:14:00Z', stock_by_variant: {} },
+]
+
+export const US_DEMO_CONFIG = {
+  seller_id: 'demo',
+  slug: 'demo',
+  brand_name: 'Luna Boutique',
+  tagline: 'Curated fashion for the modern woman',
+  currency: 'USD',
+  payment_method: 'stripe',
+  whatsapp_number: null,
+  instagram_handle: '@lunaboutique',
+  categories: ['Dresses', 'Tops', 'Denim', 'Outerwear', 'Accessories'],
+  primary_color: '#1A1A1A',
+}

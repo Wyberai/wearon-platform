@@ -4,6 +4,7 @@ import { useRef, useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { getOrCreateDeviceToken } from '@/lib/device-token'
+import { productToJsonLd } from '@/lib/schema-org'
 import { ArrowLeft, Share2 } from 'lucide-react'
 
 interface RazorpayCheckoutOptions {
@@ -267,8 +268,32 @@ export default function ProductDetailPage() {
   const textMuted = 'color-mix(in srgb, var(--store-ink) 50%, transparent)'
   const textDim = 'color-mix(in srgb, var(--store-ink) 35%, transparent)'
 
+  const jsonLd = productToJsonLd(
+    {
+      id: product.id,
+      name: product.name,
+      description: product.description,
+      category: product.category,
+      price_inr: product.price_inr,
+      original_price_inr: product.original_price_inr,
+      garment_image_url: product.garment_image_url,
+      slug: productId,
+    },
+    {
+      brandName: config.brand_name,
+      currency: config.currency ?? 'USD',
+      baseUrl: typeof window !== 'undefined' ? window.location.origin : '',
+      storeSlug: slug,
+    }
+  )
+
   return (
     <div style={{ background: 'var(--store-bg)', color: 'var(--store-ink)' }}>
+      {/* JSON-LD for AI agent discoverability (Rufus, Perplexity, Google AI Mode) */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* Desktop: 2-col grid. Mobile: stacked. */}
       <div className="max-w-screen-lg mx-auto md:grid md:grid-cols-2 md:gap-12 md:px-10 md:py-12 pb-32 md:pb-16">
 
@@ -390,6 +415,18 @@ export default function ProductDetailPage() {
               See yourself wearing this
             </button>
           )}
+
+          {/* Shop with AI — links to Claude with this store's MCP pre-configured */}
+          <a
+            href={`https://claude.ai/new?mcp=${encodeURIComponent(`${typeof window !== 'undefined' ? window.location.origin : ''}/api/store/${slug}/mcp`)}&prompt=${encodeURIComponent(`I want to buy ${product.name} from this store`)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full border rounded-2xl py-3 font-medium text-sm flex items-center justify-center gap-2 mb-4 hover:opacity-80 transition-opacity"
+            style={{ borderColor: 'color-mix(in srgb, var(--store-ink) 15%, transparent)', color: 'color-mix(in srgb, var(--store-ink) 60%, transparent)' }}
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+            Buy with Claude AI
+          </a>
 
           {/* Delivery note */}
           <div className="rounded-xl px-4 py-3 mb-6 flex items-center gap-3" style={{ background: `color-mix(in srgb, var(--store-bg) 60%, color-mix(in srgb, var(--store-ink) 8%, transparent))` }}>
