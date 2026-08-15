@@ -254,6 +254,18 @@ export function getTheme(id: string | null | undefined): Theme {
   return THEMES.find(t => t.id === id) ?? THEMES[0]
 }
 
+// Flagship theme ids (calendar months) map to a fictional showcase brand's
+// demo route — the only place a seller can preview the real bespoke
+// component tree before picking the theme for their own store. The generic
+// `/store/demo?theme=` override only ever recolors the shared grid renderer,
+// so it can't stand in for these — see the slug-based bypass in
+// store/[slug]/layout.tsx.
+export const FLAGSHIP_DEMO_SLUG: Record<string, string> = {
+  january: 'august',
+  february: 'ember',
+  march: 'bloom',
+}
+
 // Header brand-name typography per headingStyle, expressed as CSS custom-
 // property values (not Tailwind classes) so the ?theme= preview override —
 // which only ever touches document.documentElement.style, since the header

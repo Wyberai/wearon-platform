@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
 import { FONTS } from '@/lib/constants'
-import { THEMES, getTheme } from '@/lib/themes'
+import { THEMES, getTheme, FLAGSHIP_DEMO_SLUG } from '@/lib/themes'
 import type { BrandVoice } from '@/lib/types'
 
 const TONE_OPTIONS: { value: BrandVoice['tone']; label: string; desc: string }[] = [
@@ -30,6 +30,15 @@ const DEFAULT_BRAND_VOICE: BrandVoice = {
   buyer_philosophy: '',
   occasion_tags: [],
 }
+
+// Flagship (bespoke, AI-native) themes surfaced first — they're a
+// fundamentally different offering from the cosmetic-only presets, not just
+// another grid item among twelve.
+const SORTED_THEMES = [...THEMES].sort((a, b) => {
+  const aFlagship = FLAGSHIP_DEMO_SLUG[a.id] ? 0 : 1
+  const bFlagship = FLAGSHIP_DEMO_SLUG[b.id] ? 0 : 1
+  return aFlagship - bFlagship
+})
 
 export default function CustomizePage() {
   const { slug } = useParams() as { slug: string }
@@ -100,10 +109,13 @@ export default function CustomizePage() {
         {/* Theme picker */}
         <div className="bg-white rounded-xl border border-gray-100 p-6">
           <h2 className="font-semibold text-gray-900 mb-1">Store Theme</h2>
-          <p className="text-xs text-gray-500 mb-4">Picking a theme sets colors and font below — tweak them after if you want.</p>
+          <p className="text-xs text-gray-500 mb-4">
+            Flagship themes (marked <span className="font-semibold text-gray-700">LIVE</span>) replace your whole store with a bespoke design and AI feature — the rest just set colors and font below, which you can tweak after.
+          </p>
           <div className="grid grid-cols-5 gap-3">
-            {THEMES.map(t => {
+            {SORTED_THEMES.map(t => {
               const active = t.id === config.theme_id
+              const demoSlug = FLAGSHIP_DEMO_SLUG[t.id]
               return (
                 <div key={t.id} className="text-left group">
                   <button
@@ -117,6 +129,11 @@ export default function CustomizePage() {
                       style={{ outline: active ? '2px solid #A6134A' : '1px solid #e5e7eb', outlineOffset: 2 }}
                     >
                       <img src={t.previewImage} alt={t.name} className="w-full h-full object-cover" />
+                      {demoSlug && (
+                        <span className="absolute top-1.5 left-1.5 bg-gray-900 text-white text-[9px] font-bold tracking-wide px-1.5 py-0.5 rounded">
+                          LIVE
+                        </span>
+                      )}
                       {/* Color swatch strip */}
                       <div className="absolute bottom-0 left-0 right-0 flex h-4">
                         <div className="flex-1" style={{ background: t.palette.bg }} />
@@ -127,7 +144,7 @@ export default function CustomizePage() {
                     <p className={`text-xs mt-1.5 ${active ? 'font-semibold text-gray-900' : 'text-gray-500'}`}>{t.name}</p>
                   </button>
                   <a
-                    href={`/store/demo?theme=${t.id}`}
+                    href={demoSlug ? `/store/${demoSlug}` : `/store/demo?theme=${t.id}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-[10px] text-pink-500 hover:underline"
