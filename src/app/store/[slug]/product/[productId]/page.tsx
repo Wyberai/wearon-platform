@@ -9,7 +9,11 @@ import { ArrowLeft, Share2 } from 'lucide-react'
 import { notFound } from 'next/navigation'
 import { AugustPDP } from '@/components/august/AugustPDP'
 import { AUGUST_BRAND, AUGUST_PRODUCTS, findProduct, relatedProducts } from '@/lib/august/catalog'
-import { configToThemeBrand, productToThemeProduct } from '@/lib/august/adapters'
+import { EmberPDP } from '@/components/ember/EmberPDP'
+import { EMBER_BRAND, EMBER_PRODUCTS, findProduct as findEmberProduct, relatedProducts as relatedEmberProducts } from '@/lib/ember/catalog'
+import { BloomPDP } from '@/components/bloom/BloomPDP'
+import { BLOOM_BRAND, BLOOM_PRODUCTS, findProduct as findBloomProduct, relatedProducts as relatedBloomProducts } from '@/lib/bloom/catalog'
+import { configToThemeBrand, productToThemeProduct } from '@/lib/flagship/adapters'
 
 interface RazorpayCheckoutOptions {
   key: string
@@ -74,6 +78,16 @@ export default function ProductDetailPage() {
     const product = findProduct(AUGUST_PRODUCTS, productId)
     if (!product) return notFound()
     return <AugustPDP brand={AUGUST_BRAND} product={product} related={relatedProducts(AUGUST_PRODUCTS, product)} />
+  }
+  if (slug === 'ember') {
+    const product = findEmberProduct(EMBER_PRODUCTS, productId)
+    if (!product) return notFound()
+    return <EmberPDP brand={EMBER_BRAND} product={product} related={relatedEmberProducts(EMBER_PRODUCTS, product)} />
+  }
+  if (slug === 'bloom') {
+    const product = findBloomProduct(BLOOM_PRODUCTS, productId)
+    if (!product) return notFound()
+    return <BloomPDP brand={BLOOM_BRAND} product={product} related={relatedBloomProducts(BLOOM_PRODUCTS, product)} />
   }
 
   return <GenericProductDetailPage slug={slug} productId={productId} />
@@ -285,6 +299,56 @@ function GenericProductDetailPage({ slug, productId }: { slug: string; productId
   if (config.theme_id === 'january') {
     return (
       <AugustPDP
+        brand={configToThemeBrand({ ...config, seller_id: config.seller_id ?? null }, slug)}
+        product={productToThemeProduct({
+          id: product.id,
+          seller_id: config.seller_id ?? '',
+          name: product.name,
+          description: product.description,
+          category: product.category,
+          price_inr: product.price_inr,
+          original_price_inr: product.original_price_inr,
+          cost_price_inr: null,
+          garment_image_url: product.garment_image_url,
+          garment_preprocessed_url: null,
+          slug: productId,
+          is_active: true,
+          sizes: product.sizes,
+          colors: product.colors,
+          tags: product.tags,
+          created_at: '',
+        })}
+      />
+    )
+  }
+  if (config.theme_id === 'february') {
+    return (
+      <EmberPDP
+        brand={configToThemeBrand({ ...config, seller_id: config.seller_id ?? null }, slug)}
+        product={productToThemeProduct({
+          id: product.id,
+          seller_id: config.seller_id ?? '',
+          name: product.name,
+          description: product.description,
+          category: product.category,
+          price_inr: product.price_inr,
+          original_price_inr: product.original_price_inr,
+          cost_price_inr: null,
+          garment_image_url: product.garment_image_url,
+          garment_preprocessed_url: null,
+          slug: productId,
+          is_active: true,
+          sizes: product.sizes,
+          colors: product.colors,
+          tags: product.tags,
+          created_at: '',
+        })}
+      />
+    )
+  }
+  if (config.theme_id === 'march') {
+    return (
+      <BloomPDP
         brand={configToThemeBrand({ ...config, seller_id: config.seller_id ?? null }, slug)}
         product={productToThemeProduct({
           id: product.id,

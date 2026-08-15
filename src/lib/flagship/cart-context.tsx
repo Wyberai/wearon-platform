@@ -5,9 +5,9 @@ import type { ThemeProduct } from './types'
 
 // Cart lines are denormalized (name/image/price snapshotted at add-time)
 // rather than looked up from a shared catalog — this keeps the cart fully
-// decoupled from where the product list lives, so the same cart works for
-// the AUGUST demo catalog and for any real seller's own Supabase products
-// without the shell needing to know which catalog is active.
+// decoupled from where the product list lives, so the same provider works
+// for any flagship theme's demo catalog or a real seller's own Supabase
+// products without the shell needing to know which catalog is active.
 export interface CartLine {
   productId: string
   slug: string
@@ -34,29 +34,31 @@ interface CartContextValue {
 }
 
 const CartContext = createContext<CartContextValue | null>(null)
-const STORAGE_KEY = 'august_cart_v2'
 
 function sameLine(a: CartLine, productId: string, size: string, color: string) {
   return a.productId === productId && a.size === size && a.color === color
 }
 
-export function AugustCartProvider({ children }: { children: ReactNode }) {
+// storageKey must be unique per theme (e.g. 'august_cart_v2', 'ember_cart_v1')
+// so two demo storefronts on the same origin don't share a cart.
+export function FlagshipCartProvider({ children, storageKey }: { children: ReactNode; storageKey: string }) {
   const [lines, setLines] = useState<CartLine[]>([])
   const [isOpen, setIsOpen] = useState(false)
   const [hydrated, setHydrated] = useState(false)
 
   useEffect(() => {
     try {
-      const raw = window.localStorage.getItem(STORAGE_KEY)
+      const raw = window.localStorage.getItem(storageKey)
       if (raw) setLines(JSON.parse(raw))
     } catch { /* ignore corrupt local storage */ }
     setHydrated(true)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
     if (!hydrated) return
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(lines))
-  }, [lines, hydrated])
+    window.localStorage.setItem(storageKey, JSON.stringify(lines))
+  }, [lines, hydrated, storageKey])
 
   const addLine = useCallback((product: ThemeProduct, size: string, color: string, quantity = 1) => {
     setLines(prev => {
@@ -107,8 +109,8 @@ export function AugustCartProvider({ children }: { children: ReactNode }) {
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>
 }
 
-export function useAugustCart() {
+export function useFlagshipCart() {
   const ctx = useContext(CartContext)
-  if (!ctx) throw new Error('useAugustCart must be used within AugustCartProvider')
+  if (!ctx) throw new Error('useFlagshipCart must be used within FlagshipCartProvider')
   return ctx
 }

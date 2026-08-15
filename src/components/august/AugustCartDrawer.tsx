@@ -2,12 +2,12 @@
 
 import Link from 'next/link'
 import { AnimatePresence, motion } from 'framer-motion'
-import { useAugustCart } from '@/lib/august/cart-context'
-import type { ThemeBrand } from '@/lib/august/types'
+import { useFlagshipCart } from '@/lib/flagship/cart-context'
+import type { ThemeBrand } from '@/lib/flagship/types'
 
 export function AugustCartDrawer({ brand }: { brand: ThemeBrand }) {
   const slug = brand.slug
-  const { isOpen, closeCart, lines, subtotal, adjustQuantity, removeLine } = useAugustCart()
+  const { isOpen, closeCart, lines, subtotal, adjustQuantity, removeLine } = useFlagshipCart()
 
   return (
     <AnimatePresence>

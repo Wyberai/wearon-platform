@@ -22,7 +22,11 @@ import { StoreFeedLayout } from '@/components/store/StoreFeedLayout'
 import { WhatsAppBubble } from '@/components/store/WhatsAppBubble'
 import { AugustHome } from '@/components/august/AugustHome'
 import { AUGUST_BRAND, AUGUST_PRODUCTS } from '@/lib/august/catalog'
-import { configToThemeBrand, productToThemeProduct } from '@/lib/august/adapters'
+import { EmberHome } from '@/components/ember/EmberHome'
+import { EMBER_BRAND, EMBER_PRODUCTS } from '@/lib/ember/catalog'
+import { BloomHome } from '@/components/bloom/BloomHome'
+import { BLOOM_BRAND, BLOOM_PRODUCTS } from '@/lib/bloom/catalog'
+import { configToThemeBrand, productToThemeProduct } from '@/lib/flagship/adapters'
 
 const STORAGE_BASE = 'https://zhrubbutcsvhcbuaalep.supabase.co/storage/v1/object/public/product-images'
 
@@ -55,6 +59,12 @@ export default function StorePage() {
   // changes the hook order of a single mounted component.
   if (slug === 'august') {
     return <AugustHome brand={AUGUST_BRAND} products={AUGUST_PRODUCTS} />
+  }
+  if (slug === 'ember') {
+    return <EmberHome brand={EMBER_BRAND} products={EMBER_PRODUCTS} />
+  }
+  if (slug === 'bloom') {
+    return <BloomHome brand={BLOOM_BRAND} products={BLOOM_PRODUCTS} />
   }
 
   return (
@@ -228,6 +238,12 @@ function StorePageContent() {
   // component tree, rendered with their own brand + product data.
   if (config?.theme_id === 'january') {
     return <AugustHome brand={configToThemeBrand(config, slug)} products={products.filter(p => p.is_active).map(productToThemeProduct)} />
+  }
+  if (config?.theme_id === 'february') {
+    return <EmberHome brand={configToThemeBrand(config, slug)} products={products.filter(p => p.is_active).map(productToThemeProduct)} />
+  }
+  if (config?.theme_id === 'march') {
+    return <BloomHome brand={configToThemeBrand(config, slug)} products={products.filter(p => p.is_active).map(productToThemeProduct)} />
   }
 
   const chatBubble = config?.whatsapp_number ? (

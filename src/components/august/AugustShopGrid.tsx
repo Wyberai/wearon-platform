@@ -1,9 +1,9 @@
 'use client'
 
 import { useMemo, useState } from 'react'
-import type { ThemeBrand, ThemeProduct } from '@/lib/august/types'
+import type { ThemeBrand, ThemeProduct } from '@/lib/flagship/types'
 import { AugustProductCard } from './AugustProductCard'
-import { Reveal } from './Reveal'
+import { Reveal } from '@/components/flagship/Reveal'
 
 type SortKey = 'featured' | 'price-asc' | 'price-desc' | 'new'
 

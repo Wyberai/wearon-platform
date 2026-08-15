@@ -1,16 +1,16 @@
 'use client'
 
 import { useState, type ReactNode } from 'react'
-import { AugustCartProvider } from '@/lib/august/cart-context'
-import { AugustModeProvider, useAugustMode } from '@/lib/august/mode-context'
-import type { ThemeBrand } from '@/lib/august/types'
+import { FlagshipCartProvider } from '@/lib/flagship/cart-context'
+import { FlagshipModeProvider, useFlagshipMode } from '@/lib/flagship/mode-context'
+import type { ThemeBrand } from '@/lib/flagship/types'
 import { AugustHeader } from './AugustHeader'
 import { AugustFooter } from './AugustFooter'
 import { AugustCartDrawer } from './AugustCartDrawer'
 import { AugustStylistDrawer } from './AugustStylistDrawer'
 
 function ShellInner({ children, brand }: { children: ReactNode; brand: ThemeBrand }) {
-  const { mode } = useAugustMode()
+  const { mode } = useFlagshipMode()
   const [stylistOpen, setStylistOpen] = useState(false)
 
   return (
@@ -36,10 +36,10 @@ function ShellInner({ children, brand }: { children: ReactNode; brand: ThemeBran
 
 export function AugustShell({ children, brand }: { children: ReactNode; brand: ThemeBrand }) {
   return (
-    <AugustModeProvider>
-      <AugustCartProvider>
+    <FlagshipModeProvider storageKey="august_mode_v1">
+      <FlagshipCartProvider storageKey="august_cart_v2">
         <ShellInner brand={brand}>{children}</ShellInner>
-      </AugustCartProvider>
-    </AugustModeProvider>
+      </FlagshipCartProvider>
+    </FlagshipModeProvider>
   )
 }

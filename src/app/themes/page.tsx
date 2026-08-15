@@ -2,6 +2,8 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 import { MarketingNav } from '@/components/marketing/MarketingNav'
 import { AUGUST_CAMPAIGN } from '@/lib/august/catalog'
+import { EMBER_CAMPAIGN } from '@/lib/ember/catalog'
+import { BLOOM_CAMPAIGN } from '@/lib/bloom/catalog'
 
 export const metadata: Metadata = {
   title: 'Flagship Themes — WearOn',
@@ -24,8 +26,8 @@ interface MonthTheme {
 
 const MONTHS: MonthTheme[] = [
   { month: 'January', id: 'january', name: 'Quiet Intelligence', blurb: 'Editorial calm, an AI stylist, quiet-luxury essentials — our most advanced storefront yet.', image: AUGUST_CAMPAIGN.hero, storeSlug: 'august', live: true },
-  { month: 'February', id: 'february', name: 'Coming soon', blurb: 'A new flagship theme, built next.', image: '', live: false },
-  { month: 'March', id: 'march', name: 'Coming soon', blurb: 'A new flagship theme, built next.', image: '', live: false },
+  { month: 'February', id: 'february', name: 'Dress by Mood', blurb: 'Dark-first, color-forward knitwear and eveningwear with a mood-driven AI stylist.', image: EMBER_CAMPAIGN.hero, storeSlug: 'ember', live: true },
+  { month: 'March', id: 'march', name: 'One Capsule', blurb: 'A soft botanical capsule wardrobe with an AI outfit-combination planner.', image: BLOOM_CAMPAIGN.hero, storeSlug: 'bloom', live: true },
   { month: 'April', id: 'april', name: 'Coming soon', blurb: 'A new flagship theme, built next.', image: '', live: false },
   { month: 'May', id: 'may', name: 'Coming soon', blurb: 'A new flagship theme, built next.', image: '', live: false },
   { month: 'June', id: 'june', name: 'Coming soon', blurb: 'A new flagship theme, built next.', image: '', live: false },
@@ -113,9 +115,9 @@ export default function ThemesPage() {
 
         <section style={{ maxWidth: 1240, margin: '0 auto', padding: '0 24px 140px', textAlign: 'center' }}>
           <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(28px, 4vw, 40px)', marginBottom: 16 }}>
-            Ready to build on January?
+            Ready to pick yours?
           </h2>
-          <p style={{ fontSize: 15, color: `${INK}99`, marginBottom: 28 }}>Set up your store in 10 minutes — pick this theme at signup.</p>
+          <p style={{ fontSize: 15, color: `${INK}99`, marginBottom: 28 }}>Set up your store in 10 minutes — pick any live theme at signup.</p>
           <Link
             href="/auth/signup"
             className="th-hover-lift"

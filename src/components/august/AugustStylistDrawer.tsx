@@ -3,8 +3,8 @@
 import { useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { AUGUST_PRODUCTS } from '@/lib/august/catalog'
-import { productToThemeProduct } from '@/lib/august/adapters'
-import type { ThemeBrand, ThemeProduct } from '@/lib/august/types'
+import { productToThemeProduct } from '@/lib/flagship/adapters'
+import type { ThemeBrand, ThemeProduct } from '@/lib/flagship/types'
 
 interface ChatMessage {
   role: 'user' | 'assistant'

@@ -2,9 +2,9 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { useAugustCart } from '@/lib/august/cart-context'
+import { useFlagshipCart } from '@/lib/flagship/cart-context'
 import { getOrCreateDeviceToken } from '@/lib/device-token'
-import type { ThemeBrand } from '@/lib/august/types'
+import type { ThemeBrand } from '@/lib/flagship/types'
 
 type Step = 'bag' | 'shipping' | 'payment' | 'confirmed'
 
@@ -27,7 +27,7 @@ function generateOrderNumber() {
 export function AugustCheckout({ brand }: { brand: ThemeBrand }) {
   const slug = brand.slug
   const isLiveSeller = !!brand.sellerId
-  const { lines, subtotal, clear } = useAugustCart()
+  const { lines, subtotal, clear } = useFlagshipCart()
   // Cart hydrates from localStorage a tick after mount, so the initial step
   // can't be derived from `lines.length` here — it would always see an empty
   // cart and get stuck. Start on 'bag' and let the empty-state check below

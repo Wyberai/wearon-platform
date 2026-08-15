@@ -203,6 +203,51 @@ export const THEMES: Theme[] = [
     heroGradient: 'linear-gradient(160deg, #17140f 0%, #0b0a08 60%, #2a2013 100%)',
     previewImage: '/august/campaign/hero.jpg',
   },
+  {
+    // Second of twelve month-named flagship themes. Demo brand is "EMBER"
+    // ("Dress by mood.") — the deliberate visual opposite of January's AUGUST:
+    // dark-first always (no light/dark toggle), saturated color-forward
+    // knitwear/loungewear/eveningwear, bold display type, a "Mood Match" AI
+    // feature instead of freeform chat. Lives at /store/ember.
+    id: 'february',
+    name: 'February — Dress by Mood',
+    blurb: 'Flagship theme #2: dark-first, color-forward, mood-driven AI styling (demo brand: EMBER)',
+    inspiration: '2026 "glow" design language — dark backgrounds, luminous accents, depth-layered UI',
+    // 'february' bypasses the shared grid renderer entirely — see the
+    // slug==='ember' branches in store/[slug]/layout.tsx and page.tsx (the
+    // demo tenant's route slug, unrelated to this theme id). These fields
+    // exist only so it lists correctly in the theme picker preview card; they
+    // are not read by the bespoke component tree under src/components/ember/.
+    layout: 'grid', density: 'normal', decoration: 'none', hero: 'full-bleed-dark', font: 'spacegrotesk',
+    heroDecoration: 'none', categoryDisplay: 'tiles',
+    headingStyle: 'display', navStyle: 'pill', logoShape: 'square',
+    palette: { bg: '#120D12', ink: '#F5EFE8', accent: '#FF5A3C', card: '#1D1620' },
+    heroGradient: 'linear-gradient(160deg, #120d12 0%, #1d1620 60%, #ff5a3c22 100%)',
+    previewImage: '/ember/campaign/hero.jpg',
+  },
+  {
+    // Third of twelve month-named flagship themes. Demo brand is "BLOOM"
+    // ("One capsule. Endless outfits.") — light-first like January, but a
+    // completely different mood: soft botanical sage/cream/blush/terracotta,
+    // an italic serif display face, and a "Capsule Builder" AI feature (a
+    // structured multi-select task, distinct from January's freeform chat and
+    // February's single mood pick). Lives at /store/bloom.
+    id: 'march',
+    name: 'March — One Capsule',
+    blurb: 'Flagship theme #3: soft botanical capsule wardrobe, AI capsule-outfit planner (demo brand: BLOOM)',
+    inspiration: 'Considered capsule-wardrobe movement — fewer pieces, engineered to combine',
+    // 'march' bypasses the shared grid renderer entirely — see the
+    // slug==='bloom' branches in store/[slug]/layout.tsx and page.tsx (the
+    // demo tenant's route slug, unrelated to this theme id). These fields
+    // exist only so it lists correctly in the theme picker preview card; they
+    // are not read by the bespoke component tree under src/components/bloom/.
+    layout: 'grid', density: 'airy', decoration: 'none', hero: 'full-bleed', font: 'playfair',
+    heroDecoration: 'none', categoryDisplay: 'tiles',
+    headingStyle: 'serif', navStyle: 'underline', logoShape: 'circle',
+    palette: { bg: '#FAF5EC', ink: '#2B2620', accent: '#C1694F', card: '#FFFFFF' },
+    heroGradient: 'linear-gradient(160deg, #faf5ec 0%, #e8ddc9 60%, #c1694f22 100%)',
+    previewImage: '/bloom/campaign/hero.jpg',
+  },
 ]
 
 export function getTheme(id: string | null | undefined): Theme {

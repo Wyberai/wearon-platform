@@ -2,13 +2,13 @@
 // A fictional showcase brand ("Considered clothing, quietly intelligent.")
 // used both to demonstrate the theme publicly (WearOn's own /themes gallery
 // links here) and as sample data — every component in src/components/august/
-// is written against ThemeProduct/ThemeBrand (src/lib/august/types.ts) so the
-// exact same components also render a real seller's own store once they pick
-// this theme, via the adapters in src/lib/august/adapters.ts. All imagery is
-// locally generated (see scripts/generate-august-assets.mjs) so the demo has
-// zero runtime dependency on external services.
+// is written against ThemeProduct/ThemeBrand (src/lib/flagship/types.ts) so
+// the exact same components also render a real seller's own store once they
+// pick this theme, via the adapters in src/lib/flagship/adapters.ts. All
+// imagery is locally generated (see scripts/generate-august-assets.mjs) so
+// the demo has zero runtime dependency on external services.
 
-import type { ThemeProduct, ThemeBrand } from './types'
+import type { ThemeProduct, ThemeBrand } from '@/lib/flagship/types'
 
 export type AugustProduct = ThemeProduct
 

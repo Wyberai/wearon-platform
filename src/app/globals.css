@@ -64,3 +64,61 @@ body {
   -webkit-backdrop-filter: blur(16px) saturate(140%);
 }
 .august-serif { font-family: var(--a-serif); }
+
+/* EMBER — flagship theme, "February". Dark-first always (no light/dark
+   toggle — that's a deliberate structural difference from AUGUST's
+   Boutique/After Hours split), saturated ember-glow accent, bold display
+   type. The visual opposite of AUGUST's warm neutral quiet-luxury look. */
+.ember-root {
+  --e-display: 'Unbounded', sans-serif;
+  --e-sans: var(--font-body), 'Inter', sans-serif;
+  --e-bg: #120D12;
+  --e-ink: #F5EFE8;
+  --e-ink-muted: rgba(245, 239, 232, 0.62);
+  --e-ink-dim: rgba(245, 239, 232, 0.38);
+  --e-card: #1D1620;
+  --e-line: rgba(245, 239, 232, 0.14);
+  --e-accent: #FF5A3C;
+  --e-accent-ink: #120D12;
+  --e-glass: rgba(18, 13, 18, 0.72);
+  background: var(--e-bg);
+  color: var(--e-ink);
+  font-family: var(--e-sans);
+}
+.ember-glass {
+  background: var(--e-glass);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+}
+.ember-display { font-family: var(--e-display); }
+.ember-glow {
+  box-shadow: 0 0 32px -8px color-mix(in srgb, var(--e-accent) 55%, transparent);
+}
+
+/* BLOOM — flagship theme, "March". Light-first, always (no dark mode — a
+   capsule-wardrobe brand doesn't need an "after hours" register). Soft
+   botanical palette: sage, cream, blush, terracotta. A different mood from
+   January's quiet-luxury neutrals despite both being light-first. */
+.bloom-root {
+  --bl-display: 'Instrument Serif', serif;
+  --bl-sans: 'Karla', var(--font-body), sans-serif;
+  --bl-bg: #FAF5EC;
+  --bl-ink: #2B2620;
+  --bl-ink-muted: rgba(43, 38, 32, 0.6);
+  --bl-ink-dim: rgba(43, 38, 32, 0.35);
+  --bl-card: #FFFFFF;
+  --bl-line: rgba(43, 38, 32, 0.12);
+  --bl-accent: #C1694F;
+  --bl-accent-ink: #FFFFFF;
+  --bl-sage: #8A9A7E;
+  --bl-glass: rgba(250, 245, 236, 0.78);
+  background: var(--bl-bg);
+  color: var(--bl-ink);
+  font-family: var(--bl-sans);
+}
+.bloom-glass {
+  background: var(--bl-glass);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+}
+.bloom-display { font-family: var(--bl-display); }

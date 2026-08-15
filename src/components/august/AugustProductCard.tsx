@@ -2,11 +2,11 @@
 
 import Link from 'next/link'
 import { useState } from 'react'
-import type { ThemeProduct } from '@/lib/august/types'
-import { useAugustCart } from '@/lib/august/cart-context'
+import type { ThemeProduct } from '@/lib/flagship/types'
+import { useFlagshipCart } from '@/lib/flagship/cart-context'
 
 export function AugustProductCard({ product, slug, priority = false }: { product: ThemeProduct; slug: string; priority?: boolean }) {
-  const { addLine } = useAugustCart()
+  const { addLine } = useFlagshipCart()
   const [hovered, setHovered] = useState(false)
 
   function quickAdd(e: React.MouseEvent) {

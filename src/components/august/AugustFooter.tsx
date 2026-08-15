@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import type { ThemeBrand } from '@/lib/august/types'
+import type { ThemeBrand } from '@/lib/flagship/types'
 
 export function AugustFooter({ brand }: { brand: ThemeBrand }) {
   const slug = brand.slug

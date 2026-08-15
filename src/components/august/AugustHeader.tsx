@@ -2,9 +2,9 @@
 
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { useAugustCart } from '@/lib/august/cart-context'
-import { useAugustMode } from '@/lib/august/mode-context'
-import type { ThemeBrand } from '@/lib/august/types'
+import { useFlagshipCart } from '@/lib/flagship/cart-context'
+import { useFlagshipMode } from '@/lib/flagship/mode-context'
+import type { ThemeBrand } from '@/lib/flagship/types'
 
 function AugustMark({ size = 22 }: { size?: number }) {
   return (
@@ -17,8 +17,8 @@ function AugustMark({ size = 22 }: { size?: number }) {
 
 export function AugustHeader({ brand, onOpenStylist }: { brand: ThemeBrand; onOpenStylist: () => void }) {
   const slug = brand.slug
-  const { count, openCart } = useAugustCart()
-  const { mode, toggle } = useAugustMode()
+  const { count, openCart } = useFlagshipCart()
+  const { mode, toggle } = useFlagshipMode()
   const [scrolled, setScrolled] = useState(false)
   const [shopOpen, setShopOpen] = useState(false)
 

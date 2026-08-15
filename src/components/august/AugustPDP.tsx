@@ -1,23 +1,23 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { recordProductView } from '@/lib/august/use-recently-viewed'
-import { useAugustCart } from '@/lib/august/cart-context'
+import { recordProductView } from '@/lib/flagship/use-recently-viewed'
+import { useFlagshipCart } from '@/lib/flagship/cart-context'
 import { productToJsonLd } from '@/lib/schema-org'
-import type { ThemeBrand, ThemeProduct } from '@/lib/august/types'
+import type { ThemeBrand, ThemeProduct } from '@/lib/flagship/types'
 import { AugustProductCard } from './AugustProductCard'
-import { Reveal } from './Reveal'
+import { Reveal } from '@/components/flagship/Reveal'
 
 export function AugustPDP({ brand, product, related = [] }: { brand: ThemeBrand; product: ThemeProduct; related?: ThemeProduct[] }) {
   const slug = brand.slug
-  const { addLine, openCart } = useAugustCart()
+  const { addLine, openCart } = useFlagshipCart()
   const [size, setSize] = useState(product.sizes[0] ?? '')
   const [color, setColor] = useState(product.colors[0] ?? '')
   const [openPanel, setOpenPanel] = useState<'detail' | 'fit' | null>('detail')
   const [added, setAdded] = useState(false)
 
   useEffect(() => {
-    recordProductView(product.id)
+    recordProductView('august_viewed_v1', product.id)
   }, [product.id])
 
   function handleAdd() {

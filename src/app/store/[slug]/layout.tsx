@@ -6,7 +6,11 @@ import type { TenantConfig } from '@/lib/types'
 import { PreviewBanner } from '@/components/store/PreviewBanner'
 import { AugustShell } from '@/components/august/AugustShell'
 import { AUGUST_BRAND } from '@/lib/august/catalog'
-import { configToThemeBrand } from '@/lib/august/adapters'
+import { EmberShell } from '@/components/ember/EmberShell'
+import { EMBER_BRAND } from '@/lib/ember/catalog'
+import { BloomShell } from '@/components/bloom/BloomShell'
+import { BLOOM_BRAND } from '@/lib/bloom/catalog'
+import { configToThemeBrand } from '@/lib/flagship/adapters'
 
 // Fetch tenant config server-side and inject CSS variables
 export default async function StoreLayout({
@@ -24,6 +28,12 @@ export default async function StoreLayout({
   if (slug === 'august') {
     return <AugustShell brand={AUGUST_BRAND}>{children}</AugustShell>
   }
+  if (slug === 'ember') {
+    return <EmberShell brand={EMBER_BRAND}>{children}</EmberShell>
+  }
+  if (slug === 'bloom') {
+    return <BloomShell brand={BLOOM_BRAND}>{children}</BloomShell>
+  }
 
   const admin = createAdminClient()
   // 'demo' always uses the fallback config so it shows US content regardless of any DB record
@@ -37,6 +47,12 @@ export default async function StoreLayout({
   // component tree, rendered with their own brand data.
   if (config?.theme_id === 'january') {
     return <AugustShell brand={configToThemeBrand(config, slug)}>{children}</AugustShell>
+  }
+  if (config?.theme_id === 'february') {
+    return <EmberShell brand={configToThemeBrand(config, slug)}>{children}</EmberShell>
+  }
+  if (config?.theme_id === 'march') {
+    return <BloomShell brand={configToThemeBrand(config, slug)}>{children}</BloomShell>
   }
 
   // Fallback demo config

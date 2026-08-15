@@ -4,10 +4,10 @@ import Link from 'next/link'
 import { useMemo } from 'react'
 import { motion } from 'framer-motion'
 import { AUGUST_CAMPAIGN } from '@/lib/august/catalog'
-import { useCuratedForYou } from '@/lib/august/use-recently-viewed'
-import type { ThemeBrand, ThemeProduct } from '@/lib/august/types'
+import { useCuratedForYou } from '@/lib/flagship/use-recently-viewed'
+import type { ThemeBrand, ThemeProduct } from '@/lib/flagship/types'
 import { AugustProductCard } from './AugustProductCard'
-import { Reveal } from './Reveal'
+import { Reveal } from '@/components/flagship/Reveal'
 
 export function AugustHome({ brand, products }: { brand: ThemeBrand; products: ThemeProduct[] }) {
   const slug = brand.slug
@@ -23,7 +23,7 @@ export function AugustHome({ brand, products }: { brand: ThemeBrand; products: T
     return list.map(c => ({ name: c, image: products.find(p => p.category === c)?.image ?? products[0]?.image }))
   }, [brand.categories, products])
 
-  const { products: curated, personalized } = useCuratedForYou(products, 4)
+  const { products: curated, personalized } = useCuratedForYou('august_viewed_v1', products, 4)
   const bestsellers = products.filter(p => p.tags.includes('bestseller')).slice(0, 4)
   const fallbackFeatured = bestsellers.length ? bestsellers : products.slice(0, 4)
 
