@@ -20,3 +20,47 @@ body {
 .store-root {
   font-family: var(--store-font);
 }
+
+/* AUGUST — flagship theme. Scoped tokens so it never collides with the
+   per-tenant --primary/--store-* vars used by every other theme. Two modes:
+   'light' (Boutique, default) and 'dark' (After Hours) — toggled via
+   data-mode on .august-root, not prefers-color-scheme, since it's a brand
+   choice the visitor can flip, not a system setting. */
+.august-root {
+  --a-serif: var(--font-display), 'Fraunces', serif;
+  --a-sans: var(--font-body), 'Inter', sans-serif;
+  --a-radius: 2px;
+}
+.august-root[data-mode='light'] {
+  --a-bg: #F4F0E9;
+  --a-ink: #17140F;
+  --a-ink-muted: rgba(23, 20, 15, 0.56);
+  --a-ink-dim: rgba(23, 20, 15, 0.32);
+  --a-card: #FFFFFF;
+  --a-line: rgba(23, 20, 15, 0.12);
+  --a-accent: #A9793C;
+  --a-accent-ink: #FFFFFF;
+  --a-glass: rgba(244, 240, 233, 0.72);
+}
+.august-root[data-mode='dark'] {
+  --a-bg: #0B0A08;
+  --a-ink: #F3EFE6;
+  --a-ink-muted: rgba(243, 239, 230, 0.62);
+  --a-ink-dim: rgba(243, 239, 230, 0.38);
+  --a-card: #141210;
+  --a-line: rgba(243, 239, 230, 0.14);
+  --a-accent: #E8B04B;
+  --a-accent-ink: #17140F;
+  --a-glass: rgba(11, 10, 8, 0.62);
+}
+.august-root {
+  background: var(--a-bg);
+  color: var(--a-ink);
+  font-family: var(--a-sans);
+}
+.august-glass {
+  background: var(--a-glass);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+}
+.august-serif { font-family: var(--a-serif); }

@@ -6,6 +6,10 @@ import Link from 'next/link'
 import { getOrCreateDeviceToken } from '@/lib/device-token'
 import { productToJsonLd } from '@/lib/schema-org'
 import { ArrowLeft, Share2 } from 'lucide-react'
+import { notFound } from 'next/navigation'
+import { AugustPDP } from '@/components/august/AugustPDP'
+import { AUGUST_BRAND, AUGUST_PRODUCTS, findProduct, relatedProducts } from '@/lib/august/catalog'
+import { configToThemeBrand, productToThemeProduct } from '@/lib/august/adapters'
 
 interface RazorpayCheckoutOptions {
   key: string
@@ -47,6 +51,9 @@ interface ProductInfo {
 interface StoreConfig {
   seller_id?: string
   brand_name: string
+  tagline?: string | null
+  theme_id?: string
+  categories?: string[]
   primary_color: string
   whatsapp_number: string | null
   instagram_handle: string | null
@@ -58,6 +65,21 @@ type TryOnStep = 'idle' | 'upload' | 'generating' | 'done' | 'error'
 
 export default function ProductDetailPage() {
   const { slug, productId } = useParams() as { slug: string; productId: string }
+
+  // 'august' is the live demo of the "January" flagship theme — a wholly
+  // bespoke PDP with its own hook tree. Rendered as a distinct component so
+  // switching slugs client-side never changes the hook order of a single
+  // mounted component.
+  if (slug === 'august') {
+    const product = findProduct(AUGUST_PRODUCTS, productId)
+    if (!product) return notFound()
+    return <AugustPDP brand={AUGUST_BRAND} product={product} related={relatedProducts(AUGUST_PRODUCTS, product)} />
+  }
+
+  return <GenericProductDetailPage slug={slug} productId={productId} />
+}
+
+function GenericProductDetailPage({ slug, productId }: { slug: string; productId: string }) {
   const [product, setProduct] = useState<ProductInfo | null>(null)
   const [config, setConfig] = useState<StoreConfig | null>(null)
   const [selectedSize, setSelectedSize] = useState('')
@@ -255,6 +277,34 @@ export default function ProductDetailPage() {
           ← Back to store
         </Link>
       </div>
+    )
+  }
+
+  // Any real seller on the "January" flagship theme gets the bespoke PDP,
+  // rendered with their own brand + product data.
+  if (config.theme_id === 'january') {
+    return (
+      <AugustPDP
+        brand={configToThemeBrand({ ...config, seller_id: config.seller_id ?? null }, slug)}
+        product={productToThemeProduct({
+          id: product.id,
+          seller_id: config.seller_id ?? '',
+          name: product.name,
+          description: product.description,
+          category: product.category,
+          price_inr: product.price_inr,
+          original_price_inr: product.original_price_inr,
+          cost_price_inr: null,
+          garment_image_url: product.garment_image_url,
+          garment_preprocessed_url: null,
+          slug: productId,
+          is_active: true,
+          sizes: product.sizes,
+          colors: product.colors,
+          tags: product.tags,
+          created_at: '',
+        })}
+      />
     )
   }
 

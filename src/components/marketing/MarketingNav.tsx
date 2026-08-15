@@ -33,6 +33,9 @@ export function MarketingNav() {
           WearOn
         </Link>
         <div style={{ display: 'flex', alignItems: 'center', gap: 28 }}>
+          <Link href="/themes" className="wo-hover-fade" style={{ fontSize: 14, color: scrolled ? `${INK}cc` : 'rgba(255,255,255,0.85)', textDecoration: 'none', transition: 'color 0.25s ease' }}>
+            Themes
+          </Link>
           <Link href="/auth/login" className="wo-hover-fade" style={{ fontSize: 14, color: scrolled ? `${INK}cc` : 'rgba(255,255,255,0.85)', textDecoration: 'none', transition: 'color 0.25s ease' }}>
             Login
           </Link>

@@ -31,7 +31,7 @@ export async function GET(request: Request) {
   const admin = createAdminClient()
 
   const [configResult, productResult] = await Promise.all([
-    admin.from('tenant_config').select('seller_id, brand_name, primary_color, whatsapp_number, payment_method, payment_config, currency').eq('slug', slug).single(),
+    admin.from('tenant_config').select('seller_id, brand_name, tagline, theme_id, primary_color, whatsapp_number, instagram_handle, categories, payment_method, payment_config, currency').eq('slug', slug).single(),
     admin.from('products').select('id, seller_id, name, price_inr, original_price_inr, garment_image_url, sizes, colors, description, category, tags, slug, stock_by_variant').eq('id', productId).eq('is_active', true).single(),
   ])
 
@@ -47,8 +47,12 @@ export async function GET(request: Request) {
       ? {
           seller_id: configResult.data.seller_id,
           brand_name: configResult.data.brand_name,
+          tagline: configResult.data.tagline,
+          theme_id: configResult.data.theme_id,
           primary_color: configResult.data.primary_color,
           whatsapp_number: configResult.data.whatsapp_number,
+          instagram_handle: configResult.data.instagram_handle,
+          categories: configResult.data.categories,
           payment_method: configResult.data.payment_method,
           currency: configResult.data.currency ?? 'USD',
           razorpay_available: razorpayAvailable,

@@ -182,6 +182,27 @@ export const THEMES: Theme[] = [
     heroGradient: 'linear-gradient(135deg, #e8ddd4 0%, #f4f1ec 60%, #a6134a11 100%)',
     previewImage: 'https://images.unsplash.com/photo-1487222477894-8943e31ef7b2?w=1200&h=900&fit=crop',
   },
+  {
+    // First of twelve month-named flagship themes (January–December), each its
+    // own distinct showcase brand and aesthetic. This one's demo brand is
+    // "AUGUST" ("Considered clothing. Quietly intelligent."), living at the
+    // /store/august route — the theme id is the calendar slot, not the brand.
+    id: 'january',
+    name: 'January — Quiet Intelligence',
+    blurb: 'Flagship theme #1: adaptive AI-native storefront, editorial calm (demo brand: AUGUST)',
+    inspiration: '2026 quiet-luxury AI commerce (Brunello Cucinelli x makemepulse, COS)',
+    // 'january' bypasses the shared grid renderer entirely — see the slug==='august'
+    // branches in store/[slug]/layout.tsx and page.tsx (the demo tenant's route
+    // slug, unrelated to this theme id). These fields exist only so it lists
+    // correctly in the theme picker preview card; they are not read by the
+    // bespoke component tree under src/components/august/.
+    layout: 'grid', density: 'airy', decoration: 'none', hero: 'full-bleed-dark', font: 'fraunces',
+    heroDecoration: 'none', categoryDisplay: 'tiles',
+    headingStyle: 'luxury', navStyle: 'ghost', logoShape: 'square',
+    palette: { bg: '#F4F0E9', ink: '#17140F', accent: '#B08B57', card: '#FFFFFF' },
+    heroGradient: 'linear-gradient(160deg, #17140f 0%, #0b0a08 60%, #2a2013 100%)',
+    previewImage: '/august/campaign/hero.jpg',
+  },
 ]
 
 export function getTheme(id: string | null | undefined): Theme {

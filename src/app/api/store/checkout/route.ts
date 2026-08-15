@@ -2,17 +2,36 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/server'
 import { sendPushToSeller } from '@/lib/push/fcm'
 
-interface CheckoutBody {
-  seller_id: string
+interface CartItemInput {
   product_id: string
   quantity: number
+  size?: string
+}
+
+interface CheckoutBody {
+  seller_id: string
+  // Single-item shape (existing PDP "buy now" flow) — kept unchanged.
+  product_id?: string
+  quantity?: number
+  size?: string
+  // Multi-item shape (cart-based checkout, e.g. the January theme) — either
+  // this or product_id/quantity must be present, not both.
+  items?: CartItemInput[]
   payment_method: 'razorpay' | 'cod'
   device_token: string
   buyer_phone?: string
   buyer_name?: string
   buyer_email?: string
-  size?: string
   shipping_address?: { name?: string; line1?: string; line2?: string; city?: string; state?: string; pincode?: string; country?: string }
+}
+
+interface OrderItem {
+  product_id: string
+  name: string
+  quantity: number
+  price_inr: number
+  cost_price_inr?: number
+  size?: string
 }
 
 interface RazorpayOrderResponse {
@@ -41,14 +60,9 @@ export async function POST(req: NextRequest) {
     return badRequest('Invalid JSON body')
   }
 
-  const { seller_id, product_id, quantity, payment_method, device_token, buyer_phone, buyer_name, buyer_email, size, shipping_address } = body
+  const { seller_id, payment_method, device_token, buyer_phone, buyer_name, buyer_email, shipping_address } = body
 
-  // --- Validate required fields ---
   if (!seller_id || typeof seller_id !== 'string') return badRequest('seller_id is required')
-  if (!product_id || typeof product_id !== 'string') return badRequest('product_id is required')
-  if (!quantity || typeof quantity !== 'number' || quantity < 1 || !Number.isInteger(quantity)) {
-    return badRequest('quantity must be a positive integer')
-  }
   if (payment_method !== 'razorpay' && payment_method !== 'cod') {
     return badRequest('payment_method must be "razorpay" or "cod"')
   }
@@ -56,22 +70,37 @@ export async function POST(req: NextRequest) {
 
   const supabase = createAdminClient()
 
-  // --- 1. Fetch and validate product ---
-  const { data: product, error: productError } = await supabase
+  // --- 1. Normalize into a cart of {product_id, quantity, size?} ---
+  const cart: CartItemInput[] = Array.isArray(body.items) && body.items.length > 0
+    ? body.items
+    : (body.product_id ? [{ product_id: body.product_id, quantity: body.quantity ?? 1, size: body.size }] : [])
+
+  if (cart.length === 0) return badRequest('items (or product_id) is required')
+  for (const item of cart) {
+    if (!item.product_id || typeof item.product_id !== 'string') return badRequest('each item requires product_id')
+    if (!item.quantity || typeof item.quantity !== 'number' || item.quantity < 1 || !Number.isInteger(item.quantity)) {
+      return badRequest('each item requires a positive integer quantity')
+    }
+  }
+
+  // --- 2. Fetch and validate every product in one query ---
+  const productIds = [...new Set(cart.map(i => i.product_id))]
+  const { data: products, error: productError } = await supabase
     .from('products')
     .select('id, seller_id, name, price_inr, cost_price_inr, is_active, sizes')
-    .eq('id', product_id)
+    .in('id', productIds)
     .eq('seller_id', seller_id)
-    .single()
 
-  if (productError || !product) {
-    return NextResponse.json({ error: 'Product not found' }, { status: 404 })
+  if (productError || !products || products.length !== productIds.length) {
+    return NextResponse.json({ error: 'One or more products were not found' }, { status: 404 })
   }
-  if (!product.is_active) {
-    return NextResponse.json({ error: 'Product is no longer available' }, { status: 410 })
+  const inactive = products.find(p => !p.is_active)
+  if (inactive) {
+    return NextResponse.json({ error: `${inactive.name} is no longer available` }, { status: 410 })
   }
+  const productById = new Map(products.map(p => [p.id, p]))
 
-  // --- 2. Fetch tenant_config for payment credentials ---
+  // --- 3. Fetch tenant_config for payment credentials ---
   const { data: tenantConfig, error: configError } = await supabase
     .from('tenant_config')
     .select('payment_config, payment_method, slug, brand_name, primary_color')
@@ -84,22 +113,24 @@ export async function POST(req: NextRequest) {
 
   const paymentConfig: Record<string, string> = tenantConfig.payment_config ?? {}
 
-  // --- 3. Calculate total ---
-  const total = product.price_inr * quantity
+  // --- 4. Build order items + total ---
+  // Snapshot cost/price at order time so margin stays accurate even if the
+  // seller edits a product's price or cost later.
+  const orderItems: OrderItem[] = cart.map(item => {
+    const product = productById.get(item.product_id)!
+    return {
+      product_id: item.product_id,
+      name: product.name,
+      quantity: item.quantity,
+      price_inr: product.price_inr,
+      ...(product.cost_price_inr != null ? { cost_price_inr: product.cost_price_inr } : {}),
+      ...(item.size ? { size: item.size } : {}),
+    }
+  })
+  const total = orderItems.reduce((sum, i) => sum + i.price_inr * i.quantity, 0)
+  const summaryLabel = orderItems.length === 1 ? orderItems[0].name : `${orderItems.length} items`
 
-  // Build the order id upfront so it can be used as Razorpay receipt
   const orderId = crypto.randomUUID()
-
-  // Snapshot cost at order time so margin stays accurate even if the seller
-  // edits the product's cost_price_inr later.
-  const orderItem = {
-    product_id,
-    name: product.name,
-    quantity,
-    price_inr: product.price_inr,
-    ...(product.cost_price_inr != null ? { cost_price_inr: product.cost_price_inr } : {}),
-    ...(size ? { size } : {}),
-  }
 
   const buyerNotes = {
     ...(buyer_name ? { buyer_name } : {}),
@@ -117,16 +148,16 @@ export async function POST(req: NextRequest) {
         brandName: tenantConfig!.brand_name ?? 'Our Boutique',
         primaryColor: tenantConfig!.primary_color ?? '#F72585',
         orderId,
-        items: [{ name: product!.name, qty: quantity, price: product!.price_inr }],
+        items: orderItems.map(i => ({ name: i.name, qty: i.quantity, price: i.price_inr })),
         totalInr: total,
-        size,
+        size: orderItems.length === 1 ? orderItems[0].size : undefined,
         storeSlug: tenantConfig!.slug,
       })
       await sendEmail({ to: buyer_email, subject: tpl.subject, html: tpl.html })
     } catch { /* email is best-effort */ }
   }
 
-  // --- 4a. Razorpay payment flow ---
+  // --- 5a. Razorpay payment flow ---
   if (payment_method === 'razorpay') {
     const { razorpay_key_id, razorpay_key_secret } = paymentConfig
 
@@ -152,7 +183,7 @@ export async function POST(req: NextRequest) {
           currency: 'INR',
           receipt: orderId,
           notes: {
-            product_id,
+            product_ids: productIds.join(','),
             seller_id,
             device_token,
           },
@@ -179,7 +210,7 @@ export async function POST(req: NextRequest) {
       id: orderId,
       seller_id,
       status: 'pending',
-      items: [orderItem],
+      items: orderItems,
       total_inr: total,
       payment_method: 'razorpay',
       razorpay_order_id: razorpayOrder.id,
@@ -195,7 +226,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Failed to record order' }, { status: 500 })
     }
 
-    sendPushToSeller(seller_id, 'New order! 🎉', `₹${total.toLocaleString('en-IN')} — ${product.name}`, { url: `/admin/${tenantConfig.slug}/orders` }).catch(() => {})
+    sendPushToSeller(seller_id, 'New order! 🎉', `₹${total.toLocaleString('en-IN')} — ${summaryLabel}`, { url: `/admin/${tenantConfig.slug}/orders` }).catch(() => {})
     sendBuyerEmail(orderId).catch(() => {})
 
     return NextResponse.json({
@@ -206,12 +237,12 @@ export async function POST(req: NextRequest) {
     })
   }
 
-  // --- 4b. COD payment flow ---
+  // --- 5b. COD payment flow ---
   const { error: insertError } = await supabase.from('orders').insert({
     id: orderId,
     seller_id,
     status: 'pending',
-    items: [orderItem],
+    items: orderItems,
     total_inr: total,
     payment_method: 'cod',
     whatsapp_confirmed: false,
@@ -226,7 +257,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Failed to record order' }, { status: 500 })
   }
 
-  sendPushToSeller(seller_id, 'New order! 🎉', `₹${total.toLocaleString('en-IN')} — ${product.name} (COD)`, { url: `/admin/${tenantConfig.slug}/orders` }).catch(() => {})
+  sendPushToSeller(seller_id, 'New order! 🎉', `₹${total.toLocaleString('en-IN')} — ${summaryLabel} (COD)`, { url: `/admin/${tenantConfig.slug}/orders` }).catch(() => {})
   sendBuyerEmail(orderId).catch(() => {})
 
   return NextResponse.json({

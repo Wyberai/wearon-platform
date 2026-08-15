@@ -20,6 +20,9 @@ import { FONTS } from '@/lib/constants'
 import { getOrCreateDeviceToken } from '@/lib/device-token'
 import { StoreFeedLayout } from '@/components/store/StoreFeedLayout'
 import { WhatsAppBubble } from '@/components/store/WhatsAppBubble'
+import { AugustHome } from '@/components/august/AugustHome'
+import { AUGUST_BRAND, AUGUST_PRODUCTS } from '@/lib/august/catalog'
+import { configToThemeBrand, productToThemeProduct } from '@/lib/august/adapters'
 
 const STORAGE_BASE = 'https://zhrubbutcsvhcbuaalep.supabase.co/storage/v1/object/public/product-images'
 
@@ -44,6 +47,16 @@ const PRICE_CLASS: Record<Theme['headingStyle'], string> = {
 }
 
 export default function StorePage() {
+  const { slug } = useParams() as { slug: string }
+
+  // 'august' is the flagship theme — a wholly bespoke homepage with its own
+  // hook tree. Rendered as a distinct component (not a mid-function early
+  // return inside StorePageContent) so switching slugs client-side never
+  // changes the hook order of a single mounted component.
+  if (slug === 'august') {
+    return <AugustHome brand={AUGUST_BRAND} products={AUGUST_PRODUCTS} />
+  }
+
   return (
     <Suspense fallback={<div className="max-w-[1400px] mx-auto px-6 py-32 text-center text-gray-300 text-sm">Loading...</div>}>
       <StorePageContent />
@@ -209,6 +222,12 @@ function StorePageContent() {
         <p className="text-gray-300 text-sm tracking-wide">Loading...</p>
       </div>
     )
+  }
+
+  // Any real seller on the "January" flagship theme gets the bespoke
+  // component tree, rendered with their own brand + product data.
+  if (config?.theme_id === 'january') {
+    return <AugustHome brand={configToThemeBrand(config, slug)} products={products.filter(p => p.is_active).map(productToThemeProduct)} />
   }
 
   const chatBubble = config?.whatsapp_number ? (

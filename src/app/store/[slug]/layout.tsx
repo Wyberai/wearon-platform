@@ -4,6 +4,9 @@ import { FONTS } from '@/lib/constants'
 import { getTheme, HEADING_TYPE, LOGO_RADIUS } from '@/lib/themes'
 import type { TenantConfig } from '@/lib/types'
 import { PreviewBanner } from '@/components/store/PreviewBanner'
+import { AugustShell } from '@/components/august/AugustShell'
+import { AUGUST_BRAND } from '@/lib/august/catalog'
+import { configToThemeBrand } from '@/lib/august/adapters'
 
 // Fetch tenant config server-side and inject CSS variables
 export default async function StoreLayout({
@@ -14,6 +17,14 @@ export default async function StoreLayout({
   params: Promise<{ slug: string }>
 }) {
   const { slug } = await params
+
+  // 'august' is the live demo of the "January" flagship theme — a wholly
+  // bespoke component tree (see src/components/august/), not a config of the
+  // shared grid renderer below. No Supabase tenant lookup needed for the demo.
+  if (slug === 'august') {
+    return <AugustShell brand={AUGUST_BRAND}>{children}</AugustShell>
+  }
+
   const admin = createAdminClient()
   // 'demo' always uses the fallback config so it shows US content regardless of any DB record
   const { data: config } = slug === 'demo'
@@ -21,6 +32,12 @@ export default async function StoreLayout({
     : await admin.from('tenant_config').select('*').eq('slug', slug).single() as { data: TenantConfig | null }
 
   if (!config && slug !== 'demo') notFound()
+
+  // Any real seller who has picked the "January" theme also gets the bespoke
+  // component tree, rendered with their own brand data.
+  if (config?.theme_id === 'january') {
+    return <AugustShell brand={configToThemeBrand(config, slug)}>{children}</AugustShell>
+  }
 
   // Fallback demo config
   const tc: TenantConfig = config ?? {
