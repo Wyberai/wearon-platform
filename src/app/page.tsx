@@ -575,13 +575,23 @@ function USThemeCard({ t }: { t: typeof US_THEMES[0] }) {
   )
 }
 
+const HERO_COLLAGE = [
+  '/august/products/field-jacket.jpg',
+  '/ember/products/flame-cardigan.jpg',
+  '/bloom/products/linen-wrap-top.jpg',
+  '/august/products/leather-belt.jpg',
+  '/ember/products/cobalt-turtleneck.jpg',
+  '/bloom/products/pleated-midi-skirt.jpg',
+  '/august/products/overcoat.jpg',
+  '/ember/products/chain-belt.jpg',
+  '/bloom/products/leather-sandal.jpg',
+]
+
 function USHomePage() {
   const THEME_TILES = [
-    { name: 'EDITORIAL', sub: 'Dark & fashion-forward', img: 'https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=600&h=800&fit=crop', slug: 'editorial' },
-    { name: 'SOFT BLUSH', sub: 'Feminine & warm', img: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=600&h=800&fit=crop', slug: 'soft-blush' },
-    { name: 'MINIMAL', sub: 'Clean & airy', img: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?w=600&h=800&fit=crop', slug: 'minimal' },
-    { name: 'BOLD FEED', sub: 'TikTok-native', img: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=600&h=800&fit=crop', slug: 'bold-feed' },
-    { name: 'LUXURY', sub: 'Premium boutique', img: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=800&fit=crop', slug: 'luxury' },
+    { name: 'AUGUST', sub: 'Old-world tailoring, ask-anything styling', img: '/august/campaign/hero.jpg', slug: 'august' },
+    { name: 'EMBER', sub: 'Dress by mood, one tap to an outfit', img: '/ember/campaign/hero.jpg', slug: 'ember' },
+    { name: 'BLOOM', sub: 'Four questions, one built capsule', img: '/bloom/campaign/hero.jpg', slug: 'bloom' },
   ]
 
   return (
@@ -594,6 +604,38 @@ function USHomePage() {
           .wo-us-features { grid-template-columns: 1fr !important; gap: 32px !important; }
           .wo-us-pricing { grid-template-columns: 1fr !important; }
         }
+        .wo-collage {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          grid-template-rows: repeat(3, 90px);
+          gap: 3px;
+        }
+        @media (min-width: 720px) {
+          .wo-collage { grid-template-rows: repeat(3, 160px); }
+        }
+        .wo-collage-tile { background-size: cover; background-position: center; }
+        .wo-collage-t1 { grid-column: 1 / 2; grid-row: 1 / 2; }
+        .wo-collage-t2 { grid-column: 2 / 3; grid-row: 1 / 2; }
+        .wo-collage-t3 { grid-column: 3 / 5; grid-row: 1 / 2; }
+        .wo-collage-t4 { grid-column: 1 / 2; grid-row: 2 / 4; }
+        .wo-collage-t5 { grid-column: 2 / 3; grid-row: 2 / 3; }
+        .wo-collage-t6 { grid-column: 3 / 4; grid-row: 2 / 3; }
+        .wo-collage-t7 { grid-column: 4 / 5; grid-row: 2 / 3; }
+        .wo-collage-t8 { grid-column: 2 / 3; grid-row: 3 / 4; }
+        .wo-collage-t9 { grid-column: 3 / 5; grid-row: 3 / 4; }
+        .wo-collage-card {
+          position: absolute;
+          top: 50%;
+          left: 24px;
+          transform: translateY(-50%);
+          width: min(380px, calc(100% - 48px));
+        }
+        @media (max-width: 720px) {
+          .wo-collage-card { position: static; transform: none; width: auto; margin: 16px 16px 0; }
+        }
+        .wo-feat-fan { display: flex; }
+        .wo-feat-fan div { width: 56px; height: 68px; border-radius: 6px; border: 1px solid rgba(23,21,18,0.08); margin-left: -20px; box-shadow: -3px 0 8px rgba(23,21,18,0.1); background-size: cover; background-position: center; }
+        .wo-feat-fan div:first-child { margin-left: 0; }
       `}</style>
 
 
@@ -608,31 +650,69 @@ function USHomePage() {
 
         <MarketingNav />
 
-        {/* HERO */}
-        <section style={{ position: 'relative', height: '92vh', overflow: 'hidden' }}>
-          <img
-            src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=1600&h=900&fit=crop"
-            alt="" aria-hidden
-            style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top' }}
-          />
-          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, transparent 30%, rgba(0,0,0,0.72) 100%)' }} />
-          <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '0 32px 52px' }}>
-            <p style={{ fontSize: 11, letterSpacing: '0.22em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.65)', marginBottom: 14 }}>
-              The AI-native store for boutique fashion sellers
+        {/* HERO — photo-collage of real garments from the three live flagship stores, */}
+        {/* with a floating card, instead of one stock photo behind a gradient. */}
+        <section style={{ position: 'relative' }}>
+          <div className="wo-collage">
+            {HERO_COLLAGE.map((src, i) => (
+              <div
+                key={src}
+                className={`wo-collage-tile wo-collage-t${i + 1}`}
+                style={{ backgroundImage: `url(${src})` }}
+                aria-hidden="true"
+              />
+            ))}
+          </div>
+          <div className="wo-collage-card" style={{ background: '#fff', borderRadius: 20, padding: '32px 32px 28px', boxShadow: '0 20px 50px -20px rgba(23,21,18,0.35)' }}>
+            <p style={{ fontSize: 11, letterSpacing: '0.14em', textTransform: 'uppercase', color: `${US_INK}66`, marginBottom: 14 }}>
+              Twelve flagship themes
             </p>
-            <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(38px, 6.5vw, 82px)', fontWeight: 400, lineHeight: 1.02, letterSpacing: '-2px', color: '#fff', margin: '0 0 22px', maxWidth: 820 }}>
-              Your boutique, discoverable<br />by every AI that shops.
+            <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(28px, 3.4vw, 36px)', fontWeight: 500, lineHeight: 1.1, letterSpacing: '-0.5px', color: US_INK, margin: '0 0 14px' }}>
+              Every boutique gets its own atelier.
             </h1>
-            <p style={{ fontSize: 16, color: 'rgba(255,255,255,0.72)', maxWidth: 520, marginBottom: 32, lineHeight: 1.6 }}>
-              Claude, ChatGPT, and Google AI Mode now drive more conversions than search. WearOn is the only store platform built for that world — with AI-curated collections, DM checkout, and your own MCP endpoint.
+            <p style={{ fontSize: 14.5, color: `${US_INK}99`, lineHeight: 1.65, marginBottom: 22 }}>
+              AUGUST, EMBER, and BLOOM are live now — three genuinely different ways to shop, not one template with a color picker. Nine more are on the way.
             </p>
-            <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-              <Link href="/auth/signup" style={{ background: '#fff', color: US_INK, padding: '14px 28px', fontSize: 12, fontWeight: 700, letterSpacing: '0.08em', textDecoration: 'none', textTransform: 'uppercase' }}>
+            <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+              <Link href="/auth/signup" style={{ background: US_INK, color: '#fff', padding: '13px 24px', borderRadius: 999, fontSize: 13, fontWeight: 700, textDecoration: 'none' }}>
                 Launch my store, free →
               </Link>
-              <a href="https://cal.com/wyberai/wearon-consultation-with-the-founder" target="_blank" rel="noopener noreferrer" style={{ color: '#fff', padding: '14px 28px', fontSize: 12, fontWeight: 600, letterSpacing: '0.08em', textDecoration: 'none', textTransform: 'uppercase', border: '1px solid rgba(255,255,255,0.5)' }}>
-                Book a founder demo
-              </a>
+              <Link href="/themes" style={{ color: US_INK, padding: '13px 20px', borderRadius: 999, fontSize: 13, fontWeight: 600, textDecoration: 'none', border: `1px solid ${US_INK}22` }}>
+                See the three stores
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* DEMO FEATURE CARDS — show the feature happening, not a stock photo standing in for it */}
+        <section style={{ padding: '48px 24px 8px' }}>
+          <div className="wo-us-features" style={{ maxWidth: 1240, margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
+            <div className="wo-card" style={{ background: '#f8f8f6', borderRadius: 20, padding: '28px 28px 26px' }}>
+              <div className="wo-feat-fan" style={{ marginBottom: 20 }}>
+                <div style={{ backgroundImage: 'url(/august/campaign/hero.jpg)' }} />
+                <div style={{ backgroundImage: 'url(/ember/campaign/hero.jpg)' }} />
+                <div style={{ backgroundImage: 'url(/bloom/campaign/hero.jpg)' }} />
+              </div>
+              <h3 style={{ fontSize: 17, fontWeight: 600, letterSpacing: '-0.2px', marginBottom: 8, color: US_INK }}>Twelve flagship themes</h3>
+              <p style={{ fontSize: 14, color: `${US_INK}88`, lineHeight: 1.7, marginBottom: 14 }}>
+                Not a template with a color picker — three completely different shopping mechanics already live, nine more on the way.
+              </p>
+              <Link href="/themes" style={{ fontSize: 13, fontWeight: 700, color: US_INK, textDecoration: 'underline', textDecorationColor: US_ACCENT, textUnderlineOffset: 4 }}>
+                Preview all three →
+              </Link>
+            </div>
+            <div className="wo-card" style={{
+              borderRadius: 20, padding: '28px 28px 26px',
+              background: 'radial-gradient(circle at 25% 20%, rgba(232,137,90,0.14), transparent 55%), radial-gradient(circle at 75% 80%, rgba(91,140,255,0.14), transparent 55%), #f8f8f6',
+            }}>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, background: '#fff', border: '1px solid rgba(23,21,18,0.1)', borderRadius: 999, padding: '6px 12px', fontSize: 12, color: `${US_INK}99`, marginBottom: 20 }}>
+                <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#5B8CFF', display: 'inline-block' }} />
+                MCP endpoint, live on every store
+              </div>
+              <h3 style={{ fontSize: 17, fontWeight: 600, letterSpacing: '-0.2px', marginBottom: 8, color: US_INK }}>Built for AI shoppers</h3>
+              <p style={{ fontSize: 14, color: `${US_INK}88`, lineHeight: 1.7 }}>
+                Claude, ChatGPT, and Google AI Mode can browse your catalog and check sizes through your own MCP endpoint — no extra setup.
+              </p>
             </div>
           </div>
         </section>
@@ -649,17 +729,17 @@ function USHomePage() {
           </div>
         </div>
 
-        {/* THEME TILES */}
+        {/* THEME TILES — the three flagship stores that are actually live, not cosmetic reskins */}
         <section style={{ paddingTop: 64 }}>
           <div style={{ padding: '0 24px', marginBottom: 32 }}>
-            <p style={{ fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: `${US_INK}55`, marginBottom: 10 }}>5 storefront looks</p>
+            <p style={{ fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: `${US_INK}55`, marginBottom: 10 }}>3 of 12 flagship themes, live now</p>
             <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(28px, 4vw, 46px)', fontWeight: 400, letterSpacing: '-1px', lineHeight: 1.1, color: US_INK }}>
               Your store. Your look.
             </h2>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 2 }}>
-            {THEME_TILES.slice(0, 4).map(t => (
-              <Link key={t.slug} href={`/store/demo?theme=${t.slug}`} className="wo-tile" style={{ position: 'relative', display: 'block', textDecoration: 'none', aspectRatio: '3/4', overflow: 'hidden' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 2 }}>
+            {THEME_TILES.map(t => (
+              <Link key={t.slug} href={`/store/${t.slug}`} className="wo-tile" style={{ position: 'relative', display: 'block', textDecoration: 'none', aspectRatio: '3/4', overflow: 'hidden' }}>
                 <img src={t.img} alt={t.name} className="wo-tile-img" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
                 <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, transparent 45%, rgba(0,0,0,0.75) 100%)' }} />
                 <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '20px 22px 24px' }}>
@@ -670,17 +750,8 @@ function USHomePage() {
               </Link>
             ))}
           </div>
-          <Link href={`/store/demo?theme=${THEME_TILES[4].slug}`} className="wo-tile" style={{ position: 'relative', display: 'block', textDecoration: 'none', height: 320, overflow: 'hidden' }}>
-            <img src={THEME_TILES[4].img} alt={THEME_TILES[4].name} className="wo-tile-img" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 30%' }} />
-            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(90deg, rgba(0,0,0,0.72) 0%, transparent 55%)' }} />
-            <div style={{ position: 'absolute', top: '50%', left: 32, transform: 'translateY(-50%)' }}>
-              <p style={{ fontSize: 10, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.6)', marginBottom: 6 }}>{THEME_TILES[4].sub}</p>
-              <p style={{ fontSize: 34, fontWeight: 700, color: '#fff', marginBottom: 12 }}>{THEME_TILES[4].name}</p>
-              <span style={{ fontSize: 10, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#fff', fontWeight: 700 }}>PREVIEW →</span>
-            </div>
-          </Link>
           <p style={{ textAlign: 'center', padding: '18px 24px 0', fontSize: 13, color: `${US_INK}66` }}>
-            Every theme: Stripe checkout · Your domain · AI product photos
+            Every theme: full checkout · your domain · AI-native features · <Link href="/themes" style={{ color: US_INK, textDecoration: 'underline' }}>see all twelve →</Link>
           </p>
         </section>
 
@@ -816,7 +887,7 @@ function USHomePage() {
             <span style={{ fontSize: 11, letterSpacing: '0.06em', color: `${US_INK}55`, textTransform: 'uppercase' }}>The Shopify Alternative for Boutiques · 2026</span>
             <div style={{ display: 'flex', gap: 20 }}>
               <Link href="/auth/login" style={{ fontSize: 12, color: `${US_INK}66`, textDecoration: 'none' }}>Login</Link>
-              <Link href="/store/demo?theme=editorial" style={{ fontSize: 12, color: `${US_INK}66`, textDecoration: 'none' }}>Live Demo</Link>
+              <Link href="/themes" style={{ fontSize: 12, color: `${US_INK}66`, textDecoration: 'none' }}>Live Demo</Link>
             </div>
           </div>
         </footer>
