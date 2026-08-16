@@ -26,10 +26,16 @@ import { GalliShopGrid } from '@/components/galli/GalliShopGrid'
 import { GALLI_BRAND, GALLI_PRODUCTS } from '@/lib/galli/catalog'
 import { KirayaShopGrid } from '@/components/kiraya/KirayaShopGrid'
 import { KIRAYA_BRAND, KIRAYA_PRODUCTS } from '@/lib/kiraya/catalog'
+import { ReelRackShopGrid } from '@/components/reelrack/ReelRackShopGrid'
+import { REELRACK_BRAND, REELRACK_PRODUCTS } from '@/lib/reelrack/catalog'
+import { TheGridShopGrid } from '@/components/thegrid/TheGridShopGrid'
+import { THEGRID_BRAND, THEGRID_PRODUCTS } from '@/lib/thegrid/catalog'
+import { TryItOnShopGrid } from '@/components/tryiton/TryItOnShopGrid'
+import { TRYITON_BRAND, TRYITON_PRODUCTS } from '@/lib/tryiton/catalog'
 import { configToThemeBrand, productToThemeProduct } from '@/lib/flagship/adapters'
 import type { ThemeBrand, ThemeProduct } from '@/lib/flagship/types'
 
-const FLAGSHIP_THEME_IDS = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'] as const
+const FLAGSHIP_THEME_IDS = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december', 'reelrack', 'thegrid', 'tryiton'] as const
 type FlagshipThemeId = (typeof FLAGSHIP_THEME_IDS)[number]
 
 // New route, only meaningful for a flagship theme's bespoke component tree
@@ -83,6 +89,15 @@ function ShopPageContent() {
   if (slug === 'kiraya') {
     return <KirayaShopGrid brand={KIRAYA_BRAND} products={KIRAYA_PRODUCTS} initialCategory={searchParams.get('category')} />
   }
+  if (slug === 'reelrack') {
+    return <ReelRackShopGrid brand={REELRACK_BRAND} products={REELRACK_PRODUCTS} initialCategory={searchParams.get('category')} />
+  }
+  if (slug === 'thegrid') {
+    return <TheGridShopGrid brand={THEGRID_BRAND} products={THEGRID_PRODUCTS} initialCategory={searchParams.get('category')} />
+  }
+  if (slug === 'tryiton') {
+    return <TryItOnShopGrid brand={TRYITON_BRAND} products={TRYITON_PRODUCTS} initialCategory={searchParams.get('category')} />
+  }
 
   return <RealSellerShopGrid slug={slug} initialCategory={searchParams.get('category')} />
 }
@@ -123,5 +138,8 @@ function RealSellerShopGrid({ slug, initialCategory }: { slug: string; initialCa
   if (data.themeId === 'october') return <UtsavShopGrid brand={data.brand} products={data.products} initialCategory={initialCategory} />
   if (data.themeId === 'november') return <GalliShopGrid brand={data.brand} products={data.products} initialCategory={initialCategory} />
   if (data.themeId === 'december') return <KirayaShopGrid brand={data.brand} products={data.products} initialCategory={initialCategory} />
+  if (data.themeId === 'reelrack') return <ReelRackShopGrid brand={data.brand} products={data.products} initialCategory={initialCategory} />
+  if (data.themeId === 'thegrid') return <TheGridShopGrid brand={data.brand} products={data.products} initialCategory={initialCategory} />
+  if (data.themeId === 'tryiton') return <TryItOnShopGrid brand={data.brand} products={data.products} initialCategory={initialCategory} />
   return <AugustShopGrid brand={data.brand} products={data.products} initialCategory={initialCategory} />
 }

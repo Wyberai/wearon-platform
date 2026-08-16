@@ -26,10 +26,16 @@ import { GalliCheckout } from '@/components/galli/GalliCheckout'
 import { GALLI_BRAND } from '@/lib/galli/catalog'
 import { KirayaCheckout } from '@/components/kiraya/KirayaCheckout'
 import { KIRAYA_BRAND } from '@/lib/kiraya/catalog'
+import { ReelRackCheckout } from '@/components/reelrack/ReelRackCheckout'
+import { REELRACK_BRAND } from '@/lib/reelrack/catalog'
+import { TheGridCheckout } from '@/components/thegrid/TheGridCheckout'
+import { THEGRID_BRAND } from '@/lib/thegrid/catalog'
+import { TryItOnCheckout } from '@/components/tryiton/TryItOnCheckout'
+import { TRYITON_BRAND } from '@/lib/tryiton/catalog'
 import { configToThemeBrand } from '@/lib/flagship/adapters'
 import type { ThemeBrand } from '@/lib/flagship/types'
 
-const FLAGSHIP_THEME_IDS = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'] as const
+const FLAGSHIP_THEME_IDS = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december', 'reelrack', 'thegrid', 'tryiton'] as const
 type FlagshipThemeId = (typeof FLAGSHIP_THEME_IDS)[number]
 
 // New route, only meaningful for a flagship theme's bespoke component tree
@@ -76,6 +82,15 @@ export default function CheckoutPage() {
   if (slug === 'kiraya') {
     return <KirayaCheckout brand={KIRAYA_BRAND} />
   }
+  if (slug === 'reelrack') {
+    return <ReelRackCheckout brand={REELRACK_BRAND} />
+  }
+  if (slug === 'thegrid') {
+    return <TheGridCheckout brand={THEGRID_BRAND} />
+  }
+  if (slug === 'tryiton') {
+    return <TryItOnCheckout brand={TRYITON_BRAND} />
+  }
 
   return <RealSellerCheckout slug={slug} />
 }
@@ -112,5 +127,8 @@ function RealSellerCheckout({ slug }: { slug: string }) {
   if (data.themeId === 'october') return <UtsavCheckout brand={data.brand} />
   if (data.themeId === 'november') return <GalliCheckout brand={data.brand} />
   if (data.themeId === 'december') return <KirayaCheckout brand={data.brand} />
+  if (data.themeId === 'reelrack') return <ReelRackCheckout brand={data.brand} />
+  if (data.themeId === 'thegrid') return <TheGridCheckout brand={data.brand} />
+  if (data.themeId === 'tryiton') return <TryItOnCheckout brand={data.brand} />
   return <AugustCheckout brand={data.brand} />
 }
