@@ -44,6 +44,12 @@ import { GalliHome } from '@/components/galli/GalliHome'
 import { GALLI_BRAND, GALLI_PRODUCTS } from '@/lib/galli/catalog'
 import { KirayaHome } from '@/components/kiraya/KirayaHome'
 import { KIRAYA_BRAND, KIRAYA_PRODUCTS } from '@/lib/kiraya/catalog'
+import { ReelRackHome } from '@/components/reelrack/ReelRackHome'
+import { REELRACK_BRAND, REELRACK_PRODUCTS } from '@/lib/reelrack/catalog'
+import { TheGridHome } from '@/components/thegrid/TheGridHome'
+import { THEGRID_BRAND, THEGRID_PRODUCTS } from '@/lib/thegrid/catalog'
+import { TryItOnHome } from '@/components/tryiton/TryItOnHome'
+import { TRYITON_BRAND, TRYITON_PRODUCTS } from '@/lib/tryiton/catalog'
 import { configToThemeBrand, productToThemeProduct } from '@/lib/flagship/adapters'
 
 const STORAGE_BASE = 'https://zhrubbutcsvhcbuaalep.supabase.co/storage/v1/object/public/product-images'
@@ -110,6 +116,15 @@ export default function StorePage() {
   }
   if (slug === 'kiraya') {
     return <KirayaHome brand={KIRAYA_BRAND} products={KIRAYA_PRODUCTS} />
+  }
+  if (slug === 'reelrack') {
+    return <ReelRackHome brand={REELRACK_BRAND} products={REELRACK_PRODUCTS} />
+  }
+  if (slug === 'thegrid') {
+    return <TheGridHome brand={THEGRID_BRAND} products={THEGRID_PRODUCTS} />
+  }
+  if (slug === 'tryiton') {
+    return <TryItOnHome brand={TRYITON_BRAND} products={TRYITON_PRODUCTS} />
   }
 
   return (
@@ -316,6 +331,15 @@ function StorePageContent() {
   }
   if (config?.theme_id === 'december') {
     return <KirayaHome brand={configToThemeBrand(config, slug)} products={products.filter(p => p.is_active).map(productToThemeProduct)} />
+  }
+  if (config?.theme_id === 'reelrack') {
+    return <ReelRackHome brand={configToThemeBrand(config, slug)} products={products.filter(p => p.is_active).map(productToThemeProduct)} />
+  }
+  if (config?.theme_id === 'thegrid') {
+    return <TheGridHome brand={configToThemeBrand(config, slug)} products={products.filter(p => p.is_active).map(productToThemeProduct)} />
+  }
+  if (config?.theme_id === 'tryiton') {
+    return <TryItOnHome brand={configToThemeBrand(config, slug)} products={products.filter(p => p.is_active).map(productToThemeProduct)} />
   }
 
   const chatBubble = config?.whatsapp_number ? (

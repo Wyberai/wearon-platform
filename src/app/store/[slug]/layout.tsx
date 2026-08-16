@@ -28,6 +28,12 @@ import { GalliShell } from '@/components/galli/GalliShell'
 import { GALLI_BRAND } from '@/lib/galli/catalog'
 import { KirayaShell } from '@/components/kiraya/KirayaShell'
 import { KIRAYA_BRAND } from '@/lib/kiraya/catalog'
+import { ReelRackShell } from '@/components/reelrack/ReelRackShell'
+import { REELRACK_BRAND } from '@/lib/reelrack/catalog'
+import { TheGridShell } from '@/components/thegrid/TheGridShell'
+import { THEGRID_BRAND } from '@/lib/thegrid/catalog'
+import { TryItOnShell } from '@/components/tryiton/TryItOnShell'
+import { TRYITON_BRAND } from '@/lib/tryiton/catalog'
 import { configToThemeBrand } from '@/lib/flagship/adapters'
 
 // Fetch tenant config server-side and inject CSS variables
@@ -79,6 +85,15 @@ export default async function StoreLayout({
   if (slug === 'kiraya') {
     return <KirayaShell brand={KIRAYA_BRAND}>{children}</KirayaShell>
   }
+  if (slug === 'reelrack') {
+    return <ReelRackShell brand={REELRACK_BRAND}>{children}</ReelRackShell>
+  }
+  if (slug === 'thegrid') {
+    return <TheGridShell brand={THEGRID_BRAND}>{children}</TheGridShell>
+  }
+  if (slug === 'tryiton') {
+    return <TryItOnShell brand={TRYITON_BRAND}>{children}</TryItOnShell>
+  }
 
   const admin = createAdminClient()
   // 'demo' always uses the fallback config so it shows US content regardless of any DB record
@@ -125,6 +140,15 @@ export default async function StoreLayout({
   }
   if (config?.theme_id === 'december') {
     return <KirayaShell brand={configToThemeBrand(config, slug)}>{children}</KirayaShell>
+  }
+  if (config?.theme_id === 'reelrack') {
+    return <ReelRackShell brand={configToThemeBrand(config, slug)}>{children}</ReelRackShell>
+  }
+  if (config?.theme_id === 'thegrid') {
+    return <TheGridShell brand={configToThemeBrand(config, slug)}>{children}</TheGridShell>
+  }
+  if (config?.theme_id === 'tryiton') {
+    return <TryItOnShell brand={configToThemeBrand(config, slug)}>{children}</TryItOnShell>
   }
 
   // Fallback demo config

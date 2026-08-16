@@ -31,6 +31,12 @@ import { GalliPDP } from '@/components/galli/GalliPDP'
 import { GALLI_BRAND, GALLI_PRODUCTS, findProduct as findGalliProduct, relatedProducts as relatedGalliProducts } from '@/lib/galli/catalog'
 import { KirayaPDP } from '@/components/kiraya/KirayaPDP'
 import { KIRAYA_BRAND, KIRAYA_PRODUCTS, findProduct as findKirayaProduct, relatedProducts as relatedKirayaProducts } from '@/lib/kiraya/catalog'
+import { ReelRackPDP } from '@/components/reelrack/ReelRackPDP'
+import { REELRACK_BRAND, REELRACK_PRODUCTS, findProduct as findReelRackProduct, relatedProducts as relatedReelRackProducts } from '@/lib/reelrack/catalog'
+import { TheGridPDP } from '@/components/thegrid/TheGridPDP'
+import { THEGRID_BRAND, THEGRID_PRODUCTS, findProduct as findTheGridProduct, relatedProducts as relatedTheGridProducts } from '@/lib/thegrid/catalog'
+import { TryItOnPDP } from '@/components/tryiton/TryItOnPDP'
+import { TRYITON_BRAND, TRYITON_PRODUCTS, findProduct as findTryItOnProduct, relatedProducts as relatedTryItOnProducts } from '@/lib/tryiton/catalog'
 import { configToThemeBrand, productToThemeProduct } from '@/lib/flagship/adapters'
 
 interface RazorpayCheckoutOptions {
@@ -62,6 +68,7 @@ interface ProductInfo {
   price_inr: number
   original_price_inr: number | null
   garment_image_url: string
+  garment_video_url?: string | null
   sizes: string[]
   colors: string[]
   description: string | null
@@ -151,6 +158,21 @@ export default function ProductDetailPage() {
     const product = findKirayaProduct(KIRAYA_PRODUCTS, productId)
     if (!product) return notFound()
     return <KirayaPDP brand={KIRAYA_BRAND} product={product} related={relatedKirayaProducts(KIRAYA_PRODUCTS, product)} />
+  }
+  if (slug === 'reelrack') {
+    const product = findReelRackProduct(REELRACK_PRODUCTS, productId)
+    if (!product) return notFound()
+    return <ReelRackPDP brand={REELRACK_BRAND} product={product} related={relatedReelRackProducts(REELRACK_PRODUCTS, product)} />
+  }
+  if (slug === 'thegrid') {
+    const product = findTheGridProduct(THEGRID_PRODUCTS, productId)
+    if (!product) return notFound()
+    return <TheGridPDP brand={THEGRID_BRAND} product={product} related={relatedTheGridProducts(THEGRID_PRODUCTS, product)} />
+  }
+  if (slug === 'tryiton') {
+    const product = findTryItOnProduct(TRYITON_PRODUCTS, productId)
+    if (!product) return notFound()
+    return <TryItOnPDP brand={TRYITON_BRAND} product={product} related={relatedTryItOnProducts(TRYITON_PRODUCTS, product)} />
   }
 
   return <GenericProductDetailPage slug={slug} productId={productId} />
@@ -656,6 +678,87 @@ function GenericProductDetailPage({ slug, productId }: { slug: string; productId
           tags: product.tags,
           created_at: '',
         })}
+      />
+    )
+  }
+  if (config.theme_id === 'reelrack') {
+    const themeProduct = productToThemeProduct({
+      id: product.id,
+      seller_id: config.seller_id ?? '',
+      name: product.name,
+      description: product.description,
+      category: product.category,
+      price_inr: product.price_inr,
+      original_price_inr: product.original_price_inr,
+      cost_price_inr: null,
+      garment_image_url: product.garment_image_url,
+      garment_video_url: product.garment_video_url ?? null,
+      garment_preprocessed_url: null,
+      slug: productId,
+      is_active: true,
+      sizes: product.sizes,
+      colors: product.colors,
+      tags: product.tags,
+      created_at: '',
+    })
+    return (
+      <ReelRackPDP
+        brand={configToThemeBrand({ ...config, seller_id: config.seller_id ?? null }, slug)}
+        product={themeProduct}
+      />
+    )
+  }
+  if (config.theme_id === 'thegrid') {
+    const themeProduct = productToThemeProduct({
+      id: product.id,
+      seller_id: config.seller_id ?? '',
+      name: product.name,
+      description: product.description,
+      category: product.category,
+      price_inr: product.price_inr,
+      original_price_inr: product.original_price_inr,
+      cost_price_inr: null,
+      garment_image_url: product.garment_image_url,
+      garment_video_url: product.garment_video_url ?? null,
+      garment_preprocessed_url: null,
+      slug: productId,
+      is_active: true,
+      sizes: product.sizes,
+      colors: product.colors,
+      tags: product.tags,
+      created_at: '',
+    })
+    return (
+      <TheGridPDP
+        brand={configToThemeBrand({ ...config, seller_id: config.seller_id ?? null }, slug)}
+        product={themeProduct}
+      />
+    )
+  }
+  if (config.theme_id === 'tryiton') {
+    const themeProduct = productToThemeProduct({
+      id: product.id,
+      seller_id: config.seller_id ?? '',
+      name: product.name,
+      description: product.description,
+      category: product.category,
+      price_inr: product.price_inr,
+      original_price_inr: product.original_price_inr,
+      cost_price_inr: null,
+      garment_image_url: product.garment_image_url,
+      garment_video_url: product.garment_video_url ?? null,
+      garment_preprocessed_url: null,
+      slug: productId,
+      is_active: true,
+      sizes: product.sizes,
+      colors: product.colors,
+      tags: product.tags,
+      created_at: '',
+    })
+    return (
+      <TryItOnPDP
+        brand={configToThemeBrand({ ...config, seller_id: config.seller_id ?? null }, slug)}
+        product={themeProduct}
       />
     )
   }

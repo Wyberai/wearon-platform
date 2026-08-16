@@ -394,6 +394,52 @@ export const THEMES: Theme[] = [
     heroGradient: 'linear-gradient(160deg, #2A1730 0%, #3D1E3F 60%, #C6A15B22 100%)',
     previewImage: '/kiraya/products/royal-plum-silk-lehenga.jpg',
   },
+  {
+    // First of three "Insta" themes — reachable via the dedicated /insta
+    // landing page for Instagram sellers, not the monthly gallery. Demo
+    // brand "REEL RACK": a clean, category-driven commercial storefront
+    // (sale badges, wishlist) where product videos (imported Reels) play
+    // natively on cards/PDP wherever a product has one.
+    id: 'reelrack',
+    name: 'Reel Rack — Every Reel, On the Rack',
+    blurb: 'Insta theme: clean, category-driven storefront with sale badges, wishlist, and native reel/video product playback',
+    inspiration: 'Polished ethnic/fashion D2C storefronts (sale badges, wishlist, category nav)',
+    layout: 'grid', density: 'normal', decoration: 'badges', hero: 'full-bleed-dark', font: 'inter',
+    heroDecoration: 'none', categoryDisplay: 'tiles',
+    headingStyle: 'display', navStyle: 'pill', logoShape: 'square',
+    palette: { bg: '#FFF9F5', ink: '#241419', accent: '#B0234B', card: '#FFFFFF' },
+    heroGradient: 'linear-gradient(160deg, #B0234B22 0%, #FFF9F5 70%)',
+    previewImage: '/reelrack/products/wine-wrap-midi-dress.jpg',
+  },
+  {
+    // Second "Insta" theme. Demo brand "THE GRID": a classic 3-column
+    // IG-profile-style square grid where product videos autoplay in-grid.
+    id: 'thegrid',
+    name: 'The Grid — Shop the Grid, Not the Feed',
+    blurb: 'Insta theme: classic 3-column IG-profile square grid with autoplay-in-grid video',
+    inspiration: 'Instagram profile grid browsing',
+    layout: 'grid', density: 'dense', decoration: 'none', hero: 'text-only', font: 'inter',
+    heroDecoration: 'none', categoryDisplay: 'circles',
+    headingStyle: 'minimal', navStyle: 'underline', logoShape: 'circle',
+    palette: { bg: '#FFFFFF', ink: '#000000', accent: '#C13584', card: '#FAFAFA' },
+    heroGradient: 'linear-gradient(135deg, #C1358522 0%, #FFFFFF 70%)',
+    previewImage: '/thegrid/products/black-slip-midi-dress.jpg',
+  },
+  {
+    // Third "Insta" theme. Demo brand "TRY IT ON": a normal catalog grid,
+    // but every PDP defaults to the seller's reel playing instead of a
+    // photo, with an explicit Photo/Video toggle.
+    id: 'tryiton',
+    name: 'Try It On — See It Move Before You Buy',
+    blurb: 'Insta theme: normal catalog browsing, but every product page defaults to the reel playing instead of a photo',
+    inspiration: 'Video-first product pages',
+    layout: 'grid', density: 'normal', decoration: 'none', hero: 'full-bleed-dark', font: 'inter',
+    heroDecoration: 'none', categoryDisplay: 'tiles',
+    headingStyle: 'display', navStyle: 'pill', logoShape: 'square',
+    palette: { bg: '#141116', ink: '#F5F0EC', accent: '#FF6B4A', card: '#1E1A21' },
+    heroGradient: 'linear-gradient(160deg, #FF6B4A22 0%, #141116 70%)',
+    previewImage: '/tryiton/products/sequin-bodycon-dress.jpg',
+  },
 ]
 
 export function getTheme(id: string | null | undefined): Theme {
@@ -407,6 +453,9 @@ export function getTheme(id: string | null | undefined): Theme {
 // so it can't stand in for these — see the slug-based bypass in
 // store/[slug]/layout.tsx.
 export const FLAGSHIP_DEMO_SLUG: Record<string, string> = {
+  reelrack: 'reelrack',
+  thegrid: 'thegrid',
+  tryiton: 'tryiton',
   january: 'august',
   february: 'ember',
   march: 'bloom',
