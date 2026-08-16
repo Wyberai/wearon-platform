@@ -1,24 +1,17 @@
-﻿import Link from 'next/link'
+import Link from 'next/link'
 import { PLANS } from '@/lib/constants'
 import { PRICING_COPY } from '@/lib/pricing-copy'
 import { ThemePicker } from '@/components/marketing/ThemePicker'
 import { MarketingNav } from '@/components/marketing/MarketingNav'
 import { faqToJsonLd } from '@/lib/schema-org'
+import { getLocale } from '@/lib/i18n/get-locale'
+import { HOME_DICT } from '@/lib/i18n/dict/home'
+import { LanguageSwitcher } from '@/components/LanguageSwitcher'
+import type { Locale } from '@/lib/i18n/config'
 
-// Short, direct-answer format on purpose — this is what AI answer engines
-// (Google AI Mode, Perplexity, ChatGPT search) actually quote, not long copy.
-const FAQS = [
-  { q: 'Is Instastarz really free to start?', a: 'Yes. The Free plan gives you 10 products, a branded storefront, and WhatsApp + Razorpay checkout at no cost — no credit card required.' },
-  { q: 'Can I use my own domain?', a: 'Yes. Every paid plan (Store, ₹3,000/mo, and above) includes a custom domain and a professional email address for your store.' },
-  { q: 'Are the products I see on the demo stores mine to sell?', a: 'No — the 12 flagship stores (August, Ember, Kiraya, and so on) are live demos showing what each theme looks like with real sample products. When you sign up, your store starts empty and you add your own catalog.' },
-  { q: 'Can I import products straight from Instagram?', a: 'Yes. Connect your Instagram account and import your photos and Reels directly as products — including the video, not just a thumbnail.' },
-  { q: 'Does Instastarz take a cut of my sales?', a: "No. Instastarz charges a flat monthly subscription, not a percentage of your revenue — you keep 100% of what you sell, minus Razorpay's standard payment processing fee." },
-  { q: 'Can I cancel anytime?', a: "Yes. There's no lock-in contract — downgrade to Free or cancel from your dashboard whenever you want." },
-  { q: 'Can AI assistants like ChatGPT or Claude find and shop my store?', a: 'Yes. Every Instastarz store gets a live MCP endpoint and an OpenAPI spec, so AI shopping assistants can browse your catalog, check sizes, and check out on a buyer\'s behalf.' },
-]
-
-export default function Home() {
-  return <USHomePage />
+export default async function Home() {
+  const locale = await getLocale()
+  return <USHomePage locale={locale} />
 }
 
 // ---- US HOMEPAGE ----
@@ -28,7 +21,9 @@ const US_INK = '#111010'
 
 const HERO_IMAGE = '/hero/reel-to-receipt.webp'
 
-function USHomePage() {
+function USHomePage({ locale }: { locale: Locale }) {
+  const t = HOME_DICT[locale]
+
   const THEME_TILES = [
     { name: 'AUGUST', sub: 'Old-world tailoring, ask-anything styling', img: '/august/campaign/hero.jpg', slug: 'august' },
     { name: 'EMBER', sub: 'Dress by mood, one tap to an outfit', img: '/ember/campaign/hero.jpg', slug: 'ember' },
@@ -77,11 +72,14 @@ function USHomePage() {
 
       <div style={{ background: '#fff', color: US_INK, minHeight: '100vh' }}>
         {/* Announcement bar */}
-        <div style={{ background: US_INK, color: '#fff', padding: '11px 24px', textAlign: 'center', fontSize: 12, letterSpacing: '0.05em' }}>
-          Start free — no credit card required.{'  '}
-          <Link href="/auth/signup" style={{ color: '#fff', textDecoration: 'underline', fontWeight: 700 }}>
-            Launch your store →
-          </Link>
+        <div style={{ background: US_INK, color: '#fff', padding: '11px 24px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 16, flexWrap: 'wrap', fontSize: 12, letterSpacing: '0.05em' }}>
+          <span>
+            {t.announcementText}{'  '}
+            <Link href="/auth/signup" style={{ color: '#fff', textDecoration: 'underline', fontWeight: 700 }}>
+              {t.announcementCta}
+            </Link>
+          </span>
+          <LanguageSwitcher current={locale} dark />
         </div>
 
         <MarketingNav />
@@ -93,20 +91,20 @@ function USHomePage() {
         <section style={{ padding: '96px 24px 0' }}>
           <div style={{ maxWidth: 780, margin: '0 auto', textAlign: 'center' }}>
             <p style={{ fontSize: 11, letterSpacing: '0.14em', textTransform: 'uppercase', color: `${US_INK}66`, marginBottom: 22 }}>
-              Twelve flagship themes, all live
+              {t.heroEyebrow}
             </p>
             <h1 style={{ fontFamily: 'var(--font-marketing)', fontSize: 'clamp(40px, 7vw, 88px)', fontWeight: 400, lineHeight: 1.02, letterSpacing: '-2px', color: US_INK, margin: '0 0 24px' }}>
-              Be the boutique they screenshot to their friends.
+              {t.heroHeadline}
             </h1>
             <p style={{ fontSize: 17, color: `${US_INK}99`, lineHeight: 1.6, marginBottom: 32, maxWidth: 560, marginLeft: 'auto', marginRight: 'auto' }}>
-              Twelve genuinely different flagship themes — not one template with a color picker. Pick one, add your products, and go live in minutes.
+              {t.heroSubcopy}
             </p>
             <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', justifyContent: 'center', marginBottom: 56 }}>
               <Link href="/auth/signup" style={{ background: US_INK, color: '#fff', padding: '15px 28px', borderRadius: 999, fontSize: 14, fontWeight: 700, textDecoration: 'none' }}>
-                Launch my store, free →
+                {t.heroCtaPrimary}
               </Link>
               <Link href="/themes" style={{ color: US_INK, padding: '15px 24px', borderRadius: 999, fontSize: 14, fontWeight: 600, textDecoration: 'none', border: `1px solid ${US_INK}22` }}>
-                See all twelve stores
+                {t.heroCtaSecondary}
               </Link>
             </div>
           </div>
@@ -121,7 +119,7 @@ function USHomePage() {
             so it doesn't build local credibility the way Razorpay does. */}
         <section style={{ padding: '28px 24px', borderBottom: `1px solid ${US_INK}0E` }}>
           <div style={{ maxWidth: 900, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 40, flexWrap: 'wrap' }}>
-            <span style={{ fontSize: 11, letterSpacing: '0.1em', textTransform: 'uppercase', color: `${US_INK}44` }}>Works with</span>
+            <span style={{ fontSize: 11, letterSpacing: '0.1em', textTransform: 'uppercase', color: `${US_INK}44` }}>{t.worksWith}</span>
             {['Razorpay', 'WhatsApp Business', 'Instagram'].map(name => (
               <span key={name} style={{ fontSize: 15, fontWeight: 700, color: `${US_INK}55`, letterSpacing: '-0.2px' }}>{name}</span>
             ))}
@@ -137,12 +135,12 @@ function USHomePage() {
                 <div style={{ backgroundImage: 'url(/ember/campaign/hero.jpg)' }} />
                 <div style={{ backgroundImage: 'url(/bloom/campaign/hero.jpg)' }} />
               </div>
-              <h3 style={{ fontSize: 17, fontWeight: 600, letterSpacing: '-0.2px', marginBottom: 8, color: US_INK }}>Twelve flagship themes</h3>
+              <h3 style={{ fontSize: 17, fontWeight: 600, letterSpacing: '-0.2px', marginBottom: 8, color: US_INK }}>{t.themesCardTitle}</h3>
               <p style={{ fontSize: 14, color: `${US_INK}88`, lineHeight: 1.7, marginBottom: 14 }}>
-                Not a template with a color picker — twelve completely different shopping mechanics, all live.
+                {t.themesCardBody}
               </p>
               <Link href="/themes" style={{ fontSize: 13, fontWeight: 700, color: US_INK, textDecoration: 'underline', textDecorationColor: US_ACCENT, textUnderlineOffset: 4 }}>
-                Preview all twelve →
+                {t.themesCardCta}
               </Link>
             </div>
             <div className="wo-card" style={{
@@ -151,11 +149,11 @@ function USHomePage() {
             }}>
               <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, background: '#fff', border: '1px solid rgba(23,21,18,0.1)', borderRadius: 999, padding: '6px 12px', fontSize: 12, color: `${US_INK}99`, marginBottom: 20 }}>
                 <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#5B8CFF', display: 'inline-block' }} />
-                MCP endpoint, live on every store
+                {t.aiCardBadge}
               </div>
-              <h3 style={{ fontSize: 17, fontWeight: 600, letterSpacing: '-0.2px', marginBottom: 8, color: US_INK }}>Built for AI shoppers</h3>
+              <h3 style={{ fontSize: 17, fontWeight: 600, letterSpacing: '-0.2px', marginBottom: 8, color: US_INK }}>{t.aiCardTitle}</h3>
               <p style={{ fontSize: 14, color: `${US_INK}88`, lineHeight: 1.7 }}>
-                Claude, ChatGPT, and Google AI Mode can browse your catalog and check sizes through your own MCP endpoint — no extra setup.
+                {t.aiCardBody}
               </p>
             </div>
           </div>
@@ -176,14 +174,14 @@ function USHomePage() {
         {/* THEME TILES — all twelve flagship stores, live now, not cosmetic reskins */}
         <section style={{ paddingTop: 96 }}>
           <div style={{ padding: '0 24px', marginBottom: 32 }}>
-            <p style={{ fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: `${US_INK}55`, marginBottom: 10 }}>Twelve flagship themes, all live</p>
+            <p style={{ fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: `${US_INK}55`, marginBottom: 10 }}>{t.themeTilesEyebrow}</p>
             <h2 style={{ fontFamily: 'var(--font-marketing)', fontSize: 'clamp(28px, 4vw, 46px)', fontWeight: 400, letterSpacing: '-1px', lineHeight: 1.1, color: US_INK }}>
-              Your store. Your look.
+              {t.themeTilesHeadline}
             </h2>
           </div>
           <ThemePicker tiles={THEME_TILES} />
           <p style={{ textAlign: 'center', padding: '18px 24px 0', fontSize: 13, color: `${US_INK}66` }}>
-            Every theme: full checkout · your domain · AI-native features · <Link href="/themes" style={{ color: US_INK, textDecoration: 'underline' }}>see all twelve →</Link>
+            {t.themeTilesFooterPrefix}<Link href="/themes" style={{ color: US_INK, textDecoration: 'underline' }}>{t.themeTilesFooterCta}</Link>
           </p>
         </section>
 
@@ -191,16 +189,12 @@ function USHomePage() {
         <section style={{ borderTop: `1px solid ${US_INK}0E`, padding: '96px 24px' }}>
           <div style={{ maxWidth: 960, margin: '0 auto' }}>
             <h2 style={{ fontFamily: 'var(--font-marketing)', fontSize: 'clamp(26px, 3.5vw, 40px)', fontWeight: 400, letterSpacing: '-1px', textAlign: 'center', marginBottom: 56, color: US_INK }}>
-              Live in three steps.
+              {t.stepsHeadline}
             </h2>
             <div className="wo-us-features" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '40px 48px' }}>
-              {[
-                { n: '01', title: 'Pick a theme', body: 'Twelve flagship themes, each a genuinely different shopping mechanic. Preview any of them with a live demo before you commit.' },
-                { n: '02', title: 'Add your products', body: 'Upload your catalog directly, or import straight from Instagram — photos and Reels, not just thumbnails.' },
-                { n: '03', title: 'Go live', body: 'Razorpay, Stripe, WhatsApp, and COD checkout are already built in. No extra setup, no waiting on approval.' },
-              ].map(step => (
-                <div key={step.n}>
-                  <p style={{ fontFamily: 'var(--font-marketing)', fontSize: 40, fontWeight: 400, color: `${US_INK}22`, marginBottom: 14, letterSpacing: '-1px' }}>{step.n}</p>
+              {t.steps.map((step, i) => (
+                <div key={step.title}>
+                  <p style={{ fontFamily: 'var(--font-marketing)', fontSize: 40, fontWeight: 400, color: `${US_INK}22`, marginBottom: 14, letterSpacing: '-1px' }}>{`0${i + 1}`}</p>
                   <h3 style={{ fontFamily: 'var(--font-marketing)', fontSize: 19, fontWeight: 500, letterSpacing: '-0.2px', marginBottom: 10, color: US_INK }}>{step.title}</h3>
                   <p style={{ fontSize: 14, color: `${US_INK}77`, lineHeight: 1.75 }}>{step.body}</p>
                 </div>
@@ -212,19 +206,12 @@ function USHomePage() {
         {/* 6-FEATURE GRID — AI-native differentiators */}
         <section style={{ borderTop: `1px solid ${US_INK}0E`, padding: '96px 24px' }}>
           <div style={{ maxWidth: 960, margin: '0 auto' }}>
-            <p style={{ fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: `${US_INK}44`, marginBottom: 14, textAlign: 'center' }}>What makes Instastarz different in 2026</p>
+            <p style={{ fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: `${US_INK}44`, marginBottom: 14, textAlign: 'center' }}>{t.featuresEyebrow}</p>
             <h2 style={{ fontFamily: 'var(--font-marketing)', fontSize: 'clamp(26px, 3.5vw, 40px)', fontWeight: 400, letterSpacing: '-1px', textAlign: 'center', marginBottom: 56, color: US_INK }}>
-              Built for agents. Owned by you.
+              {t.featuresHeadline}
             </h2>
             <div className="wo-us-features" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '40px 48px' }}>
-              {[
-                { label: 'AI BUYER', title: 'AI curates your seasonal edits.', body: 'Describe a vibe — "Summer Beach Edit", "Wedding Guest" — and your AI Buyer selects the products, writes editorial copy, and publishes the collection.' },
-                { label: 'MCP ENDPOINT', title: 'Claude can shop your store.', body: 'Every Instastarz store gets a live MCP endpoint. When a buyer asks Claude to find a dress, it browses your catalog, checks sizes, and routes to checkout.' },
-                { label: 'DM CHECKOUT', title: 'Instagram → payment in one thread.', body: '"I want this" in a DM. AI detects intent, asks for size, sends a payment link — all without leaving the conversation. No app, no redirect.' },
-                { label: 'AI VISIBILITY', title: 'See how AI describes your products.', body: 'Your AI Discoverability Score shows whether Rufus, Perplexity, and Google AI Mode can find you — and fixes the gaps with one click.' },
-                { label: 'BRAND DNA', title: 'Every AI output sounds like you.', body: "Set your tone, aesthetic, and buyer philosophy once. Every caption, reply, and collection description carries your voice — not a generic AI's." },
-                { label: 'CHECKOUT', title: 'Stripe, Razorpay, COD. Zero setup.', body: 'Card, Apple Pay, UPI, COD — all built in. Buyers tap, pick size, pay. You get the order. No DM invoice, no payment-link chase.' },
-              ].map(f => (
+              {t.features.map(f => (
                 <div key={f.label} style={{ borderTop: `1.5px solid ${US_INK}12`, paddingTop: 24 }}>
                   <p style={{ fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: US_ACCENT, marginBottom: 14, fontWeight: 700 }}>{f.label}</p>
                   <h3 style={{ fontFamily: 'var(--font-marketing)', fontSize: 19, fontWeight: 500, letterSpacing: '-0.2px', lineHeight: 1.25, marginBottom: 10, color: US_INK }}>{f.title}</h3>
@@ -238,21 +225,21 @@ function USHomePage() {
         {/* PRICING — real plans, real INR, matches billing exactly */}
         <section style={{ padding: '96px 24px' }}>
           <div style={{ maxWidth: 1080, margin: '0 auto' }}>
-            <p style={{ fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: `${US_INK}55`, marginBottom: 16, textAlign: 'center' }}>Pricing</p>
+            <p style={{ fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: `${US_INK}55`, marginBottom: 16, textAlign: 'center' }}>{t.pricingEyebrow}</p>
             <h2 style={{ fontFamily: 'var(--font-marketing)', fontSize: 'clamp(30px, 4vw, 44px)', fontWeight: 400, letterSpacing: '-1px', textAlign: 'center', marginBottom: 12, color: US_INK }}>
-              Start free. Scale when you&apos;re ready.
+              {t.pricingHeadline}
             </h2>
-            <p style={{ textAlign: 'center', fontSize: 14, color: `${US_INK}66`, marginBottom: 56 }}>All prices in INR · Razorpay + WhatsApp checkout on every plan</p>
+            <p style={{ textAlign: 'center', fontSize: 14, color: `${US_INK}66`, marginBottom: 56 }}>{t.pricingSubcopy}</p>
             <div className="wo-us-pricing" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 2 }}>
               {PRICING_COPY.map(plan => {
                 const data = PLANS[plan.key]
                 return (
                   <div key={plan.key} style={{ padding: '32px 24px', background: plan.featured ? US_INK : '#f8f8f8', color: plan.featured ? '#fff' : US_INK }}>
-                    {plan.featured && <p style={{ fontSize: 10, letterSpacing: '0.15em', textTransform: 'uppercase', color: US_ACCENT, marginBottom: 14, fontWeight: 700 }}>Most popular</p>}
+                    {plan.featured && <p style={{ fontSize: 10, letterSpacing: '0.15em', textTransform: 'uppercase', color: US_ACCENT, marginBottom: 14, fontWeight: 700 }}>{t.mostPopular}</p>}
                     <p style={{ fontSize: 11, letterSpacing: '0.1em', textTransform: 'uppercase', color: plan.featured ? 'rgba(255,255,255,0.45)' : `${US_INK}66`, marginBottom: 10 }}>{data.name}</p>
                     <p style={{ fontFamily: 'var(--font-marketing)', fontSize: 38, fontWeight: 400, letterSpacing: '-1.5px', marginBottom: 4, lineHeight: 1 }}>
-                      {data.price_inr === 0 ? 'Free' : `₹${data.price_inr.toLocaleString('en-IN')}`}
-                      <span style={{ fontSize: 13, fontWeight: 400, opacity: 0.45, letterSpacing: 0 }}>{data.price_inr > 0 ? '/mo' : ''}</span>
+                      {data.price_inr === 0 ? t.free : `₹${data.price_inr.toLocaleString('en-IN')}`}
+                      <span style={{ fontSize: 13, fontWeight: 400, opacity: 0.45, letterSpacing: 0 }}>{data.price_inr > 0 ? t.perMonth : ''}</span>
                     </p>
                     <p style={{ fontSize: 13, color: plan.featured ? 'rgba(255,255,255,0.5)' : `${US_INK}66`, marginBottom: 24 }}>{plan.description}</p>
                     <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 28px', display: 'flex', flexDirection: 'column', gap: 10 }}>
@@ -270,21 +257,21 @@ function USHomePage() {
               })}
             </div>
             <p style={{ textAlign: 'center', marginTop: 32, fontSize: 14, color: `${US_INK}77` }}>
-              Refer a seller, get <strong style={{ color: US_INK }}>200 free AI try-ons</strong> — real credit, not a gimmick.
+              {t.referralLine}
             </p>
           </div>
         </section>
 
         {/* FAQ — visible Q&A + FAQPage JSON-LD, both for AEO */}
         <section style={{ padding: '96px 24px', borderTop: `1px solid ${US_INK}0E` }}>
-          <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqToJsonLd(FAQS.map(f => ({ question: f.q, answer: f.a })))) }} />
+          <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqToJsonLd(t.faqs.map(f => ({ question: f.q, answer: f.a })))) }} />
           <div style={{ maxWidth: 760, margin: '0 auto' }}>
-            <p style={{ fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: `${US_INK}55`, marginBottom: 16, textAlign: 'center' }}>Questions</p>
+            <p style={{ fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: `${US_INK}55`, marginBottom: 16, textAlign: 'center' }}>{t.faqEyebrow}</p>
             <h2 style={{ fontFamily: 'var(--font-marketing)', fontSize: 'clamp(28px, 3.6vw, 40px)', fontWeight: 400, letterSpacing: '-1px', textAlign: 'center', marginBottom: 48, color: US_INK }}>
-              Everything you&apos;re wondering.
+              {t.faqHeadline}
             </h2>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
-              {FAQS.map(f => (
+              {t.faqs.map(f => (
                 <details key={f.q} style={{ borderTop: `1px solid ${US_INK}14`, padding: '20px 0' }}>
                   <summary style={{ fontSize: 16, fontWeight: 600, color: US_INK, cursor: 'pointer', listStyle: 'none' }}>
                     {f.q}
@@ -299,16 +286,16 @@ function USHomePage() {
         {/* CLOSING CTA — pure self-serve, no human-in-the-loop pitch */}
         <section style={{ padding: '96px 24px', background: US_INK }}>
           <div style={{ maxWidth: 600, margin: '0 auto', textAlign: 'center' }}>
-            <p style={{ fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', marginBottom: 20 }}>Ready when you are</p>
+            <p style={{ fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', marginBottom: 20 }}>{t.closingEyebrow}</p>
             <h2 style={{ fontFamily: 'var(--font-marketing)', fontSize: 'clamp(32px, 5vw, 56px)', fontWeight: 400, letterSpacing: '-1.5px', lineHeight: 1.08, color: '#fff', marginBottom: 20 }}>
-              Bring your Instagram shop to life.
+              {t.closingHeadline}
             </h2>
             <p style={{ fontSize: 16, color: 'rgba(255,255,255,0.55)', lineHeight: 1.7, marginBottom: 36 }}>
-              Pick a theme, add your products, start selling — live in minutes, no card required.
+              {t.closingSubcopy}
             </p>
             <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
               <Link href="/auth/signup" style={{ background: '#fff', color: US_INK, padding: '14px 32px', fontSize: 11, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', textDecoration: 'none' }}>
-                Start free →
+                {t.closingCta}
               </Link>
             </div>
           </div>
@@ -318,13 +305,14 @@ function USHomePage() {
         <footer style={{ borderTop: `1px solid ${US_INK}10`, padding: '28px 24px', background: '#fff' }}>
           <div style={{ maxWidth: 900, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
             <span style={{ fontFamily: 'var(--font-marketing)', fontWeight: 400, fontSize: 18, letterSpacing: '-0.3px', color: US_INK }}>Instastarz</span>
-            <span style={{ fontSize: 11, letterSpacing: '0.06em', color: `${US_INK}55`, textTransform: 'uppercase' }}>The Shopify Alternative for Boutiques · 2026</span>
-            <div style={{ display: 'flex', gap: 20 }}>
-              <Link href="/auth/login" style={{ fontSize: 12, color: `${US_INK}66`, textDecoration: 'none' }}>Login</Link>
-              <Link href="/themes" style={{ fontSize: 12, color: `${US_INK}66`, textDecoration: 'none' }}>Live Demo</Link>
-              <Link href="/privacy" style={{ fontSize: 12, color: `${US_INK}66`, textDecoration: 'none' }}>Privacy</Link>
-              <Link href="/terms" style={{ fontSize: 12, color: `${US_INK}66`, textDecoration: 'none' }}>Terms</Link>
-              <Link href="/refund-policy" style={{ fontSize: 12, color: `${US_INK}66`, textDecoration: 'none' }}>Refunds</Link>
+            <span style={{ fontSize: 11, letterSpacing: '0.06em', color: `${US_INK}55`, textTransform: 'uppercase' }}>{t.footerTagline}</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
+              <Link href="/auth/login" style={{ fontSize: 12, color: `${US_INK}66`, textDecoration: 'none' }}>{t.footerLogin}</Link>
+              <Link href="/themes" style={{ fontSize: 12, color: `${US_INK}66`, textDecoration: 'none' }}>{t.footerDemo}</Link>
+              <Link href="/privacy" style={{ fontSize: 12, color: `${US_INK}66`, textDecoration: 'none' }}>{t.footerPrivacy}</Link>
+              <Link href="/terms" style={{ fontSize: 12, color: `${US_INK}66`, textDecoration: 'none' }}>{t.footerTerms}</Link>
+              <Link href="/refund-policy" style={{ fontSize: 12, color: `${US_INK}66`, textDecoration: 'none' }}>{t.footerRefunds}</Link>
+              <LanguageSwitcher current={locale} />
             </div>
           </div>
           <p style={{ maxWidth: 900, margin: '16px auto 0', fontSize: 11, color: `${US_INK}44`, textAlign: 'center' }}>
