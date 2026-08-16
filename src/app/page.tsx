@@ -1,7 +1,21 @@
 ﻿import Link from 'next/link'
 import { PLANS } from '@/lib/constants'
-import { StorePreviewCapture } from '@/components/marketing/StorePreviewCapture'
+import { PRICING_COPY } from '@/lib/pricing-copy'
+import { ThemePicker } from '@/components/marketing/ThemePicker'
 import { MarketingNav } from '@/components/marketing/MarketingNav'
+import { faqToJsonLd } from '@/lib/schema-org'
+
+// Short, direct-answer format on purpose — this is what AI answer engines
+// (Google AI Mode, Perplexity, ChatGPT search) actually quote, not long copy.
+const FAQS = [
+  { q: 'Is WearOn really free to start?', a: 'Yes. The Free plan gives you 10 products, a branded storefront, and WhatsApp + Razorpay checkout at no cost — no credit card required.' },
+  { q: 'Can I use my own domain?', a: 'Yes. Every paid plan (Store, ₹3,000/mo, and above) includes a custom domain and a professional email address for your store.' },
+  { q: 'Are the products I see on the demo stores mine to sell?', a: 'No — the 12 flagship stores (August, Ember, Kiraya, and so on) are live demos showing what each theme looks like with real sample products. When you sign up, your store starts empty and you add your own catalog.' },
+  { q: 'Can I import products straight from Instagram?', a: 'Yes. Connect your Instagram account and import your photos and Reels directly as products — including the video, not just a thumbnail.' },
+  { q: 'Does WearOn take a cut of my sales?', a: "No. WearOn charges a flat monthly subscription, not a percentage of your revenue — you keep 100% of what you sell, minus Razorpay's standard payment processing fee." },
+  { q: 'Can I cancel anytime?', a: "Yes. There's no lock-in contract — downgrade to Free or cancel from your dashboard whenever you want." },
+  { q: 'Can AI assistants like ChatGPT or Claude find and shop my store?', a: 'Yes. Every WearOn store gets a live MCP endpoint and an OpenAPI spec, so AI shopping assistants can browse your catalog, check sizes, and check out on a buyer\'s behalf.' },
+]
 
 export default function Home() {
   return <USHomePage />
@@ -82,17 +96,7 @@ function USThemeCard({ t }: { t: typeof US_THEMES[0] }) {
   )
 }
 
-const HERO_COLLAGE = [
-  '/august/products/field-jacket.jpg',
-  '/ember/products/flame-cardigan.jpg',
-  '/bloom/products/linen-wrap-top.jpg',
-  '/august/products/leather-belt.jpg',
-  '/ember/products/cobalt-turtleneck.jpg',
-  '/bloom/products/pleated-midi-skirt.jpg',
-  '/august/products/overcoat.jpg',
-  '/ember/products/chain-belt.jpg',
-  '/bloom/products/leather-sandal.jpg',
-]
+const HERO_IMAGE = '/hero/reel-to-receipt.webp'
 
 function USHomePage() {
   const THEME_TILES = [
@@ -122,26 +126,17 @@ function USHomePage() {
         @media (max-width: 460px) {
           .wo-us-pricing { grid-template-columns: 1fr !important; }
         }
-        .wo-collage {
-          display: grid;
-          grid-template-columns: repeat(4, 1fr);
-          grid-template-rows: repeat(3, 90px);
-          gap: 3px;
+        .wo-hero-image {
+          width: 100%;
+          height: 340px;
+          object-fit: cover;
+          object-position: center 30%;
+          display: block;
         }
         @media (min-width: 720px) {
-          .wo-collage { grid-template-rows: repeat(3, 160px); }
+          .wo-hero-image { height: 480px; }
         }
-        .wo-collage-tile { background-size: cover; background-position: center; }
-        .wo-collage-t1 { grid-column: 1 / 2; grid-row: 1 / 2; }
-        .wo-collage-t2 { grid-column: 2 / 3; grid-row: 1 / 2; }
-        .wo-collage-t3 { grid-column: 3 / 5; grid-row: 1 / 2; }
-        .wo-collage-t4 { grid-column: 1 / 2; grid-row: 2 / 4; }
-        .wo-collage-t5 { grid-column: 2 / 3; grid-row: 2 / 3; }
-        .wo-collage-t6 { grid-column: 3 / 4; grid-row: 2 / 3; }
-        .wo-collage-t7 { grid-column: 4 / 5; grid-row: 2 / 3; }
-        .wo-collage-t8 { grid-column: 2 / 3; grid-row: 3 / 4; }
-        .wo-collage-t9 { grid-column: 3 / 5; grid-row: 3 / 4; }
-        .wo-collage-card {
+        .wo-hero-card {
           position: absolute;
           top: 50%;
           left: 24px;
@@ -149,7 +144,7 @@ function USHomePage() {
           width: min(380px, calc(100% - 48px));
         }
         @media (max-width: 720px) {
-          .wo-collage-card { position: static; transform: none; width: auto; margin: 16px 16px 0; }
+          .wo-hero-card { position: static; transform: none; width: auto; margin: 16px 16px 0; }
         }
         .wo-feat-fan { display: flex; }
         .wo-feat-fan div { width: 56px; height: 68px; border-radius: 6px; border: 1px solid rgba(23,21,18,0.08); margin-left: -20px; box-shadow: -3px 0 8px rgba(23,21,18,0.1); background-size: cover; background-position: center; }
@@ -170,20 +165,12 @@ function USHomePage() {
 
         <MarketingNav />
 
-        {/* HERO — photo-collage of real garments from the twelve live flagship stores, */}
-        {/* with a floating card, instead of one stock photo behind a gradient. */}
+        {/* HERO — "reel becomes a receipt": a phone mid-Reel with a checkout */}
+        {/* card sliding onto it, visualizing the core pitch directly, with a */}
+        {/* floating card over it same as the old photo-collage treatment. */}
         <section style={{ position: 'relative' }}>
-          <div className="wo-collage">
-            {HERO_COLLAGE.map((src, i) => (
-              <div
-                key={src}
-                className={`wo-collage-tile wo-collage-t${i + 1}`}
-                style={{ backgroundImage: `url(${src})` }}
-                aria-hidden="true"
-              />
-            ))}
-          </div>
-          <div className="wo-collage-card" style={{ background: '#fff', borderRadius: 20, padding: '32px 32px 28px', boxShadow: '0 20px 50px -20px rgba(23,21,18,0.35)' }}>
+          <img src={HERO_IMAGE} alt="An Instagram Reel turning into a checkout — reels become sales on WearOn" className="wo-hero-image" />
+          <div className="wo-hero-card" style={{ background: '#fff', borderRadius: 20, padding: '32px 32px 28px', boxShadow: '0 20px 50px -20px rgba(23,21,18,0.35)' }}>
             <p style={{ fontSize: 11, letterSpacing: '0.14em', textTransform: 'uppercase', color: `${US_INK}66`, marginBottom: 14 }}>
               Twelve flagship themes
             </p>
@@ -257,19 +244,7 @@ function USHomePage() {
               Your store. Your look.
             </h2>
           </div>
-          <div className="wo-tile-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 2 }}>
-            {THEME_TILES.map(t => (
-              <Link key={t.slug} href={`/store/${t.slug}`} className="wo-tile" style={{ position: 'relative', display: 'block', textDecoration: 'none', aspectRatio: '3/4', overflow: 'hidden' }}>
-                <img src={t.img} alt={t.name} className="wo-tile-img" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
-                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, transparent 45%, rgba(0,0,0,0.75) 100%)' }} />
-                <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '20px 22px 24px' }}>
-                  <p style={{ fontSize: 10, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.6)', marginBottom: 4 }}>{t.sub}</p>
-                  <p style={{ fontSize: 20, fontWeight: 700, color: '#fff', marginBottom: 8 }}>{t.name}</p>
-                  <span style={{ fontSize: 10, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#fff', fontWeight: 700 }}>PREVIEW →</span>
-                </div>
-              </Link>
-            ))}
-          </div>
+          <ThemePicker tiles={THEME_TILES} />
           <p style={{ textAlign: 'center', padding: '18px 24px 0', fontSize: 13, color: `${US_INK}66` }}>
             Every theme: full checkout · your domain · AI-native features · <Link href="/themes" style={{ color: US_INK, textDecoration: 'underline' }}>see all twelve →</Link>
           </p>
@@ -310,13 +285,8 @@ function USHomePage() {
             </h2>
             <p style={{ textAlign: 'center', fontSize: 14, color: `${US_INK}66`, marginBottom: 56 }}>All prices in INR · Razorpay + WhatsApp checkout on every plan</p>
             <div className="wo-us-pricing" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 2 }}>
-              {[
-                { key: 'free', desc: 'Try it, no card required.', features: [`${PLANS.free.products} products`, 'Branded storefront', 'WhatsApp + card checkout', 'Basic analytics'] },
-                { key: 'starter', desc: 'A real store, fully checked out.', features: [`${PLANS.starter.products} products`, 'Full storefront + checkout', 'Custom domain', 'Razorpay + WhatsApp ordering', 'Analytics dashboard'] },
-                { key: 'growth', desc: 'Everything in Store, plus the app.', features: [`${PLANS.growth.products} products`, 'Everything in Store', 'Native Android app + Play Store listing', 'Priority support'], featured: true },
-                { key: 'pro', desc: 'For sellers who want it all.', features: ['Unlimited products', 'Everything in Store + App', `${PLANS.pro.try_ons} AI try-ons/mo`, `${PLANS.pro.ai_credits} AI photoshoot credits/mo`] },
-              ].map(plan => {
-                const data = PLANS[plan.key as keyof typeof PLANS]
+              {PRICING_COPY.map(plan => {
+                const data = PLANS[plan.key]
                 return (
                   <div key={plan.key} style={{ padding: '32px 24px', background: plan.featured ? US_INK : '#f8f8f8', color: plan.featured ? '#fff' : US_INK }}>
                     {plan.featured && <p style={{ fontSize: 10, letterSpacing: '0.15em', textTransform: 'uppercase', color: US_ACCENT, marginBottom: 14, fontWeight: 700 }}>Most popular</p>}
@@ -325,9 +295,9 @@ function USHomePage() {
                       {data.price_inr === 0 ? 'Free' : `₹${data.price_inr.toLocaleString('en-IN')}`}
                       <span style={{ fontSize: 13, fontWeight: 400, opacity: 0.45, letterSpacing: 0 }}>{data.price_inr > 0 ? '/mo' : ''}</span>
                     </p>
-                    <p style={{ fontSize: 13, color: plan.featured ? 'rgba(255,255,255,0.5)' : `${US_INK}66`, marginBottom: 24 }}>{plan.desc}</p>
+                    <p style={{ fontSize: 13, color: plan.featured ? 'rgba(255,255,255,0.5)' : `${US_INK}66`, marginBottom: 24 }}>{plan.description}</p>
                     <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 28px', display: 'flex', flexDirection: 'column', gap: 10 }}>
-                      {plan.features.map(f => (
+                      {plan.inclusions.map(f => (
                         <li key={f} style={{ fontSize: 13, display: 'flex', gap: 8, color: plan.featured ? 'rgba(255,255,255,0.8)' : `${US_INK}99` }}>
                           <span style={{ color: US_ACCENT, flexShrink: 0 }}>—</span>{f}
                         </li>
@@ -339,6 +309,27 @@ function USHomePage() {
                   </div>
                 )
               })}
+            </div>
+          </div>
+        </section>
+
+        {/* FAQ — visible Q&A + FAQPage JSON-LD, both for AEO */}
+        <section style={{ padding: '100px 24px', borderTop: `1px solid ${US_INK}0E` }}>
+          <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqToJsonLd(FAQS.map(f => ({ question: f.q, answer: f.a })))) }} />
+          <div style={{ maxWidth: 760, margin: '0 auto' }}>
+            <p style={{ fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: `${US_INK}55`, marginBottom: 16, textAlign: 'center' }}>Questions</p>
+            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(28px, 3.6vw, 40px)', fontWeight: 400, letterSpacing: '-1px', textAlign: 'center', marginBottom: 48, color: US_INK }}>
+              Everything you&apos;re wondering.
+            </h2>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
+              {FAQS.map(f => (
+                <details key={f.q} style={{ borderTop: `1px solid ${US_INK}14`, padding: '20px 0' }}>
+                  <summary style={{ fontSize: 16, fontWeight: 600, color: US_INK, cursor: 'pointer', listStyle: 'none' }}>
+                    {f.q}
+                  </summary>
+                  <p style={{ fontSize: 14, color: `${US_INK}88`, lineHeight: 1.7, marginTop: 12, marginBottom: 0 }}>{f.a}</p>
+                </details>
+              ))}
             </div>
           </div>
         </section>
@@ -374,6 +365,9 @@ function USHomePage() {
               <Link href="/themes" style={{ fontSize: 12, color: `${US_INK}66`, textDecoration: 'none' }}>Live Demo</Link>
             </div>
           </div>
+          <p style={{ maxWidth: 900, margin: '16px auto 0', fontSize: 11, color: `${US_INK}44`, textAlign: 'center' }}>
+            © 2026 Signalpulse Technologies. WearOn is a product of Signalpulse Technologies.
+          </p>
         </footer>
       </div>
     </>

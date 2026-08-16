@@ -20,6 +20,7 @@ import { FONTS } from '@/lib/constants'
 import { getOrCreateDeviceToken } from '@/lib/device-token'
 import { StoreFeedLayout } from '@/components/store/StoreFeedLayout'
 import { WhatsAppBubble } from '@/components/store/WhatsAppBubble'
+import { PreviewBanner } from '@/components/store/PreviewBanner'
 import { AugustHome } from '@/components/august/AugustHome'
 import { AUGUST_BRAND, AUGUST_PRODUCTS } from '@/lib/august/catalog'
 import { EmberHome } from '@/components/ember/EmberHome'
@@ -75,63 +76,78 @@ const PRICE_CLASS: Record<Theme['headingStyle'], string> = {
 }
 
 export default function StorePage() {
+  // The demo-slug branches below read ?preview_name= (StorePreviewCapture's
+  // "see how your store would look" flow), which needs useSearchParams —
+  // hence the Suspense wrapper, same reason StorePageContent needs one.
+  return (
+    <Suspense fallback={<div className="max-w-[1400px] mx-auto px-6 py-32 text-center text-gray-300 text-sm">Loading...</div>}>
+      <StorePageRouter />
+    </Suspense>
+  )
+}
+
+function StorePageRouter() {
   const { slug } = useParams() as { slug: string }
+  const searchParams = useSearchParams()
+  const previewName = searchParams.get('preview_name')
 
   // 'august' is the flagship theme — a wholly bespoke homepage with its own
   // hook tree. Rendered as a distinct component (not a mid-function early
   // return inside StorePageContent) so switching slugs client-side never
   // changes the hook order of a single mounted component.
+  // Flagship demo routes bypass the shared layout's <PreviewBanner/> entirely
+  // (src/app/store/[slug]/layout.tsx early-returns its own Shell per slug,
+  // server-side, before ever reaching that line) — so the banner is rendered
+  // here instead, where searchParams are actually available.
+  const banner = previewName ? <PreviewBanner /> : null
+
   if (slug === 'august') {
-    return <AugustHome brand={AUGUST_BRAND} products={AUGUST_PRODUCTS} />
+    return <>{banner}<AugustHome brand={previewName ? { ...AUGUST_BRAND, name: previewName } : AUGUST_BRAND} products={AUGUST_PRODUCTS} /></>
   }
   if (slug === 'ember') {
-    return <EmberHome brand={EMBER_BRAND} products={EMBER_PRODUCTS} />
+    return <>{banner}<EmberHome brand={previewName ? { ...EMBER_BRAND, name: previewName } : EMBER_BRAND} products={EMBER_PRODUCTS} /></>
   }
   if (slug === 'bloom') {
-    return <BloomHome brand={BLOOM_BRAND} products={BLOOM_PRODUCTS} />
+    return <>{banner}<BloomHome brand={previewName ? { ...BLOOM_BRAND, name: previewName } : BLOOM_BRAND} products={BLOOM_PRODUCTS} /></>
   }
   if (slug === 'mela') {
-    return <MelaHome brand={MELA_BRAND} products={MELA_PRODUCTS} />
+    return <>{banner}<MelaHome brand={previewName ? { ...MELA_BRAND, name: previewName } : MELA_BRAND} products={MELA_PRODUCTS} /></>
   }
   if (slug === 'taana') {
-    return <TaanaHome brand={TAANA_BRAND} products={TAANA_PRODUCTS} />
+    return <>{banner}<TaanaHome brand={previewName ? { ...TAANA_BRAND, name: previewName } : TAANA_BRAND} products={TAANA_PRODUCTS} /></>
   }
   if (slug === 'saaj') {
-    return <SaajHome brand={SAAJ_BRAND} products={SAAJ_PRODUCTS} />
+    return <>{banner}<SaajHome brand={previewName ? { ...SAAJ_BRAND, name: previewName } : SAAJ_BRAND} products={SAAJ_PRODUCTS} /></>
   }
   if (slug === 'scroll') {
-    return <ScrollHome brand={SCROLL_BRAND} products={SCROLL_PRODUCTS} />
+    return <>{banner}<ScrollHome brand={previewName ? { ...SCROLL_BRAND, name: previewName } : SCROLL_BRAND} products={SCROLL_PRODUCTS} /></>
   }
   if (slug === 'dhamaka') {
-    return <DhamakaHome brand={DHAMAKA_BRAND} products={DHAMAKA_PRODUCTS} />
+    return <>{banner}<DhamakaHome brand={previewName ? { ...DHAMAKA_BRAND, name: previewName } : DHAMAKA_BRAND} products={DHAMAKA_PRODUCTS} /></>
   }
   if (slug === 'aaram') {
-    return <AaramHome brand={AARAM_BRAND} products={AARAM_PRODUCTS} />
+    return <>{banner}<AaramHome brand={previewName ? { ...AARAM_BRAND, name: previewName } : AARAM_BRAND} products={AARAM_PRODUCTS} /></>
   }
   if (slug === 'utsav') {
-    return <UtsavHome brand={UTSAV_BRAND} products={UTSAV_PRODUCTS} />
+    return <>{banner}<UtsavHome brand={previewName ? { ...UTSAV_BRAND, name: previewName } : UTSAV_BRAND} products={UTSAV_PRODUCTS} /></>
   }
   if (slug === 'galli') {
-    return <GalliHome brand={GALLI_BRAND} products={GALLI_PRODUCTS} />
+    return <>{banner}<GalliHome brand={previewName ? { ...GALLI_BRAND, name: previewName } : GALLI_BRAND} products={GALLI_PRODUCTS} /></>
   }
   if (slug === 'kiraya') {
-    return <KirayaHome brand={KIRAYA_BRAND} products={KIRAYA_PRODUCTS} />
+    return <>{banner}<KirayaHome brand={previewName ? { ...KIRAYA_BRAND, name: previewName } : KIRAYA_BRAND} products={KIRAYA_PRODUCTS} /></>
   }
   if (slug === 'reelrack') {
-    return <ReelRackHome brand={REELRACK_BRAND} products={REELRACK_PRODUCTS} />
+    return <>{banner}<ReelRackHome brand={previewName ? { ...REELRACK_BRAND, name: previewName } : REELRACK_BRAND} products={REELRACK_PRODUCTS} /></>
   }
   if (slug === 'thegrid') {
-    return <TheGridHome brand={THEGRID_BRAND} products={THEGRID_PRODUCTS} />
+    return <>{banner}<TheGridHome brand={previewName ? { ...THEGRID_BRAND, name: previewName } : THEGRID_BRAND} products={THEGRID_PRODUCTS} /></>
   }
   if (slug === 'tryiton') {
-    return <TryItOnHome brand={TRYITON_BRAND} products={TRYITON_PRODUCTS} />
+    return <>{banner}<TryItOnHome brand={previewName ? { ...TRYITON_BRAND, name: previewName } : TRYITON_BRAND} products={TRYITON_PRODUCTS} /></>
   }
 
-  return (
-    <Suspense fallback={<div className="max-w-[1400px] mx-auto px-6 py-32 text-center text-gray-300 text-sm">Loading...</div>}>
-      <StorePageContent />
-    </Suspense>
-  )
+  return <StorePageContent />
 }
 
 function StorePageContent() {
@@ -150,6 +166,10 @@ function StorePageContent() {
 
   const isDemoStore = slug === 'demo'
   const themeOverride = searchParams.get('theme')
+  // Landing-page "see how your store would look" flow (StorePreviewCapture)
+  // carries the visitor's derived name through here so the storefront shows
+  // it instead of the seeded demo brand — not just the PreviewBanner on top.
+  const previewName = searchParams.get('preview_name')
 
   const loadData = useCallback(async () => {
     try {
@@ -294,56 +314,58 @@ function StorePageContent() {
     )
   }
 
+  const effectiveConfig = previewName && config ? { ...config, brand_name: previewName } : config
+
   // Any real seller on the "January" flagship theme gets the bespoke
   // component tree, rendered with their own brand + product data.
   if (config?.theme_id === 'january') {
-    return <AugustHome brand={configToThemeBrand(config, slug)} products={products.filter(p => p.is_active).map(productToThemeProduct)} />
+    return <AugustHome brand={configToThemeBrand(effectiveConfig!, slug)} products={products.filter(p => p.is_active).map(productToThemeProduct)} />
   }
   if (config?.theme_id === 'february') {
-    return <EmberHome brand={configToThemeBrand(config, slug)} products={products.filter(p => p.is_active).map(productToThemeProduct)} />
+    return <EmberHome brand={configToThemeBrand(effectiveConfig!, slug)} products={products.filter(p => p.is_active).map(productToThemeProduct)} />
   }
   if (config?.theme_id === 'march') {
-    return <BloomHome brand={configToThemeBrand(config, slug)} products={products.filter(p => p.is_active).map(productToThemeProduct)} />
+    return <BloomHome brand={configToThemeBrand(effectiveConfig!, slug)} products={products.filter(p => p.is_active).map(productToThemeProduct)} />
   }
   if (config?.theme_id === 'april') {
-    return <MelaHome brand={configToThemeBrand(config, slug)} products={products.filter(p => p.is_active).map(productToThemeProduct)} />
+    return <MelaHome brand={configToThemeBrand(effectiveConfig!, slug)} products={products.filter(p => p.is_active).map(productToThemeProduct)} />
   }
   if (config?.theme_id === 'may') {
-    return <TaanaHome brand={configToThemeBrand(config, slug)} products={products.filter(p => p.is_active).map(productToThemeProduct)} />
+    return <TaanaHome brand={configToThemeBrand(effectiveConfig!, slug)} products={products.filter(p => p.is_active).map(productToThemeProduct)} />
   }
   if (config?.theme_id === 'june') {
-    return <SaajHome brand={configToThemeBrand(config, slug)} products={products.filter(p => p.is_active).map(productToThemeProduct)} />
+    return <SaajHome brand={configToThemeBrand(effectiveConfig!, slug)} products={products.filter(p => p.is_active).map(productToThemeProduct)} />
   }
   if (config?.theme_id === 'july') {
-    return <ScrollHome brand={configToThemeBrand(config, slug)} products={products.filter(p => p.is_active).map(productToThemeProduct)} />
+    return <ScrollHome brand={configToThemeBrand(effectiveConfig!, slug)} products={products.filter(p => p.is_active).map(productToThemeProduct)} />
   }
   if (config?.theme_id === 'august') {
-    return <DhamakaHome brand={configToThemeBrand(config, slug)} products={products.filter(p => p.is_active).map(productToThemeProduct)} />
+    return <DhamakaHome brand={configToThemeBrand(effectiveConfig!, slug)} products={products.filter(p => p.is_active).map(productToThemeProduct)} />
   }
   if (config?.theme_id === 'september') {
-    return <AaramHome brand={configToThemeBrand(config, slug)} products={products.filter(p => p.is_active).map(productToThemeProduct)} />
+    return <AaramHome brand={configToThemeBrand(effectiveConfig!, slug)} products={products.filter(p => p.is_active).map(productToThemeProduct)} />
   }
   if (config?.theme_id === 'october') {
-    return <UtsavHome brand={configToThemeBrand(config, slug)} products={products.filter(p => p.is_active).map(productToThemeProduct)} />
+    return <UtsavHome brand={configToThemeBrand(effectiveConfig!, slug)} products={products.filter(p => p.is_active).map(productToThemeProduct)} />
   }
   if (config?.theme_id === 'november') {
-    return <GalliHome brand={configToThemeBrand(config, slug)} products={products.filter(p => p.is_active).map(productToThemeProduct)} />
+    return <GalliHome brand={configToThemeBrand(effectiveConfig!, slug)} products={products.filter(p => p.is_active).map(productToThemeProduct)} />
   }
   if (config?.theme_id === 'december') {
-    return <KirayaHome brand={configToThemeBrand(config, slug)} products={products.filter(p => p.is_active).map(productToThemeProduct)} />
+    return <KirayaHome brand={configToThemeBrand(effectiveConfig!, slug)} products={products.filter(p => p.is_active).map(productToThemeProduct)} />
   }
   if (config?.theme_id === 'reelrack') {
-    return <ReelRackHome brand={configToThemeBrand(config, slug)} products={products.filter(p => p.is_active).map(productToThemeProduct)} />
+    return <ReelRackHome brand={configToThemeBrand(effectiveConfig!, slug)} products={products.filter(p => p.is_active).map(productToThemeProduct)} />
   }
   if (config?.theme_id === 'thegrid') {
-    return <TheGridHome brand={configToThemeBrand(config, slug)} products={products.filter(p => p.is_active).map(productToThemeProduct)} />
+    return <TheGridHome brand={configToThemeBrand(effectiveConfig!, slug)} products={products.filter(p => p.is_active).map(productToThemeProduct)} />
   }
   if (config?.theme_id === 'tryiton') {
-    return <TryItOnHome brand={configToThemeBrand(config, slug)} products={products.filter(p => p.is_active).map(productToThemeProduct)} />
+    return <TryItOnHome brand={configToThemeBrand(effectiveConfig!, slug)} products={products.filter(p => p.is_active).map(productToThemeProduct)} />
   }
 
   const chatBubble = config?.whatsapp_number ? (
-    <WhatsAppBubble phone={config.whatsapp_number} message={`Hi! I have a question about ${config?.brand_name || 'your store'}.`} />
+    <WhatsAppBubble phone={config.whatsapp_number} message={`Hi! I have a question about ${previewName ?? config?.brand_name ?? 'your store'}.`} />
   ) : null
 
   // Feed themes are a fundamentally different browsing paradigm — full-bleed
@@ -382,7 +404,7 @@ function StorePageContent() {
             </>
           )}
           <p className="relative text-xs uppercase tracking-[0.22em] opacity-60 mb-3">New this season</p>
-          <h1 className={`relative text-5xl md:text-8xl ${HEADING_CLASS[theme.headingStyle]}`} style={{ maxWidth: 900 }}>{config?.brand_name ?? 'The Collection'}</h1>
+          <h1 className={`relative text-5xl md:text-8xl ${HEADING_CLASS[theme.headingStyle]}`} style={{ maxWidth: 900 }}>{previewName ?? config?.brand_name ?? 'The Collection'}</h1>
           <a href="#products" className="relative inline-block mt-6 px-6 py-2.5 text-sm font-semibold" style={{ background: theme.palette.accent, color: '#fff', textDecoration: 'none' }}>Shop now</a>
           {theme.headingStyle === 'luxury' && <div className="relative mt-6 w-16 h-px" style={{ background: theme.palette.accent }} />}
         </div>
@@ -397,7 +419,7 @@ function StorePageContent() {
           <div className={`absolute inset-0 bg-gradient-to-t ${isDark ? 'from-black/85 via-black/30' : 'from-black/55 via-black/10'} to-transparent`} />
           <div className="absolute bottom-8 left-6 md:left-10 text-white">
             <p className="text-xs uppercase tracking-[0.22em] opacity-85 mb-2">New this season</p>
-            <h1 className={`text-4xl md:text-6xl ${HEADING_CLASS[theme.headingStyle]}`}>{config?.brand_name ?? 'The Collection'}</h1>
+            <h1 className={`text-4xl md:text-6xl ${HEADING_CLASS[theme.headingStyle]}`}>{previewName ?? config?.brand_name ?? 'The Collection'}</h1>
             {theme.headingStyle === 'luxury' && <div className="mt-4 w-14 h-px" style={{ background: theme.palette.accent }} />}
             <a href="#products" className="inline-block mt-4 px-5 py-2 text-sm font-semibold" style={{ background: theme.palette.accent, color: '#fff', textDecoration: 'none' }}>Shop now</a>
           </div>

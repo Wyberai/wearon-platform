@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { createBrowserClient } from '@supabase/ssr'
 
@@ -20,6 +20,18 @@ export default function SignupPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [done, setDone] = useState(false)
+
+  // Prefill from a live-preview handoff (StorePreviewCapture -> PreviewBanner
+  // -> here), so a visitor who already gave us their email/derived brand name
+  // never has to retype either — same silent-carry pattern the theme param
+  // already used before this.
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const prefilledEmail = params.get('email')
+    const prefilledBrand = params.get('brand')
+    if (prefilledEmail) setEmail(prefilledEmail)
+    if (prefilledBrand) setBrandName(prefilledBrand)
+  }, [])
 
   async function handleSignup(e: React.FormEvent) {
     e.preventDefault()

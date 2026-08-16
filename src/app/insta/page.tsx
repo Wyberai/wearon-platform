@@ -240,7 +240,7 @@ export default function InstaLandingPage() {
             <p style={{ fontSize: 16, color: 'rgba(255,255,255,0.65)', lineHeight: 1.7, marginBottom: 40 }}>
               Type your boutique name and email — see a live preview of your store and dashboard, with real analytics and an AI-automated inbox already running. No signup required to look.
             </p>
-            <StorePreviewCapture />
+            <StorePreviewCapture theme={{ name: INSTA_THEMES[0].name, slug: INSTA_THEMES[0].id }} />
           </div>
         </section>
 
@@ -354,6 +354,9 @@ export default function InstaLandingPage() {
               <Link href="/themes" style={{ fontSize: 13, color: `${INK}77`, textDecoration: 'none' }}>All themes</Link>
             </div>
           </div>
+          <p style={{ maxWidth: 1240, margin: '16px auto 0', fontSize: 11, color: `${INK}44`, textAlign: 'center' }}>
+            © 2026 Signalpulse Technologies. WearOn is a product of Signalpulse Technologies.
+          </p>
         </footer>
 
       </div>

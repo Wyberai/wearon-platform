@@ -2,24 +2,55 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { THEMES } from '@/lib/themes'
+import { FLAGSHIP_DEMO_SLUG } from '@/lib/themes'
 
-// The landing page's primary conversion action — captures a lead (email +
-// brand name + theme pick) then sends them into a personalized, no-login
-// preview of their own store using the seeded demo dataset with their name
-// swapped in and their chosen theme applied.
-export function StorePreviewCapture() {
+const ACCENT = '#A6134A'
+const INK = '#111010'
+
+// THEME_TILES pass their demo store's slug (e.g. 'august'), but the real
+// theme_id a signup needs to apply is the registry id (e.g. 'january' —
+// FLAGSHIP_DEMO_SLUG maps id -> slug, so this reverses it). Every demo slug
+// is unique across the map, so this always resolves.
+function demoSlugToThemeId(slug: string): string {
+  return Object.entries(FLAGSHIP_DEMO_SLUG).find(([, s]) => s === slug)?.[0] ?? slug
+}
+
+// Turns an email's local-part into a plausible boutique name, e.g.
+// "priya.designs21@gmail.com" -> "Priya Designs21". Purely cosmetic —
+// the seller can rename their store for real during signup.
+function deriveBrandName(email: string): string {
+  const local = email.split('@')[0] ?? ''
+  const words = local.replace(/[^a-zA-Z0-9]+/g, ' ').trim().split(/\s+/).filter(Boolean)
+  if (!words.length) return 'My Boutique'
+  return words.slice(0, 3).map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ')
+}
+
+export interface PreviewTheme {
+  name: string
+  slug: string
+}
+
+// The landing page's primary conversion action — captures an email against
+// whichever theme the visitor picked in the tile grid above, derives a
+// boutique name from it, records the lead, then sends them into a
+// personalized, no-login preview of their own store: that theme's real
+// flagship demo (already fully seeded), with their derived name swapped
+// into the header via ?preview_name= (see src/app/store/[slug]/page.tsx).
+export function StorePreviewCapture({ theme }: { theme: PreviewTheme }) {
   const [email, setEmail] = useState('')
-  const [brandName, setBrandName] = useState('')
-  const [themeId, setThemeId] = useState(THEMES[0].id)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const router = useRouter()
+
+  const previewName = email.includes('@') && email.split('@')[0]?.trim() ? deriveBrandName(email) : null
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setLoading(true)
     setError(null)
+
+    const brandName = deriveBrandName(email)
+    const themeId = demoSlugToThemeId(theme.slug)
 
     const res = await fetch('/api/leads', {
       method: 'POST',
@@ -35,58 +66,20 @@ export function StorePreviewCapture() {
     }
 
     const params = new URLSearchParams({ preview_name: brandName, preview_email: email, theme: themeId })
-    router.push(`/store/priyas-boutique?${params.toString()}`)
+    router.push(`/store/${theme.slug}?${params.toString()}`)
   }
 
   return (
     <form
       onSubmit={handleSubmit}
       style={{
-        display: 'flex', flexDirection: 'column', gap: 14, maxWidth: 560, margin: '0 auto',
-        background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)',
-        borderRadius: 20, padding: '28px 28px',
+        display: 'flex', flexDirection: 'column', gap: 12, maxWidth: 480, margin: '0 auto',
+        background: '#f8f8f6', border: `1px solid ${INK}12`, borderRadius: 20, padding: '26px 28px',
       }}
     >
-      <div>
-        <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.45)', marginBottom: 10, textAlign: 'left' }}>Pick a look — you can change it later</p>
-        <div style={{ display: 'flex', gap: 10, overflowX: 'auto', paddingBottom: 4 }}>
-          {THEMES.map(t => {
-            const active = t.id === themeId
-            return (
-              <button
-                key={t.id}
-                type="button"
-                onClick={() => setThemeId(t.id)}
-                title={t.blurb}
-                style={{
-                  flexShrink: 0, width: 76, textAlign: 'left', border: 'none', background: 'none', cursor: 'pointer', padding: 0,
-                }}
-              >
-                <div style={{
-                  width: 76, height: 92, borderRadius: 10, overflow: 'hidden', position: 'relative',
-                  outline: active ? '2px solid #A6134A' : '1px solid rgba(255,255,255,0.15)', outlineOffset: 2,
-                }}>
-                  <img src={t.previewImage} alt={t.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                  <div style={{ position: 'absolute', inset: 0, background: t.palette.bg, opacity: 0.16 }} />
-                </div>
-                <p style={{ fontSize: 11, color: active ? '#fff' : 'rgba(255,255,255,0.55)', marginTop: 5, fontWeight: active ? 700 : 500 }}>{t.name}</p>
-              </button>
-            )
-          })}
-        </div>
-      </div>
-
-      <input
-        type="text"
-        required
-        value={brandName}
-        onChange={e => setBrandName(e.target.value)}
-        placeholder="Your boutique name (e.g. Priya's Boutique)"
-        style={{
-          padding: '13px 16px', borderRadius: 12, border: '1px solid rgba(255,255,255,0.15)',
-          background: 'rgba(255,255,255,0.06)', color: '#fff', fontSize: 14, outline: 'none',
-        }}
-      />
+      <p style={{ fontSize: 12, color: `${INK}77`, margin: 0 }}>
+        Chosen look — <strong style={{ color: INK }}>{theme.name}</strong>
+      </p>
       <input
         type="email"
         required
@@ -94,22 +87,27 @@ export function StorePreviewCapture() {
         onChange={e => setEmail(e.target.value)}
         placeholder="Your email"
         style={{
-          padding: '13px 16px', borderRadius: 12, border: '1px solid rgba(255,255,255,0.15)',
-          background: 'rgba(255,255,255,0.06)', color: '#fff', fontSize: 14, outline: 'none',
+          padding: '13px 16px', borderRadius: 12, border: `1px solid ${INK}22`,
+          background: '#fff', color: INK, fontSize: 14, outline: 'none',
         }}
       />
-      {error && <p style={{ color: '#F87171', fontSize: 13, margin: 0 }}>{error}</p>}
+      {previewName && (
+        <p style={{ fontSize: 12, color: `${INK}66`, margin: 0 }}>
+          We&apos;ll preview your store as <strong style={{ color: INK }}>{previewName}</strong>
+        </p>
+      )}
+      {error && <p style={{ color: '#B91C1C', fontSize: 13, margin: 0 }}>{error}</p>}
       <button
         type="submit"
         disabled={loading}
         style={{
-          padding: '14px 0', borderRadius: 12, background: '#A6134A', color: '#fff',
+          padding: '14px 0', borderRadius: 12, background: ACCENT, color: '#fff',
           fontWeight: 700, fontSize: 15, border: 'none', cursor: 'pointer', opacity: loading ? 0.6 : 1,
         }}
       >
-        {loading ? 'Loading your preview...' : 'See how my store would look →'}
+        {loading ? 'Loading your preview...' : `See ${theme.name} as my store →`}
       </button>
-      <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.35)', textAlign: 'center', margin: 0 }}>
+      <p style={{ fontSize: 12, color: `${INK}55`, textAlign: 'center', margin: 0 }}>
         No password, no signup — just a live preview.
       </p>
     </form>

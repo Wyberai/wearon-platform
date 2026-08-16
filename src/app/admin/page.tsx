@@ -3,6 +3,7 @@ import { createClient, createAdminClient } from '@/lib/supabase/server'
 import { sendEmail } from '@/lib/email/resend'
 import { welcomeEmail } from '@/lib/email/templates/welcome'
 import { PLAN_AI_CREDIT_LIMITS, PLAN_AI_REPLY_LIMITS, PLAN_TRY_ON_LIMITS } from '@/lib/constants'
+import { THEMES } from '@/lib/themes'
 
 export default async function AdminIndexPage() {
   const supabase = await createClient()
@@ -19,11 +20,14 @@ export default async function AdminIndexPage() {
   const brandName = user.user_metadata?.brand_name ?? 'My Store'
   const rawSlug = (user.user_metadata?.slug ?? brandName.toLowerCase().replace(/[^a-z0-9]/g, '')).slice(0, 20) || 'mystore'
 
-  // Carried from a theme-card link on a segment landing page (e.g. /insta) —
-  // validated against an allow-list since it arrives as unsigned user_metadata.
-  const INSTA_THEME_IDS = ['reelrack', 'thegrid', 'tryiton']
+  // Carried from a theme-card link on a segment landing page (e.g. /insta)
+  // or the homepage's theme-picker → live-preview → signup flow — validated
+  // against the full real theme registry since it arrives as unsigned
+  // user_metadata (was previously only the 3 Insta ids; the homepage picker
+  // now lets visitors pick any of all twelve flagships too).
+  const VALID_THEME_IDS = THEMES.map(t => t.id)
   const requestedThemeId = user.user_metadata?.theme_id as string | undefined
-  const validThemeId = requestedThemeId && INSTA_THEME_IDS.includes(requestedThemeId) ? requestedThemeId : null
+  const validThemeId = requestedThemeId && VALID_THEME_IDS.includes(requestedThemeId) ? requestedThemeId : null
 
   // Ensure slug uniqueness
   let slug = rawSlug
