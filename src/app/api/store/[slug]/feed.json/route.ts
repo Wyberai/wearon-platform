@@ -6,7 +6,7 @@ import { logAgentEndpointHit } from '@/lib/agent-tracking'
 
 export const dynamic = 'force-dynamic'
 
-const BASE_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'https://wearon.wyberai.com'
+const BASE_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'https://instastarz.in'
 
 export async function GET(
   req: NextRequest,

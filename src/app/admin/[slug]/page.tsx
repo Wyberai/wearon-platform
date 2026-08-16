@@ -84,7 +84,7 @@ export default async function AdminDashboard({ params }: { params: Promise<{ slu
                   </Link>
                 )}
                 {i === 2 && (
-                  <code className="text-xs font-mono" style={{ color: `${INK}55` }}>wearon.wyberai.com/store/{slug}</code>
+                  <code className="text-xs font-mono" style={{ color: `${INK}55` }}>instastarz.in/store/{slug}</code>
                 )}
               </div>
             ))}
@@ -155,7 +155,7 @@ export default async function AdminDashboard({ params }: { params: Promise<{ slu
         <div className="rounded-[20px] p-5 flex items-center justify-between gap-3 bg-white" style={{ boxShadow: '0 8px 20px -16px rgba(23,21,18,0.12)' }}>
           <div className="min-w-0">
             <span className="text-xs" style={{ color: `${INK}77` }}>Your store link</span>
-            <code className="block text-sm font-mono mt-1 truncate" style={{ color: INK }}>wearon.wyberai.com/store/{slug}</code>
+            <code className="block text-sm font-mono mt-1 truncate" style={{ color: INK }}>instastarz.in/store/{slug}</code>
           </div>
           <img
             src={`https://api.qrserver.com/v1/create-qr-code/?size=64x64&data=https://wearon.wyberai.com/store/${slug}`}

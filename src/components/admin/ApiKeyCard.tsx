@@ -182,7 +182,7 @@ export function ApiKeyCard() {
               {copied ? 'Copied!' : 'Copy Code'}
             </button>
             <a
-              href={`https://wa.me/?text=Join%20WearOn%20and%20get%20200%20free%20try-ons%3A%20wearon.wyberai.com%2Fsignup%3Fref%3D${referralCode}`}
+              href={`https://wa.me/?text=Join%20WearOn%20and%20get%20200%20free%20try-ons%3A%20instastarz.in%2Fsignup%3Fref%3D${referralCode}`}
               target="_blank"
               rel="noopener noreferrer"
               style={{ background: '#16a34a', color: '#fff', borderRadius: 6, padding: '8px 16px', textDecoration: 'none', fontSize: 13 }}

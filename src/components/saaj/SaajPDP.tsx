@@ -41,7 +41,7 @@ export function SaajPDP({ brand, product, related = [] }: { brand: ThemeBrand; p
       colors: product.colors,
       tags: product.tags,
     },
-    { brandName: brand.name, currency: brand.currency, baseUrl: process.env.NEXT_PUBLIC_APP_URL ?? 'https://wearon.in', storeSlug: slug }
+    { brandName: brand.name, currency: brand.currency, baseUrl: process.env.NEXT_PUBLIC_APP_URL ?? 'https://instastarz.in', storeSlug: slug }
   )
 
   return (

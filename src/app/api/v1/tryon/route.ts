@@ -81,6 +81,6 @@ export async function POST(req: NextRequest) {
     eta_seconds: 18,
     result_url: null,
     webhook_url: webhookUrl ?? null,
-    poll_url: `https://api.wearon.in/api/v1/status?job_id=${jobId}`,
+    poll_url: `${process.env.NEXT_PUBLIC_APP_URL ?? 'https://instastarz.in'}/api/v1/status?job_id=${jobId}`,
   }, { status: 202 })
 }

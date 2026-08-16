@@ -96,7 +96,7 @@ export async function POST(request: Request) {
           const tpl = welcomeEmail({
             brandName: config.brand_name,
             sellerName: profile.email,
-            storeUrl: `https://wearon.wyberai.com/store/${config.slug}`,
+            storeUrl: `${process.env.NEXT_PUBLIC_APP_URL ?? 'https://instastarz.in'}/store/${config.slug}`,
           })
           await sendEmail({ to: profile.email, subject: tpl.subject, html: tpl.html })
         }

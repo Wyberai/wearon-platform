@@ -7,7 +7,7 @@ export async function GET(req: Request) {
   const state = url.searchParams.get('state')
   const error = url.searchParams.get('error')
 
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://wearon.in'
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://instastarz.in'
 
   if (error || !code || !state) {
     return NextResponse.redirect(`${appUrl}/admin?ig_error=cancelled`)

@@ -71,7 +71,7 @@ export default async function AdminIndexPage() {
   }
 
   // Fire-and-forget welcome email
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://wearon.in'
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://instastarz.in'
   const sellerName = (user.user_metadata?.full_name ?? user.email ?? 'there').split(' ')[0]
   sendEmail({
     to: user.email!,

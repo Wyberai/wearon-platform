@@ -31,7 +31,7 @@ export function tryOnNotificationEmail({
     <p style="font-size:15px;color:#a1a1aa;margin:0 0 24px;line-height:1.6;">
       Try-ons drive 3× more WhatsApp orders. Keep adding products to give more customers this experience.
     </p>
-    <a href="https://wearon.wyberai.com/admin" style="display:inline-block;background:#F72585;color:#fff;padding:14px 28px;border-radius:8px;text-decoration:none;font-weight:600;font-size:15px;">
+    <a href="https://instastarz.in/admin" style="display:inline-block;background:#F72585;color:#fff;padding:14px 28px;border-radius:8px;text-decoration:none;font-weight:600;font-size:15px;">
       View Your Analytics →
     </a>
     <hr style="border:none;border-top:1px solid #27272a;margin:40px 0;">

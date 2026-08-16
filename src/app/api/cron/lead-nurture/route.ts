@@ -13,7 +13,7 @@ import { getTheme } from '@/lib/themes'
 // actually exists.
 const FROM = 'WearOn <hello@wyberai.com>'
 const STEP_INTERVAL_DAYS = 7
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'https://wearon.wyberai.com'
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'https://instastarz.in'
 
 // GET /api/cron/lead-nurture — Vercel Cron hits this daily. Advances each
 // lead through the 4-week sequence one step at a time, skipping anyone who

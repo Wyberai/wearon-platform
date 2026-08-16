@@ -6,7 +6,7 @@ export async function GET(req: NextRequest) {
   const path = req.nextUrl.searchParams.get('path') ?? '/'
 
   if (!domain) {
-    return NextResponse.redirect(new URL('https://wearon.in'))
+    return NextResponse.redirect(new URL(process.env.NEXT_PUBLIC_APP_URL ?? 'https://instastarz.in'))
   }
 
   const admin = createAdminClient()
@@ -19,7 +19,7 @@ export async function GET(req: NextRequest) {
     .single()
 
   if (!record) {
-    return NextResponse.redirect(new URL('https://wearon.in'))
+    return NextResponse.redirect(new URL(process.env.NEXT_PUBLIC_APP_URL ?? 'https://instastarz.in'))
   }
 
   const { data: config } = await admin
@@ -29,9 +29,9 @@ export async function GET(req: NextRequest) {
     .single()
 
   if (!config) {
-    return NextResponse.redirect(new URL('https://wearon.in'))
+    return NextResponse.redirect(new URL(process.env.NEXT_PUBLIC_APP_URL ?? 'https://instastarz.in'))
   }
 
   const redirectPath = `/store/${config.slug}${path === '/' ? '' : path}`
-  return NextResponse.redirect(new URL(redirectPath, 'https://wearon.in'))
+  return NextResponse.redirect(new URL(redirectPath, process.env.NEXT_PUBLIC_APP_URL ?? 'https://instastarz.in'))
 }

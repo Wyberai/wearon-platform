@@ -1,13 +1,11 @@
 import { type NextRequest, NextResponse } from 'next/server'
 import { updateSession } from '@/lib/supabase/middleware'
 
-// wearon.wyberai.com is a temporary demo host (see SETUP-CHECKLIST.md) —
-// remove once the real production domain is live.
-const PLATFORM_HOSTS = ['wearon.in', 'www.wearon.in', 'localhost', 'wearon.wyberai.com']
+const PLATFORM_HOSTS = ['instastarz.in', 'www.instastarz.in', 'localhost', 'wearon.wyberai.com']
 
 export async function middleware(request: NextRequest) {
   const hostname = (request.headers.get('host') ?? '').split(':')[0]
-  const isCustomDomain = !PLATFORM_HOSTS.some(h => hostname === h || hostname.endsWith('.wearon.in'))
+  const isCustomDomain = !PLATFORM_HOSTS.some(h => hostname === h || hostname.endsWith('.instastarz.in'))
 
   if (isCustomDomain) {
     const url = request.nextUrl.clone()

@@ -12,7 +12,7 @@ export async function GET(req: Request) {
   const slug = url.searchParams.get('slug')
   if (!slug) return NextResponse.json({ error: 'Missing slug' }, { status: 400 })
 
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://wearon.in'
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://instastarz.in'
   const callbackUrl = `${appUrl}/api/admin/instagram/callback`
 
   const metaOAuthUrl = new URL('https://www.facebook.com/v18.0/dialog/oauth')

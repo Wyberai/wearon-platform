@@ -27,7 +27,7 @@ export function TryItOnPDP({ brand, product, related = [] }: { brand: ThemeBrand
 
   const jsonLd = productToJsonLd(
     { id: product.id, name: product.name, description: product.description, category: product.category, price_inr: product.price, original_price_inr: product.originalPrice ?? null, garment_image_url: product.image, slug: product.slug, sizes: product.sizes, colors: product.colors, tags: product.tags },
-    { brandName: brand.name, currency: brand.currency, baseUrl: process.env.NEXT_PUBLIC_APP_URL ?? 'https://wearon.in', storeSlug: slug }
+    { brandName: brand.name, currency: brand.currency, baseUrl: process.env.NEXT_PUBLIC_APP_URL ?? 'https://instastarz.in', storeSlug: slug }
   )
 
   return (

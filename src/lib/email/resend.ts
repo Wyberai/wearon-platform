@@ -25,7 +25,7 @@ export async function sendEmail({
     // regardless of whether it ever calls sendEmail.
     const resend = new Resend(process.env.RESEND_API_KEY);
     await resend.emails.send({
-      from: from ?? process.env.EMAIL_FROM ?? 'WearOn <hello@wearon.in>',
+      from: from ?? process.env.EMAIL_FROM ?? 'WearOn <hello@instastarz.in>',
       to,
       subject,
       html,

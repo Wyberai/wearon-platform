@@ -84,7 +84,7 @@ export function welcomeEmail({
                 You're receiving this because you created a store on WearOn.
               </p>
               <p style="margin:0;font-size:12px;color:${INK}77;font-family:Arial,sans-serif;">
-                <a href="https://wearon.wyberai.com" style="color:${INK}99;text-decoration:none;">wearon.wyberai.com</a>
+                <a href="https://instastarz.in" style="color:${INK}99;text-decoration:none;">instastarz.in</a>
               </p>
             </td>
           </tr>

@@ -127,7 +127,7 @@ export function orderEmail({
               <table width="100%" cellpadding="0" cellspacing="0">
                 <tr>
                   <td style="padding-right:8px;">
-                    <a href="https://wearon.wyberai.com/admin/orders/${orderId}" target="_blank"
+                    <a href="https://instastarz.in/admin/orders/${orderId}" target="_blank"
                       style="display:block;padding:14px 0;font-size:14px;font-weight:700;color:#FFFFFF;text-decoration:none;text-align:center;background:#F72585;border-radius:10px;">
                       View order →
                     </a>
@@ -156,7 +156,7 @@ export function orderEmail({
               <p style="margin:0;font-size:13px;color:#52525B;">
                 <a href="#" style="color:#F72585;text-decoration:none;">Unsubscribe</a>
                 &nbsp;·&nbsp;
-                <a href="https://wearon.wyberai.com" style="color:#71717A;text-decoration:none;">wearon.wyberai.com</a>
+                <a href="https://instastarz.in" style="color:#71717A;text-decoration:none;">instastarz.in</a>
               </p>
             </td>
           </tr>

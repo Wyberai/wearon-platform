@@ -87,7 +87,7 @@ export default function SignupPage() {
             />
             {brandName.length >= 3 && (
               <p className="text-xs text-gray-400 mt-1">
-                Your store: wearon.wyberai.com/store/{brandName.toLowerCase().replace(/[^a-z0-9]/g, '').slice(0, 20)}
+                Your store: instastarz.in/store/{brandName.toLowerCase().replace(/[^a-z0-9]/g, '').slice(0, 20)}
               </p>
             )}
           </div>
