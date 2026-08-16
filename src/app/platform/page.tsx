@@ -4,6 +4,12 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { PLAN_AI_CREDIT_LIMITS, PLAN_AI_REPLY_LIMITS, PLANS } from '@/lib/constants'
 
+interface FunnelData {
+  funnel: { previews_30d: number; signups_total: number; paying_total: number; revenue_30d_inr: number }
+  themePopularity: { id: string; name: string; previews_30d: number; adoptions_total: number }[]
+  outbound: { total: number; with_contact: number; by_status: Record<string, number>; by_language: Record<string, number> }
+}
+
 interface Seller {
   id: string
   email: string
@@ -71,12 +77,17 @@ export default function PlatformPage() {
   const [search, setSearch] = useState('')
   const [planFilter, setPlanFilter] = useState('all')
   const [updating, setUpdating] = useState<string | null>(null)
+  const [funnelData, setFunnelData] = useState<FunnelData | null>(null)
 
   useEffect(() => {
     fetch('/api/platform/sellers')
       .then(r => r.json())
       .then(d => { setSellers(d.sellers ?? []); setStats(d.stats ?? null); setLoading(false) })
       .catch(() => setLoading(false))
+    fetch('/api/platform/funnel')
+      .then(r => r.json())
+      .then(d => setFunnelData(d))
+      .catch(() => {})
   }, [])
 
   async function updatePlan(sellerId: string, plan: string) {
@@ -120,6 +131,76 @@ export default function PlatformPage() {
 
   return (
     <div style={{ padding: '32px 24px', maxWidth: 1400, margin: '0 auto' }}>
+      {/* FUNNEL — real numbers only: leads (preview requests), tenant_config
+          (actual signups), profiles.plan (paying), orders (revenue). No
+          fabricated conversion-rate claims — see the homepage rebuild
+          decision earlier this session for why that matters here too. */}
+      {funnelData && (
+        <div style={{ marginBottom: 32 }}>
+          <div style={{ fontSize: 11, fontWeight: 700, color: 'rgba(255,255,255,0.35)', letterSpacing: '0.05em', textTransform: 'uppercase', marginBottom: 10 }}>
+            Funnel
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+            {[
+              { label: 'Previews (30d)', value: funnelData.funnel.previews_30d },
+              { label: 'Signups (total)', value: funnelData.funnel.signups_total },
+              { label: 'Paying (total)', value: funnelData.funnel.paying_total },
+              { label: 'Revenue (30d)', value: fmtInr(funnelData.funnel.revenue_30d_inr) },
+            ].map((step, i, arr) => (
+              <div key={step.label} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <div style={{ padding: '14px 20px', borderRadius: 14, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)', minWidth: 130 }}>
+                  <div style={{ fontSize: 20, fontWeight: 800, color: '#fff', letterSpacing: '-0.5px' }}>{step.value}</div>
+                  <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)', marginTop: 4 }}>{step.label}</div>
+                </div>
+                {i < arr.length - 1 && <span style={{ color: 'rgba(255,255,255,0.2)', fontSize: 18 }}>→</span>}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* THEME POPULARITY + OUTBOUND CRM SNAPSHOT — side by side */}
+      {funnelData && (
+        <div style={{ display: 'grid', gridTemplateColumns: '1.3fr 1fr', gap: 16, marginBottom: 32 }}>
+          <div style={{ padding: '18px 20px', borderRadius: 14, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)' }}>
+            <div style={{ fontSize: 11, fontWeight: 700, color: 'rgba(255,255,255,0.35)', letterSpacing: '0.05em', textTransform: 'uppercase', marginBottom: 12 }}>
+              Theme popularity — previews (30d) vs actual signups
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+              {funnelData.themePopularity.slice(0, 6).map(t => (
+                <div key={t.id} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <span style={{ fontSize: 12, fontWeight: 700, color: '#fff', width: 90, flexShrink: 0 }}>{t.name}</span>
+                  <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)' }}>{t.previews_30d} previews</span>
+                  <span style={{ fontSize: 11, color: '#4ADE80' }}>{t.adoptions_total} live stores</span>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div style={{ padding: '18px 20px', borderRadius: 14, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+              <div style={{ fontSize: 11, fontWeight: 700, color: 'rgba(255,255,255,0.35)', letterSpacing: '0.05em', textTransform: 'uppercase' }}>
+                Outbound CRM
+              </div>
+              <Link href="/platform/outbound" style={{ fontSize: 11, color: '#F72585', textDecoration: 'none', fontWeight: 700 }}>Open →</Link>
+            </div>
+            <div style={{ display: 'flex', gap: 20 }}>
+              <div>
+                <div style={{ fontSize: 20, fontWeight: 800, color: '#fff' }}>{funnelData.outbound.total}</div>
+                <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)' }}>prospects</div>
+              </div>
+              <div>
+                <div style={{ fontSize: 20, fontWeight: 800, color: '#4ADE80' }}>{funnelData.outbound.with_contact}</div>
+                <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)' }}>with contact</div>
+              </div>
+              <div>
+                <div style={{ fontSize: 20, fontWeight: 800, color: '#3B82F6' }}>{funnelData.outbound.by_status.sent ?? 0}</div>
+                <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)' }}>sent</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Stats row */}
       {stats && (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 12, marginBottom: 32 }}>

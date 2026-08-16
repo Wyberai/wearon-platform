@@ -329,7 +329,10 @@ function ShellInner({ children, brand }: { children: ReactNode; brand: ThemeBran
 export function KirayaShell({ children, brand }: { children: ReactNode; brand: ThemeBrand }) {
   // Dashboard/Mobile-app preview tabs (PreviewBanner, ?view=) need the raw
   // storefront content only — skip this theme's own nav/footer chrome.
-  const previewView = useSearchParams().get('view')
+  const searchParams = useSearchParams()
+  const previewView = searchParams.get('view')
+  const previewName = searchParams.get('preview_name')
+  const effectiveBrand = previewName ? { ...brand, name: previewName } : brand
   if (previewView === 'dashboard' || previewView === 'app') return <>{children}</>
 
   return (
@@ -339,7 +342,7 @@ export function KirayaShell({ children, brand }: { children: ReactNode; brand: T
       <style dangerouslySetInnerHTML={{ __html: KIRAYA_STYLES }} />
       <FlagshipCartProvider storageKey="kiraya_cart_v1">
         <RentalsProvider>
-          <ShellInner brand={brand}>{children}</ShellInner>
+          <ShellInner brand={effectiveBrand}>{children}</ShellInner>
         </RentalsProvider>
       </FlagshipCartProvider>
     </>

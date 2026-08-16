@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { createBrowserClient } from '@supabase/ssr'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? ''
@@ -14,12 +15,12 @@ const supabase = createBrowserClient(
 )
 
 export default function SignupPage() {
+  const router = useRouter()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [brandName, setBrandName] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [done, setDone] = useState(false)
 
   // Prefill from a live-preview handoff (StorePreviewCapture -> PreviewBanner
   // -> here), so a visitor who already gave us their email/derived brand name
@@ -49,32 +50,31 @@ export default function SignupPage() {
     // (e.g. /insta?theme=reelrack) — not a visible form field, same as slug.
     const theme = typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('theme') : null
 
-    const { error: authError } = await supabase.auth.signUp({
-      email,
-      password,
-      options: { data: { brand_name: brandName, slug, ...(theme ? { theme_id: theme } : {}) } },
+    // Creates the user pre-confirmed via the admin API instead of calling
+    // supabase.auth.signUp() directly — see the comment in
+    // api/auth/signup/route.ts for why (mandatory email confirmation was
+    // real, measured friction, not just a nice-to-have).
+    const res = await fetch('/api/auth/signup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password, brandName, slug, themeId: theme }),
     })
+    const body = await res.json()
 
-    if (authError) {
-      setError(authError.message)
+    if (!res.ok) {
+      setError(body.error ?? 'Something went wrong. Please try again.')
       setLoading(false)
       return
     }
 
-    setDone(true)
-    setLoading(false)
-  }
+    const { error: signInError } = await supabase.auth.signInWithPassword({ email, password })
+    if (signInError) {
+      setError(signInError.message)
+      setLoading(false)
+      return
+    }
 
-  if (done) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="bg-white rounded-2xl p-8 shadow-sm max-w-md w-full text-center">
-          <div className="text-5xl mb-4">✉️</div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-3">Check your inbox</h2>
-          <p className="text-gray-500">We sent a confirmation link to <strong>{email}</strong>. Click it to activate your store.</p>
-        </div>
-      </div>
-    )
+    router.push('/admin')
   }
 
   return (

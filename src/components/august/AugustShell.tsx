@@ -38,13 +38,16 @@ function ShellInner({ children, brand }: { children: ReactNode; brand: ThemeBran
 export function AugustShell({ children, brand }: { children: ReactNode; brand: ThemeBrand }) {
   // Dashboard/Mobile-app preview tabs (PreviewBanner, ?view=) need the raw
   // storefront content only — skip this theme's own nav/footer chrome.
-  const previewView = useSearchParams().get('view')
+  const searchParams = useSearchParams()
+  const previewView = searchParams.get('view')
+  const previewName = searchParams.get('preview_name')
+  const effectiveBrand = previewName ? { ...brand, name: previewName } : brand
   if (previewView === 'dashboard' || previewView === 'app') return <>{children}</>
 
   return (
     <FlagshipModeProvider storageKey="august_mode_v1">
       <FlagshipCartProvider storageKey="august_cart_v2">
-        <ShellInner brand={brand}>{children}</ShellInner>
+        <ShellInner brand={effectiveBrand}>{children}</ShellInner>
       </FlagshipCartProvider>
     </FlagshipModeProvider>
   )

@@ -52,7 +52,10 @@ function ShellInner({ children, brand }: { children: ReactNode; brand: ThemeBran
 export function EmberShell({ children, brand }: { children: ReactNode; brand: ThemeBrand }) {
   // Dashboard/Mobile-app preview tabs (PreviewBanner, ?view=) need the raw
   // storefront content only — skip this theme's own nav/footer chrome.
-  const previewView = useSearchParams().get('view')
+  const searchParams = useSearchParams()
+  const previewView = searchParams.get('view')
+  const previewName = searchParams.get('preview_name')
+  const effectiveBrand = previewName ? { ...brand, name: previewName } : brand
   if (previewView === 'dashboard' || previewView === 'app') return <>{children}</>
 
   return (
@@ -61,7 +64,7 @@ export function EmberShell({ children, brand }: { children: ReactNode; brand: Th
           layout's Fraunces/Inter, since Ember is the only theme using it. */}
       <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&display=swap" />
       <FlagshipCartProvider storageKey="ember_cart_v1">
-        <ShellInner brand={brand}>{children}</ShellInner>
+        <ShellInner brand={effectiveBrand}>{children}</ShellInner>
       </FlagshipCartProvider>
     </>
   )

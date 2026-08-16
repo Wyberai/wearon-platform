@@ -5,34 +5,36 @@ import { getTheme, HEADING_TYPE, LOGO_RADIUS } from '@/lib/themes'
 import type { TenantConfig } from '@/lib/types'
 import { PreviewBanner } from '@/components/store/PreviewBanner'
 import { AugustShell } from '@/components/august/AugustShell'
+import { AUGUST_BRAND } from '@/lib/august/catalog'
 import { EmberShell } from '@/components/ember/EmberShell'
+import { EMBER_BRAND } from '@/lib/ember/catalog'
 import { BloomShell } from '@/components/bloom/BloomShell'
+import { BLOOM_BRAND } from '@/lib/bloom/catalog'
 import { MelaShell } from '@/components/mela/MelaShell'
+import { MELA_BRAND } from '@/lib/mela/catalog'
 import { TaanaShell } from '@/components/taana/TaanaShell'
+import { TAANA_BRAND } from '@/lib/taana/catalog'
 import { SaajShell } from '@/components/saaj/SaajShell'
+import { SAAJ_BRAND } from '@/lib/saaj/catalog'
 import { ScrollShell } from '@/components/scroll/ScrollShell'
+import { SCROLL_BRAND } from '@/lib/scroll/catalog'
 import { DhamakaShell } from '@/components/dhamaka/DhamakaShell'
+import { DHAMAKA_BRAND } from '@/lib/dhamaka/catalog'
 import { AaramShell } from '@/components/aaram/AaramShell'
+import { AARAM_BRAND } from '@/lib/aaram/catalog'
 import { UtsavShell } from '@/components/utsav/UtsavShell'
+import { UTSAV_BRAND } from '@/lib/utsav/catalog'
 import { GalliShell } from '@/components/galli/GalliShell'
+import { GALLI_BRAND } from '@/lib/galli/catalog'
 import { KirayaShell } from '@/components/kiraya/KirayaShell'
+import { KIRAYA_BRAND } from '@/lib/kiraya/catalog'
 import { ReelRackShell } from '@/components/reelrack/ReelRackShell'
+import { REELRACK_BRAND } from '@/lib/reelrack/catalog'
 import { TheGridShell } from '@/components/thegrid/TheGridShell'
+import { THEGRID_BRAND } from '@/lib/thegrid/catalog'
 import { TryItOnShell } from '@/components/tryiton/TryItOnShell'
+import { TRYITON_BRAND } from '@/lib/tryiton/catalog'
 import { configToThemeBrand } from '@/lib/flagship/adapters'
-
-// These 15 slugs are hardcoded demo/showcase brands rendered client-side by
-// page.tsx's StorePageRouter, which wraps them in their own Shell there
-// instead — the ONLY place that also has access to ?preview_name= (a server
-// layout never receives searchParams). Wrapping the Shell here too, with the
-// static un-overridden BRAND constant, was a real bug: it meant the
-// persistent nav header/logo never reflected preview_name, only inner
-// Home-component copy did. So for these slugs this layout is a pure
-// pass-through — no Shell, no DB lookup.
-const DEMO_SLUGS = [
-  'august', 'ember', 'bloom', 'mela', 'taana', 'saaj', 'scroll', 'dhamaka',
-  'aaram', 'utsav', 'galli', 'kiraya', 'reelrack', 'thegrid', 'tryiton',
-]
 
 // Fetch tenant config server-side and inject CSS variables
 export default async function StoreLayout({
@@ -44,10 +46,57 @@ export default async function StoreLayout({
 }) {
   const { slug } = await params
 
-  // See DEMO_SLUGS comment above — Shell-wrapping for these now happens in
-  // page.tsx's StorePageRouter, which has access to ?preview_name=.
-  if (DEMO_SLUGS.includes(slug)) {
-    return <>{children}</>
+  // Shell wraps EVERY route under a demo slug (Home, Shop, PDP, Checkout,
+  // etc. all rely on it for chrome + FlagshipCartProvider — none of those
+  // pages wrap themselves), so it can't be skipped here even though this is
+  // a server component with no access to ?preview_name=. Each Shell is a
+  // client component that reads preview_name itself via useSearchParams()
+  // and overrides brand.name internally — see e.g. AugustShell.tsx — so the
+  // static *_BRAND constant passed here is just the pre-override default.
+  if (slug === 'august') {
+    return <AugustShell brand={AUGUST_BRAND}>{children}</AugustShell>
+  }
+  if (slug === 'ember') {
+    return <EmberShell brand={EMBER_BRAND}>{children}</EmberShell>
+  }
+  if (slug === 'bloom') {
+    return <BloomShell brand={BLOOM_BRAND}>{children}</BloomShell>
+  }
+  if (slug === 'mela') {
+    return <MelaShell brand={MELA_BRAND}>{children}</MelaShell>
+  }
+  if (slug === 'taana') {
+    return <TaanaShell brand={TAANA_BRAND}>{children}</TaanaShell>
+  }
+  if (slug === 'saaj') {
+    return <SaajShell brand={SAAJ_BRAND}>{children}</SaajShell>
+  }
+  if (slug === 'scroll') {
+    return <ScrollShell brand={SCROLL_BRAND}>{children}</ScrollShell>
+  }
+  if (slug === 'dhamaka') {
+    return <DhamakaShell brand={DHAMAKA_BRAND}>{children}</DhamakaShell>
+  }
+  if (slug === 'aaram') {
+    return <AaramShell brand={AARAM_BRAND}>{children}</AaramShell>
+  }
+  if (slug === 'utsav') {
+    return <UtsavShell brand={UTSAV_BRAND}>{children}</UtsavShell>
+  }
+  if (slug === 'galli') {
+    return <GalliShell brand={GALLI_BRAND}>{children}</GalliShell>
+  }
+  if (slug === 'kiraya') {
+    return <KirayaShell brand={KIRAYA_BRAND}>{children}</KirayaShell>
+  }
+  if (slug === 'reelrack') {
+    return <ReelRackShell brand={REELRACK_BRAND}>{children}</ReelRackShell>
+  }
+  if (slug === 'thegrid') {
+    return <TheGridShell brand={THEGRID_BRAND}>{children}</TheGridShell>
+  }
+  if (slug === 'tryiton') {
+    return <TryItOnShell brand={TRYITON_BRAND}>{children}</TryItOnShell>
   }
 
   const admin = createAdminClient()

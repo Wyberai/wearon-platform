@@ -290,7 +290,10 @@ function ShellInner({ children, brand }: { children: ReactNode; brand: ThemeBran
 export function TaanaShell({ children, brand }: { children: ReactNode; brand: ThemeBrand }) {
   // Dashboard/Mobile-app preview tabs (PreviewBanner, ?view=) need the raw
   // storefront content only — skip this theme's own nav/footer chrome.
-  const previewView = useSearchParams().get('view')
+  const searchParams = useSearchParams()
+  const previewView = searchParams.get('view')
+  const previewName = searchParams.get('preview_name')
+  const effectiveBrand = previewName ? { ...brand, name: previewName } : brand
   if (previewView === 'dashboard' || previewView === 'app') return <>{children}</>
 
   return (
@@ -298,7 +301,7 @@ export function TaanaShell({ children, brand }: { children: ReactNode; brand: Th
       {/* Scoped to this theme only — not loaded globally */}
       <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400;1,9..144,500&family=Jost:wght@400;500;600&display=swap" />
       <FlagshipCartProvider storageKey="taana_cart_v1">
-        <ShellInner brand={brand}>{children}</ShellInner>
+        <ShellInner brand={effectiveBrand}>{children}</ShellInner>
       </FlagshipCartProvider>
     </>
   )
