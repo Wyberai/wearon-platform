@@ -127,18 +127,29 @@ jobs:
           MYAPP_UPLOAD_KEY_PASSWORD=${KEY_PASSWORD}
           EOF
 
-      # ── 12. Build release APK ─────────────────────────────────────────────
+      # ── 12. Build release APK (direct sideload download) + AAB (Play Store) ──
       - name: Assemble release APK
         working-directory: android
         run: ./gradlew assembleRelease --no-daemon
 
-      # ── 13. Locate the APK ────────────────────────────────────────────────
+      - name: Bundle release AAB
+        working-directory: android
+        run: ./gradlew bundleRelease --no-daemon
+
+      # ── 13. Locate the APK/AAB ─────────────────────────────────────────────
       - name: Find APK path
         id: apk
         run: |
           APK_PATH=$(find android -name '*.apk' -path '*/release/*' | head -n 1)
           echo "path=$APK_PATH" >> "$GITHUB_OUTPUT"
           echo "Found APK at: $APK_PATH"
+
+      - name: Find AAB path
+        id: aab
+        run: |
+          AAB_PATH=$(find android -name '*.aab' -path '*/release/*' | head -n 1)
+          echo "path=$AAB_PATH" >> "$GITHUB_OUTPUT"
+          echo "Found AAB at: $AAB_PATH"
 
       # ── 14. Upload APK to Supabase Storage ───────────────────────────────
       - name: Upload APK to Supabase Storage
@@ -165,6 +176,29 @@ jobs:
           APK_PUBLIC_URL="${SUPABASE_URL}/storage/v1/object/public/apk-builds/${OBJECT_PATH}"
           echo "apk_url=$APK_PUBLIC_URL" >> "$GITHUB_OUTPUT"
           echo "APK public URL: $APK_PUBLIC_URL"
+
+      # ── AAB is for Play Store submission only, not public distribution —
+      # stored privately (no public/ path) at a well-known object path so a
+      # separate, manually-triggered publish-play.yml run can fetch it later
+      # without needing to rebuild.
+      - name: Upload AAB to Supabase Storage (private)
+        run: |
+          OBJECT_PATH="${{ env.SELLER_ID }}/app-latest.aab"
+          STORAGE_URL="${SUPABASE_URL}/storage/v1/object/apk-builds/${OBJECT_PATH}"
+
+          HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+            -X POST "$STORAGE_URL" \
+            -H "Authorization: Bearer ${SUPABASE_SERVICE_ROLE_KEY}" \
+            -H "Content-Type: application/octet-stream" \
+            -H "x-upsert: true" \
+            --data-binary "@${{ steps.aab.outputs.path }}")
+
+          if [ "$HTTP_STATUS" -ge 200 ] && [ "$HTTP_STATUS" -lt 300 ]; then
+            echo "AAB upload succeeded (HTTP $HTTP_STATUS)"
+          else
+            echo "AAB upload failed with HTTP $HTTP_STATUS"
+            exit 1
+          fi
 
       # ── 14. Update apk_builds row in Supabase ────────────────────────────
       - name: Update apk_builds — status complete
