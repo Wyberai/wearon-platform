@@ -19,7 +19,7 @@ export async function GET(request: Request) {
 
   const { data: products } = await admin
     .from('products')
-    .select('id, name, description, category, price_inr, original_price_inr, garment_image_url, garment_preprocessed_url, slug, is_active, sizes, colors, tags, created_at')
+    .select('id, name, description, category, price_inr, original_price_inr, garment_image_url, garment_video_url, garment_preprocessed_url, slug, is_active, sizes, colors, tags, created_at')
     .eq('seller_id', tenant.seller_id)
     .eq('is_active', true)
     .order('created_at', { ascending: false })

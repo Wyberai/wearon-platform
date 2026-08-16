@@ -33,10 +33,14 @@ export default function SignupPage() {
       return
     }
 
+    // Carried silently from a theme-card link on a segment landing page
+    // (e.g. /insta?theme=reelrack) — not a visible form field, same as slug.
+    const theme = typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('theme') : null
+
     const { error: authError } = await supabase.auth.signUp({
       email,
       password,
-      options: { data: { brand_name: brandName, slug } },
+      options: { data: { brand_name: brandName, slug, ...(theme ? { theme_id: theme } : {}) } },
     })
 
     if (authError) {

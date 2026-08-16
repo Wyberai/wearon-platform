@@ -2,6 +2,8 @@ import { createClient, createAdminClient } from '@/lib/supabase/server'
 import { NextResponse } from 'next/server'
 import { PLANS } from '@/lib/constants'
 
+const MAX_VIDEO_BYTES = 50 * 1024 * 1024 // 50 MB
+
 // GET /api/admin/products?slug=xxx
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
@@ -12,7 +14,7 @@ export async function GET(request: Request) {
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const admin = createAdminClient()
-  const { data: products } = await admin.from('products').select('id, name, price_inr, cost_price_inr, category, garment_image_url, is_active, created_at')
+  const { data: products } = await admin.from('products').select('id, name, price_inr, cost_price_inr, category, garment_image_url, garment_video_url, is_active, created_at')
     .eq('seller_id', user.id).order('created_at', { ascending: false })
 
   return NextResponse.json({ products: products ?? [] })
@@ -27,6 +29,11 @@ export async function POST(request: Request) {
   const formData = await request.formData()
   const garmentFile = formData.get('garment') as File | null
   if (!garmentFile) return NextResponse.json({ error: 'No garment image' }, { status: 400 })
+
+  const garmentVideo = formData.get('garment_video') as File | null
+  if (garmentVideo && garmentVideo.size > MAX_VIDEO_BYTES) {
+    return NextResponse.json({ error: 'Video exceeds 50 MB limit' }, { status: 400 })
+  }
 
   const name = formData.get('name') as string
   const description = formData.get('description') as string
@@ -62,6 +69,21 @@ export async function POST(request: Request) {
 
   const { data: { publicUrl } } = admin.storage.from('wearon-assets').getPublicUrl(path)
 
+  // Optional video (mirrors the same upload pattern as the image above) —
+  // additive, never blocks the product from saving if it fails.
+  let videoPublicUrl: string | null = null
+  if (garmentVideo) {
+    const videoBuffer = Buffer.from(await garmentVideo.arrayBuffer())
+    const videoPath = `garments/${user.id}/${Date.now()}-video.mp4`
+    const { error: videoUploadError } = await admin.storage.from('wearon-assets').upload(videoPath, videoBuffer, {
+      contentType: garmentVideo.type || 'video/mp4',
+      upsert: false,
+    })
+    if (!videoUploadError) {
+      videoPublicUrl = admin.storage.from('wearon-assets').getPublicUrl(videoPath).data.publicUrl
+    }
+  }
+
   // Generate slug
   const baseSlug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 40)
   const productSlug = `${baseSlug}-${Date.now().toString(36)}`
@@ -77,6 +99,7 @@ export async function POST(request: Request) {
     cost_price_inr: costPriceStr ? parseInt(costPriceStr) : null,
     category: category || null,
     garment_image_url: publicUrl,
+    garment_video_url: videoPublicUrl,
     slug: productSlug,
     sizes,
     is_active: true,

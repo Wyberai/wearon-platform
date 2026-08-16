@@ -63,6 +63,7 @@ export interface Product {
   cost_price_inr?: number | null
   garment_image_url: string
   garment_preprocessed_url: string | null
+  garment_video_url?: string | null
   slug: string
   is_active: boolean
   sizes: string[]

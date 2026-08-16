@@ -12,6 +12,7 @@ interface Product {
   category: string | null
   description?: string
   garment_image_url: string
+  garment_video_url?: string | null
   is_active: boolean
   sizes?: string[]
   tags?: string[]
@@ -24,6 +25,7 @@ interface IgMedia {
   caption: string
   media_type: string
   image_url: string
+  video_url?: string
   permalink: string
   timestamp: string
 }
@@ -56,7 +58,9 @@ export default function ProductsPage() {
   })
   const [garmentFile, setGarmentFile] = useState<File | null>(null)
   const [garmentPreview, setGarmentPreview] = useState<string | null>(null)
+  const [garmentVideoFile, setGarmentVideoFile] = useState<File | null>(null)
   const fileRef = useRef<HTMLInputElement>(null)
+  const videoFileRef = useRef<HTMLInputElement>(null)
 
   const [showImport, setShowImport] = useState(false)
   const [igMedia, setIgMedia] = useState<IgMedia[]>([])
@@ -91,7 +95,7 @@ export default function ProductsPage() {
   }
 
   async function importSelected() {
-    const items = igMedia.filter(m => selected.has(m.id)).map(m => ({ id: m.id, caption: m.caption, image_url: m.image_url }))
+    const items = igMedia.filter(m => selected.has(m.id)).map(m => ({ id: m.id, caption: m.caption, image_url: m.image_url, video_url: m.video_url }))
     if (items.length === 0) return
     setImporting(true)
     const res = await fetch('/api/admin/instagram/media/import', {
@@ -167,6 +171,13 @@ export default function ProductsPage() {
     reader.readAsDataURL(file)
   }
 
+  function handleVideoFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file) return
+    if (file.size > 50 * 1024 * 1024) { alert('Video exceeds 50 MB limit'); return }
+    setGarmentVideoFile(file)
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     if (!garmentFile) return alert('Please upload a garment photo')
@@ -174,6 +185,7 @@ export default function ProductsPage() {
 
     const formData = new FormData()
     formData.append('garment', garmentFile)
+    if (garmentVideoFile) formData.append('garment_video', garmentVideoFile)
     Object.entries(form).forEach(([k, v]) => formData.append(k, v))
     formData.append('slug', slug)
 
@@ -186,6 +198,7 @@ export default function ProductsPage() {
     setShowForm(false)
     setGarmentFile(null)
     setGarmentPreview(null)
+    setGarmentVideoFile(null)
     setForm({ name: '', description: '', price_inr: '', original_price_inr: '', cost_price_inr: '', category: '', sizes: '', tags: '' })
     loadProducts()
   }
@@ -239,6 +252,11 @@ export default function ProductsPage() {
                           className={`relative rounded-lg overflow-hidden border-2 ${isSelected ? 'border-pink-500' : 'border-transparent'}`}
                         >
                           <img src={m.image_url} alt="" className="w-full aspect-square object-cover" />
+                          {m.video_url && (
+                            <div className="absolute bottom-1.5 left-1.5 w-5 h-5 rounded-full bg-black/60 text-white flex items-center justify-center text-[10px]">
+                              ▶
+                            </div>
+                          )}
                           <div className={`absolute top-1.5 right-1.5 w-5 h-5 rounded-full flex items-center justify-center text-xs ${isSelected ? 'bg-pink-500 text-white' : 'bg-white/80 text-transparent'}`}>
                             ✓
                           </div>
@@ -306,6 +324,22 @@ export default function ProductsPage() {
               )}
             </div>
             <input ref={fileRef} type="file" accept="image/*" onChange={handleFileChange} className="hidden" />
+          </div>
+
+          {/* Optional video (e.g. a reel showing the garment on/moving) */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Video — optional</label>
+            <div
+              onClick={() => videoFileRef.current?.click()}
+              className="border-2 border-dashed border-gray-200 rounded-xl p-4 text-center cursor-pointer hover:border-pink-300 transition-colors"
+            >
+              {garmentVideoFile ? (
+                <p className="text-sm text-gray-600">🎥 {garmentVideoFile.name}</p>
+              ) : (
+                <p className="text-sm text-gray-400">Click to attach a video (max 50 MB) — shows on your product page alongside the photo</p>
+              )}
+            </div>
+            <input ref={videoFileRef} type="file" accept="video/*" onChange={handleVideoFileChange} className="hidden" />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
@@ -381,6 +415,11 @@ export default function ProductsPage() {
               <div className="aspect-square bg-gray-50 relative overflow-hidden">
                 <img src={product.garment_image_url} alt={product.name}
                   className="w-full h-full object-cover" />
+                {product.garment_video_url && (
+                  <div className="absolute bottom-1.5 left-1.5 w-5 h-5 rounded-full bg-black/60 text-white flex items-center justify-center text-[10px]">
+                    ▶
+                  </div>
+                )}
                 {!product.is_active && (
                   <div className="absolute inset-0 bg-white/60 flex items-center justify-center">
                     <span className="text-xs font-medium text-gray-500 bg-white px-2 py-1 rounded-full border">Hidden</span>

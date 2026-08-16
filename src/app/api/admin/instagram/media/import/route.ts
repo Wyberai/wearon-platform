@@ -6,6 +6,36 @@ interface ImportItem {
   id: string
   caption?: string
   image_url: string
+  video_url?: string
+}
+
+const MAX_VIDEO_BYTES = 50 * 1024 * 1024 // 50 MB — reels commonly run smaller, this is a ceiling not a target
+
+async function tryImportVideo(sellerId: string, itemId: string, videoUrl: string, admin: ReturnType<typeof createAdminClient>): Promise<string | null> {
+  try {
+    const videoRes = await fetch(videoUrl)
+    if (!videoRes.ok) return null
+
+    const contentLength = videoRes.headers.get('content-length')
+    if (contentLength && Number(contentLength) > MAX_VIDEO_BYTES) return null
+
+    const buffer = Buffer.from(await videoRes.arrayBuffer())
+    if (buffer.byteLength > MAX_VIDEO_BYTES) return null
+
+    const path = `garments/${sellerId}/ig-${itemId}-${Date.now()}.mp4`
+    const { error: uploadError } = await admin.storage.from('wearon-assets').upload(path, buffer, {
+      contentType: 'video/mp4',
+      upsert: false,
+    })
+    if (uploadError) return null
+
+    const { data: { publicUrl } } = admin.storage.from('wearon-assets').getPublicUrl(path)
+    return publicUrl
+  } catch {
+    // Video is a bonus, not required — a failed/oversized reel just means
+    // the product imports with its thumbnail only, same as before this field existed.
+    return null
+  }
 }
 
 function parseNameFromCaption(caption: string, fallback: string): string {
@@ -60,6 +90,10 @@ export async function POST(req: Request) {
 
       const { data: { publicUrl } } = admin.storage.from('wearon-assets').getPublicUrl(path)
 
+      const videoUrl = item.video_url
+        ? await tryImportVideo(user.id, item.id, item.video_url, admin)
+        : null
+
       const caption = item.caption ?? ''
       const name = parseNameFromCaption(caption, 'Imported from Instagram — edit me')
       const price = parsePriceFromCaption(caption)
@@ -72,6 +106,7 @@ export async function POST(req: Request) {
         description: caption ? caption.slice(0, 500) : null,
         price_inr: price ?? 0,
         garment_image_url: publicUrl,
+        garment_video_url: videoUrl,
         slug,
         sizes: [],
         is_active: false, // draft — seller reviews price/details before publishing

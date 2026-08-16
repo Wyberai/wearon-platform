@@ -19,6 +19,12 @@ export default async function AdminIndexPage() {
   const brandName = user.user_metadata?.brand_name ?? 'My Store'
   const rawSlug = (user.user_metadata?.slug ?? brandName.toLowerCase().replace(/[^a-z0-9]/g, '')).slice(0, 20) || 'mystore'
 
+  // Carried from a theme-card link on a segment landing page (e.g. /insta) —
+  // validated against an allow-list since it arrives as unsigned user_metadata.
+  const INSTA_THEME_IDS = ['reelrack', 'thegrid', 'tryiton']
+  const requestedThemeId = user.user_metadata?.theme_id as string | undefined
+  const validThemeId = requestedThemeId && INSTA_THEME_IDS.includes(requestedThemeId) ? requestedThemeId : null
+
   // Ensure slug uniqueness
   let slug = rawSlug
   let attempt = 0
@@ -53,6 +59,7 @@ export default async function AdminIndexPage() {
     font_family: 'poppins',
     payment_method: 'whatsapp_order',
     categories: ['Dresses', 'Tops', 'Denim', 'Outerwear', 'Accessories'],
+    ...(validThemeId ? { theme_id: validThemeId } : {}),
   })
 
   if (error) {

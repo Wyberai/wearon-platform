@@ -21,6 +21,7 @@ export interface ThemeProduct {
   colors: string[]
   tags: string[]
   image: string
+  video?: string | null
 }
 
 export interface ThemeBrand {

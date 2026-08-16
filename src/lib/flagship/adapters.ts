@@ -30,6 +30,7 @@ export function productToThemeProduct(p: Product): ThemeProduct {
     colors: p.colors ?? [],
     tags: p.tags ?? [],
     image: p.garment_image_url,
+    video: p.garment_video_url ?? null,
   }
 }
 

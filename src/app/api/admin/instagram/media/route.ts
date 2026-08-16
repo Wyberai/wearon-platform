@@ -36,6 +36,11 @@ export async function GET() {
       caption: m.caption ?? '',
       media_type: m.media_type,
       image_url: m.media_type === 'VIDEO' ? m.thumbnail_url : m.media_url,
+      // The actual reel file — only present for VIDEO items. Kept alongside
+      // the thumbnail (used as image_url) rather than replacing it, since a
+      // product always needs a static image regardless of whether it also
+      // gets a video.
+      video_url: m.media_type === 'VIDEO' ? m.media_url : undefined,
       permalink: m.permalink,
       timestamp: m.timestamp,
     }))
