@@ -20,7 +20,7 @@ export function buyerConfirmationEmail({
   storeSlug: string
 }): { subject: string; html: string } {
   const subject = `Your order from ${brandName} is confirmed! 🛍️`
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://wearon.store'
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://instastarz.in'
 
   const itemRows = items.map(item => `
     <tr>

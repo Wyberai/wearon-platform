@@ -158,7 +158,7 @@ export default async function AdminDashboard({ params }: { params: Promise<{ slu
             <code className="block text-sm font-mono mt-1 truncate" style={{ color: INK }}>instastarz.in/store/{slug}</code>
           </div>
           <img
-            src={`https://api.qrserver.com/v1/create-qr-code/?size=64x64&data=https://wearon.wyberai.com/store/${slug}`}
+            src={`https://api.qrserver.com/v1/create-qr-code/?size=64x64&data=https://instastarz.in/store/${slug}`}
             alt="QR" className="w-14 h-14 rounded-lg flex-shrink-0 border" style={{ borderColor: `${INK}14` }}
           />
         </div>

@@ -227,7 +227,7 @@ async function handleInboundMessage(
   if (pending?.state === 'awaiting_size') {
     const chosenSize = extractSize(messageText, pending.sizes)
     if (chosenSize) {
-      const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://wearon.store'
+      const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://instastarz.in'
       const checkoutUrl = `${baseUrl}/store/${pending.slug}/checkout?product=${pending.product_id}&size=${encodeURIComponent(chosenSize)}&source=instagram`
       const confirmMsg = `Great choice! ✨ Here's your checkout link for *${pending.product_name}* (Size: ${chosenSize}):\n\n${checkoutUrl}\n\nComplete payment there and we'll confirm your order. 🛍️`
 

@@ -213,7 +213,7 @@ async function handleInboundMessage(
     const chosenSize = extractSize(messageText, pending.sizes)
     if (chosenSize) {
       // Generate checkout URL and create a pending order
-      const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://wearon.store'
+      const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://instastarz.in'
       const checkoutUrl = `${baseUrl}/store/${pending.slug}/checkout?product=${pending.product_id}&size=${encodeURIComponent(chosenSize)}&source=whatsapp`
       const confirmMsg = `Perfect! Here's your secure checkout link for *${pending.product_name}* (Size: ${chosenSize}) — ₹${pending.price_inr.toLocaleString('en-IN')}:\n\n${checkoutUrl}\n\nComplete payment there and we'll confirm your order right away! 🛍️`
 
