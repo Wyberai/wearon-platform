@@ -21,80 +21,10 @@ export default function Home() {
   return <USHomePage />
 }
 
-// â”€â”€â”€ US HOMEPAGE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ---- US HOMEPAGE ----
 
 const US_ACCENT = '#A6134A'
 const US_INK = '#111010'
-
-// The US market pain: Shopify costs + platform fees + no owned audience.
-// Nothing about WhatsApp. Nothing about DMs. Nothing about pan-India shipping.
-const US_PAIN = [
-  {
-    label: 'Shopify is $79/mo before you touch a single app',
-    body: 'Klaviyo for email. Loox for reviews. Gorgias for support. Tidio for chat. You\'re paying $79 to Shopify and $80 more in apps before you make a single sale.',
-  },
-  {
-    label: 'TikTok Shop takes 8% on every order',
-    body: 'On a $10,000 month, that\'s $800 straight to TikTok. Instagram Shopping breaks every other update. You\'re building on someone else\'s platform with someone else\'s rules.',
-  },
-  {
-    label: 'You have 20K followers and zero of their contact info',
-    body: 'If Instagram changed its algorithm tomorrow â€” or banned your account â€” you\'d lose everything. Your buyers are Meta\'s customers. Not yours.',
-  },
-]
-
-const US_FEATURES = [
-  {
-    title: 'Card checkout. No extra setup.',
-    body: 'Stripe built in â€” cards, Apple Pay, Google Pay. Buyers tap, pick size, pay. You get the order. No DM, no invoice, no "can you send your Venmo?"',
-  },
-  {
-    title: 'Your store. Your domain.',
-    body: 'yourboutique.com or yourbrand.wearon.store. Your buyers land on your brand, not a platform subdomain. You own the customer â€” not the platform.',
-  },
-  {
-    title: 'AI product photos. No studio needed.',
-    body: 'Upload a flat-lay of your garment. Get a styled, model-on photo in 60 seconds. Short video clips available as a $0.60/clip add-on.',
-  },
-  {
-    title: 'Analytics that tell you what\'s actually selling',
-    body: 'Which products drive views. Which ones convert. Where buyers drop off. Know your bestsellers before you reorder â€” not after you\'ve already over-bought.',
-  },
-]
-
-const US_THEMES = [
-  { name: 'Editorial', bg: '#0C0C0B', accent: '#C4AE8F', ink: '#F0EBE4', tag: 'Fashion-forward' },
-  { name: 'Soft Blush', bg: '#FDF4EF', accent: '#D4715C', ink: '#2A1E1A', tag: 'Feminine & warm' },
-  { name: 'Minimal', bg: '#FAFAFA', accent: '#1A1A1A', ink: '#1A1A1A', tag: 'Clean & airy' },
-  { name: 'Bold Feed', bg: '#111111', accent: '#FF3B5C', ink: '#FFFFFF', tag: 'TikTok-native' },
-  { name: 'Luxury', bg: '#F8F5F0', accent: '#8B6E4E', ink: '#1C1410', tag: 'Premium boutique' },
-]
-
-function USThemeCard({ t }: { t: typeof US_THEMES[0] }) {
-  return (
-    <div style={{ borderRadius: 16, overflow: 'hidden', background: t.bg, minWidth: 190, flexShrink: 0, boxShadow: '0 8px 28px rgba(0,0,0,0.14)' }}>
-      <div style={{ padding: '10px 12px', borderBottom: `1px solid ${t.ink}18`, display: 'flex', alignItems: 'center', gap: 8 }}>
-        <div style={{ width: 24, height: 24, borderRadius: 6, background: t.accent }} />
-        <div style={{ width: 64, height: 8, borderRadius: 4, background: `${t.ink}44` }} />
-      </div>
-      <div style={{ padding: 10, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6 }}>
-        {[0, 1, 2, 3].map(i => (
-          <div key={i} style={{ background: `${t.ink}0D`, borderRadius: 8, aspectRatio: '3/4' }}>
-            <div style={{ height: '68%', background: `${t.ink}1A`, borderRadius: '8px 8px 0 0' }} />
-            <div style={{ padding: '4px 5px' }}>
-              <div style={{ width: '75%', height: 5, background: `${t.ink}33`, borderRadius: 3, marginBottom: 3 }} />
-              <div style={{ width: '45%', height: 5, background: t.accent, borderRadius: 3, opacity: 0.75 }} />
-            </div>
-          </div>
-        ))}
-      </div>
-      <div style={{ padding: '8px 12px 14px' }}>
-        <p style={{ fontSize: 13, fontWeight: 700, color: t.ink, marginBottom: 2 }}>{t.name}</p>
-        <p style={{ fontSize: 11, color: `${t.ink}77` }}>{t.tag}</p>
-      </div>
-    </div>
-  )
-}
 
 const HERO_IMAGE = '/hero/reel-to-receipt.webp'
 
@@ -199,7 +129,7 @@ function USHomePage() {
         </section>
 
         {/* DEMO FEATURE CARDS — show the feature happening, not a stock photo standing in for it */}
-        <section style={{ padding: '48px 24px 8px' }}>
+        <section style={{ padding: '96px 24px' }}>
           <div className="wo-us-features" style={{ maxWidth: 1240, margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
             <div className="wo-card" style={{ background: '#f8f8f6', borderRadius: 20, padding: '28px 28px 26px' }}>
               <div className="wo-feat-fan" style={{ marginBottom: 20 }}>
@@ -244,7 +174,7 @@ function USHomePage() {
         </div>
 
         {/* THEME TILES — all twelve flagship stores, live now, not cosmetic reskins */}
-        <section style={{ paddingTop: 64 }}>
+        <section style={{ paddingTop: 96 }}>
           <div style={{ padding: '0 24px', marginBottom: 32 }}>
             <p style={{ fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: `${US_INK}55`, marginBottom: 10 }}>Twelve flagship themes, all live</p>
             <h2 style={{ fontFamily: 'var(--font-marketing)', fontSize: 'clamp(28px, 4vw, 46px)', fontWeight: 400, letterSpacing: '-1px', lineHeight: 1.1, color: US_INK }}>
@@ -258,7 +188,7 @@ function USHomePage() {
         </section>
 
         {/* HOW IT WORKS — the real, true 3-step flow (no invented process) */}
-        <section style={{ borderTop: `1px solid ${US_INK}0E`, padding: '80px 24px' }}>
+        <section style={{ borderTop: `1px solid ${US_INK}0E`, padding: '96px 24px' }}>
           <div style={{ maxWidth: 960, margin: '0 auto' }}>
             <h2 style={{ fontFamily: 'var(--font-marketing)', fontSize: 'clamp(26px, 3.5vw, 40px)', fontWeight: 400, letterSpacing: '-1px', textAlign: 'center', marginBottom: 56, color: US_INK }}>
               Live in three steps.
@@ -280,7 +210,7 @@ function USHomePage() {
         </section>
 
         {/* 6-FEATURE GRID — AI-native differentiators */}
-        <section style={{ borderTop: `1px solid ${US_INK}0E`, padding: '80px 24px' }}>
+        <section style={{ borderTop: `1px solid ${US_INK}0E`, padding: '96px 24px' }}>
           <div style={{ maxWidth: 960, margin: '0 auto' }}>
             <p style={{ fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: `${US_INK}44`, marginBottom: 14, textAlign: 'center' }}>What makes Instastarz different in 2026</p>
             <h2 style={{ fontFamily: 'var(--font-marketing)', fontSize: 'clamp(26px, 3.5vw, 40px)', fontWeight: 400, letterSpacing: '-1px', textAlign: 'center', marginBottom: 56, color: US_INK }}>
@@ -306,7 +236,7 @@ function USHomePage() {
         </section>
 
         {/* PRICING — real plans, real INR, matches billing exactly */}
-        <section style={{ padding: '100px 24px' }}>
+        <section style={{ padding: '96px 24px' }}>
           <div style={{ maxWidth: 1080, margin: '0 auto' }}>
             <p style={{ fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: `${US_INK}55`, marginBottom: 16, textAlign: 'center' }}>Pricing</p>
             <h2 style={{ fontFamily: 'var(--font-marketing)', fontSize: 'clamp(30px, 4vw, 44px)', fontWeight: 400, letterSpacing: '-1px', textAlign: 'center', marginBottom: 12, color: US_INK }}>
@@ -346,7 +276,7 @@ function USHomePage() {
         </section>
 
         {/* FAQ — visible Q&A + FAQPage JSON-LD, both for AEO */}
-        <section style={{ padding: '100px 24px', borderTop: `1px solid ${US_INK}0E` }}>
+        <section style={{ padding: '96px 24px', borderTop: `1px solid ${US_INK}0E` }}>
           <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqToJsonLd(FAQS.map(f => ({ question: f.q, answer: f.a })))) }} />
           <div style={{ maxWidth: 760, margin: '0 auto' }}>
             <p style={{ fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: `${US_INK}55`, marginBottom: 16, textAlign: 'center' }}>Questions</p>
@@ -367,7 +297,7 @@ function USHomePage() {
         </section>
 
         {/* CLOSING CTA — pure self-serve, no human-in-the-loop pitch */}
-        <section style={{ padding: '100px 24px', background: US_INK }}>
+        <section style={{ padding: '96px 24px', background: US_INK }}>
           <div style={{ maxWidth: 600, margin: '0 auto', textAlign: 'center' }}>
             <p style={{ fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', marginBottom: 20 }}>Ready when you are</p>
             <h2 style={{ fontFamily: 'var(--font-marketing)', fontSize: 'clamp(32px, 5vw, 56px)', fontWeight: 400, letterSpacing: '-1.5px', lineHeight: 1.08, color: '#fff', marginBottom: 20 }}>
