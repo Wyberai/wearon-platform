@@ -70,7 +70,7 @@ export function GalliHome({ brand, products }: { brand: ThemeBrand; products: Th
           className="relative flex flex-col items-center justify-center text-center px-6 py-24 md:py-32"
         >
           <h1 className="galli-display text-[18vw] sm:text-8xl md:text-9xl leading-[0.88] tracking-tight" style={{ color: '#F5F5F0' }}>
-            GALLI
+            {brand.name}
           </h1>
           <p className="text-sm md:text-base tracking-[0.15em] uppercase mt-4 mb-9" style={{ color: 'var(--g-accent)' }}>
             {brand.tagline}

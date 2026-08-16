@@ -64,7 +64,7 @@ function DhamakaHeader({ brand }: { brand: ThemeBrand }) {
     >
       <div className="max-w-[1440px] mx-auto px-6 md:px-10 h-16 md:h-20 flex items-center justify-between gap-6">
         <Link href={`/store/${slug}`} className="flex items-center flex-shrink-0" style={{ color: 'var(--dh-ink)' }}>
-          <span className="dhamaka-display text-3xl md:text-4xl tracking-tight" style={{ color: 'var(--dh-yellow)', WebkitTextStroke: '1px var(--dh-red)' }}>DHAMAKA</span>
+          <span className="dhamaka-display text-3xl md:text-4xl tracking-tight" style={{ color: 'var(--dh-yellow)', WebkitTextStroke: '1px var(--dh-red)' }}>{brand.name}</span>
         </Link>
 
         <nav className="hidden md:flex items-center gap-8 text-[14px] font-semibold uppercase tracking-wide" style={{ color: 'var(--dh-ink-muted)' }}>

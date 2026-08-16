@@ -57,7 +57,7 @@ function GalliHeader({ brand }: { brand: ThemeBrand }) {
     >
       <div className="max-w-[1440px] mx-auto px-6 md:px-10 h-16 md:h-20 flex items-center justify-between gap-6">
         <Link href={`/store/${slug}`} className="flex items-center flex-shrink-0" style={{ color: 'var(--g-ink)' }}>
-          <span className="galli-display text-2xl md:text-3xl">Galli</span>
+          <span className="galli-display text-2xl md:text-3xl">{brand.name}</span>
         </Link>
 
         <nav className="hidden md:flex items-center gap-8 text-[13px] tracking-wide uppercase" style={{ color: 'var(--g-ink-muted)' }}>
@@ -139,7 +139,7 @@ function GalliFooter({ brand }: { brand: ThemeBrand }) {
           </div>
         )}
         <div>
-          <p className="text-[11px] uppercase tracking-[0.12em] mb-4" style={{ color: 'var(--g-ink-dim)' }}>Galli</p>
+          <p className="text-[11px] uppercase tracking-[0.12em] mb-4" style={{ color: 'var(--g-ink-dim)' }}>{brand.name}</p>
           <div className="flex flex-col gap-2.5 text-sm" style={{ color: 'var(--g-ink-muted)' }}>
             <a href="#drop-radar" className="hover:opacity-60 transition-opacity">Drop Radar</a>
             <a href="#" className="hover:opacity-60 transition-opacity">Size guide</a>

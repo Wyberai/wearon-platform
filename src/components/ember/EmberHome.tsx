@@ -56,7 +56,7 @@ export function EmberHome({ brand, products }: { brand: ThemeBrand; products: Th
           className="relative h-full flex flex-col items-center justify-center text-center px-6"
         >
           <h1 className="ember-display text-[16vw] sm:text-7xl md:text-8xl leading-[0.92] tracking-tight" style={{ color: '#F5EFE8', fontWeight: 800 }}>
-            EMBER
+            {brand.name}
           </h1>
           <p className="text-sm md:text-base tracking-[0.15em] uppercase mt-4 mb-9" style={{ color: 'rgba(245,239,232,0.8)' }}>
             {brand.tagline}

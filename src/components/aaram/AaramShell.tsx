@@ -74,7 +74,7 @@ function AaramHeader({ brand, onOpenDayMatch }: { brand: ThemeBrand; onOpenDayMa
     >
       <div className="max-w-[1440px] mx-auto px-6 md:px-10 h-16 md:h-20 flex items-center justify-between gap-6">
         <Link href={`/store/${slug}`} className="flex items-center flex-shrink-0" style={{ color: 'var(--ar-ink)' }}>
-          <span className="aaram-display text-xl md:text-2xl tracking-tight">aaram</span>
+          <span className="aaram-display text-xl md:text-2xl tracking-tight">{brand.name.toLowerCase()}</span>
         </Link>
 
         <nav className="hidden md:flex items-center gap-8 text-[13px] tracking-wide" style={{ color: 'var(--ar-ink-muted)' }}>

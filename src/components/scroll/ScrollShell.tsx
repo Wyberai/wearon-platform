@@ -52,7 +52,7 @@ function ScrollHeader({ brand }: { brand: ThemeBrand }) {
     >
       <div className="max-w-[600px] mx-auto px-4 h-14 flex items-center justify-between">
         <Link href={`/store/${slug}`} className="flex items-center flex-shrink-0">
-          <span className="scroll-display scroll-gradient-text text-2xl font-extrabold tracking-tight">Scroll</span>
+          <span className="scroll-display scroll-gradient-text text-2xl font-extrabold tracking-tight">{brand.name.charAt(0) + brand.name.slice(1).toLowerCase()}</span>
         </Link>
 
         <nav className="flex items-center gap-5 text-[13px] font-medium" style={{ color: 'var(--sc-ink)' }}>

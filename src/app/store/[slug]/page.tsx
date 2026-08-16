@@ -22,34 +22,49 @@ import { StoreFeedLayout } from '@/components/store/StoreFeedLayout'
 import { WhatsAppBubble } from '@/components/store/WhatsAppBubble'
 import { PreviewBanner } from '@/components/store/PreviewBanner'
 import { AugustHome } from '@/components/august/AugustHome'
+import { AugustShell } from '@/components/august/AugustShell'
 import { AUGUST_BRAND, AUGUST_PRODUCTS } from '@/lib/august/catalog'
 import { EmberHome } from '@/components/ember/EmberHome'
+import { EmberShell } from '@/components/ember/EmberShell'
 import { EMBER_BRAND, EMBER_PRODUCTS } from '@/lib/ember/catalog'
 import { BloomHome } from '@/components/bloom/BloomHome'
+import { BloomShell } from '@/components/bloom/BloomShell'
 import { BLOOM_BRAND, BLOOM_PRODUCTS } from '@/lib/bloom/catalog'
 import { MelaHome } from '@/components/mela/MelaHome'
+import { MelaShell } from '@/components/mela/MelaShell'
 import { MELA_BRAND, MELA_PRODUCTS } from '@/lib/mela/catalog'
 import { TaanaHome } from '@/components/taana/TaanaHome'
+import { TaanaShell } from '@/components/taana/TaanaShell'
 import { TAANA_BRAND, TAANA_PRODUCTS } from '@/lib/taana/catalog'
 import { SaajHome } from '@/components/saaj/SaajHome'
+import { SaajShell } from '@/components/saaj/SaajShell'
 import { SAAJ_BRAND, SAAJ_PRODUCTS } from '@/lib/saaj/catalog'
 import { ScrollHome } from '@/components/scroll/ScrollHome'
+import { ScrollShell } from '@/components/scroll/ScrollShell'
 import { SCROLL_BRAND, SCROLL_PRODUCTS } from '@/lib/scroll/catalog'
 import { DhamakaHome } from '@/components/dhamaka/DhamakaHome'
+import { DhamakaShell } from '@/components/dhamaka/DhamakaShell'
 import { DHAMAKA_BRAND, DHAMAKA_PRODUCTS } from '@/lib/dhamaka/catalog'
 import { AaramHome } from '@/components/aaram/AaramHome'
+import { AaramShell } from '@/components/aaram/AaramShell'
 import { AARAM_BRAND, AARAM_PRODUCTS } from '@/lib/aaram/catalog'
 import { UtsavHome } from '@/components/utsav/UtsavHome'
+import { UtsavShell } from '@/components/utsav/UtsavShell'
 import { UTSAV_BRAND, UTSAV_PRODUCTS } from '@/lib/utsav/catalog'
 import { GalliHome } from '@/components/galli/GalliHome'
+import { GalliShell } from '@/components/galli/GalliShell'
 import { GALLI_BRAND, GALLI_PRODUCTS } from '@/lib/galli/catalog'
 import { KirayaHome } from '@/components/kiraya/KirayaHome'
+import { KirayaShell } from '@/components/kiraya/KirayaShell'
 import { KIRAYA_BRAND, KIRAYA_PRODUCTS } from '@/lib/kiraya/catalog'
 import { ReelRackHome } from '@/components/reelrack/ReelRackHome'
+import { ReelRackShell } from '@/components/reelrack/ReelRackShell'
 import { REELRACK_BRAND, REELRACK_PRODUCTS } from '@/lib/reelrack/catalog'
 import { TheGridHome } from '@/components/thegrid/TheGridHome'
+import { TheGridShell } from '@/components/thegrid/TheGridShell'
 import { THEGRID_BRAND, THEGRID_PRODUCTS } from '@/lib/thegrid/catalog'
 import { TryItOnHome } from '@/components/tryiton/TryItOnHome'
+import { TryItOnShell } from '@/components/tryiton/TryItOnShell'
 import { TRYITON_BRAND, TRYITON_PRODUCTS } from '@/lib/tryiton/catalog'
 import { configToThemeBrand, productToThemeProduct } from '@/lib/flagship/adapters'
 import { demoSlugToThemeId } from '@/lib/preview-utils'
@@ -130,49 +145,64 @@ function StorePageRouter() {
   }
 
   if (slug === 'august') {
-    return <>{banner}<AugustHome brand={previewName ? { ...AUGUST_BRAND, name: previewName } : AUGUST_BRAND} products={AUGUST_PRODUCTS} /></>
+    const b = previewName ? { ...AUGUST_BRAND, name: previewName } : AUGUST_BRAND
+    return <>{banner}<AugustShell brand={b}><AugustHome brand={b} products={AUGUST_PRODUCTS} /></AugustShell></>
   }
   if (slug === 'ember') {
-    return <>{banner}<EmberHome brand={previewName ? { ...EMBER_BRAND, name: previewName } : EMBER_BRAND} products={EMBER_PRODUCTS} /></>
+    const b = previewName ? { ...EMBER_BRAND, name: previewName } : EMBER_BRAND
+    return <>{banner}<EmberShell brand={b}><EmberHome brand={b} products={EMBER_PRODUCTS} /></EmberShell></>
   }
   if (slug === 'bloom') {
-    return <>{banner}<BloomHome brand={previewName ? { ...BLOOM_BRAND, name: previewName } : BLOOM_BRAND} products={BLOOM_PRODUCTS} /></>
+    const b = previewName ? { ...BLOOM_BRAND, name: previewName } : BLOOM_BRAND
+    return <>{banner}<BloomShell brand={b}><BloomHome brand={b} products={BLOOM_PRODUCTS} /></BloomShell></>
   }
   if (slug === 'mela') {
-    return <>{banner}<MelaHome brand={previewName ? { ...MELA_BRAND, name: previewName } : MELA_BRAND} products={MELA_PRODUCTS} /></>
+    const b = previewName ? { ...MELA_BRAND, name: previewName } : MELA_BRAND
+    return <>{banner}<MelaShell brand={b}><MelaHome brand={b} products={MELA_PRODUCTS} /></MelaShell></>
   }
   if (slug === 'taana') {
-    return <>{banner}<TaanaHome brand={previewName ? { ...TAANA_BRAND, name: previewName } : TAANA_BRAND} products={TAANA_PRODUCTS} /></>
+    const b = previewName ? { ...TAANA_BRAND, name: previewName } : TAANA_BRAND
+    return <>{banner}<TaanaShell brand={b}><TaanaHome brand={b} products={TAANA_PRODUCTS} /></TaanaShell></>
   }
   if (slug === 'saaj') {
-    return <>{banner}<SaajHome brand={previewName ? { ...SAAJ_BRAND, name: previewName } : SAAJ_BRAND} products={SAAJ_PRODUCTS} /></>
+    const b = previewName ? { ...SAAJ_BRAND, name: previewName } : SAAJ_BRAND
+    return <>{banner}<SaajShell brand={b}><SaajHome brand={b} products={SAAJ_PRODUCTS} /></SaajShell></>
   }
   if (slug === 'scroll') {
-    return <>{banner}<ScrollHome brand={previewName ? { ...SCROLL_BRAND, name: previewName } : SCROLL_BRAND} products={SCROLL_PRODUCTS} /></>
+    const b = previewName ? { ...SCROLL_BRAND, name: previewName } : SCROLL_BRAND
+    return <>{banner}<ScrollShell brand={b}><ScrollHome brand={b} products={SCROLL_PRODUCTS} /></ScrollShell></>
   }
   if (slug === 'dhamaka') {
-    return <>{banner}<DhamakaHome brand={previewName ? { ...DHAMAKA_BRAND, name: previewName } : DHAMAKA_BRAND} products={DHAMAKA_PRODUCTS} /></>
+    const b = previewName ? { ...DHAMAKA_BRAND, name: previewName } : DHAMAKA_BRAND
+    return <>{banner}<DhamakaShell brand={b}><DhamakaHome brand={b} products={DHAMAKA_PRODUCTS} /></DhamakaShell></>
   }
   if (slug === 'aaram') {
-    return <>{banner}<AaramHome brand={previewName ? { ...AARAM_BRAND, name: previewName } : AARAM_BRAND} products={AARAM_PRODUCTS} /></>
+    const b = previewName ? { ...AARAM_BRAND, name: previewName } : AARAM_BRAND
+    return <>{banner}<AaramShell brand={b}><AaramHome brand={b} products={AARAM_PRODUCTS} /></AaramShell></>
   }
   if (slug === 'utsav') {
-    return <>{banner}<UtsavHome brand={previewName ? { ...UTSAV_BRAND, name: previewName } : UTSAV_BRAND} products={UTSAV_PRODUCTS} /></>
+    const b = previewName ? { ...UTSAV_BRAND, name: previewName } : UTSAV_BRAND
+    return <>{banner}<UtsavShell brand={b}><UtsavHome brand={b} products={UTSAV_PRODUCTS} /></UtsavShell></>
   }
   if (slug === 'galli') {
-    return <>{banner}<GalliHome brand={previewName ? { ...GALLI_BRAND, name: previewName } : GALLI_BRAND} products={GALLI_PRODUCTS} /></>
+    const b = previewName ? { ...GALLI_BRAND, name: previewName } : GALLI_BRAND
+    return <>{banner}<GalliShell brand={b}><GalliHome brand={b} products={GALLI_PRODUCTS} /></GalliShell></>
   }
   if (slug === 'kiraya') {
-    return <>{banner}<KirayaHome brand={previewName ? { ...KIRAYA_BRAND, name: previewName } : KIRAYA_BRAND} products={KIRAYA_PRODUCTS} /></>
+    const b = previewName ? { ...KIRAYA_BRAND, name: previewName } : KIRAYA_BRAND
+    return <>{banner}<KirayaShell brand={b}><KirayaHome brand={b} products={KIRAYA_PRODUCTS} /></KirayaShell></>
   }
   if (slug === 'reelrack') {
-    return <>{banner}<ReelRackHome brand={previewName ? { ...REELRACK_BRAND, name: previewName } : REELRACK_BRAND} products={REELRACK_PRODUCTS} /></>
+    const b = previewName ? { ...REELRACK_BRAND, name: previewName } : REELRACK_BRAND
+    return <>{banner}<ReelRackShell brand={b}><ReelRackHome brand={b} products={REELRACK_PRODUCTS} /></ReelRackShell></>
   }
   if (slug === 'thegrid') {
-    return <>{banner}<TheGridHome brand={previewName ? { ...THEGRID_BRAND, name: previewName } : THEGRID_BRAND} products={THEGRID_PRODUCTS} /></>
+    const b = previewName ? { ...THEGRID_BRAND, name: previewName } : THEGRID_BRAND
+    return <>{banner}<TheGridShell brand={b}><TheGridHome brand={b} products={THEGRID_PRODUCTS} /></TheGridShell></>
   }
   if (slug === 'tryiton') {
-    return <>{banner}<TryItOnHome brand={previewName ? { ...TRYITON_BRAND, name: previewName } : TRYITON_BRAND} products={TRYITON_PRODUCTS} /></>
+    const b = previewName ? { ...TRYITON_BRAND, name: previewName } : TRYITON_BRAND
+    return <>{banner}<TryItOnShell brand={b}><TryItOnHome brand={b} products={TRYITON_PRODUCTS} /></TryItOnShell></>
   }
 
   return <StorePageContent />

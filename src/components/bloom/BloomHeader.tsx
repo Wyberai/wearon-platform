@@ -29,7 +29,7 @@ export function BloomHeader({ brand }: { brand: ThemeBrand }) {
     >
       <div className="max-w-[1440px] mx-auto px-6 md:px-10 h-16 md:h-20 flex items-center justify-between gap-6">
         <Link href={`/store/${slug}`} className="flex items-center flex-shrink-0" style={{ color: 'var(--bl-ink)' }}>
-          <span className="bloom-display text-2xl md:text-3xl italic tracking-tight">Bloom</span>
+          <span className="bloom-display text-2xl md:text-3xl italic tracking-tight">{brand.name.charAt(0) + brand.name.slice(1).toLowerCase()}</span>
         </Link>
 
         <nav className="hidden md:flex items-center gap-8 text-[13px] tracking-wide" style={{ color: 'var(--bl-ink-muted)' }}>

@@ -190,7 +190,7 @@ function MelaHeader({ brand }: { brand: ThemeBrand }) {
         <div className="max-w-[1440px] mx-auto px-5 md:px-10 h-16 md:h-[72px] flex items-center justify-between gap-4">
           <Link href={`/store/${slug}`} className="flex items-center flex-shrink-0">
             <span className="mela-display text-3xl md:text-4xl font-extrabold tracking-tight" style={{ color: 'var(--me-pink)', WebkitTextStroke: '0.5px var(--me-ink)' }}>
-              MELA
+              {brand.name}
             </span>
           </Link>
 

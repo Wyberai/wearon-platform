@@ -29,7 +29,7 @@ export function EmberHeader({ brand, onOpenMoodMatch }: { brand: ThemeBrand; onO
     >
       <div className="max-w-[1440px] mx-auto px-6 md:px-10 h-16 md:h-20 flex items-center justify-between gap-6">
         <Link href={`/store/${slug}`} className="flex items-center flex-shrink-0" style={{ color: 'var(--e-ink)' }}>
-          <span className="ember-display text-xl md:text-2xl tracking-tight" style={{ fontWeight: 800 }}>EMBER</span>
+          <span className="ember-display text-xl md:text-2xl tracking-tight" style={{ fontWeight: 800 }}>{brand.name}</span>
         </Link>
 
         <nav className="hidden md:flex items-center gap-8 text-[12px] tracking-[0.1em] uppercase font-medium" style={{ color: 'var(--e-ink-muted)' }}>
