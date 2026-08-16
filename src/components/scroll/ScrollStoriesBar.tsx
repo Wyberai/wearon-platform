@@ -46,14 +46,12 @@ export function ScrollStoriesBar({ stories, products, slug }: { stories: ScrollS
         {stories.map((story, i) => (
           <button key={story.id} onClick={() => openStory(i)} className="flex flex-col items-center gap-1.5 flex-shrink-0 w-16">
             <div className={seen.has(story.id) ? 'scroll-story-ring-seen' : 'scroll-story-ring'}>
-              <div className="w-14 h-14 rounded-full overflow-hidden border-2" style={{ borderColor: 'var(--sc-bg)', background: 'var(--sc-card)' }}>
-                <img
-                  src={story.image}
-                  alt={story.label}
-                  className="w-full h-full object-cover"
-                  onError={e => { e.currentTarget.style.display = 'none' }}
-                />
-              </div>
+              <div
+                className="w-14 h-14 rounded-full overflow-hidden border-2"
+                style={{ borderColor: 'var(--sc-bg)', background: `var(--sc-card) center/cover url(${story.image})` }}
+                role="img"
+                aria-label={story.label}
+              />
             </div>
             <span className="text-[10.5px] leading-tight text-center truncate w-full" style={{ color: 'var(--sc-ink-muted)' }}>{story.label}</span>
           </button>
@@ -125,9 +123,12 @@ function StoryViewer({
 
         <div className="absolute top-6 left-3 right-3 z-20 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-full overflow-hidden border" style={{ borderColor: 'rgba(255,255,255,0.6)' }}>
-              <img src={story.image} alt="" className="w-full h-full object-cover" onError={e => { e.currentTarget.style.display = 'none' }} />
-            </div>
+            <div
+              className="w-7 h-7 rounded-full overflow-hidden border"
+              style={{ borderColor: 'rgba(255,255,255,0.6)', background: `var(--sc-card) center/cover url(${story.image})` }}
+              role="img"
+              aria-label=""
+            />
             <span className="text-white text-[13px] font-semibold">{story.label}</span>
           </div>
           <button onClick={onClose} aria-label="Close story" className="text-white w-8 h-8 flex items-center justify-center">
@@ -135,11 +136,11 @@ function StoryViewer({
           </button>
         </div>
 
-        <img
-          src={story.image}
-          alt={story.label}
-          className="w-full h-full object-cover"
-          onError={e => { e.currentTarget.style.opacity = '0' }}
+        <div
+          className="w-full h-full"
+          style={{ background: `var(--sc-card) center/cover url(${story.image})` }}
+          role="img"
+          aria-label={story.label}
         />
 
         {/* Tap zones for prev/next, sitting above the image */}
