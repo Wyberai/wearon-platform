@@ -300,7 +300,7 @@ export default async function StoreLayout({
               {tc.whatsapp_number && <a href={`https://wa.me/${tc.whatsapp_number.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer" className="hover:opacity-70 transition-opacity" style={{ color: 'inherit', textDecoration: 'none' }}>Contact</a>}
             </div>
             <p className="text-[11px]" style={{ color: 'color-mix(in srgb, var(--store-ink) 30%, transparent)' }}>
-              Powered by <a href="/" className="hover:opacity-70 transition-opacity" style={{ color: 'inherit' }}>WearOn</a>
+              Powered by <a href="/" className="hover:opacity-70 transition-opacity" style={{ color: 'inherit' }}>Instastarz</a>
             </p>
           </div>
         </footer>

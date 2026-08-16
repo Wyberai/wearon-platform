@@ -1,5 +1,5 @@
 // ACP (Agent Commerce Protocol) — OpenAI + Stripe compatible
-// Allows ChatGPT and other OpenAI-based agents to initiate purchases from WearOn stores.
+// Allows ChatGPT and other OpenAI-based agents to initiate purchases from Instastarz stores.
 // Follows the OpenAI Agent Commerce spec: purchase intent → payment URL.
 
 import { NextResponse } from 'next/server'

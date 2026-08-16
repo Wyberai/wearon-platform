@@ -20,7 +20,7 @@ export function PreviewBanner() {
 
   return (
     <div style={{ background: '#111827', color: '#fff', padding: '10px 16px', textAlign: 'center', fontSize: 13 }}>
-      🎉 This is <strong>{name}</strong> — a live preview of your store on WearOn —{' '}
+      🎉 This is <strong>{name}</strong> — a live preview of your store on Instastarz —{' '}
       <Link href={signupHref} style={{ color: '#F9A8D4', fontWeight: 700, textDecoration: 'underline' }}>
         claim this store, it&apos;s free →
       </Link>

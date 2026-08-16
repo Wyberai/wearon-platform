@@ -43,7 +43,7 @@ export default function LoginPage() {
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl p-8 shadow-sm max-w-md w-full">
         <div className="text-center mb-8">
-          <span className="text-2xl font-bold text-pink-600">WearOn</span>
+          <span className="text-2xl font-bold text-pink-600">Instastarz</span>
           <h1 className="text-xl font-bold text-gray-900 mt-4">Welcome back</h1>
         </div>
 

@@ -95,7 +95,7 @@ export function buyerConfirmationEmail({
           <tr>
             <td style="background:#f9fafb;padding:20px 40px;text-align:center;border-top:1px solid #f3f4f6;">
               <p style="margin:0;font-size:12px;color:#9ca3af;">
-                Powered by <a href="${baseUrl}" style="color:#9ca3af;text-decoration:none;">WearOn</a>
+                Powered by <a href="${baseUrl}" style="color:#9ca3af;text-decoration:none;">Instastarz</a>
               </p>
             </td>
           </tr>

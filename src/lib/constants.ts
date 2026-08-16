@@ -18,7 +18,7 @@ export const PLANS = {
 
 export type Plan = keyof typeof PLANS
 
-// Features that cost WearOn real setup/ops effort (custom domain DNS, a
+// Features that cost Instastarz real setup/ops effort (custom domain DNS, a
 // native Android build) rather than a per-call AI cost — gated to a binary
 // plan check, same as APK_ELIGIBLE_PLANS in api/admin/apk-build/route.ts,
 // rather than metered like conversational AI replies.

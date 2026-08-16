@@ -224,7 +224,7 @@ export default function TryOnPage() {
   function buildWhatsAppMessage() {
     if (!product || !config) return '#'
     const msg = encodeURIComponent(
-      `Hi! I just tried on *${product.name}* on your WearOn store and I love it! 😍\n\n` +
+      `Hi! I just tried on *${product.name}* on your Instastarz store and I love it! 😍\n\n` +
       `📏 Size: ${selectedSize || 'Please suggest'}\n` +
       `💰 Price: ${config?.currency === 'USD' ? '$' : '₹'}${product.price_inr.toLocaleString(config?.currency === 'USD' ? 'en-US' : 'en-IN')}\n\n` +
       `Can I place an order?`
@@ -376,7 +376,7 @@ export default function TryOnPage() {
                 style={{ backgroundColor: primaryColor }}
                 className="absolute top-3 left-3 text-white text-xs font-bold px-2 py-1 rounded-lg"
               >
-                WearOn AI ✨
+                Instastarz AI ✨
               </div>
             </div>
 

@@ -12,7 +12,7 @@ export async function GET(req: Request) {
 
   return new NextResponse(
     `<!DOCTYPE html><html><body style="font-family:Arial,sans-serif;text-align:center;padding:80px 20px;color:#171512;">
-      <h2>You're unsubscribed</h2><p>You won't get any more emails about your WearOn store preview.</p>
+      <h2>You're unsubscribed</h2><p>You won't get any more emails about your Instastarz store preview.</p>
     </body></html>`,
     { headers: { 'Content-Type': 'text/html' } }
   )

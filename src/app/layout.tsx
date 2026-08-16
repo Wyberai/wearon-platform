@@ -6,7 +6,7 @@ import './globals.css'
 const fraunces = Fraunces({ subsets: ['latin'], variable: '--font-display', weight: ['400', '500', '600'], style: ['normal', 'italic'] })
 const inter = Inter({ subsets: ['latin'], variable: '--font-body' })
 
-const TITLE = 'WearOn — Your Branded Boutique App for Instagram Sellers'
+const TITLE = 'Instastarz — Your Branded Boutique App for Instagram Sellers'
 const DESCRIPTION = 'Give your Instagram buyers a proper branded fashion store — your logo, your colors, WhatsApp ordering. Live in 10 minutes. Free.'
 
 export const metadata: Metadata = {
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     title: TITLE,
     description: DESCRIPTION,
     url: 'https://instastarz.in',
-    siteName: 'WearOn',
+    siteName: 'Instastarz',
     images: [{ url: '/icon.svg', width: 512, height: 512 }],
     locale: 'en_IN',
     type: 'website',
@@ -30,13 +30,13 @@ export const metadata: Metadata = {
   },
 }
 
-// instastarz.in is owned/operated by Signalpulse Technologies — WearOn is the
+// instastarz.in is owned/operated by Signalpulse Technologies — Instastarz is the
 // product name, so the entity behind it needs to be in the structured data,
 // not just implied by the brand.
 const ORG_JSON_LD = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
-  name: 'WearOn',
+  name: 'Instastarz',
   legalName: 'Signalpulse Technologies',
   url: 'https://instastarz.in',
   logo: 'https://instastarz.in/icon.svg',
@@ -45,7 +45,7 @@ const ORG_JSON_LD = {
 const WEBSITE_JSON_LD = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
-  name: 'WearOn',
+  name: 'Instastarz',
   url: 'https://instastarz.in',
 }
 

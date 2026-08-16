@@ -6,7 +6,7 @@ import { EMBER_CAMPAIGN } from '@/lib/ember/catalog'
 import { BLOOM_CAMPAIGN } from '@/lib/bloom/catalog'
 
 export const metadata: Metadata = {
-  title: 'Flagship Themes — WearOn',
+  title: 'Flagship Themes — Instastarz',
   description: 'Twelve flagship storefront themes, one for every month. Preview them live, then build your store on the one that\'s you.',
 }
 
@@ -61,7 +61,7 @@ export default function ThemesPage() {
             One flagship theme a month. Pick the one that&apos;s you.
           </h1>
           <p style={{ fontSize: 16, color: `${INK}99`, maxWidth: 560, lineHeight: 1.6 }}>
-            Every store on WearOn starts from a theme — a complete, considered design system, not a template you fight with. We&apos;re building twelve flagship themes, one per month, each with its own aesthetic and its own AI-native features. Preview them live before you pick.
+            Every store on Instastarz starts from a theme — a complete, considered design system, not a template you fight with. We&apos;re building twelve flagship themes, one per month, each with its own aesthetic and its own AI-native features. Preview them live before you pick.
           </p>
         </section>
 

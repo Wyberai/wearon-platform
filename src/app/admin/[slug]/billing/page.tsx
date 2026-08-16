@@ -132,7 +132,7 @@ export default async function BillingPage({ params }: { params: Promise<{ slug: 
                 </ul>
                 {isEnterprise ? (
                   <a
-                    href="https://wa.me/919100000000?text=Hi%2C+I+want+to+discuss+the+Enterprise+plan+for+WearOn"
+                    href="https://wa.me/919100000000?text=Hi%2C+I+want+to+discuss+the+Enterprise+plan+for+Instastarz"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="block text-center py-2.5 rounded-lg text-sm font-semibold bg-gray-900 text-white hover:bg-gray-700 transition-colors"

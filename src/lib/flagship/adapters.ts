@@ -38,7 +38,7 @@ export function configToThemeBrand(c: ThemeConfigInput, slug: string): ThemeBran
   return {
     name: c.brand_name,
     tagline: c.tagline || 'Shop the collection.',
-    description: c.tagline || `${c.brand_name} — an online store built with WearOn.`,
+    description: c.tagline || `${c.brand_name} — an online store built with Instastarz.`,
     slug: c.slug ?? slug,
     currency: c.currency ?? 'USD',
     categories: c.categories?.length ? c.categories : [],

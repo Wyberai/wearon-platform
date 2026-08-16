@@ -67,7 +67,7 @@ export function ApiKeyCard() {
           API Key
         </h3>
         <p style={{ fontSize: 13, color: '#71717a', margin: '0 0 20px' }}>
-          Use your API key to call the WearOn try-on endpoint from your own apps.
+          Use your API key to call the Instastarz try-on endpoint from your own apps.
         </p>
 
         {!keyLoaded ? (
@@ -182,7 +182,7 @@ export function ApiKeyCard() {
               {copied ? 'Copied!' : 'Copy Code'}
             </button>
             <a
-              href={`https://wa.me/?text=Join%20WearOn%20and%20get%20200%20free%20try-ons%3A%20instastarz.in%2Fsignup%3Fref%3D${referralCode}`}
+              href={`https://wa.me/?text=Join%20Instastarz%20and%20get%20200%20free%20try-ons%3A%20instastarz.in%2Fsignup%3Fref%3D${referralCode}`}
               target="_blank"
               rel="noopener noreferrer"
               style={{ background: '#16a34a', color: '#fff', borderRadius: 6, padding: '8px 16px', textDecoration: 'none', fontSize: 13 }}

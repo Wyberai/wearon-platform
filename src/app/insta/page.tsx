@@ -17,7 +17,7 @@ const PAIN_POINTS = [
   {
     n: '03',
     label: 'You\'ve built a real boutique. It still looks like a hobby.',
-    body: 'No catalogue, no prices, no proper checkout — just a feed and a follow button. WearOn gives buyers a store. Your name on it, not ours.',
+    body: 'No catalogue, no prices, no proper checkout — just a feed and a follow button. Instastarz gives buyers a store. Your name on it, not ours.',
   },
 ]
 
@@ -347,7 +347,7 @@ export default function InstaLandingPage() {
         {/* ── FOOTER ── */}
         <footer style={{ borderTop: `1px solid ${INK}14`, padding: '28px 24px' }}>
           <div style={{ maxWidth: 1240, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
-            <span style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: 16 }}>WearOn</span>
+            <span style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: 16 }}>Instastarz</span>
             <span style={{ fontSize: 13, color: `${INK}66` }}>Built for Indian Instagram boutiques · 2026</span>
             <div style={{ display: 'flex', gap: 20 }}>
               <Link href="/auth/login" style={{ fontSize: 13, color: `${INK}77`, textDecoration: 'none' }}>Login</Link>
@@ -355,7 +355,7 @@ export default function InstaLandingPage() {
             </div>
           </div>
           <p style={{ maxWidth: 1240, margin: '16px auto 0', fontSize: 11, color: `${INK}44`, textAlign: 'center' }}>
-            © 2026 Signalpulse Technologies. WearOn is a product of Signalpulse Technologies.
+            © 2026 Signalpulse Technologies. Instastarz is a product of Signalpulse Technologies.
           </p>
         </footer>
 

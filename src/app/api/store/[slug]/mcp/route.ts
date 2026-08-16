@@ -2,7 +2,7 @@
  * Per-store MCP (Model Context Protocol) Streamable HTTP server.
  * URL: GET|POST /api/store/{slug}/mcp
  *
- * Each WearOn boutique gets its own MCP endpoint scoped to its catalog.
+ * Each Instastarz boutique gets its own MCP endpoint scoped to its catalog.
  * Claude users can connect this URL to shop directly inside Claude conversations.
  *
  * Protocol: MCP Streamable HTTP (synchronous POST, JSON-RPC 2.0)
@@ -138,7 +138,7 @@ export async function POST(
           name: `wearon-${slug}`,
           version: '1.0',
         },
-        instructions: `You are a shopping assistant for a WearOn boutique store (slug: ${slug}). Use search_products to find items, get_product for details, and create_checkout when the user is ready to purchase. Always confirm size availability before creating a checkout.`,
+        instructions: `You are a shopping assistant for a Instastarz boutique store (slug: ${slug}). Use search_products to find items, get_product for details, and create_checkout when the user is ready to purchase. Always confirm size availability before creating a checkout.`,
       })
 
     case 'notifications/initialized':
@@ -237,7 +237,7 @@ export async function GET(
 ) {
   const { slug } = await params
   return NextResponse.json({
-    name: `WearOn — ${slug}`,
+    name: `Instastarz — ${slug}`,
     description: `AI shopping assistant for the ${slug} boutique. Browse products, check availability, and checkout.`,
     mcp_version: PROTOCOL_VERSION,
     endpoint: `/api/store/${slug}/mcp`,

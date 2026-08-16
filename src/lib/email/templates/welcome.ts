@@ -11,7 +11,7 @@ export function welcomeEmail({
   sellerName: string;
   storeUrl: string;
 }): { subject: string; html: string } {
-  const subject = 'Welcome to WearOn — your store is live';
+  const subject = 'Welcome to Instastarz — your store is live';
 
   const html = `<!DOCTYPE html>
 <html lang="en">
@@ -28,7 +28,7 @@ export function welcomeEmail({
 
           <tr>
             <td style="padding:0 0 28px 0;text-align:center;">
-              <span style="font-size:22px;font-weight:600;letter-spacing:-0.3px;color:${INK};">WearOn</span>
+              <span style="font-size:22px;font-weight:600;letter-spacing:-0.3px;color:${INK};">Instastarz</span>
             </td>
           </tr>
 
@@ -81,7 +81,7 @@ export function welcomeEmail({
           <tr>
             <td style="padding:32px 24px 0;text-align:center;">
               <p style="margin:0 0 8px 0;font-size:12px;color:${INK}77;font-family:Arial,sans-serif;">
-                You're receiving this because you created a store on WearOn.
+                You're receiving this because you created a store on Instastarz.
               </p>
               <p style="margin:0;font-size:12px;color:${INK}77;font-family:Arial,sans-serif;">
                 <a href="https://instastarz.in" style="color:${INK}99;text-decoration:none;">instastarz.in</a>

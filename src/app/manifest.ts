@@ -2,8 +2,8 @@ import type { MetadataRoute } from 'next'
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'WearOn',
-    short_name: 'WearOn',
+    name: 'Instastarz',
+    short_name: 'Instastarz',
     description: 'Try on clothes before you buy',
     start_url: '/',
     display: 'standalone',

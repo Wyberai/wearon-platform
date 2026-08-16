@@ -49,7 +49,7 @@ export default async function AdminLayout({
       {/* Sidebar */}
       <aside className="w-56 bg-white border-r border-gray-100 flex flex-col fixed h-full">
         <div className="p-5 border-b border-gray-100">
-          <Link href="/" className="text-lg font-bold" style={{ color: '#A6134A' }}>WearOn</Link>
+          <Link href="/" className="text-lg font-bold" style={{ color: '#A6134A' }}>Instastarz</Link>
           <div className="text-sm text-gray-500 mt-1 truncate">{config.brand_name}</div>
         </div>
         <AdminNav links={navLinks} primaryColor={config.primary_color ?? '#ec4899'} />

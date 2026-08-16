@@ -1,4 +1,4 @@
-// Shared shapes for WearOn's flagship theme series (one bespoke theme per
+// Shared shapes for Instastarz's flagship theme series (one bespoke theme per
 // month — January is "AUGUST", src/lib/august/, more to follow). Every
 // flagship theme's components work against these, never against a specific
 // demo brand's own constants directly — so the exact same components render

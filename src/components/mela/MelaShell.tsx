@@ -280,11 +280,11 @@ function MelaFooter({ brand }: { brand: ThemeBrand }) {
       <div className="border-t py-6" style={{ borderColor: 'rgba(255,248,239,0.14)' }}>
         <div className="max-w-[1440px] mx-auto px-5 md:px-10 flex flex-col md:flex-row items-center justify-between gap-3 text-[11px]" style={{ color: 'rgba(255,248,239,0.55)' }}>
           {isDemoData ? (
-            <p>A concept storefront demonstrating WearOn&apos;s &quot;April&quot; flagship theme. Not a real retailer.</p>
+            <p>A concept storefront demonstrating Instastarz&apos;s &quot;April&quot; flagship theme. Not a real retailer.</p>
           ) : (
-            <p>{brand.name}, built on WearOn.</p>
+            <p>{brand.name}, built on Instastarz.</p>
           )}
-          <p>Powered by <Link href="/" className="hover:opacity-80 transition-opacity" style={{ color: 'inherit' }}>WearOn</Link></p>
+          <p>Powered by <Link href="/" className="hover:opacity-80 transition-opacity" style={{ color: 'inherit' }}>Instastarz</Link></p>
         </div>
       </div>
     </footer>

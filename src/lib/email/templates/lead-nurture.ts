@@ -12,12 +12,12 @@ function shell(preheader: string, body: string): string {
     <tr><td align="center">
       <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
         <tr><td style="padding:0 0 28px 0;text-align:center;">
-          <span style="font-size:22px;font-weight:600;letter-spacing:-0.3px;color:${INK};">WearOn</span>
+          <span style="font-size:22px;font-weight:600;letter-spacing:-0.3px;color:${INK};">Instastarz</span>
         </td></tr>
         ${body}
         <tr><td style="padding:36px 24px 0;text-align:center;border-top:1px solid ${INK}1a;margin-top:32px;">
           <p style="margin:0 0 8px 0;font-size:12px;color:${INK}88;font-family:Arial,sans-serif;">
-            You're getting this because you asked to preview your store on WearOn.
+            You're getting this because you asked to preview your store on Instastarz.
           </p>
           <p style="margin:0;font-size:12px;color:${INK}88;font-family:Arial,sans-serif;">
             <a href="{{UNSUBSCRIBE_URL}}" style="color:${INK}99;text-decoration:underline;">Unsubscribe</a>

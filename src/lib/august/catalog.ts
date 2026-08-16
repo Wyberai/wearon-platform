@@ -1,6 +1,6 @@
 // AUGUST — the live interactive demo of the "January" flagship theme.
 // A fictional showcase brand ("Considered clothing, quietly intelligent.")
-// used both to demonstrate the theme publicly (WearOn's own /themes gallery
+// used both to demonstrate the theme publicly (Instastarz's own /themes gallery
 // links here) and as sample data — every component in src/components/august/
 // is written against ThemeProduct/ThemeBrand (src/lib/flagship/types.ts) so
 // the exact same components also render a real seller's own store once they

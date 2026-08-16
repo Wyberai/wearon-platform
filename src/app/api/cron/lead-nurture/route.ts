@@ -4,14 +4,10 @@ import { sendEmail } from '@/lib/email/resend'
 import { leadNurtureEmail } from '@/lib/email/templates/lead-nurture'
 import { getTheme } from '@/lib/themes'
 
-// wearon@wyberai.com isn't a real mailbox — sending from an address with no
-// inbox means any reply bounces. Using hello@wyberai.com (the real, working
-// mailbox) as the actual address, with "WearOn" as the display name so
-// recipients still see it as WearOn, not a personal email. Replies land in
-// the same inbox as WyberAi customer mail — a real but smaller tradeoff than
-// bounced replies, unless/until a dedicated wearon@wyberai.com mailbox
-// actually exists.
-const FROM = 'WearOn <hello@wyberai.com>'
+// Matches the sender resend.ts uses everywhere else post-migration — see the
+// note there about hello@instastarz.in needing to be a verified Resend
+// sending domain, or these (and every other transactional email) will fail.
+const FROM = 'Instastarz <hello@instastarz.in>'
 const STEP_INTERVAL_DAYS = 7
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'https://instastarz.in'
 

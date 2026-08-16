@@ -44,7 +44,7 @@ function DashboardPreviewContent() {
     <div className="min-h-screen bg-gray-50">
       {/* Banner making clear this is a preview */}
       <div className="bg-gray-900 text-white text-center text-sm py-2 px-4">
-        ✨ This is a live preview of what <strong>{brandName}</strong>&apos;s dashboard would look like on WearOn — real data, real automation.
+        ✨ This is a live preview of what <strong>{brandName}</strong>&apos;s dashboard would look like on Instastarz — real data, real automation.
       </div>
 
       <div className="max-w-5xl mx-auto p-6 space-y-6">

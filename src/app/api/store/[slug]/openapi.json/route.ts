@@ -24,7 +24,7 @@ export async function GET(
   const spec = {
     openapi: '3.1.0',
     info: {
-      title: `WearOn — ${slug} Store API`,
+      title: `Instastarz — ${slug} Store API`,
       description: `Shop the ${slug} boutique. Browse products, check availability, and create checkouts.`,
       version: '1.0.0',
     },

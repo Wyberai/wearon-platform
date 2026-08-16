@@ -73,8 +73,8 @@ function TheGridFooter({ brand }: { brand: ThemeBrand }) {
   return (
     <footer className="mt-20 border-t py-8" style={{ borderColor: 'var(--tg-line)' }}>
       <div className="max-w-[1080px] mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-3 text-[11px]" style={{ color: 'var(--tg-ink-dim)' }}>
-        {isDemoData ? <p>A concept storefront demonstrating a WearOn Insta theme. Not a real retailer.</p> : <p>{brand.name}, built on WearOn.</p>}
-        <p>Powered by <Link href="/" style={{ color: 'inherit' }}>WearOn</Link></p>
+        {isDemoData ? <p>A concept storefront demonstrating a Instastarz Insta theme. Not a real retailer.</p> : <p>{brand.name}, built on Instastarz.</p>}
+        <p>Powered by <Link href="/" style={{ color: 'inherit' }}>Instastarz</Link></p>
       </div>
     </footer>
   )

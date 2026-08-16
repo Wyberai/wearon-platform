@@ -62,7 +62,7 @@ export default function AIStyleDemo() {
         <div className="w-2.5 h-2.5 rounded-full bg-red-500 opacity-70" />
         <div className="w-2.5 h-2.5 rounded-full bg-yellow-500 opacity-70" />
         <div className="w-2.5 h-2.5 rounded-full bg-green-500 opacity-70" />
-        <span className="ml-3 text-xs" style={{ color: 'rgba(255,255,255,0.35)', fontFamily: 'monospace' }}>WearOn AI Stylist · GPT-4o</span>
+        <span className="ml-3 text-xs" style={{ color: 'rgba(255,255,255,0.35)', fontFamily: 'monospace' }}>Instastarz AI Stylist · GPT-4o</span>
       </div>
 
       <div className="p-6">

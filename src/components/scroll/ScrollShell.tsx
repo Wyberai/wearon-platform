@@ -120,11 +120,11 @@ function ScrollFooter({ brand }: { brand: ThemeBrand }) {
       <div className="border-t py-5" style={{ borderColor: 'var(--sc-line)' }}>
         <div className="max-w-[600px] mx-auto px-4 flex flex-col gap-2 text-[11px] text-center" style={{ color: 'var(--sc-ink-dim)' }}>
           {isDemoData ? (
-            <p>A concept storefront demonstrating WearOn&apos;s &quot;July&quot; flagship theme. Not affiliated with, endorsed by, or a copy of any social media platform.</p>
+            <p>A concept storefront demonstrating Instastarz&apos;s &quot;July&quot; flagship theme. Not affiliated with, endorsed by, or a copy of any social media platform.</p>
           ) : (
-            <p>{brand.name}, built on WearOn.</p>
+            <p>{brand.name}, built on Instastarz.</p>
           )}
-          <p>Powered by <Link href="/" className="hover:opacity-70 transition-opacity" style={{ color: 'inherit' }}>WearOn</Link></p>
+          <p>Powered by <Link href="/" className="hover:opacity-70 transition-opacity" style={{ color: 'inherit' }}>Instastarz</Link></p>
         </div>
       </div>
     </footer>

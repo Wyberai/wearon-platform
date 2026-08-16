@@ -151,7 +151,7 @@ export function orderEmail({
           <tr>
             <td style="padding:36px 0 0 0;text-align:center;">
               <p style="margin:0 0 8px 0;font-size:13px;color:#52525B;">
-                Order notifications for <strong style="color:#71717A;">${brandName}</strong> on WearOn.
+                Order notifications for <strong style="color:#71717A;">${brandName}</strong> on Instastarz.
               </p>
               <p style="margin:0;font-size:13px;color:#52525B;">
                 <a href="#" style="color:#F72585;text-decoration:none;">Unsubscribe</a>

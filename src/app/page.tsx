@@ -8,13 +8,13 @@ import { faqToJsonLd } from '@/lib/schema-org'
 // Short, direct-answer format on purpose — this is what AI answer engines
 // (Google AI Mode, Perplexity, ChatGPT search) actually quote, not long copy.
 const FAQS = [
-  { q: 'Is WearOn really free to start?', a: 'Yes. The Free plan gives you 10 products, a branded storefront, and WhatsApp + Razorpay checkout at no cost — no credit card required.' },
+  { q: 'Is Instastarz really free to start?', a: 'Yes. The Free plan gives you 10 products, a branded storefront, and WhatsApp + Razorpay checkout at no cost — no credit card required.' },
   { q: 'Can I use my own domain?', a: 'Yes. Every paid plan (Store, ₹3,000/mo, and above) includes a custom domain and a professional email address for your store.' },
   { q: 'Are the products I see on the demo stores mine to sell?', a: 'No — the 12 flagship stores (August, Ember, Kiraya, and so on) are live demos showing what each theme looks like with real sample products. When you sign up, your store starts empty and you add your own catalog.' },
   { q: 'Can I import products straight from Instagram?', a: 'Yes. Connect your Instagram account and import your photos and Reels directly as products — including the video, not just a thumbnail.' },
-  { q: 'Does WearOn take a cut of my sales?', a: "No. WearOn charges a flat monthly subscription, not a percentage of your revenue — you keep 100% of what you sell, minus Razorpay's standard payment processing fee." },
+  { q: 'Does Instastarz take a cut of my sales?', a: "No. Instastarz charges a flat monthly subscription, not a percentage of your revenue — you keep 100% of what you sell, minus Razorpay's standard payment processing fee." },
   { q: 'Can I cancel anytime?', a: "Yes. There's no lock-in contract — downgrade to Free or cancel from your dashboard whenever you want." },
-  { q: 'Can AI assistants like ChatGPT or Claude find and shop my store?', a: 'Yes. Every WearOn store gets a live MCP endpoint and an OpenAPI spec, so AI shopping assistants can browse your catalog, check sizes, and check out on a buyer\'s behalf.' },
+  { q: 'Can AI assistants like ChatGPT or Claude find and shop my store?', a: 'Yes. Every Instastarz store gets a live MCP endpoint and an OpenAPI spec, so AI shopping assistants can browse your catalog, check sizes, and check out on a buyer\'s behalf.' },
 ]
 
 export default function Home() {
@@ -158,9 +158,9 @@ function USHomePage() {
         {/* Announcement bar */}
         <div style={{ background: US_INK, color: '#fff', padding: '11px 24px', textAlign: 'center', fontSize: 12, letterSpacing: '0.05em' }}>
           Start free — no credit card required.{'  '}
-          <a href="https://cal.com/wyberai/wearon-consultation-with-the-founder" target="_blank" rel="noopener noreferrer" style={{ color: '#fff', textDecoration: 'underline', fontWeight: 700 }}>
-            Book a 20-min founder demo →
-          </a>
+          <Link href="/auth/signup" style={{ color: '#fff', textDecoration: 'underline', fontWeight: 700 }}>
+            Launch your store →
+          </Link>
         </div>
 
         <MarketingNav />
@@ -169,7 +169,7 @@ function USHomePage() {
         {/* card sliding onto it, visualizing the core pitch directly, with a */}
         {/* floating card over it same as the old photo-collage treatment. */}
         <section style={{ position: 'relative' }}>
-          <img src={HERO_IMAGE} alt="An Instagram Reel turning into a checkout — reels become sales on WearOn" className="wo-hero-image" />
+          <img src={HERO_IMAGE} alt="An Instagram Reel turning into a checkout — reels become sales on Instastarz" className="wo-hero-image" />
           <div className="wo-hero-card" style={{ background: '#fff', borderRadius: 20, padding: '32px 32px 28px', boxShadow: '0 20px 50px -20px rgba(23,21,18,0.35)' }}>
             <p style={{ fontSize: 11, letterSpacing: '0.14em', textTransform: 'uppercase', color: `${US_INK}66`, marginBottom: 14 }}>
               Twelve flagship themes
@@ -188,6 +188,18 @@ function USHomePage() {
                 See all twelve stores
               </Link>
             </div>
+          </div>
+        </section>
+
+        {/* TRUST STRIP — real integration partners, not fabricated customer
+            logos (this site has zero real sellers yet on the fresh DB, so
+            inventing customer names would be dishonest). */}
+        <section style={{ padding: '28px 24px', borderBottom: `1px solid ${US_INK}0E` }}>
+          <div style={{ maxWidth: 900, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 40, flexWrap: 'wrap' }}>
+            <span style={{ fontSize: 11, letterSpacing: '0.1em', textTransform: 'uppercase', color: `${US_INK}44` }}>Works with</span>
+            {['Razorpay', 'WhatsApp Business', 'Instagram'].map(name => (
+              <span key={name} style={{ fontSize: 15, fontWeight: 700, color: `${US_INK}55`, letterSpacing: '-0.2px' }}>{name}</span>
+            ))}
           </div>
         </section>
 
@@ -253,14 +265,14 @@ function USHomePage() {
         {/* 6-FEATURE GRID — AI-native differentiators */}
         <section style={{ borderTop: `1px solid ${US_INK}0E`, padding: '80px 24px' }}>
           <div style={{ maxWidth: 960, margin: '0 auto' }}>
-            <p style={{ fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: `${US_INK}44`, marginBottom: 14, textAlign: 'center' }}>What makes WearOn different in 2026</p>
+            <p style={{ fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: `${US_INK}44`, marginBottom: 14, textAlign: 'center' }}>What makes Instastarz different in 2026</p>
             <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(26px, 3.5vw, 40px)', fontWeight: 400, letterSpacing: '-1px', textAlign: 'center', marginBottom: 56, color: US_INK }}>
               Built for agents. Owned by you.
             </h2>
             <div className="wo-us-features" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '40px 48px' }}>
               {[
                 { label: 'AI BUYER', title: 'AI curates your seasonal edits.', body: 'Describe a vibe — "Summer Beach Edit", "Wedding Guest" — and your AI Buyer selects the products, writes editorial copy, and publishes the collection.' },
-                { label: 'MCP ENDPOINT', title: 'Claude can shop your store.', body: 'Every WearOn store gets a live MCP endpoint. When a buyer asks Claude to find a dress, it browses your catalog, checks sizes, and routes to checkout.' },
+                { label: 'MCP ENDPOINT', title: 'Claude can shop your store.', body: 'Every Instastarz store gets a live MCP endpoint. When a buyer asks Claude to find a dress, it browses your catalog, checks sizes, and routes to checkout.' },
                 { label: 'DM CHECKOUT', title: 'Instagram → payment in one thread.', body: '"I want this" in a DM. AI detects intent, asks for size, sends a payment link — all without leaving the conversation. No app, no redirect.' },
                 { label: 'AI VISIBILITY', title: 'See how AI describes your products.', body: 'Your AI Discoverability Score shows whether Rufus, Perplexity, and Google AI Mode can find you — and fixes the gaps with one click.' },
                 { label: 'BRAND DNA', title: 'Every AI output sounds like you.', body: "Set your tone, aesthetic, and buyer philosophy once. Every caption, reply, and collection description carries your voice — not a generic AI's." },
@@ -310,6 +322,9 @@ function USHomePage() {
                 )
               })}
             </div>
+            <p style={{ textAlign: 'center', marginTop: 32, fontSize: 14, color: `${US_INK}77` }}>
+              Refer a seller, get <strong style={{ color: US_INK }}>200 free AI try-ons</strong> — real credit, not a gimmick.
+            </p>
           </div>
         </section>
 
@@ -334,22 +349,19 @@ function USHomePage() {
           </div>
         </section>
 
-        {/* FOUNDER CTA */}
+        {/* CLOSING CTA — pure self-serve, no human-in-the-loop pitch */}
         <section style={{ padding: '100px 24px', background: US_INK }}>
           <div style={{ maxWidth: 600, margin: '0 auto', textAlign: 'center' }}>
-            <p style={{ fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', marginBottom: 20 }}>Talk to the founder</p>
+            <p style={{ fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', marginBottom: 20 }}>Ready when you are</p>
             <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(32px, 5vw, 56px)', fontWeight: 400, letterSpacing: '-1.5px', lineHeight: 1.08, color: '#fff', marginBottom: 20 }}>
-              See your store built live. 20 minutes.
+              Bring your Instagram shop to life.
             </h2>
             <p style={{ fontSize: 16, color: 'rgba(255,255,255,0.55)', lineHeight: 1.7, marginBottom: 36 }}>
-              Sumeet builds a demo store around your niche on the call. No script, no deck, no sales team.
+              Pick a theme, add your products, start selling — live in minutes, no card required.
             </p>
             <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-              <a href="https://cal.com/wyberai/wearon-consultation-with-the-founder" target="_blank" rel="noopener noreferrer" style={{ background: '#fff', color: US_INK, padding: '14px 32px', fontSize: 11, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', textDecoration: 'none' }}>
-                Book a free 20-min call →
-              </a>
-              <Link href="/auth/signup" style={{ color: '#fff', padding: '14px 32px', fontSize: 11, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', textDecoration: 'none', border: '1px solid rgba(255,255,255,0.3)' }}>
-                Start free
+              <Link href="/auth/signup" style={{ background: '#fff', color: US_INK, padding: '14px 32px', fontSize: 11, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', textDecoration: 'none' }}>
+                Start free →
               </Link>
             </div>
           </div>
@@ -358,7 +370,7 @@ function USHomePage() {
         {/* FOOTER */}
         <footer style={{ borderTop: `1px solid ${US_INK}10`, padding: '28px 24px', background: '#fff' }}>
           <div style={{ maxWidth: 900, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
-            <span style={{ fontFamily: 'var(--font-display)', fontWeight: 400, fontSize: 18, letterSpacing: '-0.3px', color: US_INK }}>WearOn</span>
+            <span style={{ fontFamily: 'var(--font-display)', fontWeight: 400, fontSize: 18, letterSpacing: '-0.3px', color: US_INK }}>Instastarz</span>
             <span style={{ fontSize: 11, letterSpacing: '0.06em', color: `${US_INK}55`, textTransform: 'uppercase' }}>The Shopify Alternative for Boutiques · 2026</span>
             <div style={{ display: 'flex', gap: 20 }}>
               <Link href="/auth/login" style={{ fontSize: 12, color: `${US_INK}66`, textDecoration: 'none' }}>Login</Link>
@@ -366,7 +378,7 @@ function USHomePage() {
             </div>
           </div>
           <p style={{ maxWidth: 900, margin: '16px auto 0', fontSize: 11, color: `${US_INK}44`, textAlign: 'center' }}>
-            © 2026 Signalpulse Technologies. WearOn is a product of Signalpulse Technologies.
+            © 2026 Signalpulse Technologies. Instastarz is a product of Signalpulse Technologies.
           </p>
         </footer>
       </div>

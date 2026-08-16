@@ -1,6 +1,6 @@
 // UCP (Universal Commerce Protocol) — Shopify + Google AI Mode compatible
 // Endpoint that lets Google AI Mode, Rufus, and UCP-aware agents browse and
-// initiate checkout on WearOn stores.
+// initiate checkout on Instastarz stores.
 //
 // Spec: GET = product catalog, POST = checkout intent
 // Docs: universal-checkout-protocol.dev

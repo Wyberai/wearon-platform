@@ -1,8 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
 import { StorePreviewCapture } from './StorePreviewCapture'
+import { StickyCaptureBar } from './StickyCaptureBar'
 
 export interface ThemeTile {
   name: string
@@ -18,6 +19,28 @@ export interface ThemeTile {
 export function ThemePicker({ tiles }: { tiles: ThemeTile[] }) {
   const [selectedSlug, setSelectedSlug] = useState(tiles[0].slug)
   const selected = tiles.find(t => t.slug === selectedSlug) ?? tiles[0]
+
+  // Shopify keeps its email field visible the entire scroll — once the
+  // inline capture box below has scrolled UP out of view (not before we've
+  // even reached it), a persistent bottom bar takes over so the same
+  // conversion action stays reachable through every section after it.
+  const [scrolledPast, setScrolledPast] = useState(false)
+  const inlineRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    function checkPosition() {
+      const el = inlineRef.current
+      if (!el) return
+      setScrolledPast(el.getBoundingClientRect().bottom < 0)
+    }
+    checkPosition()
+    window.addEventListener('scroll', checkPosition, { passive: true })
+    window.addEventListener('resize', checkPosition)
+    return () => {
+      window.removeEventListener('scroll', checkPosition)
+      window.removeEventListener('resize', checkPosition)
+    }
+  }, [])
 
   return (
     <>
@@ -60,9 +83,10 @@ export function ThemePicker({ tiles }: { tiles: ThemeTile[] }) {
           )
         })}
       </div>
-      <div style={{ marginTop: 40, padding: '0 24px' }}>
+      <div ref={inlineRef} style={{ marginTop: 40, padding: '0 24px' }}>
         <StorePreviewCapture theme={selected} />
       </div>
+      {scrolledPast && <StickyCaptureBar theme={selected} />}
     </>
   )
 }

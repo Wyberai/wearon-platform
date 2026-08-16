@@ -234,11 +234,11 @@ function SaajFooter({ brand }: { brand: ThemeBrand }) {
       <div className="border-t py-6" style={{ borderColor: 'var(--sj-line)' }}>
         <div className="max-w-[1440px] mx-auto px-6 md:px-10 flex flex-col md:flex-row items-center justify-between gap-3 text-[11px]" style={{ color: 'var(--sj-ink-dim)' }}>
           {isDemoData ? (
-            <p>A concept storefront demonstrating WearOn&apos;s &quot;June&quot; flagship theme. Not a real retailer.</p>
+            <p>A concept storefront demonstrating Instastarz&apos;s &quot;June&quot; flagship theme. Not a real retailer.</p>
           ) : (
-            <p>{brand.name}, built on WearOn.</p>
+            <p>{brand.name}, built on Instastarz.</p>
           )}
-          <p>Powered by <Link href="/" className="hover:opacity-70 transition-opacity" style={{ color: 'inherit' }}>WearOn</Link></p>
+          <p>Powered by <Link href="/" className="hover:opacity-70 transition-opacity" style={{ color: 'inherit' }}>Instastarz</Link></p>
         </div>
       </div>
     </footer>
