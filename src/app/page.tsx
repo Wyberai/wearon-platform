@@ -524,31 +524,6 @@ const US_THEMES = [
   { name: 'Luxury', bg: '#F8F5F0', accent: '#8B6E4E', ink: '#1C1410', tag: 'Premium boutique' },
 ]
 
-const US_PLANS = [
-  {
-    name: 'Starter',
-    price: 'Free',
-    badge: null,
-    desc: 'Up to 20 products. Try it, no card required.',
-    features: ['Branded storefront', 'Card checkout (Stripe)', 'Basic analytics'],
-  },
-  {
-    name: 'Pro',
-    price: '$49',
-    badge: 'LESS THAN SHOPIFY BASIC',
-    desc: 'Everything a boutique actually needs.',
-    features: ['Unlimited products', 'Stripe checkout, 0% platform fee*', 'AI product photos', 'Your own domain', 'Full analytics'],
-    featured: true,
-  },
-  {
-    name: 'Growth',
-    price: '$149',
-    badge: null,
-    desc: 'Still less than Shopify + Klaviyo + Loox.',
-    features: ['Everything in Pro', 'Android app + Play Store listing', 'Virtual try-on', 'AI video clips ($0.60/clip)', 'TikTok Shop sync'],
-  },
-]
-
 function USThemeCard({ t }: { t: typeof US_THEMES[0] }) {
   return (
     <div style={{ borderRadius: 16, overflow: 'hidden', background: t.bg, minWidth: 190, flexShrink: 0, boxShadow: '0 8px 28px rgba(0,0,0,0.14)' }}>
@@ -592,6 +567,15 @@ function USHomePage() {
     { name: 'AUGUST', sub: 'Old-world tailoring, ask-anything styling', img: '/august/campaign/hero.jpg', slug: 'august' },
     { name: 'EMBER', sub: 'Dress by mood, one tap to an outfit', img: '/ember/campaign/hero.jpg', slug: 'ember' },
     { name: 'BLOOM', sub: 'Four questions, one built capsule', img: '/bloom/campaign/hero.jpg', slug: 'bloom' },
+    { name: 'MELA', sub: 'Bazaar haggling, real AI counter-offers', img: '/mela/products/anarkali-3pc-set.jpg', slug: 'mela' },
+    { name: 'TAANA', sub: 'Handloom provenance, thread by thread', img: '/taana/campaign/hero.jpg', slug: 'taana' },
+    { name: 'SAAJ', sub: 'Wedding-function planner, one outfit each', img: '/saaj/products/emerald-reception-lehenga.jpg', slug: 'saaj' },
+    { name: 'SCROLL', sub: 'Shop like a feed — stories, DMs, likes', img: '/scroll/products/wrap-dress.jpg', slug: 'scroll' },
+    { name: 'DHAMAKA', sub: 'Flash-sale hype, real price history', img: '/dhamaka/campaign/hero.jpg', slug: 'dhamaka' },
+    { name: 'AARAM', sub: 'Comfort matched to your day', img: '/aaram/campaign/hero.jpg', slug: 'aaram' },
+    { name: 'UTSAV', sub: 'Festival gifting, built from who it’s for', img: '/utsav/products/diwali-deluxe-hamper.jpg', slug: 'utsav' },
+    { name: 'GALLI', sub: 'Drop culture, countdown and captions', img: '/galli/products/ghost-logo-hoodie.jpg', slug: 'galli' },
+    { name: 'KIRAYA', sub: 'Rent bridal-grade wear for one night', img: '/kiraya/campaign/hero.jpg', slug: 'kiraya' },
   ]
 
   return (
@@ -600,8 +584,10 @@ function USHomePage() {
         .wo-tile-img { transition: transform 0.55s ease; }
         .wo-tile:hover .wo-tile-img { transform: scale(1.04); }
         @media (max-width: 640px) {
-          .wo-us-compare { grid-template-columns: 1fr !important; }
           .wo-us-features { grid-template-columns: 1fr !important; gap: 32px !important; }
+          .wo-us-pricing { grid-template-columns: repeat(2, 1fr) !important; }
+        }
+        @media (max-width: 460px) {
           .wo-us-pricing { grid-template-columns: 1fr !important; }
         }
         .wo-collage {
@@ -636,6 +622,8 @@ function USHomePage() {
         .wo-feat-fan { display: flex; }
         .wo-feat-fan div { width: 56px; height: 68px; border-radius: 6px; border: 1px solid rgba(23,21,18,0.08); margin-left: -20px; box-shadow: -3px 0 8px rgba(23,21,18,0.1); background-size: cover; background-position: center; }
         .wo-feat-fan div:first-child { margin-left: 0; }
+        @media (max-width: 900px) { .wo-tile-grid { grid-template-columns: repeat(3, 1fr) !important; } }
+        @media (max-width: 640px) { .wo-tile-grid { grid-template-columns: repeat(2, 1fr) !important; } }
       `}</style>
 
 
@@ -650,7 +638,7 @@ function USHomePage() {
 
         <MarketingNav />
 
-        {/* HERO — photo-collage of real garments from the three live flagship stores, */}
+        {/* HERO — photo-collage of real garments from the twelve live flagship stores, */}
         {/* with a floating card, instead of one stock photo behind a gradient. */}
         <section style={{ position: 'relative' }}>
           <div className="wo-collage">
@@ -671,14 +659,14 @@ function USHomePage() {
               Every boutique gets its own atelier.
             </h1>
             <p style={{ fontSize: 14.5, color: `${US_INK}99`, lineHeight: 1.65, marginBottom: 22 }}>
-              AUGUST, EMBER, and BLOOM are live now — three genuinely different ways to shop, not one template with a color picker. Nine more are on the way.
+              All twelve are live now — twelve genuinely different ways to shop, not one template with a color picker.
             </p>
             <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
               <Link href="/auth/signup" style={{ background: US_INK, color: '#fff', padding: '13px 24px', borderRadius: 999, fontSize: 13, fontWeight: 700, textDecoration: 'none' }}>
                 Launch my store, free →
               </Link>
               <Link href="/themes" style={{ color: US_INK, padding: '13px 20px', borderRadius: 999, fontSize: 13, fontWeight: 600, textDecoration: 'none', border: `1px solid ${US_INK}22` }}>
-                See the three stores
+                See all twelve stores
               </Link>
             </div>
           </div>
@@ -695,10 +683,10 @@ function USHomePage() {
               </div>
               <h3 style={{ fontSize: 17, fontWeight: 600, letterSpacing: '-0.2px', marginBottom: 8, color: US_INK }}>Twelve flagship themes</h3>
               <p style={{ fontSize: 14, color: `${US_INK}88`, lineHeight: 1.7, marginBottom: 14 }}>
-                Not a template with a color picker — three completely different shopping mechanics already live, nine more on the way.
+                Not a template with a color picker — twelve completely different shopping mechanics, all live.
               </p>
               <Link href="/themes" style={{ fontSize: 13, fontWeight: 700, color: US_INK, textDecoration: 'underline', textDecorationColor: US_ACCENT, textUnderlineOffset: 4 }}>
-                Preview all three →
+                Preview all twelve →
               </Link>
             </div>
             <div className="wo-card" style={{
@@ -729,15 +717,15 @@ function USHomePage() {
           </div>
         </div>
 
-        {/* THEME TILES — the three flagship stores that are actually live, not cosmetic reskins */}
+        {/* THEME TILES — all twelve flagship stores, live now, not cosmetic reskins */}
         <section style={{ paddingTop: 64 }}>
           <div style={{ padding: '0 24px', marginBottom: 32 }}>
-            <p style={{ fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: `${US_INK}55`, marginBottom: 10 }}>3 of 12 flagship themes, live now</p>
+            <p style={{ fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: `${US_INK}55`, marginBottom: 10 }}>Twelve flagship themes, all live</p>
             <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(28px, 4vw, 46px)', fontWeight: 400, letterSpacing: '-1px', lineHeight: 1.1, color: US_INK }}>
               Your store. Your look.
             </h2>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 2 }}>
+          <div className="wo-tile-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 2 }}>
             {THEME_TILES.map(t => (
               <Link key={t.slug} href={`/store/${t.slug}`} className="wo-tile" style={{ position: 'relative', display: 'block', textDecoration: 'none', aspectRatio: '3/4', overflow: 'hidden' }}>
                 <img src={t.img} alt={t.name} className="wo-tile-img" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
@@ -753,45 +741,6 @@ function USHomePage() {
           <p style={{ textAlign: 'center', padding: '18px 24px 0', fontSize: 13, color: `${US_INK}66` }}>
             Every theme: full checkout · your domain · AI-native features · <Link href="/themes" style={{ color: US_INK, textDecoration: 'underline' }}>see all twelve →</Link>
           </p>
-        </section>
-
-        {/* SHOPIFY COMPARISON */}
-        <section style={{ padding: '100px 24px' }}>
-          <div className="wo-us-compare" style={{ maxWidth: 860, margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 2 }}>
-            <div style={{ background: '#f3f3f3', padding: '40px 36px' }}>
-              <p style={{ fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: `${US_INK}55`, marginBottom: 24 }}>What boutiques pay Shopify</p>
-              {[['Shopify Basic', '$79'], ['Klaviyo', '$45'], ['Loox reviews', '$10'], ['Gorgias support', '$10'], ['Tidio chat', '$19']].map(([k, v]) => (
-                <div key={k} style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 0', borderBottom: '1px solid rgba(0,0,0,0.07)' }}>
-                  <span style={{ fontSize: 14, color: `${US_INK}77` }}>{k}</span>
-                  <span style={{ fontSize: 14, color: `${US_INK}66`, fontVariantNumeric: 'tabular-nums' }}>{v}/mo</span>
-                </div>
-              ))}
-              <div style={{ display: 'flex', justifyContent: 'space-between', padding: '16px 0 0' }}>
-                <span style={{ fontSize: 15, fontWeight: 700, color: US_INK }}>Total</span>
-                <span style={{ fontSize: 24, fontWeight: 700, color: '#c0392b', fontVariantNumeric: 'tabular-nums' }}>$163/mo</span>
-              </div>
-              <p style={{ fontSize: 11, color: `${US_INK}44`, marginTop: 6 }}>+ 2.9% transaction fee on every sale</p>
-            </div>
-            <div style={{ background: US_INK, padding: '40px 36px', color: '#fff' }}>
-              <p style={{ fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', marginBottom: 24 }}>WearOn Pro — all of it</p>
-              {[['Storefront + Stripe checkout', '✓'], ['Email capture + analytics', '✓'], ['Customer reviews', '✓'], ['AI product photos', '✓'], ['Your own domain', '✓']].map(([k, v]) => (
-                <div key={k} style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 0', borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
-                  <span style={{ fontSize: 14, color: 'rgba(255,255,255,0.7)' }}>{k}</span>
-                  <span style={{ fontSize: 14, fontWeight: 700, color: US_ACCENT }}>{v}</span>
-                </div>
-              ))}
-              <div style={{ display: 'flex', justifyContent: 'space-between', padding: '16px 0 0' }}>
-                <span style={{ fontSize: 15, fontWeight: 700 }}>Total</span>
-                <span style={{ fontSize: 24, fontWeight: 700, fontVariantNumeric: 'tabular-nums' }}>$49/mo</span>
-              </div>
-              <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.3)', marginTop: 6 }}>+ Stripe rate (2.9% + 30¢), passed through at cost</p>
-            </div>
-          </div>
-          <div style={{ textAlign: 'center', marginTop: 32 }}>
-            <Link href="/auth/signup" style={{ display: 'inline-block', background: US_INK, color: '#fff', padding: '14px 36px', fontSize: 11, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', textDecoration: 'none' }}>
-              Start free — no card required →
-            </Link>
-          </div>
         </section>
 
         {/* 6-FEATURE GRID — AI-native differentiators */}
@@ -820,42 +769,45 @@ function USHomePage() {
           </div>
         </section>
 
-        {/* PRICING */}
+        {/* PRICING — real plans, real INR, matches billing exactly */}
         <section style={{ padding: '100px 24px' }}>
-          <div style={{ maxWidth: 860, margin: '0 auto' }}>
+          <div style={{ maxWidth: 1080, margin: '0 auto' }}>
             <p style={{ fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: `${US_INK}55`, marginBottom: 16, textAlign: 'center' }}>Pricing</p>
-            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(30px, 4vw, 44px)', fontWeight: 400, letterSpacing: '-1px', textAlign: 'center', marginBottom: 56, color: US_INK }}>
+            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(30px, 4vw, 44px)', fontWeight: 400, letterSpacing: '-1px', textAlign: 'center', marginBottom: 12, color: US_INK }}>
               Start free. Scale when you&apos;re ready.
             </h2>
-            <div className="wo-us-pricing" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 2 }}>
+            <p style={{ textAlign: 'center', fontSize: 14, color: `${US_INK}66`, marginBottom: 56 }}>All prices in INR · Razorpay + WhatsApp checkout on every plan</p>
+            <div className="wo-us-pricing" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 2 }}>
               {[
-                { name: 'Starter', price: 'Free', desc: '20 products. Try it.', features: ['Branded storefront', 'Card checkout', 'Basic analytics'], cta: 'Start free', featured: false },
-                { name: 'Pro', price: '$49', desc: 'Less than Shopify Basic.', features: ['Unlimited products', '0% platform fee*', 'AI product photos', 'Your domain', 'Full analytics'], cta: 'Get started', featured: true },
-                { name: 'Growth', price: '$149', desc: 'Less than Shopify + apps.', features: ['Everything in Pro', 'Android app', 'Virtual try-on', 'AI video clips', 'TikTok sync'], cta: 'Get started', featured: false },
-              ].map(plan => (
-                <div key={plan.name} style={{ padding: '36px 28px', background: plan.featured ? US_INK : '#f8f8f8', color: plan.featured ? '#fff' : US_INK }}>
-                  {plan.featured && <p style={{ fontSize: 10, letterSpacing: '0.15em', textTransform: 'uppercase', color: US_ACCENT, marginBottom: 14, fontWeight: 700 }}>Most popular</p>}
-                  <p style={{ fontSize: 11, letterSpacing: '0.1em', textTransform: 'uppercase', color: plan.featured ? 'rgba(255,255,255,0.45)' : `${US_INK}66`, marginBottom: 10 }}>{plan.name}</p>
-                  <p style={{ fontFamily: 'var(--font-display)', fontSize: 48, fontWeight: 400, letterSpacing: '-2px', marginBottom: 4, lineHeight: 1 }}>
-                    {plan.price}<span style={{ fontSize: 14, fontWeight: 400, opacity: 0.45, letterSpacing: 0 }}>{plan.price !== 'Free' ? '/mo' : ''}</span>
-                  </p>
-                  <p style={{ fontSize: 13, color: plan.featured ? 'rgba(255,255,255,0.5)' : `${US_INK}66`, marginBottom: 24 }}>{plan.desc}</p>
-                  <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 28px', display: 'flex', flexDirection: 'column', gap: 10 }}>
-                    {plan.features.map(f => (
-                      <li key={f} style={{ fontSize: 13, display: 'flex', gap: 8, color: plan.featured ? 'rgba(255,255,255,0.8)' : `${US_INK}99` }}>
-                        <span style={{ color: US_ACCENT, flexShrink: 0 }}>—</span>{f}
-                      </li>
-                    ))}
-                  </ul>
-                  <Link href="/auth/signup" style={{ display: 'block', textAlign: 'center', padding: '13px 0', fontSize: 11, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', textDecoration: 'none', background: plan.featured ? '#fff' : US_INK, color: plan.featured ? US_INK : '#fff' }}>
-                    {plan.cta} →
-                  </Link>
-                </div>
-              ))}
+                { key: 'free', desc: 'Try it, no card required.', features: [`${PLANS.free.products} products`, 'Branded storefront', 'WhatsApp + card checkout', 'Basic analytics'] },
+                { key: 'starter', desc: 'A real store, fully checked out.', features: [`${PLANS.starter.products} products`, 'Full storefront + checkout', 'Razorpay + WhatsApp ordering', 'Analytics dashboard'] },
+                { key: 'growth', desc: 'Everything in Store, plus the app.', features: [`${PLANS.growth.products} products`, 'Everything in Store', 'Native Android app + Play Store listing', 'Priority support'], featured: true },
+                { key: 'pro', desc: 'For sellers who want it all.', features: ['Unlimited products', 'Everything in Store + App', `${PLANS.pro.try_ons} AI try-ons/mo`, `${PLANS.pro.ai_credits} AI photoshoot credits/mo`] },
+              ].map(plan => {
+                const data = PLANS[plan.key as keyof typeof PLANS]
+                return (
+                  <div key={plan.key} style={{ padding: '32px 24px', background: plan.featured ? US_INK : '#f8f8f8', color: plan.featured ? '#fff' : US_INK }}>
+                    {plan.featured && <p style={{ fontSize: 10, letterSpacing: '0.15em', textTransform: 'uppercase', color: US_ACCENT, marginBottom: 14, fontWeight: 700 }}>Most popular</p>}
+                    <p style={{ fontSize: 11, letterSpacing: '0.1em', textTransform: 'uppercase', color: plan.featured ? 'rgba(255,255,255,0.45)' : `${US_INK}66`, marginBottom: 10 }}>{data.name}</p>
+                    <p style={{ fontFamily: 'var(--font-display)', fontSize: 38, fontWeight: 400, letterSpacing: '-1.5px', marginBottom: 4, lineHeight: 1 }}>
+                      {data.price_inr === 0 ? 'Free' : `₹${data.price_inr.toLocaleString('en-IN')}`}
+                      <span style={{ fontSize: 13, fontWeight: 400, opacity: 0.45, letterSpacing: 0 }}>{data.price_inr > 0 ? '/mo' : ''}</span>
+                    </p>
+                    <p style={{ fontSize: 13, color: plan.featured ? 'rgba(255,255,255,0.5)' : `${US_INK}66`, marginBottom: 24 }}>{plan.desc}</p>
+                    <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 28px', display: 'flex', flexDirection: 'column', gap: 10 }}>
+                      {plan.features.map(f => (
+                        <li key={f} style={{ fontSize: 13, display: 'flex', gap: 8, color: plan.featured ? 'rgba(255,255,255,0.8)' : `${US_INK}99` }}>
+                          <span style={{ color: US_ACCENT, flexShrink: 0 }}>—</span>{f}
+                        </li>
+                      ))}
+                    </ul>
+                    <Link href="/auth/signup" style={{ display: 'block', textAlign: 'center', padding: '13px 0', fontSize: 11, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', textDecoration: 'none', background: plan.featured ? '#fff' : US_INK, color: plan.featured ? US_INK : '#fff' }}>
+                      {data.label} →
+                    </Link>
+                  </div>
+                )
+              })}
             </div>
-            <p style={{ textAlign: 'center', fontSize: 11, color: `${US_INK}44`, marginTop: 20 }}>
-              * Stripe transaction fee (2.9% + 30¢) applies, passed through at cost.
-            </p>
           </div>
         </section>
 
