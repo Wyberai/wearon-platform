@@ -59,9 +59,9 @@ jobs:
       - name: Checkout wearon-app
         uses: actions/checkout@v4
         with:
-          repository: sumeet-jpg/wearon-app
+          repository: Wyberai/wearon-app
           token: ${{ secrets.GH_PAT }}
-          ref: main
+          ref: master
 
       # ── 2. Node.js 20 ─────────────────────────────────────────────────────
       - name: Setup Node.js 20

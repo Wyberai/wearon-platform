@@ -50,8 +50,8 @@ export async function POST() {
 
   if (process.env.GITHUB_PAT) {
     try {
-      await fetch(
-        'https://api.github.com/repos/sumeet-jpg/wearon-app/actions/workflows/build-apk.yml/dispatches',
+      const dispatchRes = await fetch(
+        'https://api.github.com/repos/Wyberai/wearon-platform/actions/workflows/build-apk.yml/dispatches',
         {
           method: 'POST',
           headers: {
@@ -60,7 +60,7 @@ export async function POST() {
             Accept: 'application/vnd.github.v3+json',
           },
           body: JSON.stringify({
-            ref: 'main',
+            ref: 'master',
             inputs: {
               seller_id: user.id,
               slug: config.slug,
@@ -72,7 +72,22 @@ export async function POST() {
           }),
         }
       )
-    } catch { /* trigger is best-effort */ }
+
+      if (!dispatchRes.ok) {
+        const detail = await dispatchRes.text()
+        await admin.from('apk_builds').update({
+          status: 'failed',
+          build_log: `dispatch failed: ${dispatchRes.status} ${detail}`,
+        }).eq('id', build?.id)
+        return NextResponse.json({ error: 'Failed to start build. Please try again or contact support.' }, { status: 502 })
+      }
+    } catch (err) {
+      await admin.from('apk_builds').update({
+        status: 'failed',
+        build_log: `dispatch threw: ${err instanceof Error ? err.message : String(err)}`,
+      }).eq('id', build?.id)
+      return NextResponse.json({ error: 'Failed to start build. Please try again or contact support.' }, { status: 502 })
+    }
   }
 
   return NextResponse.json({
