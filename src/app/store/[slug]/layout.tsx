@@ -10,6 +10,24 @@ import { EmberShell } from '@/components/ember/EmberShell'
 import { EMBER_BRAND } from '@/lib/ember/catalog'
 import { BloomShell } from '@/components/bloom/BloomShell'
 import { BLOOM_BRAND } from '@/lib/bloom/catalog'
+import { MelaShell } from '@/components/mela/MelaShell'
+import { MELA_BRAND } from '@/lib/mela/catalog'
+import { TaanaShell } from '@/components/taana/TaanaShell'
+import { TAANA_BRAND } from '@/lib/taana/catalog'
+import { SaajShell } from '@/components/saaj/SaajShell'
+import { SAAJ_BRAND } from '@/lib/saaj/catalog'
+import { ScrollShell } from '@/components/scroll/ScrollShell'
+import { SCROLL_BRAND } from '@/lib/scroll/catalog'
+import { DhamakaShell } from '@/components/dhamaka/DhamakaShell'
+import { DHAMAKA_BRAND } from '@/lib/dhamaka/catalog'
+import { AaramShell } from '@/components/aaram/AaramShell'
+import { AARAM_BRAND } from '@/lib/aaram/catalog'
+import { UtsavShell } from '@/components/utsav/UtsavShell'
+import { UTSAV_BRAND } from '@/lib/utsav/catalog'
+import { GalliShell } from '@/components/galli/GalliShell'
+import { GALLI_BRAND } from '@/lib/galli/catalog'
+import { KirayaShell } from '@/components/kiraya/KirayaShell'
+import { KIRAYA_BRAND } from '@/lib/kiraya/catalog'
 import { configToThemeBrand } from '@/lib/flagship/adapters'
 
 // Fetch tenant config server-side and inject CSS variables
@@ -34,6 +52,33 @@ export default async function StoreLayout({
   if (slug === 'bloom') {
     return <BloomShell brand={BLOOM_BRAND}>{children}</BloomShell>
   }
+  if (slug === 'mela') {
+    return <MelaShell brand={MELA_BRAND}>{children}</MelaShell>
+  }
+  if (slug === 'taana') {
+    return <TaanaShell brand={TAANA_BRAND}>{children}</TaanaShell>
+  }
+  if (slug === 'saaj') {
+    return <SaajShell brand={SAAJ_BRAND}>{children}</SaajShell>
+  }
+  if (slug === 'scroll') {
+    return <ScrollShell brand={SCROLL_BRAND}>{children}</ScrollShell>
+  }
+  if (slug === 'dhamaka') {
+    return <DhamakaShell brand={DHAMAKA_BRAND}>{children}</DhamakaShell>
+  }
+  if (slug === 'aaram') {
+    return <AaramShell brand={AARAM_BRAND}>{children}</AaramShell>
+  }
+  if (slug === 'utsav') {
+    return <UtsavShell brand={UTSAV_BRAND}>{children}</UtsavShell>
+  }
+  if (slug === 'galli') {
+    return <GalliShell brand={GALLI_BRAND}>{children}</GalliShell>
+  }
+  if (slug === 'kiraya') {
+    return <KirayaShell brand={KIRAYA_BRAND}>{children}</KirayaShell>
+  }
 
   const admin = createAdminClient()
   // 'demo' always uses the fallback config so it shows US content regardless of any DB record
@@ -53,6 +98,33 @@ export default async function StoreLayout({
   }
   if (config?.theme_id === 'march') {
     return <BloomShell brand={configToThemeBrand(config, slug)}>{children}</BloomShell>
+  }
+  if (config?.theme_id === 'april') {
+    return <MelaShell brand={configToThemeBrand(config, slug)}>{children}</MelaShell>
+  }
+  if (config?.theme_id === 'may') {
+    return <TaanaShell brand={configToThemeBrand(config, slug)}>{children}</TaanaShell>
+  }
+  if (config?.theme_id === 'june') {
+    return <SaajShell brand={configToThemeBrand(config, slug)}>{children}</SaajShell>
+  }
+  if (config?.theme_id === 'july') {
+    return <ScrollShell brand={configToThemeBrand(config, slug)}>{children}</ScrollShell>
+  }
+  if (config?.theme_id === 'august') {
+    return <DhamakaShell brand={configToThemeBrand(config, slug)}>{children}</DhamakaShell>
+  }
+  if (config?.theme_id === 'september') {
+    return <AaramShell brand={configToThemeBrand(config, slug)}>{children}</AaramShell>
+  }
+  if (config?.theme_id === 'october') {
+    return <UtsavShell brand={configToThemeBrand(config, slug)}>{children}</UtsavShell>
+  }
+  if (config?.theme_id === 'november') {
+    return <GalliShell brand={configToThemeBrand(config, slug)}>{children}</GalliShell>
+  }
+  if (config?.theme_id === 'december') {
+    return <KirayaShell brand={configToThemeBrand(config, slug)}>{children}</KirayaShell>
   }
 
   // Fallback demo config

@@ -26,6 +26,24 @@ import { EmberHome } from '@/components/ember/EmberHome'
 import { EMBER_BRAND, EMBER_PRODUCTS } from '@/lib/ember/catalog'
 import { BloomHome } from '@/components/bloom/BloomHome'
 import { BLOOM_BRAND, BLOOM_PRODUCTS } from '@/lib/bloom/catalog'
+import { MelaHome } from '@/components/mela/MelaHome'
+import { MELA_BRAND, MELA_PRODUCTS } from '@/lib/mela/catalog'
+import { TaanaHome } from '@/components/taana/TaanaHome'
+import { TAANA_BRAND, TAANA_PRODUCTS } from '@/lib/taana/catalog'
+import { SaajHome } from '@/components/saaj/SaajHome'
+import { SAAJ_BRAND, SAAJ_PRODUCTS } from '@/lib/saaj/catalog'
+import { ScrollHome } from '@/components/scroll/ScrollHome'
+import { SCROLL_BRAND, SCROLL_PRODUCTS } from '@/lib/scroll/catalog'
+import { DhamakaHome } from '@/components/dhamaka/DhamakaHome'
+import { DHAMAKA_BRAND, DHAMAKA_PRODUCTS } from '@/lib/dhamaka/catalog'
+import { AaramHome } from '@/components/aaram/AaramHome'
+import { AARAM_BRAND, AARAM_PRODUCTS } from '@/lib/aaram/catalog'
+import { UtsavHome } from '@/components/utsav/UtsavHome'
+import { UTSAV_BRAND, UTSAV_PRODUCTS } from '@/lib/utsav/catalog'
+import { GalliHome } from '@/components/galli/GalliHome'
+import { GALLI_BRAND, GALLI_PRODUCTS } from '@/lib/galli/catalog'
+import { KirayaHome } from '@/components/kiraya/KirayaHome'
+import { KIRAYA_BRAND, KIRAYA_PRODUCTS } from '@/lib/kiraya/catalog'
 import { configToThemeBrand, productToThemeProduct } from '@/lib/flagship/adapters'
 
 const STORAGE_BASE = 'https://zhrubbutcsvhcbuaalep.supabase.co/storage/v1/object/public/product-images'
@@ -65,6 +83,33 @@ export default function StorePage() {
   }
   if (slug === 'bloom') {
     return <BloomHome brand={BLOOM_BRAND} products={BLOOM_PRODUCTS} />
+  }
+  if (slug === 'mela') {
+    return <MelaHome brand={MELA_BRAND} products={MELA_PRODUCTS} />
+  }
+  if (slug === 'taana') {
+    return <TaanaHome brand={TAANA_BRAND} products={TAANA_PRODUCTS} />
+  }
+  if (slug === 'saaj') {
+    return <SaajHome brand={SAAJ_BRAND} products={SAAJ_PRODUCTS} />
+  }
+  if (slug === 'scroll') {
+    return <ScrollHome brand={SCROLL_BRAND} products={SCROLL_PRODUCTS} />
+  }
+  if (slug === 'dhamaka') {
+    return <DhamakaHome brand={DHAMAKA_BRAND} products={DHAMAKA_PRODUCTS} />
+  }
+  if (slug === 'aaram') {
+    return <AaramHome brand={AARAM_BRAND} products={AARAM_PRODUCTS} />
+  }
+  if (slug === 'utsav') {
+    return <UtsavHome brand={UTSAV_BRAND} products={UTSAV_PRODUCTS} />
+  }
+  if (slug === 'galli') {
+    return <GalliHome brand={GALLI_BRAND} products={GALLI_PRODUCTS} />
+  }
+  if (slug === 'kiraya') {
+    return <KirayaHome brand={KIRAYA_BRAND} products={KIRAYA_PRODUCTS} />
   }
 
   return (
@@ -244,6 +289,33 @@ function StorePageContent() {
   }
   if (config?.theme_id === 'march') {
     return <BloomHome brand={configToThemeBrand(config, slug)} products={products.filter(p => p.is_active).map(productToThemeProduct)} />
+  }
+  if (config?.theme_id === 'april') {
+    return <MelaHome brand={configToThemeBrand(config, slug)} products={products.filter(p => p.is_active).map(productToThemeProduct)} />
+  }
+  if (config?.theme_id === 'may') {
+    return <TaanaHome brand={configToThemeBrand(config, slug)} products={products.filter(p => p.is_active).map(productToThemeProduct)} />
+  }
+  if (config?.theme_id === 'june') {
+    return <SaajHome brand={configToThemeBrand(config, slug)} products={products.filter(p => p.is_active).map(productToThemeProduct)} />
+  }
+  if (config?.theme_id === 'july') {
+    return <ScrollHome brand={configToThemeBrand(config, slug)} products={products.filter(p => p.is_active).map(productToThemeProduct)} />
+  }
+  if (config?.theme_id === 'august') {
+    return <DhamakaHome brand={configToThemeBrand(config, slug)} products={products.filter(p => p.is_active).map(productToThemeProduct)} />
+  }
+  if (config?.theme_id === 'september') {
+    return <AaramHome brand={configToThemeBrand(config, slug)} products={products.filter(p => p.is_active).map(productToThemeProduct)} />
+  }
+  if (config?.theme_id === 'october') {
+    return <UtsavHome brand={configToThemeBrand(config, slug)} products={products.filter(p => p.is_active).map(productToThemeProduct)} />
+  }
+  if (config?.theme_id === 'november') {
+    return <GalliHome brand={configToThemeBrand(config, slug)} products={products.filter(p => p.is_active).map(productToThemeProduct)} />
+  }
+  if (config?.theme_id === 'december') {
+    return <KirayaHome brand={configToThemeBrand(config, slug)} products={products.filter(p => p.is_active).map(productToThemeProduct)} />
   }
 
   const chatBubble = config?.whatsapp_number ? (

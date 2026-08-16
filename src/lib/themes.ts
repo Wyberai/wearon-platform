@@ -248,6 +248,152 @@ export const THEMES: Theme[] = [
     heroGradient: 'linear-gradient(160deg, #faf5ec 0%, #e8ddc9 60%, #c1694f22 100%)',
     previewImage: '/bloom/campaign/hero.jpg',
   },
+  {
+    // Fourth flagship theme — pivot to Indian Instagram/D2C-seller context.
+    // Demo brand "MELA" — a bazaar/bargain marketplace, not a boutique.
+    // Signature mechanic: "Make an Offer", a real haggling exchange with a
+    // deterministic price floor. Lives at /store/mela.
+    id: 'april',
+    name: 'April — The Bazaar',
+    blurb: 'Flagship theme #4: bazaar marketplace, AI haggling — make an offer, get a real counter (demo brand: MELA)',
+    inspiration: 'Sarojini Nagar / Colaba street-market energy',
+    layout: 'grid', density: 'dense', decoration: 'badges', hero: 'full-bleed', font: 'spacegrotesk',
+    heroDecoration: 'none', categoryDisplay: 'tiles',
+    headingStyle: 'display', navStyle: 'pill', logoShape: 'square',
+    palette: { bg: '#FFF4F8', ink: '#1A1A1A', accent: '#E6007A', card: '#FFFFFF' },
+    heroGradient: 'linear-gradient(135deg, #E6007A22 0%, #FFB80022 50%, #00A9A522 100%)',
+    previewImage: '/mela/products/anarkali-3pc-set.jpg',
+  },
+  {
+    // Fifth flagship theme. Demo brand "TAANA" — quiet-luxury heritage
+    // handloom, the opposite energy of MELA's bazaar. Signature mechanic:
+    // "The Weaver's Note", an AI-generated provenance story per weave.
+    // Lives at /store/taana.
+    id: 'may',
+    name: 'May — The Weaver’s Note',
+    blurb: 'Flagship theme #5: heritage handloom, AI writes each weave’s provenance story (demo brand: TAANA)',
+    inspiration: 'Banarasi / Kanjivaram / Ikat / Chanderi weaving traditions',
+    layout: 'grid', density: 'airy', decoration: 'none', hero: 'full-bleed', font: 'cormorant',
+    heroDecoration: 'none', categoryDisplay: 'tiles',
+    headingStyle: 'luxury', navStyle: 'underline', logoShape: 'circle',
+    palette: { bg: '#F5F0E6', ink: '#1F3A5F', accent: '#B5502C', card: '#FFFFFF' },
+    heroGradient: 'linear-gradient(160deg, #1F3A5F22 0%, #F5F0E6 60%, #C9A66722 100%)',
+    previewImage: '/taana/products/banarasi-silk-saree-indigo.jpg',
+  },
+  {
+    // Sixth flagship theme. Demo brand "SAAJ" — wedding/occasion specialist,
+    // first theme with real menswear. Signature mechanic: "Function Planner",
+    // a multi-step wizard planning outfits per shaadi function. Extra route
+    // at /store/[slug]/planner. Lives at /store/saaj.
+    id: 'june',
+    name: 'June — The Function Planner',
+    blurb: 'Flagship theme #6: wedding-function AI planner across Mehendi/Sangeet/Haldi/Reception (demo brand: SAAJ)',
+    inspiration: 'Indian multi-function wedding season',
+    layout: 'grid', density: 'normal', decoration: 'none', hero: 'full-bleed', font: 'playfair',
+    heroDecoration: 'none', categoryDisplay: 'tiles',
+    headingStyle: 'serif', navStyle: 'underline', logoShape: 'circle',
+    palette: { bg: '#FFF8F0', ink: '#2A1420', accent: '#C6115B', card: '#FFFFFF' },
+    heroGradient: 'linear-gradient(160deg, #C6115B22 0%, #D4A94C22 60%, #1B5E4A22 100%)',
+    previewImage: '/saaj/products/emerald-reception-lehenga.jpg',
+  },
+  {
+    // Seventh flagship theme — the literal Instagram-clone storefront
+    // explicitly requested: stories bar, feed of posts-as-products,
+    // double-tap-to-like, DM-to-buy. An original UI inspired by that app
+    // genre, not a copy of Meta's branding. Demo brand "SCROLL", lives at
+    // /store/scroll.
+    id: 'july',
+    name: 'July — Shop Like You Scroll',
+    blurb: 'Flagship theme #7: literal Instagram-style feed — stories, double-tap-to-like, DM to buy (demo brand: SCROLL)',
+    inspiration: 'Social-feed shopping UX, UGC photography',
+    layout: 'feed', density: 'normal', decoration: 'none', hero: 'full-bleed-dark', font: 'inter',
+    heroDecoration: 'none', categoryDisplay: 'circles',
+    headingStyle: 'minimal', navStyle: 'ghost', logoShape: 'circle',
+    palette: { bg: '#FFFFFF', ink: '#0D0D0D', accent: '#FF5864', card: '#FAFAFA' },
+    heroGradient: 'linear-gradient(135deg, #FF586422 0%, #7B2FF722 100%)',
+    previewImage: '/scroll/products/wrap-dress.jpg',
+  },
+  {
+    // Eighth flagship theme. Demo brand "DHAMAKA" — hyper-deal flash-sale
+    // hype (Big Billion Days energy). Signature mechanic: "Price Radar",
+    // computed from real fixed price-history data, never random. Lives at
+    // /store/dhamaka.
+    id: 'august',
+    name: 'August — Ends When It Ends',
+    blurb: 'Flagship theme #8: flash-sale hype, AI price-drop radar computed from real history (demo brand: DHAMAKA)',
+    inspiration: 'Big Billion Days / mega-sale urgency',
+    layout: 'grid', density: 'dense', decoration: 'stickers', hero: 'banner-strip', font: 'bebas',
+    heroDecoration: 'none', categoryDisplay: 'circles',
+    headingStyle: 'display', navStyle: 'pill', logoShape: 'square',
+    palette: { bg: '#FFF9E6', ink: '#121212', accent: '#E11D2E', card: '#FFFFFF' },
+    heroGradient: 'linear-gradient(135deg, #E11D2E22 0%, #FFD40022 100%)',
+    previewImage: '/dhamaka/products/bodycon-mini-dress.jpg',
+  },
+  {
+    // Ninth flagship theme. Demo brand "AARAM" — cozy WFH/loungewear
+    // comfort, calm and unhurried. Signature mechanic: "Day Match", an AI
+    // day-type recommender (structurally similar to Ember's Mood Match, but
+    // the axis is schedule/day-type, not feeling). Lives at /store/aaram.
+    id: 'september',
+    name: 'September — Day Match',
+    blurb: 'Flagship theme #9: cozy WFH loungewear, AI matches outfit to your day-type (demo brand: AARAM)',
+    inspiration: 'Work-from-home comfort culture',
+    layout: 'grid', density: 'airy', decoration: 'none', hero: 'text-only', font: 'nunito',
+    heroDecoration: 'blob-dots', categoryDisplay: 'tiles',
+    headingStyle: 'rounded', navStyle: 'underline', logoShape: 'circle',
+    palette: { bg: '#F3ECE3', ink: '#3A342C', accent: '#C08B6C', card: '#FFFFFF' },
+    heroGradient: 'linear-gradient(135deg, #C08B6C22 0%, #8A9A7E22 100%)',
+    previewImage: '/aaram/products/textured-co-ord.jpg',
+  },
+  {
+    // Tenth flagship theme. Demo brand "UTSAV" — Diwali/festival gifting,
+    // shopping FOR someone else. Signature mechanic: "Gift Finder", AI
+    // curates a bundle from a description of the recipient + budget. Extra
+    // route at /store/[slug]/gift-finder. Lives at /store/utsav.
+    id: 'october',
+    name: 'October — The Gift Finder',
+    blurb: 'Flagship theme #10: festival gifting, AI builds a gift bundle from who you’re buying for (demo brand: UTSAV)',
+    inspiration: 'Diwali gifting season',
+    layout: 'grid', density: 'normal', decoration: 'badges', hero: 'full-bleed', font: 'fraunces',
+    heroDecoration: 'none', categoryDisplay: 'tiles',
+    headingStyle: 'serif', navStyle: 'pill', logoShape: 'circle',
+    palette: { bg: '#FFF6E9', ink: '#3B1E0F', accent: '#A8193B', card: '#FFFFFF' },
+    heroGradient: 'linear-gradient(160deg, #A8193B22 0%, #D4AF3722 60%, #E67E2222 100%)',
+    previewImage: '/utsav/products/diwali-deluxe-hamper.jpg',
+  },
+  {
+    // Eleventh flagship theme. Demo brand "GALLI" — Gen-Z streetwear
+    // drop culture, India edition. Signature mechanics: "Drop Radar"
+    // (countdown + waitlist) and "Caption This Fit" (AI meme captions).
+    // Lives at /store/galli.
+    id: 'november',
+    name: 'November — Drop Radar',
+    blurb: 'Flagship theme #11: streetwear drop culture, countdown + AI meme captions (demo brand: GALLI)',
+    inspiration: 'Gen-Z hype/drop culture, India streetwear',
+    layout: 'grid', density: 'dense', decoration: 'stickers', hero: 'full-bleed-dark', font: 'bebas',
+    heroDecoration: 'none', categoryDisplay: 'circles',
+    headingStyle: 'display', navStyle: 'pill', logoShape: 'square',
+    palette: { bg: '#0D0D0D', ink: '#F0F0F0', accent: '#B6FF3C', card: '#181818' },
+    heroGradient: 'linear-gradient(160deg, #0D0D0D 0%, #181818 60%, #B6FF3C22 100%)',
+    previewImage: '/galli/products/ghost-logo-hoodie.jpg',
+  },
+  {
+    // Twelfth and final flagship theme. Demo brand "KIRAYA" — the most
+    // structurally different of all twelve: a RENTAL marketplace, not a
+    // purchase one. Signature mechanic: "Rent for the Date", picks an event
+    // date, computes a rental window, checks simulated availability. Lives
+    // at /store/kiraya.
+    id: 'december',
+    name: 'December — Rent for the Date',
+    blurb: 'Flagship theme #12: rent occasion-wear for one event instead of buying it (demo brand: KIRAYA)',
+    inspiration: 'Occasion-wear rental — wear it once, return it happy',
+    layout: 'grid', density: 'airy', decoration: 'none', hero: 'full-bleed-dark', font: 'cormorant',
+    heroDecoration: 'none', categoryDisplay: 'tiles',
+    headingStyle: 'luxury', navStyle: 'ghost', logoShape: 'square',
+    palette: { bg: '#2A1730', ink: '#F0E9E2', accent: '#C6A15B', card: '#3D1E3F' },
+    heroGradient: 'linear-gradient(160deg, #2A1730 0%, #3D1E3F 60%, #C6A15B22 100%)',
+    previewImage: '/kiraya/products/royal-plum-silk-lehenga.jpg',
+  },
 ]
 
 export function getTheme(id: string | null | undefined): Theme {
@@ -264,6 +410,15 @@ export const FLAGSHIP_DEMO_SLUG: Record<string, string> = {
   january: 'august',
   february: 'ember',
   march: 'bloom',
+  april: 'mela',
+  may: 'taana',
+  june: 'saaj',
+  july: 'scroll',
+  august: 'dhamaka',
+  september: 'aaram',
+  october: 'utsav',
+  november: 'galli',
+  december: 'kiraya',
 }
 
 // Header brand-name typography per headingStyle, expressed as CSS custom-

@@ -13,6 +13,24 @@ import { EmberPDP } from '@/components/ember/EmberPDP'
 import { EMBER_BRAND, EMBER_PRODUCTS, findProduct as findEmberProduct, relatedProducts as relatedEmberProducts } from '@/lib/ember/catalog'
 import { BloomPDP } from '@/components/bloom/BloomPDP'
 import { BLOOM_BRAND, BLOOM_PRODUCTS, findProduct as findBloomProduct, relatedProducts as relatedBloomProducts } from '@/lib/bloom/catalog'
+import { MelaPDP } from '@/components/mela/MelaPDP'
+import { MELA_BRAND, MELA_PRODUCTS, findProduct as findMelaProduct, relatedProducts as relatedMelaProducts } from '@/lib/mela/catalog'
+import { TaanaPDP } from '@/components/taana/TaanaPDP'
+import { TAANA_BRAND, TAANA_PRODUCTS, findProduct as findTaanaProduct, relatedProducts as relatedTaanaProducts } from '@/lib/taana/catalog'
+import { SaajPDP } from '@/components/saaj/SaajPDP'
+import { SAAJ_BRAND, SAAJ_PRODUCTS, findProduct as findSaajProduct, relatedProducts as relatedSaajProducts } from '@/lib/saaj/catalog'
+import { ScrollPDP } from '@/components/scroll/ScrollPDP'
+import { SCROLL_BRAND, SCROLL_PRODUCTS, findProduct as findScrollProduct, relatedProducts as relatedScrollProducts } from '@/lib/scroll/catalog'
+import { DhamakaPDP } from '@/components/dhamaka/DhamakaPDP'
+import { DHAMAKA_BRAND, DHAMAKA_PRODUCTS, findProduct as findDhamakaProduct, relatedProducts as relatedDhamakaProducts } from '@/lib/dhamaka/catalog'
+import { AaramPDP } from '@/components/aaram/AaramPDP'
+import { AARAM_BRAND, AARAM_PRODUCTS, findProduct as findAaramProduct, relatedProducts as relatedAaramProducts } from '@/lib/aaram/catalog'
+import { UtsavPDP } from '@/components/utsav/UtsavPDP'
+import { UTSAV_BRAND, UTSAV_PRODUCTS, findProduct as findUtsavProduct, relatedProducts as relatedUtsavProducts } from '@/lib/utsav/catalog'
+import { GalliPDP } from '@/components/galli/GalliPDP'
+import { GALLI_BRAND, GALLI_PRODUCTS, findProduct as findGalliProduct, relatedProducts as relatedGalliProducts } from '@/lib/galli/catalog'
+import { KirayaPDP } from '@/components/kiraya/KirayaPDP'
+import { KIRAYA_BRAND, KIRAYA_PRODUCTS, findProduct as findKirayaProduct, relatedProducts as relatedKirayaProducts } from '@/lib/kiraya/catalog'
 import { configToThemeBrand, productToThemeProduct } from '@/lib/flagship/adapters'
 
 interface RazorpayCheckoutOptions {
@@ -88,6 +106,51 @@ export default function ProductDetailPage() {
     const product = findBloomProduct(BLOOM_PRODUCTS, productId)
     if (!product) return notFound()
     return <BloomPDP brand={BLOOM_BRAND} product={product} related={relatedBloomProducts(BLOOM_PRODUCTS, product)} />
+  }
+  if (slug === 'mela') {
+    const product = findMelaProduct(MELA_PRODUCTS, productId)
+    if (!product) return notFound()
+    return <MelaPDP brand={MELA_BRAND} product={product} related={relatedMelaProducts(MELA_PRODUCTS, product)} />
+  }
+  if (slug === 'taana') {
+    const product = findTaanaProduct(TAANA_PRODUCTS, productId)
+    if (!product) return notFound()
+    return <TaanaPDP brand={TAANA_BRAND} product={product} related={relatedTaanaProducts(TAANA_PRODUCTS, product)} />
+  }
+  if (slug === 'saaj') {
+    const product = findSaajProduct(SAAJ_PRODUCTS, productId)
+    if (!product) return notFound()
+    return <SaajPDP brand={SAAJ_BRAND} product={product} related={relatedSaajProducts(SAAJ_PRODUCTS, product)} />
+  }
+  if (slug === 'scroll') {
+    const product = findScrollProduct(SCROLL_PRODUCTS, productId)
+    if (!product) return notFound()
+    return <ScrollPDP brand={SCROLL_BRAND} product={product} related={relatedScrollProducts(SCROLL_PRODUCTS, product)} />
+  }
+  if (slug === 'dhamaka') {
+    const product = findDhamakaProduct(DHAMAKA_PRODUCTS, productId)
+    if (!product) return notFound()
+    return <DhamakaPDP brand={DHAMAKA_BRAND} product={product} related={relatedDhamakaProducts(DHAMAKA_PRODUCTS, product)} />
+  }
+  if (slug === 'aaram') {
+    const product = findAaramProduct(AARAM_PRODUCTS, productId)
+    if (!product) return notFound()
+    return <AaramPDP brand={AARAM_BRAND} product={product} related={relatedAaramProducts(AARAM_PRODUCTS, product)} />
+  }
+  if (slug === 'utsav') {
+    const product = findUtsavProduct(UTSAV_PRODUCTS, productId)
+    if (!product) return notFound()
+    return <UtsavPDP brand={UTSAV_BRAND} product={product} related={relatedUtsavProducts(UTSAV_PRODUCTS, product)} />
+  }
+  if (slug === 'galli') {
+    const product = findGalliProduct(GALLI_PRODUCTS, productId)
+    if (!product) return notFound()
+    return <GalliPDP brand={GALLI_BRAND} product={product} related={relatedGalliProducts(GALLI_PRODUCTS, product)} />
+  }
+  if (slug === 'kiraya') {
+    const product = findKirayaProduct(KIRAYA_PRODUCTS, productId)
+    if (!product) return notFound()
+    return <KirayaPDP brand={KIRAYA_BRAND} product={product} related={relatedKirayaProducts(KIRAYA_PRODUCTS, product)} />
   }
 
   return <GenericProductDetailPage slug={slug} productId={productId} />
@@ -349,6 +412,231 @@ function GenericProductDetailPage({ slug, productId }: { slug: string; productId
   if (config.theme_id === 'march') {
     return (
       <BloomPDP
+        brand={configToThemeBrand({ ...config, seller_id: config.seller_id ?? null }, slug)}
+        product={productToThemeProduct({
+          id: product.id,
+          seller_id: config.seller_id ?? '',
+          name: product.name,
+          description: product.description,
+          category: product.category,
+          price_inr: product.price_inr,
+          original_price_inr: product.original_price_inr,
+          cost_price_inr: null,
+          garment_image_url: product.garment_image_url,
+          garment_preprocessed_url: null,
+          slug: productId,
+          is_active: true,
+          sizes: product.sizes,
+          colors: product.colors,
+          tags: product.tags,
+          created_at: '',
+        })}
+      />
+    )
+  }
+  if (config.theme_id === 'april') {
+    return (
+      <MelaPDP
+        brand={configToThemeBrand({ ...config, seller_id: config.seller_id ?? null }, slug)}
+        product={productToThemeProduct({
+          id: product.id,
+          seller_id: config.seller_id ?? '',
+          name: product.name,
+          description: product.description,
+          category: product.category,
+          price_inr: product.price_inr,
+          original_price_inr: product.original_price_inr,
+          cost_price_inr: null,
+          garment_image_url: product.garment_image_url,
+          garment_preprocessed_url: null,
+          slug: productId,
+          is_active: true,
+          sizes: product.sizes,
+          colors: product.colors,
+          tags: product.tags,
+          created_at: '',
+        })}
+      />
+    )
+  }
+  if (config.theme_id === 'may') {
+    return (
+      <TaanaPDP
+        brand={configToThemeBrand({ ...config, seller_id: config.seller_id ?? null }, slug)}
+        product={productToThemeProduct({
+          id: product.id,
+          seller_id: config.seller_id ?? '',
+          name: product.name,
+          description: product.description,
+          category: product.category,
+          price_inr: product.price_inr,
+          original_price_inr: product.original_price_inr,
+          cost_price_inr: null,
+          garment_image_url: product.garment_image_url,
+          garment_preprocessed_url: null,
+          slug: productId,
+          is_active: true,
+          sizes: product.sizes,
+          colors: product.colors,
+          tags: product.tags,
+          created_at: '',
+        })}
+      />
+    )
+  }
+  if (config.theme_id === 'june') {
+    return (
+      <SaajPDP
+        brand={configToThemeBrand({ ...config, seller_id: config.seller_id ?? null }, slug)}
+        product={productToThemeProduct({
+          id: product.id,
+          seller_id: config.seller_id ?? '',
+          name: product.name,
+          description: product.description,
+          category: product.category,
+          price_inr: product.price_inr,
+          original_price_inr: product.original_price_inr,
+          cost_price_inr: null,
+          garment_image_url: product.garment_image_url,
+          garment_preprocessed_url: null,
+          slug: productId,
+          is_active: true,
+          sizes: product.sizes,
+          colors: product.colors,
+          tags: product.tags,
+          created_at: '',
+        })}
+      />
+    )
+  }
+  if (config.theme_id === 'july') {
+    return (
+      <ScrollPDP
+        brand={configToThemeBrand({ ...config, seller_id: config.seller_id ?? null }, slug)}
+        product={productToThemeProduct({
+          id: product.id,
+          seller_id: config.seller_id ?? '',
+          name: product.name,
+          description: product.description,
+          category: product.category,
+          price_inr: product.price_inr,
+          original_price_inr: product.original_price_inr,
+          cost_price_inr: null,
+          garment_image_url: product.garment_image_url,
+          garment_preprocessed_url: null,
+          slug: productId,
+          is_active: true,
+          sizes: product.sizes,
+          colors: product.colors,
+          tags: product.tags,
+          created_at: '',
+        })}
+      />
+    )
+  }
+  if (config.theme_id === 'august') {
+    return (
+      <DhamakaPDP
+        brand={configToThemeBrand({ ...config, seller_id: config.seller_id ?? null }, slug)}
+        product={productToThemeProduct({
+          id: product.id,
+          seller_id: config.seller_id ?? '',
+          name: product.name,
+          description: product.description,
+          category: product.category,
+          price_inr: product.price_inr,
+          original_price_inr: product.original_price_inr,
+          cost_price_inr: null,
+          garment_image_url: product.garment_image_url,
+          garment_preprocessed_url: null,
+          slug: productId,
+          is_active: true,
+          sizes: product.sizes,
+          colors: product.colors,
+          tags: product.tags,
+          created_at: '',
+        })}
+      />
+    )
+  }
+  if (config.theme_id === 'september') {
+    return (
+      <AaramPDP
+        brand={configToThemeBrand({ ...config, seller_id: config.seller_id ?? null }, slug)}
+        product={productToThemeProduct({
+          id: product.id,
+          seller_id: config.seller_id ?? '',
+          name: product.name,
+          description: product.description,
+          category: product.category,
+          price_inr: product.price_inr,
+          original_price_inr: product.original_price_inr,
+          cost_price_inr: null,
+          garment_image_url: product.garment_image_url,
+          garment_preprocessed_url: null,
+          slug: productId,
+          is_active: true,
+          sizes: product.sizes,
+          colors: product.colors,
+          tags: product.tags,
+          created_at: '',
+        })}
+      />
+    )
+  }
+  if (config.theme_id === 'october') {
+    return (
+      <UtsavPDP
+        brand={configToThemeBrand({ ...config, seller_id: config.seller_id ?? null }, slug)}
+        product={productToThemeProduct({
+          id: product.id,
+          seller_id: config.seller_id ?? '',
+          name: product.name,
+          description: product.description,
+          category: product.category,
+          price_inr: product.price_inr,
+          original_price_inr: product.original_price_inr,
+          cost_price_inr: null,
+          garment_image_url: product.garment_image_url,
+          garment_preprocessed_url: null,
+          slug: productId,
+          is_active: true,
+          sizes: product.sizes,
+          colors: product.colors,
+          tags: product.tags,
+          created_at: '',
+        })}
+      />
+    )
+  }
+  if (config.theme_id === 'november') {
+    return (
+      <GalliPDP
+        brand={configToThemeBrand({ ...config, seller_id: config.seller_id ?? null }, slug)}
+        product={productToThemeProduct({
+          id: product.id,
+          seller_id: config.seller_id ?? '',
+          name: product.name,
+          description: product.description,
+          category: product.category,
+          price_inr: product.price_inr,
+          original_price_inr: product.original_price_inr,
+          cost_price_inr: null,
+          garment_image_url: product.garment_image_url,
+          garment_preprocessed_url: null,
+          slug: productId,
+          is_active: true,
+          sizes: product.sizes,
+          colors: product.colors,
+          tags: product.tags,
+          created_at: '',
+        })}
+      />
+    )
+  }
+  if (config.theme_id === 'december') {
+    return (
+      <KirayaPDP
         brand={configToThemeBrand({ ...config, seller_id: config.seller_id ?? null }, slug)}
         product={productToThemeProduct({
           id: product.id,
