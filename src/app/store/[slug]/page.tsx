@@ -52,8 +52,22 @@ import { THEGRID_BRAND, THEGRID_PRODUCTS } from '@/lib/thegrid/catalog'
 import { TryItOnHome } from '@/components/tryiton/TryItOnHome'
 import { TRYITON_BRAND, TRYITON_PRODUCTS } from '@/lib/tryiton/catalog'
 import { configToThemeBrand, productToThemeProduct } from '@/lib/flagship/adapters'
+import { demoSlugToThemeId } from '@/lib/preview-utils'
+import { ThemedDashboardMock } from '@/components/preview/ThemedDashboardMock'
+import { ThemedMobileAppMock } from '@/components/preview/ThemedMobileAppMock'
+import type { ThemeProduct } from '@/lib/flagship/types'
 
 const STORAGE_BASE = 'https://zhrubbutcsvhcbuaalep.supabase.co/storage/v1/object/public/product-images'
+
+// Lets the preview flow's Dashboard/Mobile-app tabs (see PreviewBanner) look
+// up that demo slug's own real catalog, without touching each of the 15
+// per-slug branches below individually.
+const PRODUCTS_BY_SLUG: Record<string, ThemeProduct[]> = {
+  august: AUGUST_PRODUCTS, ember: EMBER_PRODUCTS, bloom: BLOOM_PRODUCTS, mela: MELA_PRODUCTS,
+  taana: TAANA_PRODUCTS, saaj: SAAJ_PRODUCTS, scroll: SCROLL_PRODUCTS, dhamaka: DHAMAKA_PRODUCTS,
+  aaram: AARAM_PRODUCTS, utsav: UTSAV_PRODUCTS, galli: GALLI_PRODUCTS, kiraya: KIRAYA_PRODUCTS,
+  reelrack: REELRACK_PRODUCTS, thegrid: THEGRID_PRODUCTS, tryiton: TRYITON_PRODUCTS,
+}
 
 // Heading treatment per theme.headingStyle — case/weight/tracking only, the
 // hero's own size/layout still comes from theme.hero so the two axes compose.
@@ -100,6 +114,20 @@ function StorePageRouter() {
   // server-side, before ever reaching that line) — so the banner is rendered
   // here instead, where searchParams are actually available.
   const banner = previewName ? <PreviewBanner /> : null
+
+  // Preview-only "Dashboard" / "Mobile app" tabs (PreviewBanner) — short-
+  // circuits before the per-slug Home dispatch below, covering all 15 demo
+  // slugs from one place instead of touching each branch.
+  const view = searchParams.get('view')
+  if (previewName && view && PRODUCTS_BY_SLUG[slug]) {
+    const resolvedTheme = getTheme(demoSlugToThemeId(slug))
+    if (view === 'dashboard') {
+      return <>{banner}<ThemedDashboardMock theme={resolvedTheme} brandName={previewName} /></>
+    }
+    if (view === 'app') {
+      return <>{banner}<ThemedMobileAppMock theme={resolvedTheme} brandName={previewName} products={PRODUCTS_BY_SLUG[slug]} /></>
+    }
+  }
 
   if (slug === 'august') {
     return <>{banner}<AugustHome brand={previewName ? { ...AUGUST_BRAND, name: previewName } : AUGUST_BRAND} products={AUGUST_PRODUCTS} /></>

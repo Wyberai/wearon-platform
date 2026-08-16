@@ -1,5 +1,6 @@
 'use client'
 
+import { useSearchParams } from 'next/navigation'
 import { useEffect, useState, type ReactNode } from 'react'
 import { FlagshipCartProvider } from '@/lib/flagship/cart-context'
 import type { ThemeBrand } from '@/lib/flagship/types'
@@ -49,6 +50,11 @@ function ShellInner({ children, brand }: { children: ReactNode; brand: ThemeBran
 }
 
 export function EmberShell({ children, brand }: { children: ReactNode; brand: ThemeBrand }) {
+  // Dashboard/Mobile-app preview tabs (PreviewBanner, ?view=) need the raw
+  // storefront content only — skip this theme's own nav/footer chrome.
+  const previewView = useSearchParams().get('view')
+  if (previewView === 'dashboard' || previewView === 'app') return <>{children}</>
+
   return (
     <>
       {/* Scoped to this theme only — not loaded globally, unlike the root

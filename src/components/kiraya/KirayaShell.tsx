@@ -1,5 +1,6 @@
 'use client'
 
+import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
@@ -326,6 +327,11 @@ function ShellInner({ children, brand }: { children: ReactNode; brand: ThemeBran
 }
 
 export function KirayaShell({ children, brand }: { children: ReactNode; brand: ThemeBrand }) {
+  // Dashboard/Mobile-app preview tabs (PreviewBanner, ?view=) need the raw
+  // storefront content only — skip this theme's own nav/footer chrome.
+  const previewView = useSearchParams().get('view')
+  if (previewView === 'dashboard' || previewView === 'app') return <>{children}</>
+
   return (
     <>
       {/* Scoped to this theme only — not loaded globally */}
