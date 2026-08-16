@@ -322,6 +322,9 @@ function USHomePage() {
             <div style={{ display: 'flex', gap: 20 }}>
               <Link href="/auth/login" style={{ fontSize: 12, color: `${US_INK}66`, textDecoration: 'none' }}>Login</Link>
               <Link href="/themes" style={{ fontSize: 12, color: `${US_INK}66`, textDecoration: 'none' }}>Live Demo</Link>
+              <Link href="/privacy" style={{ fontSize: 12, color: `${US_INK}66`, textDecoration: 'none' }}>Privacy</Link>
+              <Link href="/terms" style={{ fontSize: 12, color: `${US_INK}66`, textDecoration: 'none' }}>Terms</Link>
+              <Link href="/refund-policy" style={{ fontSize: 12, color: `${US_INK}66`, textDecoration: 'none' }}>Refunds</Link>
             </div>
           </div>
           <p style={{ maxWidth: 900, margin: '16px auto 0', fontSize: 11, color: `${US_INK}44`, textAlign: 'center' }}>

@@ -16,6 +16,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: BASE_URL, changeFrequency: 'weekly', priority: 1 },
     { url: `${BASE_URL}/themes`, changeFrequency: 'weekly', priority: 0.9 },
     { url: `${BASE_URL}/insta`, changeFrequency: 'weekly', priority: 0.9 },
+    { url: `${BASE_URL}/privacy`, changeFrequency: 'yearly', priority: 0.3 },
+    { url: `${BASE_URL}/terms`, changeFrequency: 'yearly', priority: 0.3 },
+    { url: `${BASE_URL}/refund-policy`, changeFrequency: 'yearly', priority: 0.3 },
   ]
 
   const demoRoutes: MetadataRoute.Sitemap = DEMO_SLUGS.map(slug => ({
