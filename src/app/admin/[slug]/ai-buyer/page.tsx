@@ -108,7 +108,7 @@ export default function AiBuyerPage() {
               type="text"
               value={prompt}
               onChange={e => setPrompt(e.target.value)}
-              placeholder="e.g. Summer beach vacation looks under $100"
+              placeholder="e.g. Summer beach vacation looks under ₹2,000"
               className="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500"
             />
           </div>

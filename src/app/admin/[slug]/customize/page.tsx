@@ -312,7 +312,7 @@ export default function CustomizePage() {
               {brandVoice.tone === 'playful' && '"Love that pick! The Satin Slip Maxi is giving serious date-night energy 💫 Grab it in champagne before it sells out!"'}
               {brandVoice.tone === 'sophisticated' && '"An excellent choice. The Satin Slip Maxi Dress pairs beautifully with minimal accessories for an evening event."'}
               {brandVoice.tone === 'bold' && '"This one sells out fast. Order in your size now — the Satin Slip Maxi is a staple."'}
-              {brandVoice.tone === 'minimal' && '"The slip maxi. $89. It works."'}
+              {brandVoice.tone === 'minimal' && '"The slip maxi. ₹1,999. It works."'}
               {brandVoice.tone === 'warm' && '"Oh this one is so good! The Satin Slip Maxi is honestly one of my favourite pieces — it works for so many occasions."'}
             </div>
           )}

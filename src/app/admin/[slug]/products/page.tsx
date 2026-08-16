@@ -358,21 +358,21 @@ export default function ProductsPage() {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Price ($)</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Price (₹)</label>
               <input type="number" required value={form.price_inr} onChange={e => setForm({ ...form, price_inr: e.target.value })}
-                placeholder="49"
+                placeholder="1499"
                 className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Original Price ($) — optional</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Original Price (₹) — optional</label>
               <input type="number" value={form.original_price_inr} onChange={e => setForm({ ...form, original_price_inr: e.target.value })}
-                placeholder="79"
+                placeholder="1999"
                 className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Your Cost ($) — private, for margin tracking</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Your Cost (₹) — private, for margin tracking</label>
               <input type="number" value={form.cost_price_inr} onChange={e => setForm({ ...form, cost_price_inr: e.target.value })}
-                placeholder="22"
+                placeholder="600"
                 className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500" />
               <p className="text-xs text-gray-400 mt-1">Never shown to buyers — used to calculate your margin in Analytics.</p>
             </div>
@@ -439,14 +439,14 @@ export default function ProductsPage() {
                     onChange={e => setEditForm({ ...editForm, price_inr: Number(e.target.value) })}
                     type="number"
                     className="w-full border border-gray-200 rounded px-2 py-1 text-xs"
-                    placeholder="Price ($)"
+                    placeholder="Price (₹)"
                   />
                   <input
                     value={editForm.cost_price_inr ?? product.cost_price_inr ?? ''}
                     onChange={e => setEditForm({ ...editForm, cost_price_inr: e.target.value ? Number(e.target.value) : null })}
                     type="number"
                     className="w-full border border-gray-200 rounded px-2 py-1 text-xs"
-                    placeholder="Your cost ($)"
+                    placeholder="Your cost (₹)"
                   />
                   <input
                     value={typeof editForm.sizes === 'string' ? editForm.sizes : (product.sizes ?? []).join(', ')}
@@ -495,7 +495,7 @@ export default function ProductsPage() {
                   <div className="text-sm font-semibold text-gray-900 truncate">{product.name}</div>
                   <div className="text-sm text-gray-500 mt-0.5">{product.category}</div>
                   <div className="flex items-center gap-2 mt-1">
-                    <span className="text-pink-600 font-bold">${product.price_inr.toLocaleString('en-US')}</span>
+                    <span className="text-pink-600 font-bold">₹{product.price_inr.toLocaleString('en-IN')}</span>
                     {marginPct(product.price_inr, product.cost_price_inr) !== null && (
                       <span className="text-xs font-medium text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded">
                         {marginPct(product.price_inr, product.cost_price_inr)}% margin

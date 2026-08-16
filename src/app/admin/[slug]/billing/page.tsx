@@ -6,8 +6,8 @@ import { ApiKeyCard } from '@/components/admin/ApiKeyCard'
 const PLAN_FEATURES: Record<string, string[]> = {
   free:       ['10 products', 'Branded PWA store', 'WhatsApp orders', `${PLAN_AI_REPLY_LIMITS.free} AI replies/month`, 'No try-on / AI photoshoot'],
   starter:    ['100 products', 'Branded PWA store', 'WhatsApp orders', 'Custom domain', 'Margin tracking & analytics', `${PLAN_AI_REPLY_LIMITS.starter} AI replies/month (WhatsApp + Instagram + Facebook)`, 'No try-on / AI photoshoot'],
-  growth:     ['500 products', 'Everything in Store', 'Custom domain', 'Native Android app for you (seller app)', 'Branded Android app for your buyers', 'Play Store listing', `${PLAN_AI_REPLY_LIMITS.growth.toLocaleString('en-US')} AI replies/month`, 'No try-on / AI photoshoot'],
-  pro:        ['Unlimited products', 'Everything in Store + App', 'Custom domain', 'Buyer virtual try-on (300/month)', 'AI photoshoot — cloth to model photo/video (150/month)', `${PLAN_AI_REPLY_LIMITS.pro.toLocaleString('en-US')} AI replies/month`],
+  growth:     ['500 products', 'Everything in Store', 'Custom domain', 'Native Android app for you (seller app)', 'Branded Android app for your buyers', 'Play Store listing', `${PLAN_AI_REPLY_LIMITS.growth.toLocaleString('en-IN')} AI replies/month`, 'No try-on / AI photoshoot'],
+  pro:        ['Unlimited products', 'Everything in Store + App', 'Custom domain', 'Buyer virtual try-on (300/month)', 'AI photoshoot — cloth to model photo/video (150/month)', `${PLAN_AI_REPLY_LIMITS.pro.toLocaleString('en-IN')} AI replies/month`],
   enterprise: ['Unlimited everything', 'Unlimited try-on & AI photoshoot', 'Unlimited AI replies', 'Own Play Store account', 'Custom domain', 'Dedicated support', 'White-glove onboarding'],
 }
 
