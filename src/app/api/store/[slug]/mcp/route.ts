@@ -18,6 +18,7 @@ import {
   createCheckout,
   getOrderStatus,
 } from '@/lib/store-agent-tools'
+import { logAgentQuery, getSellerIdForSlug } from '@/lib/agent-tracking'
 
 export const dynamic = 'force-dynamic'
 
@@ -151,6 +152,15 @@ export async function POST(
       const p = rpcParams as { name: string; arguments?: Record<string, unknown> }
       const args = p.arguments ?? {}
 
+      // Fire-and-forget agent-traffic logging — every /mcp call is, by definition,
+      // from an agent client, so no user-agent filtering is needed here (unlike
+      // the static openapi.json/feed.json endpoints).
+      const logQuery = (queryText: string | null, resultCount: number) => {
+        getSellerIdForSlug(slug).then(sellerId => {
+          if (sellerId) void logAgentQuery(sellerId, p.name, queryText, resultCount)
+        }).catch(() => {})
+      }
+
       try {
         switch (p.name) {
           case 'search_products': {
@@ -160,6 +170,7 @@ export async function POST(
               max_price: args.max_price as number | undefined,
               occasion: args.occasion as string | undefined,
             })
+            logQuery((args.query as string) ?? null, results.length)
             if (results.length === 0) {
               return jsonRpcOk(id, toolText({ message: 'No products found matching your search.', results: [] }))
             }
@@ -168,17 +179,20 @@ export async function POST(
 
           case 'get_product': {
             const product = await getProduct(slug, args.product_slug as string)
+            logQuery(args.product_slug as string ?? null, product ? 1 : 0)
             if (!product) return jsonRpcOk(id, toolError('Product not found.'))
             return jsonRpcOk(id, toolText(product))
           }
 
           case 'check_size_availability': {
             const availability = await checkSizeAvailability(slug, args.product_slug as string, args.size as string)
+            logQuery(args.product_slug as string ?? null, 1)
             return jsonRpcOk(id, toolText(availability))
           }
 
           case 'get_store_info': {
             const info = await getStoreInfo(slug)
+            logQuery(null, info ? 1 : 0)
             if (!info) return jsonRpcOk(id, toolError('Store not found.'))
             return jsonRpcOk(id, toolText(info))
           }
@@ -190,12 +204,14 @@ export async function POST(
               quantity: (args.quantity as number) ?? 1,
               buyer_email: args.buyer_email as string | undefined,
             })
+            logQuery(args.product_slug as string ?? null, 'error' in result ? 0 : 1)
             if ('error' in result) return jsonRpcOk(id, toolError(result.error))
             return jsonRpcOk(id, toolText(result))
           }
 
           case 'get_order_status': {
             const status = await getOrderStatus(slug, args.order_id as string)
+            logQuery(args.order_id as string ?? null, 'error' in status ? 0 : 1)
             if ('error' in status) return jsonRpcOk(id, toolError(status.error))
             return jsonRpcOk(id, toolText(status))
           }

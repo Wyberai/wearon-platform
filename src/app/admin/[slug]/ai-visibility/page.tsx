@@ -66,9 +66,12 @@ export default function AiVisibilityPage() {
     Promise.all([
       fetch(`/api/admin/config?slug=${slug}`).then(r => r.json()),
       fetch(`/api/admin/products?slug=${slug}`).then(r => r.json()),
-    ]).then(([cfgData, prodData]) => {
+      fetch(`/api/admin/agent-traffic`).then(r => r.json()),
+    ]).then(([cfgData, prodData, trafficData]) => {
       setConfig(cfgData.config)
       setProducts(prodData.products ?? [])
+      setAgentQueries(trafficData.queries ?? [])
+      setAgentOrders(trafficData.orders ?? [])
       setLoading(false)
     })
   }, [slug])
@@ -256,7 +259,7 @@ export default function AiVisibilityPage() {
                 {[
                   { label: 'Agent queries', value: agentQueries.length },
                   { label: 'Agent orders', value: agentOrders.length },
-                  { label: 'Agent revenue', value: `$${agentOrders.reduce((s, o) => s + o.total_inr, 0).toLocaleString()}` },
+                  { label: 'Agent revenue', value: `₹${agentOrders.reduce((s, o) => s + o.total_inr, 0).toLocaleString('en-IN')}` },
                 ].map(({ label, value }) => (
                   <div key={label} className="bg-white rounded-xl border border-gray-100 p-4">
                     <p className="text-xs text-gray-500">{label}</p>

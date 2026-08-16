@@ -7,14 +7,19 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server'
+import { getSellerIdForSlug, logAgentEndpointHit } from '@/lib/agent-tracking'
 
 const BASE_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'https://wearon.wyberai.com'
 
 export async function GET(
-  _req: NextRequest,
+  req: NextRequest,
   { params }: { params: Promise<{ slug: string }> }
 ) {
   const { slug } = await params
+
+  getSellerIdForSlug(slug).then(sellerId => {
+    if (sellerId) void logAgentEndpointHit(sellerId, 'openapi', req.headers.get('user-agent'))
+  }).catch(() => {})
 
   const spec = {
     openapi: '3.1.0',

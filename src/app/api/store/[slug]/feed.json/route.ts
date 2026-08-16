@@ -2,13 +2,14 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/server'
 import { US_DEMO_PRODUCTS, US_DEMO_CONFIG } from '@/lib/demo-products'
 import { catalogToMerchantFeed } from '@/lib/schema-org'
+import { logAgentEndpointHit } from '@/lib/agent-tracking'
 
 export const dynamic = 'force-dynamic'
 
 const BASE_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'https://wearon.wyberai.com'
 
 export async function GET(
-  _req: NextRequest,
+  req: NextRequest,
   { params }: { params: Promise<{ slug: string }> }
 ) {
   const { slug } = await params
@@ -36,6 +37,8 @@ export async function GET(
     .single()
 
   if (!tenant) return NextResponse.json({ error: 'Store not found' }, { status: 404 })
+
+  void logAgentEndpointHit(tenant.seller_id, 'feed', req.headers.get('user-agent'))
 
   const { data: products } = await admin
     .from('products')

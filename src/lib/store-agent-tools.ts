@@ -271,7 +271,8 @@ export async function createCheckout(
     total_inr: total,
     payment_method: 'agent',
     whatsapp_confirmed: false,
-    buyer_notes: args.buyer_email ? JSON.stringify({ buyer_email: args.buyer_email, source: 'mcp' }) : JSON.stringify({ source: 'mcp' }),
+    source: 'mcp',
+    buyer_notes: args.buyer_email ? JSON.stringify({ buyer_email: args.buyer_email }) : null,
   })
 
   return {
