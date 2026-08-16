@@ -45,6 +45,14 @@ export async function POST(request: Request) {
   const brandName = configRes.data.brand_name ?? 'Our Boutique'
   const persona = buildBrandPersona(brandVoice, brandName)
 
+  // AI Buyer is a real OpenAI call — meter it against the same ai_reply pool
+  // that already caps WhatsApp/Instagram auto-replies, rather than leaving
+  // it uncapped (it was previously callable with no limit at all).
+  const { data: withinQuota } = await admin.rpc('deduct_ai_reply', { p_seller_id: user.id })
+  if (!withinQuota) {
+    return NextResponse.json({ error: 'AI reply quota exhausted for this month. Upgrade your plan for more.', code: 'NO_AI_QUOTA' }, { status: 429 })
+  }
+
   const openaiKey = process.env.OPENAI_API_KEY
   if (!openaiKey) {
     // Demo fallback

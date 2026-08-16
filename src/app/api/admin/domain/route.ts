@@ -1,11 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient, createAdminClient } from '@/lib/supabase/server'
 import { randomBytes } from 'crypto'
+import { DOMAIN_ELIGIBLE_PLANS, type Plan } from '@/lib/constants'
 
 export async function POST(req: NextRequest) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+
+  const admin = createAdminClient()
+  const { data: profile } = await admin.from('profiles').select('plan').eq('id', user.id).single()
+  if (!profile || !DOMAIN_ELIGIBLE_PLANS.includes(profile.plan as Plan)) {
+    return NextResponse.json({ error: 'Custom domains require the Store plan or higher' }, { status: 403 })
+  }
 
   const { domain } = await req.json()
   if (!domain || !/^[a-z0-9.-]+\.[a-z]{2,}$/.test(domain)) {
@@ -13,7 +20,6 @@ export async function POST(req: NextRequest) {
   }
 
   const verification_token = `wearon-verify-${randomBytes(8).toString('hex')}`
-  const admin = createAdminClient()
 
   await admin.from('domain_verifications').delete().eq('seller_id', user.id)
   await admin.from('domain_verifications').insert({

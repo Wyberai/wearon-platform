@@ -30,6 +30,7 @@ export async function POST(request: Request) {
   const openaiKey = process.env.OPENAI_API_KEY
 
   let updated = 0
+  let quotaExhausted = false
   for (const p of products) {
     let aeoContent: { agent_answer: string; faqs: { q: string; a: string }[]; generated_at: string }
 
@@ -43,6 +44,13 @@ export async function POST(request: Request) {
         generated_at: new Date().toISOString(),
       }
     } else {
+      // Real OpenAI call per product — meter each one against the ai_reply
+      // pool so a single request can't burn unlimited quota across up to 50
+      // products; stop the batch (keeping what's already been generated)
+      // once the seller's monthly allowance runs out.
+      const { data: withinQuota } = await admin.rpc('deduct_ai_reply', { p_seller_id: user.id })
+      if (!withinQuota) { quotaExhausted = true; break }
+
       const prompt = `${persona}
 
 Generate structured agent-discoverable content for this product so AI assistants (Perplexity, Rufus, ChatGPT) can answer shopping queries about it accurately.
@@ -91,5 +99,5 @@ Return ONLY valid JSON:
     updated++
   }
 
-  return NextResponse.json({ ok: true, updated })
+  return NextResponse.json({ ok: true, updated, quota_exhausted: quotaExhausted })
 }

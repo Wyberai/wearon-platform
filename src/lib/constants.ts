@@ -18,6 +18,12 @@ export const PLANS = {
 
 export type Plan = keyof typeof PLANS
 
+// Features that cost WearOn real setup/ops effort (custom domain DNS, a
+// native Android build) rather than a per-call AI cost — gated to a binary
+// plan check, same as APK_ELIGIBLE_PLANS in api/admin/apk-build/route.ts,
+// rather than metered like conversational AI replies.
+export const DOMAIN_ELIGIBLE_PLANS: Plan[] = ['starter', 'growth', 'pro', 'enterprise']
+
 export const PLAN_TRY_ON_LIMITS: Record<Plan, number> = {
   free: 0, starter: 0, growth: 0, pro: 300, enterprise: 99999,
 }

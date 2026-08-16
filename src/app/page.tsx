@@ -780,7 +780,7 @@ function USHomePage() {
             <div className="wo-us-pricing" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 2 }}>
               {[
                 { key: 'free', desc: 'Try it, no card required.', features: [`${PLANS.free.products} products`, 'Branded storefront', 'WhatsApp + card checkout', 'Basic analytics'] },
-                { key: 'starter', desc: 'A real store, fully checked out.', features: [`${PLANS.starter.products} products`, 'Full storefront + checkout', 'Razorpay + WhatsApp ordering', 'Analytics dashboard'] },
+                { key: 'starter', desc: 'A real store, fully checked out.', features: [`${PLANS.starter.products} products`, 'Full storefront + checkout', 'Custom domain', 'Razorpay + WhatsApp ordering', 'Analytics dashboard'] },
                 { key: 'growth', desc: 'Everything in Store, plus the app.', features: [`${PLANS.growth.products} products`, 'Everything in Store', 'Native Android app + Play Store listing', 'Priority support'], featured: true },
                 { key: 'pro', desc: 'For sellers who want it all.', features: ['Unlimited products', 'Everything in Store + App', `${PLANS.pro.try_ons} AI try-ons/mo`, `${PLANS.pro.ai_credits} AI photoshoot credits/mo`] },
               ].map(plan => {
