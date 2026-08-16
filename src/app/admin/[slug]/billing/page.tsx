@@ -1,13 +1,13 @@
 import Link from 'next/link'
 import { createClient, createAdminClient } from '@/lib/supabase/server'
-import { PLAN_AI_REPLY_LIMITS, PLANS } from '@/lib/constants'
+import { PLAN_AI_REPLY_LIMITS, PLANS, OVERAGE_PRICE_PER_TRY_ON } from '@/lib/constants'
 import { ApiKeyCard } from '@/components/admin/ApiKeyCard'
 
 const PLAN_FEATURES: Record<string, string[]> = {
   free:       ['10 products', 'Branded PWA store', 'WhatsApp orders', `${PLAN_AI_REPLY_LIMITS.free} AI replies/month`, 'No try-on / AI photoshoot'],
-  starter:    ['100 products', 'Branded PWA store', 'WhatsApp orders', 'Margin tracking & analytics', `${PLAN_AI_REPLY_LIMITS.starter} AI replies/month (WhatsApp + Instagram + Facebook)`, 'No try-on / AI photoshoot'],
-  growth:     ['500 products', 'Everything in Store', 'Native Android app for you (seller app)', 'Branded Android app for your buyers', 'Play Store listing', `${PLAN_AI_REPLY_LIMITS.growth.toLocaleString('en-US')} AI replies/month`, 'No try-on / AI photoshoot'],
-  pro:        ['Unlimited products', 'Everything in Store + App', 'Buyer virtual try-on (300/month)', 'AI photoshoot — cloth to model photo/video (150/month)', `${PLAN_AI_REPLY_LIMITS.pro.toLocaleString('en-US')} AI replies/month`],
+  starter:    ['100 products', 'Branded PWA store', 'WhatsApp orders', 'Custom domain', 'Margin tracking & analytics', `${PLAN_AI_REPLY_LIMITS.starter} AI replies/month (WhatsApp + Instagram + Facebook)`, 'No try-on / AI photoshoot'],
+  growth:     ['500 products', 'Everything in Store', 'Custom domain', 'Native Android app for you (seller app)', 'Branded Android app for your buyers', 'Play Store listing', `${PLAN_AI_REPLY_LIMITS.growth.toLocaleString('en-US')} AI replies/month`, 'No try-on / AI photoshoot'],
+  pro:        ['Unlimited products', 'Everything in Store + App', 'Custom domain', 'Buyer virtual try-on (300/month)', 'AI photoshoot — cloth to model photo/video (150/month)', `${PLAN_AI_REPLY_LIMITS.pro.toLocaleString('en-US')} AI replies/month`],
   enterprise: ['Unlimited everything', 'Unlimited try-on & AI photoshoot', 'Unlimited AI replies', 'Own Play Store account', 'Custom domain', 'Dedicated support', 'White-glove onboarding'],
 }
 
@@ -54,7 +54,7 @@ export default async function BillingPage({ params }: { params: Promise<{ slug: 
             <span className="text-xs font-semibold text-pink-600 uppercase tracking-wide">Current Plan</span>
             <h2 className="text-2xl font-bold text-gray-900 mt-1">{plan.name}</h2>
             <p className="text-gray-500 text-sm mt-1">
-              {plan.price_inr === 0 ? 'Free forever' : `$${plan.price_inr}/month`}
+              {plan.price_inr === 0 ? 'Free forever' : `₹${plan.price_inr.toLocaleString('en-IN')}/month`}
               {profile?.subscription_status === 'active' && (
                 <span className="ml-2 text-green-600 font-medium">· Active</span>
               )}
@@ -80,7 +80,7 @@ export default async function BillingPage({ params }: { params: Promise<{ slug: 
             />
           </div>
           {tryOnPct > 80 && (
-            <p className="text-xs text-red-600 mt-2">Running low! Overages are $3 per try-on.</p>
+            <p className="text-xs text-red-600 mt-2">Running low! Overages are ₹{OVERAGE_PRICE_PER_TRY_ON} per try-on.</p>
           )}
         </div>
 
@@ -119,7 +119,7 @@ export default async function BillingPage({ params }: { params: Promise<{ slug: 
                   <div className="text-xs font-bold text-pink-600 uppercase tracking-wide mb-2">Most Popular</div>
                 )}
                 <div className="text-xl font-bold text-gray-900 mb-1">
-                  {p.price_inr === 0 ? 'Free' : `$${p.price_inr.toLocaleString('en-US')}`}
+                  {p.price_inr === 0 ? 'Free' : `₹${p.price_inr.toLocaleString('en-IN')}`}
                   {p.price_inr > 0 && <span className="text-sm font-normal text-gray-400">/mo</span>}
                 </div>
                 <div className="font-semibold text-gray-700 mb-4">{p.name}</div>
@@ -154,7 +154,7 @@ export default async function BillingPage({ params }: { params: Promise<{ slug: 
       </div>
 
       <p className="text-sm text-gray-400 text-center mb-10">
-        Pay via card or ACH transfer · Annual plans get 2 months free ·{' '}
+        Pay via card · Annual plans get 2 months free ·{' '}
         <Link href={`/store/${slug}`} className="text-pink-600 hover:underline" target="_blank">View your store</Link>
       </p>
 
