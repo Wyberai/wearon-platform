@@ -4,6 +4,11 @@ import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
 
+interface BuildStatus {
+  status: 'none' | 'queued' | 'building' | 'complete' | 'failed'
+  apk_url?: string | null
+}
+
 interface Config {
   slug: string
   brand_name: string
@@ -30,6 +35,8 @@ const PAYMENT_METHODS = [
   { value: 'cod', label: 'Cash on Delivery' },
 ]
 
+const APK_ELIGIBLE_PLANS = ['growth', 'pro', 'enterprise']
+
 export default function SettingsPage() {
   const { slug } = useParams() as { slug: string }
   const [config, setConfig] = useState<Config | null>(null)
@@ -37,6 +44,12 @@ export default function SettingsPage() {
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [plan, setPlan] = useState<string | null>(null)
+  const [buyerBuild, setBuyerBuild] = useState<BuildStatus | null>(null)
+  const [sellerBuild, setSellerBuild] = useState<BuildStatus | null>(null)
+  const [buyerTriggering, setBuyerTriggering] = useState(false)
+  const [sellerTriggering, setSellerTriggering] = useState(false)
+  const [buildError, setBuildError] = useState<string | null>(null)
 
   useEffect(() => {
     fetch(`/api/admin/config?slug=${slug}`)
@@ -47,6 +60,40 @@ export default function SettingsPage() {
         setLoading(false)
       })
   }, [slug])
+
+  useEffect(() => {
+    fetch('/api/admin/ai-credits').then(r => r.json()).then(d => setPlan(d.plan ?? 'free')).catch(() => setPlan('free'))
+    refreshBuildStatus()
+  }, [])
+
+  function refreshBuildStatus() {
+    fetch('/api/admin/apk-build?app_type=buyer').then(r => r.json()).then(setBuyerBuild).catch(() => {})
+    fetch('/api/admin/apk-build?app_type=seller').then(r => r.json()).then(setSellerBuild).catch(() => {})
+  }
+
+  async function triggerBuild(appType: 'buyer' | 'seller') {
+    const setTriggering = appType === 'buyer' ? setBuyerTriggering : setSellerTriggering
+    const setBuild = appType === 'buyer' ? setBuyerBuild : setSellerBuild
+    setTriggering(true)
+    setBuildError(null)
+    try {
+      const res = await fetch('/api/admin/apk-build', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ app_type: appType }),
+      })
+      const data = await res.json()
+      if (!res.ok) {
+        setBuildError(data.error ?? 'Failed to start build.')
+      } else {
+        setBuild({ status: 'queued' })
+      }
+    } catch {
+      setBuildError('Failed to start build. Please try again.')
+    } finally {
+      setTriggering(false)
+    }
+  }
 
   function update<K extends keyof Config>(key: K, value: Config[K]) {
     setForm(f => ({ ...f, [key]: value }))
@@ -300,6 +347,38 @@ export default function SettingsPage() {
           </div>
         </Section>
 
+        {/* Mobile Apps */}
+        <Section title="Mobile Apps">
+          {plan && !APK_ELIGIBLE_PLANS.includes(plan) ? (
+            <p className="text-sm text-gray-500">
+              Native Android apps are available on the Store + App plan and above.{' '}
+              <Link href={`/admin/${slug}/billing`} className="font-medium" style={{ color: primary }}>Upgrade →</Link>
+            </p>
+          ) : (
+            <>
+              {buildError && <p className="text-xs text-red-600">{buildError}</p>}
+              <BuildRow
+                title="Your Branded Buyer App"
+                desc="A native Android app for your buyers, branded to your store — built fresh each time you trigger it."
+                build={buyerBuild}
+                triggering={buyerTriggering}
+                onBuild={() => triggerBuild('buyer')}
+                onRefresh={refreshBuildStatus}
+                primary={primary}
+              />
+              <BuildRow
+                title="Seller App (run your store from your phone)"
+                desc="One shared app for every seller — install it and log in to manage your store on the go. Push notifications for new orders and messages."
+                build={sellerBuild}
+                triggering={sellerTriggering}
+                onBuild={() => triggerBuild('seller')}
+                onRefresh={refreshBuildStatus}
+                primary={primary}
+              />
+            </>
+          )}
+        </Section>
+
         <div className="pb-8" />
       </div>
 
@@ -330,6 +409,44 @@ function Section({ title, children }: { title: string; children: React.ReactNode
         <h2 className="text-sm font-semibold text-gray-900">{title}</h2>
       </div>
       <div className="px-5 py-4 space-y-4">{children}</div>
+    </div>
+  )
+}
+
+function BuildRow({ title, desc, build, triggering, onBuild, onRefresh, primary }: {
+  title: string
+  desc: string
+  build: BuildStatus | null
+  triggering: boolean
+  onBuild: () => void
+  onRefresh: () => void
+  primary: string
+}) {
+  const status = build?.status ?? 'none'
+  const inFlight = status === 'queued' || status === 'building'
+
+  return (
+    <div className="flex items-center justify-between gap-4 py-2 border-b border-gray-50 last:border-0">
+      <div>
+        <div className="text-sm font-medium text-gray-900">{title}</div>
+        <div className="text-xs text-gray-400 mt-0.5">{desc}</div>
+        {status === 'failed' && <div className="text-xs text-red-600 mt-1">Last build failed. Try again or contact support.</div>}
+        {inFlight && <div className="text-xs text-amber-600 mt-1">{status === 'queued' ? 'Queued…' : 'Building…'} ready in ~12 min — <button onClick={onRefresh} className="underline">refresh</button></div>}
+      </div>
+      {status === 'complete' && build?.apk_url ? (
+        <a href={build.apk_url} className="px-4 py-2 rounded-lg text-sm font-semibold text-white whitespace-nowrap" style={{ backgroundColor: primary }}>
+          Download APK
+        </a>
+      ) : (
+        <button
+          onClick={onBuild}
+          disabled={triggering || inFlight}
+          className="px-4 py-2 rounded-lg text-sm font-semibold text-white whitespace-nowrap disabled:opacity-50"
+          style={{ backgroundColor: primary }}
+        >
+          {inFlight ? 'Building…' : triggering ? 'Starting…' : 'Build'}
+        </button>
+      )}
     </div>
   )
 }

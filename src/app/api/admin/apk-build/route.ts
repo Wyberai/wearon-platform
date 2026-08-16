@@ -3,10 +3,13 @@ import { createClient, createAdminClient } from '@/lib/supabase/server'
 
 const APK_ELIGIBLE_PLANS = ['growth', 'pro', 'enterprise']
 
-export async function POST() {
+export async function POST(req: NextRequest) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+
+  const body = await req.json().catch(() => ({}))
+  const appType: 'buyer' | 'seller' = body.app_type === 'seller' ? 'seller' : 'buyer'
 
   const admin = createAdminClient()
 
@@ -19,12 +22,19 @@ export async function POST() {
     }, { status: 403 })
   }
 
-  const { data: activeBuild } = await admin
+  // The seller app is ONE shared build for every seller (no per-tenant
+  // branding — /admin resolves per logged-in user via cookie session), so
+  // the "already in progress" guard is global for app_type 'seller' rather
+  // than scoped to the requesting seller like the per-tenant buyer app.
+  let activeBuildQuery = admin
     .from('apk_builds')
     .select('id, status')
-    .eq('seller_id', user.id)
+    .eq('app_type', appType)
     .in('status', ['queued', 'building'])
-    .single()
+
+  if (appType === 'buyer') activeBuildQuery = activeBuildQuery.eq('seller_id', user.id)
+
+  const { data: activeBuild } = await activeBuildQuery.limit(1).maybeSingle()
 
   if (activeBuild) {
     return NextResponse.json({
@@ -34,24 +44,42 @@ export async function POST() {
     }, { status: 409 })
   }
 
-  const { data: config } = await admin
-    .from('tenant_config')
-    .select('slug, brand_name, primary_color, logo_url')
-    .eq('seller_id', user.id)
-    .single()
-
-  if (!config) return NextResponse.json({ error: 'Store not configured' }, { status: 400 })
+  let config: { slug: string; brand_name: string; primary_color: string; logo_url: string | null } | null = null
+  if (appType === 'buyer') {
+    const { data } = await admin
+      .from('tenant_config')
+      .select('slug, brand_name, primary_color, logo_url')
+      .eq('seller_id', user.id)
+      .single()
+    config = data
+    if (!config) return NextResponse.json({ error: 'Store not configured' }, { status: 400 })
+  }
 
   const { data: build } = await admin
     .from('apk_builds')
-    .insert({ seller_id: user.id, status: 'queued' })
+    .insert({ seller_id: user.id, status: 'queued', app_type: appType })
     .select('id')
     .single()
 
   if (process.env.GITHUB_PAT) {
+    const dispatchTarget = appType === 'buyer'
+      ? { repo: 'Wyberai/wearon-platform', workflow: 'build-apk.yml' }
+      : { repo: 'Wyberai/wearon-seller-app', workflow: 'build-seller-apk.yml' }
+
+    const inputs = appType === 'buyer'
+      ? {
+          seller_id: user.id,
+          slug: config!.slug,
+          brand_name: config!.brand_name,
+          primary_color: config!.primary_color,
+          logo_url: config!.logo_url ?? '',
+          plan: profile.plan,
+        }
+      : { triggered_by: user.id }
+
     try {
       const dispatchRes = await fetch(
-        'https://api.github.com/repos/Wyberai/wearon-platform/actions/workflows/build-apk.yml/dispatches',
+        `https://api.github.com/repos/${dispatchTarget.repo}/actions/workflows/${dispatchTarget.workflow}/dispatches`,
         {
           method: 'POST',
           headers: {
@@ -59,17 +87,7 @@ export async function POST() {
             'Content-Type': 'application/json',
             Accept: 'application/vnd.github.v3+json',
           },
-          body: JSON.stringify({
-            ref: 'master',
-            inputs: {
-              seller_id: user.id,
-              slug: config.slug,
-              brand_name: config.brand_name,
-              primary_color: config.primary_color,
-              logo_url: config.logo_url ?? '',
-              plan: profile.plan,
-            },
-          }),
+          body: JSON.stringify({ ref: 'master', inputs }),
         }
       )
 
@@ -97,19 +115,26 @@ export async function POST() {
   }, { status: 202 })
 }
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
+  const appType = req.nextUrl.searchParams.get('app_type') === 'seller' ? 'seller' : 'buyer'
+
   const admin = createAdminClient()
-  const { data } = await admin
+  let query = admin
     .from('apk_builds')
     .select('id, status, apk_url, triggered_at, completed_at')
-    .eq('seller_id', user.id)
+    .eq('app_type', appType)
     .order('triggered_at', { ascending: false })
     .limit(1)
-    .single()
+
+  // Seller app is shared across all sellers — every seller checks the same
+  // latest build, not one scoped to their own seller_id.
+  if (appType === 'buyer') query = query.eq('seller_id', user.id)
+
+  const { data } = await query.maybeSingle()
 
   return NextResponse.json(data ?? { status: 'none' })
 }
