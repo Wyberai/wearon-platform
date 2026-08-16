@@ -29,7 +29,7 @@ export function MarketingNav() {
       }}
     >
       <div style={{ maxWidth: 1240, margin: '0 auto', padding: '20px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <Link href="/" style={{ fontFamily: 'var(--font-display)', fontSize: 22, fontWeight: 500, letterSpacing: '-0.3px', color: scrolled ? INK : '#fff', textDecoration: 'none', transition: 'color 0.25s ease' }}>
+        <Link href="/" style={{ fontFamily: 'var(--font-marketing)', fontSize: 22, fontWeight: 500, letterSpacing: '-0.3px', color: scrolled ? INK : '#fff', textDecoration: 'none', transition: 'color 0.25s ease' }}>
           Instastarz
         </Link>
         <div style={{ display: 'flex', alignItems: 'center', gap: 28 }}>

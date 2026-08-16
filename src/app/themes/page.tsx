@@ -57,7 +57,7 @@ export default function ThemesPage() {
           <p style={{ fontSize: 12, letterSpacing: '0.2em', textTransform: 'uppercase', color: `${ACCENT}`, marginBottom: 16 }}>
             Flagship Themes
           </p>
-          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(36px, 6vw, 60px)', lineHeight: 1.02, letterSpacing: '-0.02em', maxWidth: 720, marginBottom: 20 }}>
+          <h1 style={{ fontFamily: 'var(--font-marketing)', fontSize: 'clamp(36px, 6vw, 60px)', lineHeight: 1.02, letterSpacing: '-0.02em', maxWidth: 720, marginBottom: 20 }}>
             One flagship theme a month. Pick the one that&apos;s you.
           </h1>
           <p style={{ fontSize: 16, color: `${INK}99`, maxWidth: 560, lineHeight: 1.6 }}>
@@ -93,7 +93,7 @@ export default function ThemesPage() {
                 </div>
                 <div style={{ padding: '18px 20px 22px' }}>
                   <p style={{ fontSize: 12, letterSpacing: '0.1em', textTransform: 'uppercase', color: `${INK}66`, marginBottom: 6 }}>{m.month}</p>
-                  <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 20, marginBottom: 8 }}>{m.name}</h3>
+                  <h3 style={{ fontFamily: 'var(--font-marketing)', fontSize: 20, marginBottom: 8 }}>{m.name}</h3>
                   <p style={{ fontSize: 13.5, color: `${INK}99`, lineHeight: 1.5, marginBottom: m.live ? 16 : 0, minHeight: 40 }}>{m.blurb}</p>
                   {m.live && m.storeSlug && (
                     <Link
@@ -114,7 +114,7 @@ export default function ThemesPage() {
         </section>
 
         <section style={{ maxWidth: 1240, margin: '0 auto', padding: '0 24px 140px', textAlign: 'center' }}>
-          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(28px, 4vw, 40px)', marginBottom: 16 }}>
+          <h2 style={{ fontFamily: 'var(--font-marketing)', fontSize: 'clamp(28px, 4vw, 40px)', marginBottom: 16 }}>
             Ready to pick yours?
           </h2>
           <p style={{ fontSize: 15, color: `${INK}99`, marginBottom: 28 }}>Set up your store in 10 minutes — pick any live theme at signup.</p>

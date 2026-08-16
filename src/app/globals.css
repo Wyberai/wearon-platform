@@ -13,7 +13,11 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  /* var(--font-body) is Inter — .store-root overrides this for every
+     storefront page via --store-font, so this only actually affects the
+     marketing pages, which is the point: they were silently falling back
+     to Arial despite Inter being loaded. */
+  font-family: var(--font-body), Arial, Helvetica, sans-serif;
 }
 
 /* Store pages use tenant font */

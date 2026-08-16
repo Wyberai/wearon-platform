@@ -95,7 +95,7 @@ export default function InstaLandingPage() {
             <p style={{ fontSize: 13, letterSpacing: '0.14em', textTransform: 'uppercase', color: ACCENT, marginBottom: 18 }}>
               for indian instagram fashion sellers
             </p>
-            <h1 className="wo-hero-h1" style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(44px, 7vw, 84px)', fontWeight: 500, lineHeight: 1.02, letterSpacing: '-1.5px', color: INK, maxWidth: 780, margin: 0 }}>
+            <h1 className="wo-hero-h1" style={{ fontFamily: 'var(--font-marketing)', fontSize: 'clamp(44px, 7vw, 84px)', fontWeight: 500, lineHeight: 1.02, letterSpacing: '-1.5px', color: INK, maxWidth: 780, margin: 0 }}>
               So many likes. So few <em style={{ fontStyle: 'italic', color: ACCENT }}>sales</em>.
             </h1>
             <p style={{ fontSize: 18, color: `${INK}bb`, lineHeight: 1.6, maxWidth: 500, marginTop: 24, marginBottom: 36 }}>
@@ -122,7 +122,7 @@ export default function InstaLandingPage() {
             position: 'absolute', top: -120, right: -80, width: 380, height: 380, borderRadius: '50%',
             background: `radial-gradient(circle, ${ACCENT}12, transparent 70%)`, pointerEvents: 'none',
           }} />
-          <h2 style={{ position: 'relative', fontFamily: 'var(--font-display)', fontSize: 'clamp(28px, 3.6vw, 40px)', fontWeight: 500, lineHeight: 1.15, letterSpacing: '-0.5px', marginBottom: 40, padding: '0 24px' }}>
+          <h2 style={{ position: 'relative', fontFamily: 'var(--font-marketing)', fontSize: 'clamp(28px, 3.6vw, 40px)', fontWeight: 500, lineHeight: 1.15, letterSpacing: '-0.5px', marginBottom: 40, padding: '0 24px' }}>
             Reach isn&apos;t the problem.<br />Turning it into a sale is.
           </h2>
           <div className="wo-pain-scroll" style={{ display: 'flex', gap: 20, overflowX: 'auto', padding: '4px 24px 20px', scrollSnapType: 'x mandatory' }}>
@@ -135,7 +135,7 @@ export default function InstaLandingPage() {
                 <span style={{
                   display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
                   width: 32, height: 32, borderRadius: '50%', background: `${ACCENT}14`,
-                  fontFamily: 'var(--font-display)', fontSize: 13, fontWeight: 600, color: ACCENT,
+                  fontFamily: 'var(--font-marketing)', fontSize: 13, fontWeight: 600, color: ACCENT,
                 }}>{n}</span>
                 <p style={{ fontSize: 18, fontWeight: 600, letterSpacing: '-0.2px', margin: '18px 0 10px' }}>{label}</p>
                 <p style={{ fontSize: 14.5, color: `${INK}99`, lineHeight: 1.7 }}>{body}</p>
@@ -148,7 +148,7 @@ export default function InstaLandingPage() {
         <section id="pick-your-look" style={{ padding: '90px 24px', background: '#fff' }}>
           <div style={{ maxWidth: 1240, margin: '0 auto' }}>
             <p style={{ fontSize: 13, letterSpacing: '0.14em', textTransform: 'uppercase', color: ACCENT, marginBottom: 16 }}>built for reels, not just photos</p>
-            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(26px, 3.4vw, 38px)', fontWeight: 500, letterSpacing: '-0.5px', marginBottom: 16, maxWidth: 640 }}>
+            <h2 style={{ fontFamily: 'var(--font-marketing)', fontSize: 'clamp(26px, 3.4vw, 38px)', fontWeight: 500, letterSpacing: '-0.5px', marginBottom: 16, maxWidth: 640 }}>
               Three storefronts. All three play your actual reels.
             </h2>
             <p style={{ fontSize: 15, color: `${INK}99`, marginBottom: 48, maxWidth: 560, lineHeight: 1.7 }}>
@@ -166,7 +166,7 @@ export default function InstaLandingPage() {
                     <img src={t.image} alt={t.name} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
                   </div>
                   <div style={{ padding: '22px 22px 26px' }}>
-                    <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 20, fontWeight: 600, letterSpacing: '-0.2px', marginBottom: 4 }}>{t.name}</h3>
+                    <h3 style={{ fontFamily: 'var(--font-marketing)', fontSize: 20, fontWeight: 600, letterSpacing: '-0.2px', marginBottom: 4 }}>{t.name}</h3>
                     <p style={{ fontSize: 13, color: ACCENT, fontWeight: 600, marginBottom: 10 }}>{t.tagline}</p>
                     <p style={{ fontSize: 14, color: `${INK}99`, lineHeight: 1.6, marginBottom: 16 }}>{t.desc}</p>
                     <span style={{ fontSize: 13, fontWeight: 700, color: INK }}>Start with {t.name} →</span>
@@ -181,13 +181,13 @@ export default function InstaLandingPage() {
         <section style={{ padding: '90px 24px', background: '#FAF7F3' }}>
           <div style={{ maxWidth: 1240, margin: '0 auto' }}>
             <p style={{ fontSize: 13, letterSpacing: '0.14em', textTransform: 'uppercase', color: ACCENT, marginBottom: 16 }}>how it works</p>
-            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(26px, 3.2vw, 36px)', fontWeight: 500, letterSpacing: '-0.4px', marginBottom: 56, maxWidth: 500 }}>
+            <h2 style={{ fontFamily: 'var(--font-marketing)', fontSize: 'clamp(26px, 3.2vw, 36px)', fontWeight: 500, letterSpacing: '-0.4px', marginBottom: 56, maxWidth: 500 }}>
               Live in 10 minutes. Reels included.
             </h2>
             <div className="wo-steps" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 48 }}>
               {STEPS.map(({ n, title, body }) => (
                 <div key={n} style={{ borderTop: `2px solid ${ACCENT}`, paddingTop: 22 }}>
-                  <span style={{ fontFamily: 'var(--font-display)', fontSize: 40, fontWeight: 500, color: `${INK}1a` }}>{n}</span>
+                  <span style={{ fontFamily: 'var(--font-marketing)', fontSize: 40, fontWeight: 500, color: `${INK}1a` }}>{n}</span>
                   <h3 style={{ fontSize: 19, fontWeight: 600, letterSpacing: '-0.2px', margin: '12px 0 10px' }}>{title}</h3>
                   <p style={{ fontSize: 15, color: `${INK}99`, lineHeight: 1.7 }}>{body}</p>
                 </div>
@@ -200,7 +200,7 @@ export default function InstaLandingPage() {
         <section style={{ padding: '90px 24px', background: '#fff' }}>
           <div style={{ maxWidth: 1240, margin: '0 auto' }}>
             <p style={{ fontSize: 13, letterSpacing: '0.14em', textTransform: 'uppercase', color: ACCENT, marginBottom: 16 }}>what you get</p>
-            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(26px, 3.2vw, 36px)', fontWeight: 500, letterSpacing: '-0.4px', marginBottom: 56, maxWidth: 560 }}>
+            <h2 style={{ fontFamily: 'var(--font-marketing)', fontSize: 'clamp(26px, 3.2vw, 36px)', fontWeight: 500, letterSpacing: '-0.4px', marginBottom: 56, maxWidth: 560 }}>
               Built for Instagram sellers. Not generic e-commerce.
             </h2>
             <div className="wo-features" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '20px 20px', marginBottom: 40 }}>
@@ -223,7 +223,7 @@ export default function InstaLandingPage() {
                 <p style={{ fontSize: 15, color: 'rgba(255,255,255,0.65)', lineHeight: 1.7 }}>{AI_REELS.body}</p>
               </div>
               <div style={{ textAlign: 'right', flexShrink: 0 }}>
-                <div style={{ fontFamily: 'var(--font-display)', fontSize: 34, fontWeight: 500, color: '#F0A8BE', lineHeight: 1 }}>{AI_REELS.price}</div>
+                <div style={{ fontFamily: 'var(--font-marketing)', fontSize: 34, fontWeight: 500, color: '#F0A8BE', lineHeight: 1 }}>{AI_REELS.price}</div>
                 <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.5)', marginTop: 2 }}>{AI_REELS.priceLabel}</div>
               </div>
             </div>
@@ -234,7 +234,7 @@ export default function InstaLandingPage() {
         <section style={{ padding: '110px 24px', background: INK }}>
           <div style={{ maxWidth: 640, margin: '0 auto', textAlign: 'center' }}>
             <p style={{ fontSize: 13, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.5)', marginBottom: 18 }}>see it before you build it</p>
-            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(28px, 3.6vw, 40px)', fontWeight: 500, letterSpacing: '-0.5px', color: '#fff', marginBottom: 20 }}>
+            <h2 style={{ fontFamily: 'var(--font-marketing)', fontSize: 'clamp(28px, 3.6vw, 40px)', fontWeight: 500, letterSpacing: '-0.5px', color: '#fff', marginBottom: 20 }}>
               What would <em style={{ fontStyle: 'italic' }}>your</em> store look like?
             </h2>
             <p style={{ fontSize: 16, color: 'rgba(255,255,255,0.65)', lineHeight: 1.7, marginBottom: 40 }}>
@@ -249,7 +249,7 @@ export default function InstaLandingPage() {
           <div style={{ maxWidth: 1240, margin: '0 auto' }}>
             <div style={{ marginBottom: 56 }}>
               <p style={{ fontSize: 13, letterSpacing: '0.14em', textTransform: 'uppercase', color: ACCENT, marginBottom: 16 }}>plans</p>
-              <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(26px, 3.4vw, 38px)', fontWeight: 500, letterSpacing: '-0.5px', marginBottom: 10 }}>
+              <h2 style={{ fontFamily: 'var(--font-marketing)', fontSize: 'clamp(26px, 3.4vw, 38px)', fontWeight: 500, letterSpacing: '-0.5px', marginBottom: 10 }}>
                 Start free. Upgrade when you&apos;re ready.
               </h2>
               <p style={{ fontSize: 15, color: `${INK}77` }}>Annual plans get 2 months free · Pay via UPI</p>
@@ -278,7 +278,7 @@ export default function InstaLandingPage() {
                       </div>
                     )}
                     <div style={{ fontSize: 13, fontWeight: 600, color: featured ? 'rgba(255,255,255,0.6)' : `${INK}77`, marginBottom: 14 }}>{plan.name}</div>
-                    <div style={{ fontFamily: 'var(--font-display)', fontSize: 32, fontWeight: 500, letterSpacing: '-0.5px', marginBottom: 4 }}>
+                    <div style={{ fontFamily: 'var(--font-marketing)', fontSize: 32, fontWeight: 500, letterSpacing: '-0.5px', marginBottom: 4 }}>
                       {plan.price_inr === 0 ? 'Free' : `₹${plan.price_inr.toLocaleString('en-IN')}`}
                       {plan.price_inr > 0 && <span style={{ fontSize: 14, fontWeight: 400, color: featured ? 'rgba(255,255,255,0.5)' : `${INK}66` }}>/mo</span>}
                     </div>
@@ -325,7 +325,7 @@ export default function InstaLandingPage() {
             background: `radial-gradient(circle, ${ACCENT}10, transparent 65%)`, pointerEvents: 'none',
           }} />
           <div style={{ position: 'relative', maxWidth: 680, margin: '0 auto' }}>
-            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(34px, 5.5vw, 60px)', fontWeight: 500, letterSpacing: '-1px', lineHeight: 1.08, marginBottom: 22 }}>
+            <h2 style={{ fontFamily: 'var(--font-marketing)', fontSize: 'clamp(34px, 5.5vw, 60px)', fontWeight: 500, letterSpacing: '-1px', lineHeight: 1.08, marginBottom: 22 }}>
               Stop answering &quot;price?&quot;.<br /><em style={{ fontStyle: 'italic', color: ACCENT }}>Start getting orders.</em>
             </h2>
             <p style={{ fontSize: 16, color: `${INK}99`, marginBottom: 36, lineHeight: 1.7 }}>
@@ -347,7 +347,7 @@ export default function InstaLandingPage() {
         {/* ── FOOTER ── */}
         <footer style={{ borderTop: `1px solid ${INK}14`, padding: '28px 24px' }}>
           <div style={{ maxWidth: 1240, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
-            <span style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: 16 }}>Instastarz</span>
+            <span style={{ fontFamily: 'var(--font-marketing)', fontWeight: 500, fontSize: 16 }}>Instastarz</span>
             <span style={{ fontSize: 13, color: `${INK}66` }}>Built for Indian Instagram boutiques · 2026</span>
             <div style={{ display: 'flex', gap: 20 }}>
               <Link href="/auth/login" style={{ fontSize: 13, color: `${INK}77`, textDecoration: 'none' }}>Login</Link>
