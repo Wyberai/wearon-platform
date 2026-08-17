@@ -141,6 +141,12 @@ export default function SignupPage() {
         <p className="text-center text-sm text-gray-500 mt-6">
           Already have a store? <Link href="/auth/login" className="text-pink-600 font-medium">Login</Link>
         </p>
+
+        <p className="text-center text-xs text-gray-400 mt-4 leading-relaxed">
+          You can try Instastarz free right away, no registration needed. To accept real payments via Razorpay,
+          you'll need a registered business (proprietorship or company) — WhatsApp and Cash on Delivery orders
+          work without one.
+        </p>
       </div>
     </div>
   )

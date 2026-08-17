@@ -17,6 +17,7 @@ export default async function Home() {
 // ---- US HOMEPAGE ----
 
 const US_ACCENT = '#A6134A'
+const US_GOLD = '#B8842E'
 const US_INK = '#111010'
 
 function USHomePage({ locale }: { locale: Locale }) {
@@ -112,7 +113,7 @@ function USHomePage({ locale }: { locale: Locale }) {
         {/* DEMO FEATURE CARDS — show the feature happening, not a stock photo standing in for it */}
         <section style={{ padding: '96px 24px' }}>
           <div className="wo-us-features" style={{ maxWidth: 1240, margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
-            <div className="wo-card" style={{ background: '#f8f8f6', borderRadius: 20, padding: '28px 28px 26px' }}>
+            <div className="wo-card" style={{ background: 'linear-gradient(160deg, rgba(166,19,74,0.06), rgba(184,132,46,0.08))', borderRadius: 20, padding: '28px 28px 26px' }}>
               <div className="wo-feat-fan" style={{ marginBottom: 20 }}>
                 <div style={{ backgroundImage: 'url(/august/campaign/hero.jpg)' }} />
                 <div style={{ backgroundImage: 'url(/ember/campaign/hero.jpg)' }} />
@@ -194,13 +195,16 @@ function USHomePage({ locale }: { locale: Locale }) {
               {t.featuresHeadline}
             </h2>
             <div className="wo-us-features" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '40px 48px' }}>
-              {t.features.map(f => (
-                <div key={f.label} style={{ borderTop: `1.5px solid ${US_INK}12`, paddingTop: 24 }}>
-                  <p style={{ fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: US_ACCENT, marginBottom: 14, fontWeight: 700 }}>{f.label}</p>
-                  <h3 style={{ fontFamily: 'var(--font-marketing)', fontSize: 19, fontWeight: 500, letterSpacing: '-0.2px', lineHeight: 1.25, marginBottom: 10, color: US_INK }}>{f.title}</h3>
-                  <p style={{ fontSize: 14, color: `${US_INK}77`, lineHeight: 1.75 }}>{f.body}</p>
-                </div>
-              ))}
+              {t.features.map((f, i) => {
+                const swatch = i % 2 === 0 ? US_ACCENT : US_GOLD
+                return (
+                  <div key={f.label} style={{ borderTop: `2.5px solid ${swatch}`, paddingTop: 24 }}>
+                    <p style={{ fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: swatch, marginBottom: 14, fontWeight: 700 }}>{f.label}</p>
+                    <h3 style={{ fontFamily: 'var(--font-marketing)', fontSize: 19, fontWeight: 500, letterSpacing: '-0.2px', lineHeight: 1.25, marginBottom: 10, color: US_INK }}>{f.title}</h3>
+                    <p style={{ fontSize: 14, color: `${US_INK}77`, lineHeight: 1.75 }}>{f.body}</p>
+                  </div>
+                )
+              })}
             </div>
           </div>
         </section>
@@ -217,7 +221,7 @@ function USHomePage({ locale }: { locale: Locale }) {
               {PRICING_COPY.map(plan => {
                 const data = PLANS[plan.key]
                 return (
-                  <div key={plan.key} style={{ padding: '32px 24px', background: plan.featured ? US_INK : '#f8f8f8', color: plan.featured ? '#fff' : US_INK }}>
+                  <div key={plan.key} style={{ padding: '32px 24px', background: plan.featured ? US_INK : '#FBF3E8', color: plan.featured ? '#fff' : US_INK }}>
                     {plan.featured && <p style={{ fontSize: 10, letterSpacing: '0.15em', textTransform: 'uppercase', color: US_ACCENT, marginBottom: 14, fontWeight: 700 }}>{t.mostPopular}</p>}
                     <p style={{ fontSize: 11, letterSpacing: '0.1em', textTransform: 'uppercase', color: plan.featured ? 'rgba(255,255,255,0.45)' : `${US_INK}66`, marginBottom: 10 }}>{data.name}</p>
                     <p style={{ fontFamily: 'var(--font-marketing)', fontSize: 38, fontWeight: 400, letterSpacing: '-1.5px', marginBottom: 4, lineHeight: 1 }}>

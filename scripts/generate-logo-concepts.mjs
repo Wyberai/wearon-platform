@@ -59,10 +59,8 @@ async function generateAndSave(prompt, destPath) {
 const BASE = 'A minimal, modern vector-style logo ICON MARK (no text, no letters, no words anywhere in the image), for an Indian fashion/boutique e-commerce brand called Instastarz. Flat, geometric, single-color-friendly design on a plain solid white background, centered, generous padding, works small as an app icon. The mark must be filled almost entirely in near-black ink (#111010) — this is the site\'s dominant color, used for its logotype, headlines and buttons. Use the deep rose/maroon #A6134A ONLY as a tiny sparing accent detail (a single small dot, tip, or spark) covering well under 10% of the mark, never as the dominant fill. No gradients, no photorealism, no drop shadows, no mockup device frame — just the standalone icon on white.'
 
 const CONCEPTS = [
-  { name: 'star-thread', prompt: `${BASE} Concept: a single four-pointed sparkle/star shape formed from one continuous looping thread or ribbon, evoking both "star" and stitching/fabric.` },
-  { name: 'star-camera', prompt: `${BASE} Concept: a four-pointed star shape cleverly integrated into a minimal camera-aperture/shutter ring, evoking Instagram photography and "star" at once, in a single cohesive flat icon.` },
-  { name: 'hanger-star', prompt: `${BASE} Concept: a clothes hanger silhouette where the hook curves into a small four-pointed star or sparkle at the top, boutique-meets-star.` },
-  { name: 'story-ring-star', prompt: `${BASE} Concept: a circular "story ring" (like a social media profile ring) broken at one point into a small star/sparkle burst, suggesting a boutique's story breaking out into the world.` },
+  { name: 'star-camera-refined-v1', prompt: `${BASE} Concept: a single bold, confident four-pointed sparkle/star shape, standing completely on its own — NOT inside a circle, ring, or any camera-aperture/shutter framing (avoid anything evoking a camera lens or photography, to stay clearly clear of any social-media-app iconography). Just the sparkle itself, rendered with clean concave curves between the points, like a refined "AI sparkle" mark — confident, a little jewel-like, boutique-grade.` },
+  { name: 'star-camera-refined-v2', prompt: `${BASE} Concept: a four-pointed sparkle/star shape where one point subtly extends and tapers into a small stitch/thread flourish, hinting at fashion/tailoring — no ring, no circle, no camera or lens framing whatsoever. The star itself is the hero of the mark.` },
 ]
 
 for (const c of CONCEPTS) {

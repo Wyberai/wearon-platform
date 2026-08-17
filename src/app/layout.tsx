@@ -1,15 +1,18 @@
 import type { Metadata } from 'next'
-import { Fraunces, Inter, Inter_Tight } from 'next/font/google'
+import { Fraunces, Inter } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/react'
 import './globals.css'
 
 const fraunces = Fraunces({ subsets: ['latin'], variable: '--font-display', weight: ['400', '500', '600'], style: ['normal', 'italic'] })
 const inter = Inter({ subsets: ['latin'], variable: '--font-body' })
-// Marketing-only display face — deliberately a SEPARATE variable from
-// --font-display (Fraunces), which per-tenant storefronts still depend on
-// (e.g. the August theme's --a-serif fallback chain). Never repoint
-// --font-display itself, or every live seller store using it breaks.
-const interTight = Inter_Tight({ subsets: ['latin'], variable: '--font-marketing', weight: ['400', '500', '600'] })
+// Marketing-only display face — a SEPARATE variable from --font-display,
+// which per-tenant storefronts still depend on (e.g. the August theme's
+// --a-serif fallback chain), so never repoint --font-display itself.
+// Was Inter Tight (a geometric grotesque sans), which reads too close to
+// Meta/Instagram's own branding — reusing Fraunces here instead, a serif
+// with real editorial character that both differentiates the brand and
+// costs nothing extra since it's already loaded above.
+const marketingFace = Fraunces({ subsets: ['latin'], variable: '--font-marketing', weight: ['400', '500', '600'], style: ['normal', 'italic'] })
 
 const TITLE = 'Instastarz — Your Branded Boutique App for Instagram Sellers'
 const DESCRIPTION = 'Give your Instagram buyers a proper branded fashion store — your logo, your colors, WhatsApp ordering. Live in 10 minutes. Free.'
@@ -56,7 +59,7 @@ const WEBSITE_JSON_LD = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${fraunces.variable} ${inter.variable} ${interTight.variable}`}>
+    <html lang="en" className={`${fraunces.variable} ${inter.variable} ${marketingFace.variable}`}>
       <body className="min-h-full">
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ORG_JSON_LD) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(WEBSITE_JSON_LD) }} />
