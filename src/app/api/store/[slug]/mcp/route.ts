@@ -18,7 +18,8 @@ import {
   createCheckout,
   getOrderStatus,
 } from '@/lib/store-agent-tools'
-import { logAgentQuery, getSellerIdForSlug } from '@/lib/agent-tracking'
+import { logAgentQuery, getSellerIdForSlug, getSellerPlanForSlug } from '@/lib/agent-tracking'
+import { MCP_ELIGIBLE_PLANS, type Plan } from '@/lib/constants'
 
 export const dynamic = 'force-dynamic'
 
@@ -129,6 +130,11 @@ export async function POST(
 
   const { id = null, method, params: rpcParams } = body
 
+  const plan = await getSellerPlanForSlug(slug)
+  if (!plan || !MCP_ELIGIBLE_PLANS.includes(plan as Plan)) {
+    return jsonRpcError(id, -32001, 'AI shopping is not enabled for this store. The seller needs to be on the Store + App plan or above.')
+  }
+
   switch (method) {
     case 'initialize':
       return jsonRpcOk(id, {
@@ -236,6 +242,15 @@ export async function GET(
   { params }: { params: Promise<{ slug: string }> }
 ) {
   const { slug } = await params
+
+  const plan = await getSellerPlanForSlug(slug)
+  if (!plan || !MCP_ELIGIBLE_PLANS.includes(plan as Plan)) {
+    return NextResponse.json(
+      { error: 'AI shopping is not enabled for this store. The seller needs to be on the Store + App plan or above.' },
+      { status: 402 }
+    )
+  }
+
   return NextResponse.json({
     name: `Instastarz — ${slug}`,
     description: `AI shopping assistant for the ${slug} boutique. Browse products, check availability, and checkout.`,

@@ -43,6 +43,7 @@ export const PRICING_COPY: PricingCardCopy[] = [
       `${PLANS.growth.products} products`,
       'Everything in Store',
       'Native Android app + Play Store listing',
+      'AI shopping — buyers can shop you from ChatGPT, Gemini & Claude',
       'Priority support',
       `${PLAN_AI_REPLY_LIMITS.growth.toLocaleString('en-IN')} AI auto-replies/mo`,
     ],
@@ -53,6 +54,7 @@ export const PRICING_COPY: PricingCardCopy[] = [
     inclusions: [
       'Unlimited products',
       'Everything in Store + App',
+      'AI shopping — buyers can shop you from ChatGPT, Gemini & Claude',
       `${PLAN_TRY_ON_LIMITS.pro} AI try-ons/mo`,
       `${PLAN_AI_CREDIT_LIMITS.pro} AI photoshoot credits/mo`,
       `${PLAN_AI_REPLY_LIMITS.pro.toLocaleString('en-IN')} AI auto-replies/mo`,

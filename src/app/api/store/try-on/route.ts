@@ -19,22 +19,11 @@ export async function POST(req: Request) {
 
   const admin = createAdminClient()
 
-  // Check seller has credits
-  const { data: profile } = await admin
-    .from('profiles')
-    .select('ai_credits')
-    .eq('id', seller_id)
-    .single()
-
   const creditNeeded = output_type === 'both'
     ? CREDIT_COSTS.buyerTryonImage + CREDIT_COSTS.buyerTryonVideo
     : output_type === 'video'
     ? CREDIT_COSTS.buyerTryonVideo
     : CREDIT_COSTS.buyerTryonImage
-
-  if ((profile?.ai_credits ?? 0) < creditNeeded) {
-    return NextResponse.json({ error: 'Store try-on unavailable right now', code: 'SELLER_NO_CREDITS' }, { status: 402 })
-  }
 
   // Create try-on record
   const { data: job, error } = await admin
@@ -53,13 +42,20 @@ export async function POST(req: Request) {
 
   if (error || !job) return NextResponse.json({ error: 'Failed to create job' }, { status: 500 })
 
-  // Deduct seller credits
-  await admin.rpc('deduct_ai_credits', {
+  // Deduct seller credits — this row-locked RPC is the ONLY authoritative
+  // check (a plain pre-read-then-compare here would race under concurrent
+  // requests and let the expensive pipeline fire past the seller's balance).
+  const { data: balanceResult } = await admin.rpc('deduct_ai_credits', {
     p_seller_id: seller_id,
     p_amount: creditNeeded,
     p_reason: 'buyer_tryon',
     p_reference_id: job.id,
   })
+
+  if (balanceResult === -1) {
+    await admin.from('buyer_tryons').update({ status: 'failed', error_message: 'Insufficient AI credits' }).eq('id', job.id)
+    return NextResponse.json({ error: 'Store try-on unavailable right now', code: 'SELLER_NO_CREDITS' }, { status: 402 })
+  }
 
   // Fire async pipeline
   runBuyerTryonPipeline(job.id, seller_id, buyer_image_url, garment_image_url, output_type, garment_type).catch(

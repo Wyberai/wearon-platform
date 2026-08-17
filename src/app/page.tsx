@@ -19,8 +19,6 @@ export default async function Home() {
 const US_ACCENT = '#A6134A'
 const US_INK = '#111010'
 
-const HERO_IMAGE = '/hero/reel-to-receipt.webp'
-
 function USHomePage({ locale }: { locale: Locale }) {
   const t = HOME_DICT[locale]
 
@@ -51,17 +49,6 @@ function USHomePage({ locale }: { locale: Locale }) {
         @media (max-width: 460px) {
           .wo-us-pricing { grid-template-columns: 1fr !important; }
         }
-        .wo-hero-image {
-          width: 100%;
-          height: 240px;
-          object-fit: cover;
-          object-position: center 30%;
-          display: block;
-          margin-top: 48px;
-        }
-        @media (min-width: 720px) {
-          .wo-hero-image { height: 420px; margin-top: 64px; }
-        }
         .wo-feat-fan { display: flex; }
         .wo-feat-fan div { width: 56px; height: 68px; border-radius: 6px; border: 1px solid rgba(23,21,18,0.08); margin-left: -20px; box-shadow: -3px 0 8px rgba(23,21,18,0.1); background-size: cover; background-position: center; }
         .wo-feat-fan div:first-child { margin-left: 0; }
@@ -71,15 +58,12 @@ function USHomePage({ locale }: { locale: Locale }) {
 
 
       <div style={{ background: '#fff', color: US_INK, minHeight: '100vh' }}>
-        {/* Announcement bar */}
-        <div style={{ background: US_INK, color: '#fff', padding: '11px 24px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 16, flexWrap: 'wrap', fontSize: 12, letterSpacing: '0.05em' }}>
-          <span>
-            {t.announcementText}{'  '}
-            <Link href="/auth/signup" style={{ color: '#fff', textDecoration: 'underline', fontWeight: 700 }}>
-              {t.announcementCta}
-            </Link>
-          </span>
-          <LanguageSwitcher current={locale} dark />
+        {/* Announcement bar — single line, no wrap, no clutter */}
+        <div style={{ background: US_INK, color: '#fff', padding: '10px 20px', textAlign: 'center', fontSize: 12, letterSpacing: '0.03em', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+          {t.announcementText}{' '}
+          <Link href="/auth/signup" style={{ color: '#fff', textDecoration: 'underline', fontWeight: 700 }}>
+            {t.announcementCta}
+          </Link>
         </div>
 
         <MarketingNav />
@@ -88,7 +72,7 @@ function USHomePage({ locale }: { locale: Locale }) {
             generously padded instead of a cramped floating card over an
             image. The real reel-to-receipt asset moves below the headline
             block as a supporting visual, not a backdrop fighting the type. */}
-        <section style={{ padding: '96px 24px 0' }}>
+        <section style={{ padding: '72px 24px 96px' }}>
           <div style={{ maxWidth: 780, margin: '0 auto', textAlign: 'center' }}>
             <p style={{ fontSize: 11, letterSpacing: '0.14em', textTransform: 'uppercase', color: `${US_INK}66`, marginBottom: 22 }}>
               {t.heroEyebrow}
@@ -108,7 +92,6 @@ function USHomePage({ locale }: { locale: Locale }) {
               </Link>
             </div>
           </div>
-          <img src={HERO_IMAGE} alt="An Instagram Reel turning into a checkout — reels become sales on Instastarz" className="wo-hero-image" style={{ borderRadius: 20, maxWidth: 1240, margin: '0 auto' }} />
         </section>
 
         {/* TRUST STRIP — real integration partners, not fabricated customer
@@ -163,7 +146,7 @@ function USHomePage({ locale }: { locale: Locale }) {
         <div style={{ background: US_INK, color: '#fff', padding: '13px 0', overflow: 'hidden', whiteSpace: 'nowrap' }}>
           <style>{`@keyframes wo-scroll { from { transform: translateX(0) } to { transform: translateX(-50%) } }`}</style>
           <div style={{ display: 'inline-block', animation: 'wo-scroll 24s linear infinite' }}>
-            {['AI BUYER — SEASONAL EDITS', 'MCP ENDPOINT FOR CLAUDE', 'DM CHECKOUT', 'AI VISIBILITY DASHBOARD', 'STRIPE + RAZORPAY', 'YOUR OWN DOMAIN', 'AI PRODUCT PHOTOS', 'OPENAPI FOR CHATGPT', 'FREE TO START', 'AI BUYER — SEASONAL EDITS', 'MCP ENDPOINT FOR CLAUDE', 'DM CHECKOUT', 'AI VISIBILITY DASHBOARD', 'STRIPE + RAZORPAY', 'YOUR OWN DOMAIN', 'AI PRODUCT PHOTOS', 'OPENAPI FOR CHATGPT', 'FREE TO START'].map((item, i) => (
+            {['AI BUYER — SEASONAL EDITS', 'SHOP FROM CHATGPT, GEMINI & CLAUDE', 'DM CHECKOUT', 'AI VISIBILITY DASHBOARD', 'STRIPE + RAZORPAY', 'YOUR OWN DOMAIN', 'AI PRODUCT PHOTOS', 'FREE TO START', 'AI BUYER — SEASONAL EDITS', 'SHOP FROM CHATGPT, GEMINI & CLAUDE', 'DM CHECKOUT', 'AI VISIBILITY DASHBOARD', 'STRIPE + RAZORPAY', 'YOUR OWN DOMAIN', 'AI PRODUCT PHOTOS', 'FREE TO START'].map((item, i) => (
               <span key={i} style={{ fontSize: 11, letterSpacing: '0.18em', fontWeight: 500 }}>
                 {item}<span style={{ margin: '0 28px', opacity: 0.3 }}>·</span>
               </span>

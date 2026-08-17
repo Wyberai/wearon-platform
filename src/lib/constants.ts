@@ -24,6 +24,11 @@ export type Plan = keyof typeof PLANS
 // rather than metered like conversational AI replies.
 export const DOMAIN_ELIGIBLE_PLANS: Plan[] = ['starter', 'growth', 'pro', 'enterprise']
 
+// AI shopping (the per-store MCP endpoint that lets ChatGPT/Gemini/Claude
+// browse the catalog and check buyers out) — gated to Store + App (₹9,999)
+// and above, not Free or Store (₹3,000). Confirmed with the founder.
+export const MCP_ELIGIBLE_PLANS: Plan[] = ['growth', 'pro', 'enterprise']
+
 export const PLAN_TRY_ON_LIMITS: Record<Plan, number> = {
   free: 0, starter: 0, growth: 0, pro: 300, enterprise: 99999,
 }

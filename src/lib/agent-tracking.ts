@@ -22,6 +22,14 @@ export async function getSellerIdForSlug(slug: string): Promise<string | null> {
   return data?.seller_id ?? null
 }
 
+export async function getSellerPlanForSlug(slug: string): Promise<string | null> {
+  const admin = createAdminClient()
+  const { data: config } = await admin.from('tenant_config').select('seller_id').eq('slug', slug).single()
+  if (!config?.seller_id) return null
+  const { data: profile } = await admin.from('profiles').select('plan').eq('id', config.seller_id).single()
+  return profile?.plan ?? null
+}
+
 export async function logAgentEndpointHit(sellerId: string, endpoint: 'openapi' | 'feed', userAgent: string | null) {
   const agent = detectAgentUA(userAgent)
   if (!agent) return
