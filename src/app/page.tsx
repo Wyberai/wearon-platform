@@ -1,6 +1,4 @@
 import Link from 'next/link'
-import { PLANS } from '@/lib/constants'
-import { PRICING_COPY } from '@/lib/pricing-copy'
 import { ThemePicker } from '@/components/marketing/ThemePicker'
 import { MarketingNav } from '@/components/marketing/MarketingNav'
 import { faqToJsonLd } from '@/lib/schema-org'
@@ -46,10 +44,6 @@ function USHomePage({ locale }: { locale: Locale }) {
         .wo-tile:hover .wo-tile-img { transform: scale(1.04); }
         @media (max-width: 640px) {
           .wo-us-features { grid-template-columns: 1fr !important; gap: 32px !important; }
-          .wo-us-pricing { grid-template-columns: repeat(2, 1fr) !important; }
-        }
-        @media (max-width: 460px) {
-          .wo-us-pricing { grid-template-columns: 1fr !important; }
         }
         .wo-feat-fan { display: flex; }
         .wo-feat-fan div { width: 56px; height: 68px; border-radius: 6px; border: 1px solid rgba(23,21,18,0.08); margin-left: -20px; box-shadow: -3px 0 8px rgba(23,21,18,0.1); background-size: cover; background-position: center; }
@@ -76,6 +70,9 @@ function USHomePage({ locale }: { locale: Locale }) {
             block as a supporting visual, not a backdrop fighting the type. */}
         <section style={{ padding: '72px 24px 96px' }}>
           <div style={{ maxWidth: 780, margin: '0 auto', textAlign: 'center' }}>
+            <p style={{ display: 'inline-block', fontSize: 12, fontWeight: 700, letterSpacing: '0.04em', color: US_ACCENT, background: `${US_ACCENT}12`, borderRadius: 999, padding: '7px 16px', marginBottom: 22 }}>
+              {t.launchBadge}
+            </p>
             <p style={{ fontSize: 11, letterSpacing: '0.14em', textTransform: 'uppercase', color: `${US_INK}66`, marginBottom: 22 }}>
               {t.heroEyebrow}
             </p>
@@ -207,46 +204,6 @@ function USHomePage({ locale }: { locale: Locale }) {
                 )
               })}
             </div>
-          </div>
-        </section>
-
-        {/* PRICING — real plans, real INR, matches billing exactly */}
-        <section style={{ padding: '96px 24px' }}>
-          <div style={{ maxWidth: 1080, margin: '0 auto' }}>
-            <p style={{ fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: `${US_INK}55`, marginBottom: 16, textAlign: 'center' }}>{t.pricingEyebrow}</p>
-            <h2 style={{ fontFamily: 'var(--font-marketing)', fontSize: 'clamp(30px, 4vw, 44px)', fontWeight: 400, letterSpacing: '-1px', textAlign: 'center', marginBottom: 12, color: US_INK }}>
-              {t.pricingHeadline}
-            </h2>
-            <p style={{ textAlign: 'center', fontSize: 14, color: `${US_INK}66`, marginBottom: 56 }}>{t.pricingSubcopy}</p>
-            <div className="wo-us-pricing" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 2 }}>
-              {PRICING_COPY.map(plan => {
-                const data = PLANS[plan.key]
-                return (
-                  <div key={plan.key} style={{ padding: '32px 24px', background: plan.featured ? US_INK : '#FBF3E8', color: plan.featured ? '#fff' : US_INK }}>
-                    {plan.featured && <p style={{ fontSize: 10, letterSpacing: '0.15em', textTransform: 'uppercase', color: US_ACCENT, marginBottom: 14, fontWeight: 700 }}>{t.mostPopular}</p>}
-                    <p style={{ fontSize: 11, letterSpacing: '0.1em', textTransform: 'uppercase', color: plan.featured ? 'rgba(255,255,255,0.45)' : `${US_INK}66`, marginBottom: 10 }}>{data.name}</p>
-                    <p style={{ fontFamily: 'var(--font-marketing)', fontSize: 38, fontWeight: 400, letterSpacing: '-1.5px', marginBottom: 4, lineHeight: 1 }}>
-                      {data.price_inr === 0 ? t.free : `₹${data.price_inr.toLocaleString('en-IN')}`}
-                      <span style={{ fontSize: 13, fontWeight: 400, opacity: 0.45, letterSpacing: 0 }}>{data.price_inr > 0 ? t.perMonth : ''}</span>
-                    </p>
-                    <p style={{ fontSize: 13, color: plan.featured ? 'rgba(255,255,255,0.5)' : `${US_INK}66`, marginBottom: 24 }}>{plan.description}</p>
-                    <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 28px', display: 'flex', flexDirection: 'column', gap: 10 }}>
-                      {plan.inclusions.map(f => (
-                        <li key={f} style={{ fontSize: 13, display: 'flex', gap: 8, color: plan.featured ? 'rgba(255,255,255,0.8)' : `${US_INK}99` }}>
-                          <span style={{ color: US_ACCENT, flexShrink: 0 }}>—</span>{f}
-                        </li>
-                      ))}
-                    </ul>
-                    <Link href="/auth/signup" style={{ display: 'block', textAlign: 'center', padding: '13px 0', fontSize: 11, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', textDecoration: 'none', background: plan.featured ? '#fff' : US_INK, color: plan.featured ? US_INK : '#fff' }}>
-                      {data.label} →
-                    </Link>
-                  </div>
-                )
-              })}
-            </div>
-            <p style={{ textAlign: 'center', marginTop: 32, fontSize: 14, color: `${US_INK}77` }}>
-              {t.referralLine}
-            </p>
           </div>
         </section>
 

@@ -42,7 +42,7 @@ export default function WaitlistPage() {
         </div>
 
         <p style={{ fontSize: 11, letterSpacing: '0.14em', textTransform: 'uppercase', color: `${INK}66`, marginBottom: 16 }}>
-          Opening soon
+          Opening August 21
         </p>
         <h1 style={{ fontFamily: 'var(--font-marketing)', fontSize: 'clamp(32px, 6vw, 48px)', fontWeight: 400, lineHeight: 1.08, letterSpacing: '-1.5px', marginBottom: 20 }}>
           Be first in line to turn your Instagram page into a real online store.

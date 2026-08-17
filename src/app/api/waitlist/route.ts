@@ -26,7 +26,7 @@ export async function POST(req: Request) {
   sendEmail({
     to: email,
     subject: "You're on the Instastarz waitlist",
-    html: `<p>Hey,</p><p>You're on the list — we'll email you the moment Instastarz opens up. In the meantime, follow along on Instagram for a first look.</p><p>— Instastarz</p>`,
+    html: `<p>Hey,</p><p>You're on the list — Instastarz opens August 21, and we'll email you the moment it's live. In the meantime, follow along on Instagram for a first look.</p><p>— Instastarz</p>`,
   }).catch(() => {})
 
   return NextResponse.json({ ok: true })
