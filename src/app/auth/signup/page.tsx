@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { createBrowserClient } from '@supabase/ssr'
-import { SparkleLogo } from '@/components/SparkleLogo'
+import { BrandLogo } from '@/components/BrandLogo'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? ''
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? ''
@@ -94,7 +94,7 @@ export default function SignupPage() {
       <div className="bg-white rounded-2xl p-8 shadow-sm max-w-md w-full">
         <div className="text-center mb-8">
           <span className="inline-flex items-center gap-2">
-            <SparkleLogo size={22} />
+            <BrandLogo size={22} />
             <span className="text-2xl font-bold" style={{ color: '#111010' }}>Instastarz</span>
           </span>
           <h1 className="text-xl font-bold text-gray-900 mt-4">Create your fashion store</h1>

@@ -3,22 +3,22 @@ import { ImageResponse } from 'next/og'
 export const size = { width: 32, height: 32 }
 export const contentType = 'image/png'
 
-// Generated from the same hand-authored sparkle path as SparkleLogo.tsx —
-// duplicated here (not imported) since this route needs the raw SVG
-// markup for ImageResponse's Satori renderer, which can't consume a React
-// component that returns a plain <svg>.
+// Generated from the same hand-authored boutique-awning path as
+// BrandLogo.tsx — duplicated here (not imported) since this route needs
+// raw SVG markup for ImageResponse's Satori renderer, which can't consume
+// a React component that returns a plain <svg>.
 export default function Icon() {
   return new ImageResponse(
     (
       <svg width={32} height={32} viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
-          d="M50 4 C 53 30 58 42 50 50 C 58 58 63 68 96 50 C 63 58 58 63 50 96 C 58 63 53 58 50 50 C 42 58 37 63 4 50 C 37 42 42 30 50 4 Z"
+          d="M 20 35 A 10 10 0 0 0 40 35 A 10 10 0 0 0 60 35 A 10 10 0 0 0 80 35 L 80 20 Q 80 15 75 15 L 25 15 Q 20 15 20 20 Z"
           fill="#111010"
         />
-        <path
-          d="M67 33 C 68.5 40 71 42.5 78 44 C 71 45.5 68.5 48 67 55 C 65.5 48 63 45.5 56 44 C 63 42.5 65.5 40 67 33 Z"
-          fill="#A6134A"
-        />
+        <rect x="22" y="48" width="14" height="27" rx="6" fill="#111010" />
+        <rect x="64" y="48" width="14" height="27" rx="6" fill="#111010" />
+        <path d="M 42 75 L 42 58 A 8 8 0 0 1 58 58 L 58 75 Z" fill="#111010" />
+        <circle cx="52" cy="66" r="3" fill="#A6134A" />
       </svg>
     ),
     { ...size }

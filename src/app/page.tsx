@@ -8,7 +8,7 @@ import { getLocale } from '@/lib/i18n/get-locale'
 import { HOME_DICT } from '@/lib/i18n/dict/home'
 import { LanguageSwitcher } from '@/components/LanguageSwitcher'
 import type { Locale } from '@/lib/i18n/config'
-import { SparkleLogo } from '@/components/SparkleLogo'
+import { BrandLogo } from '@/components/BrandLogo'
 
 export default async function Home() {
   const locale = await getLocale()
@@ -293,7 +293,7 @@ function USHomePage({ locale }: { locale: Locale }) {
         <footer style={{ borderTop: `1px solid ${US_INK}10`, padding: '28px 24px', background: '#fff' }}>
           <div style={{ maxWidth: 900, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
             <span style={{ display: 'flex', alignItems: 'center', gap: 8, fontFamily: 'var(--font-marketing)', fontWeight: 400, fontSize: 18, letterSpacing: '-0.3px', color: US_INK }}>
-              <SparkleLogo size={18} ink={US_INK} />
+              <BrandLogo size={18} ink={US_INK} />
               Instastarz
             </span>
             <span style={{ fontSize: 11, letterSpacing: '0.06em', color: `${US_INK}55`, textTransform: 'uppercase' }}>{t.footerTagline}</span>
