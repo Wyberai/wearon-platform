@@ -1,6 +1,7 @@
 import { createAdminClient } from '@/lib/supabase/server'
 import { NextResponse } from 'next/server'
 import crypto from 'crypto'
+import { CREDIT_COSTS } from '@/lib/ai-presets'
 
 const AI_URL = process.env.WEARON_AI_URL
 const AI_SECRET = process.env.WEARON_AI_SECRET
@@ -26,9 +27,15 @@ export async function POST(request: Request) {
   const { data: product } = await admin.from('products').select('id, garment_image_url, garment_preprocessed_url').eq('id', productId).eq('seller_id', config.seller_id).single()
   if (!product) return NextResponse.json({ error: 'Product not found' }, { status: 404 })
 
-  // Check & deduct try-on credit
-  const { data: canTryOn } = await admin.rpc('deduct_try_on', { p_seller_id: config.seller_id })
-  if (!canTryOn) return NextResponse.json({ error: 'Try-on limit reached. Seller needs to upgrade.' }, { status: 429 })
+  // Check & deduct AI credits — same shared pool as the storefront try-on
+  // route and AI Studio, so a seller's usage is metered consistently
+  // regardless of which try-on entry point a buyer hits.
+  const { data: balanceResult } = await admin.rpc('deduct_ai_credits', {
+    p_seller_id: config.seller_id,
+    p_amount: CREDIT_COSTS.buyerTryonImage,
+    p_reason: 'buyer_tryon',
+  })
+  if (balanceResult === -1) return NextResponse.json({ error: 'Try-on limit reached. Seller needs to upgrade.' }, { status: 429 })
 
   // Upload selfie to Supabase Storage
   const selfieBuffer = Buffer.from(await selfie.arrayBuffer())

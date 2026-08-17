@@ -22,8 +22,7 @@ interface Profile {
   email: string
   plan: string
   subscription_status: string | null
-  try_ons_used: number
-  try_ons_limit: number
+  ai_credits: number
   ai_replies_used: number
   ai_reply_limit: number
   created_at: string
@@ -97,7 +96,7 @@ export default function SellerDetailPage() {
         setBuilds(d.apk_builds ?? [])
         setWhatsapp(d.whatsapp_connection ?? null)
         setEditPlan(d.profile?.plan ?? 'free')
-        setEditLimit(d.profile?.try_ons_limit ?? 20)
+        setEditLimit(d.profile?.ai_credits ?? 0)
         setEditAiReplyLimit(d.profile?.ai_reply_limit ?? 50)
         setLoading(false)
       })
@@ -137,13 +136,12 @@ export default function SellerDetailPage() {
 
   async function save() {
     setSaving(true)
-    const aiCredits = PLANS[editPlan as keyof typeof PLANS]?.ai_credits ?? 0
     await fetch(`/api/platform/sellers/${id}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ plan: editPlan, try_ons_limit: editLimit, ai_credits: aiCredits, ai_reply_limit: editAiReplyLimit }),
+      body: JSON.stringify({ plan: editPlan, ai_credits: editLimit, ai_reply_limit: editAiReplyLimit }),
     })
-    setProfile(prev => prev ? { ...prev, plan: editPlan, try_ons_limit: editLimit, ai_reply_limit: editAiReplyLimit } : prev)
+    setProfile(prev => prev ? { ...prev, plan: editPlan, ai_credits: editLimit, ai_reply_limit: editAiReplyLimit } : prev)
     setSaving(false)
     setSaved(true)
     setTimeout(() => setSaved(false), 2000)
@@ -204,7 +202,7 @@ export default function SellerDetailPage() {
               onChange={e => {
                 const p = e.target.value
                 setEditPlan(p)
-                setEditLimit(PLANS[p as keyof typeof PLANS]?.try_ons ?? 20)
+                setEditLimit(PLANS[p as keyof typeof PLANS]?.ai_credits ?? 0)
                 setEditAiReplyLimit(PLAN_AI_REPLY_LIMITS[p as keyof typeof PLAN_AI_REPLY_LIMITS] ?? 50)
               }}
               style={{ width: '100%', padding: '10px 12px', borderRadius: 10, background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.12)', color: '#fff', fontSize: 14, fontWeight: 700, cursor: 'pointer', outline: 'none' }}
@@ -216,7 +214,7 @@ export default function SellerDetailPage() {
           </div>
 
           <div style={{ marginBottom: 16 }}>
-            <label style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)', display: 'block', marginBottom: 6 }}>Try-on limit / month</label>
+            <label style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)', display: 'block', marginBottom: 6 }}>AI credits (try-on + AI photoshoot pool)</label>
             <input
               type="number"
               value={editLimit}
@@ -248,13 +246,10 @@ export default function SellerDetailPage() {
           <div style={{ marginTop: 16, padding: '12px 16px', borderRadius: 10, background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
             <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)', marginBottom: 8 }}>Current usage</div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: 13, marginBottom: 6 }}>
-              <span style={{ color: 'rgba(255,255,255,0.6)' }}>Try-ons used</span>
-              <span style={{ fontWeight: 700, color: (profile.try_ons_used / (profile.try_ons_limit || 1)) > 0.8 ? '#EF4444' : '#fff' }}>
-                {profile.try_ons_used} / {profile.try_ons_limit}
+              <span style={{ color: 'rgba(255,255,255,0.6)' }}>AI credits remaining (try-on + AI photoshoot)</span>
+              <span style={{ fontWeight: 700, color: profile.ai_credits <= 15 ? '#EF4444' : '#fff' }}>
+                {profile.ai_credits}
               </span>
-            </div>
-            <div style={{ height: 5, borderRadius: 99, background: 'rgba(255,255,255,0.08)', marginBottom: 12 }}>
-              <div style={{ height: '100%', borderRadius: 99, width: `${Math.min(100, Math.round((profile.try_ons_used / (profile.try_ons_limit || 1)) * 100))}%`, background: '#F72585' }} />
             </div>
 
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: 13, marginBottom: 6 }}>

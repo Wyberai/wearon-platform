@@ -11,7 +11,7 @@ export async function GET() {
   const admin = createAdminClient()
 
   const [profileRes, productsRes, ordersRes, analyticsRes, igConvRes, waConvRes] = await Promise.all([
-    admin.from('profiles').select('plan, try_ons_used, try_ons_limit, ai_credits, ai_replies_used, ai_reply_limit').eq('id', DEMO_SELLER_ID).single(),
+    admin.from('profiles').select('plan, ai_credits, ai_replies_used, ai_reply_limit').eq('id', DEMO_SELLER_ID).single(),
     admin.from('products').select('id, name, price_inr, cost_price_inr, category, garment_image_url').eq('seller_id', DEMO_SELLER_ID).eq('is_active', true).order('created_at', { ascending: false }),
     admin.from('orders').select('id, status, total_inr, items, created_at').eq('seller_id', DEMO_SELLER_ID).order('created_at', { ascending: false }).limit(10),
     admin.from('daily_analytics').select('date, store_visits, try_ons, whatsapp_clicks, orders_placed, revenue_inr').eq('seller_id', DEMO_SELLER_ID).order('date', { ascending: true }),

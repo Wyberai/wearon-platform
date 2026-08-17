@@ -45,7 +45,7 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
   const body = await req.json()
   const admin = createAdminClient()
 
-  const allowedProfileFields = ['plan', 'try_ons_limit', 'ai_credits', 'ai_reply_limit', 'subscription_status', 'is_suspended']
+  const allowedProfileFields = ['plan', 'ai_credits', 'ai_reply_limit', 'subscription_status', 'is_suspended']
   const profileUpdates: Record<string, unknown> = {}
   for (const key of allowedProfileFields) {
     if (key in body) profileUpdates[key] = body[key]

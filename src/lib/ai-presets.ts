@@ -30,14 +30,6 @@ export const CREDIT_COSTS = {
   buyerTryonVideo: 10,
 } as const
 
-export const PLAN_MONTHLY_AI_CREDITS: Record<string, number> = {
-  free:       0,
-  starter:    20,
-  growth:     75,
-  pro:        200,
-  enterprise: 500,
-}
-
 export function presetImageUrl(key: string): string {
   const base = process.env.NEXT_PUBLIC_SUPABASE_URL ?? ''
   return `${base}/storage/v1/object/public/wearon-assets/presets/${key}.jpg`

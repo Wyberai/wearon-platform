@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/server'
 import { randomBytes } from 'crypto'
+import { CREDIT_COSTS } from '@/lib/ai-presets'
 
 export async function POST(req: NextRequest) {
   const apiKey = req.headers.get('x-wearon-key')
@@ -13,20 +14,12 @@ export async function POST(req: NextRequest) {
   // Validate API key against profiles
   const { data: profile } = await admin
     .from('profiles')
-    .select('id, plan, try_ons_used, try_ons_limit')
+    .select('id, plan, ai_credits')
     .eq('api_key', apiKey)
     .single()
 
   if (!profile) {
     return NextResponse.json({ error: 'Invalid API key' }, { status: 401 })
-  }
-
-  if (profile.try_ons_used >= profile.try_ons_limit) {
-    return NextResponse.json({
-      error: 'Try-on quota exceeded. Upgrade your plan or purchase additional credits.',
-      quota_used: profile.try_ons_used,
-      quota_limit: profile.try_ons_limit,
-    }, { status: 429 })
   }
 
   const contentType = req.headers.get('content-type') ?? ''
@@ -44,8 +37,19 @@ export async function POST(req: NextRequest) {
 
   const webhookUrl = formData.get('webhook_url') as string | null
 
-  // Increment try-on usage
-  await admin.rpc('increment_try_ons', { user_id: profile.id, amount: 1 })
+  // Check & deduct AI credits — same shared pool as the storefront try-on
+  // route and AI Studio.
+  const { data: balanceResult } = await admin.rpc('deduct_ai_credits', {
+    p_seller_id: profile.id,
+    p_amount: CREDIT_COSTS.buyerTryonImage,
+    p_reason: 'buyer_tryon',
+  })
+  if (balanceResult === -1) {
+    return NextResponse.json({
+      error: 'Try-on quota exceeded. Upgrade your plan or purchase additional credits.',
+      credits_remaining: profile.ai_credits,
+    }, { status: 429 })
+  }
 
   // Store job in try_on_results (pending) — let Postgres generate the UUID
   const { data: job } = await admin.from('try_on_results').insert({

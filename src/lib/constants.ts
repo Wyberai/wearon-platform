@@ -5,15 +5,15 @@
 //
 // Design: the cheap-to-run feature (conversational AI replies) is available on every
 // paid tier at increasing caps. The expensive-to-run features (buyer try-on, AI Studio
-// cloth-to-model generation — both real fal.ai/Higgsfield compute) are entirely
-// unavailable below the top tier, not just rate-limited — try_ons/ai_credits are 0,
-// not small, for starter/growth.
+// cloth-to-model generation — both real fal.ai/Higgsfield compute) share one ai_credits
+// pool (see PLAN_AI_CREDIT_LIMITS + CREDIT_COSTS in ai-presets.ts) and are entirely
+// unavailable below the top tier, not just rate-limited — 0, not small, for starter/growth.
 export const PLANS = {
-  free:       { name: 'Free',                          try_ons: 0,   ai_credits: 0,   price_inr: 0,     products: 10,   label: 'Get Started' },
-  starter:    { name: 'Store',                          try_ons: 0,   ai_credits: 0,   price_inr: 3000,  products: 100,  label: 'Start Selling' },
-  growth:     { name: 'Store + App',                    try_ons: 0,   ai_credits: 0,   price_inr: 9999,  products: 500,  label: 'Get the App' },
-  pro:        { name: 'Store + App + AI Photoshoot',    try_ons: 300, ai_credits: 150, price_inr: 19999, products: 9999, label: 'Go All-In' },
-  enterprise: { name: 'Enterprise',                     try_ons: 99999, ai_credits: 99999, price_inr: 39999, products: 9999, label: 'Contact Us' },
+  free:       { name: 'Free',                          ai_credits: 0,   price_inr: 0,     products: 10,   label: 'Get Started' },
+  starter:    { name: 'Store',                          ai_credits: 0,   price_inr: 3000,  products: 100,  label: 'Start Selling' },
+  growth:     { name: 'Store + App',                    ai_credits: 0,   price_inr: 9999,  products: 500,  label: 'Get the App' },
+  pro:        { name: 'Store + App + AI Photoshoot',    ai_credits: 150, price_inr: 19999, products: 9999, label: 'Go All-In' },
+  enterprise: { name: 'Enterprise',                     ai_credits: 99999, price_inr: 39999, products: 9999, label: 'Contact Us' },
 } as const
 
 export type Plan = keyof typeof PLANS
@@ -40,12 +40,10 @@ export const PLAN_CHANGE_REQUEST_LIMITS: Record<Plan, number> = {
 }
 export const CHANGE_REQUEST_OVERAGE_PRICE_INR = 500
 
-export const PLAN_TRY_ON_LIMITS: Record<Plan, number> = {
-  free: 0, starter: 0, growth: 0, pro: 300, enterprise: 99999,
-}
-
-// AI Studio (cloth-to-model photo/video generation) — same eligibility as try-on,
-// both gated to the top tier since both carry real per-generation compute cost.
+// Buyer try-on (fal.ai) and AI Studio cloth-to-model generation (Higgsfield)
+// share this one pool — same eligibility, both gated to the top tier since
+// both carry real per-generation compute cost. See CREDIT_COSTS in
+// ai-presets.ts for what a unit of each actually costs.
 export const PLAN_AI_CREDIT_LIMITS: Record<Plan, number> = {
   free: 0, starter: 0, growth: 0, pro: 150, enterprise: 99999,
 }

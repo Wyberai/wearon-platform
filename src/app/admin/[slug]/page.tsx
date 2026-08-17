@@ -19,7 +19,7 @@ export default async function AdminDashboard({ params }: { params: Promise<{ slu
   const admin = createAdminClient()
 
   const [profileResult, analyticsResult, productCountResult, orderCountResult, configResult, igResult] = await Promise.all([
-    admin.from('profiles').select('plan, try_ons_used, try_ons_limit').eq('id', user.id).single(),
+    admin.from('profiles').select('plan, ai_credits').eq('id', user.id).single(),
     admin.from('daily_analytics').select('*').eq('seller_id', user.id).order('date', { ascending: false }).limit(7),
     admin.from('products').select('id', { count: 'exact' }).eq('seller_id', user.id).eq('is_active', true),
     admin.from('orders').select('id', { count: 'exact' }).eq('seller_id', user.id).gte('created_at', new Date(Date.now() - 30 * 86400000).toISOString()),
@@ -37,7 +37,7 @@ export default async function AdminDashboard({ params }: { params: Promise<{ slu
   const totalTryOns = analytics.reduce((sum, d) => sum + d.try_ons, 0)
   const totalVisits = analytics.reduce((sum, d) => sum + d.store_visits, 0)
   const plan = PLANS[profile?.plan as keyof typeof PLANS ?? 'free']
-  const tryOnPct = profile ? Math.round((profile.try_ons_used / profile.try_ons_limit) * 100) : 0
+  const aiCreditsLow = (profile?.ai_credits ?? 0) <= 15
 
   const hasWhatsApp = !!storeConfig?.whatsapp_number
   const hasProducts = productCount > 0
@@ -125,12 +125,9 @@ export default async function AdminDashboard({ params }: { params: Promise<{ slu
           <div className="space-y-1.5">
             <div className="flex justify-between text-xs" style={{ color: `${INK}99` }}>
               <span>{t.tryOnsUsed}</span>
-              <span className="font-medium" style={{ color: INK }}>{profile?.try_ons_used ?? 0} / {profile?.try_ons_limit ?? 20}</span>
+              <span className="font-medium" style={{ color: aiCreditsLow ? '#dc2626' : INK }}>{profile?.ai_credits ?? 0}</span>
             </div>
-            <div className="w-full rounded-full h-1.5" style={{ background: `${INK}0f` }}>
-              <div className="h-1.5 rounded-full" style={{ width: `${Math.min(tryOnPct, 100)}%`, background: tryOnPct > 80 ? '#dc2626' : ACCENT }} />
-            </div>
-            {tryOnPct > 80 && <p className="text-xs mt-1" style={{ color: '#dc2626' }}>{t.runningLow}</p>}
+            {aiCreditsLow && <p className="text-xs mt-1" style={{ color: '#dc2626' }}>{t.runningLow}</p>}
           </div>
         </div>
 

@@ -2,8 +2,7 @@ export interface Profile {
   id: string
   email: string
   plan: 'free' | 'starter' | 'growth' | 'pro' | 'enterprise'
-  try_ons_used: number
-  try_ons_limit: number
+  ai_credits: number
   ai_replies_used: number
   ai_reply_limit: number
   referral_code: string

@@ -1,6 +1,6 @@
 import { createAdminClient, createClient } from '@/lib/supabase/server'
 import { NextResponse } from 'next/server'
-import { PLAN_AI_CREDIT_LIMITS, PLAN_AI_REPLY_LIMITS, PLAN_TRY_ON_LIMITS } from '@/lib/constants'
+import { PLAN_AI_CREDIT_LIMITS, PLAN_AI_REPLY_LIMITS } from '@/lib/constants'
 
 // Called after Supabase email confirmation to create profile + tenant_config
 export async function POST(request: Request) {
@@ -32,7 +32,6 @@ export async function POST(request: Request) {
     id: user.id,
     email: user.email!,
     plan: 'free',
-    try_ons_limit: PLAN_TRY_ON_LIMITS.free,
     ai_credits: PLAN_AI_CREDIT_LIMITS.free,
     ai_reply_limit: PLAN_AI_REPLY_LIMITS.free,
   })

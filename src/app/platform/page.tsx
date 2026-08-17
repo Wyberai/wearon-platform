@@ -15,8 +15,7 @@ interface Seller {
   email: string
   plan: string
   subscription_status: string | null
-  try_ons_used: number
-  try_ons_limit: number
+  ai_credits: number
   ai_replies_used: number
   ai_reply_limit: number
   created_at: string
@@ -92,21 +91,14 @@ export default function PlatformPage() {
 
   async function updatePlan(sellerId: string, plan: string) {
     setUpdating(sellerId)
-    const planLimits: Record<string, number> = {
-      free: PLANS.free.try_ons,
-      starter: PLANS.starter.try_ons,
-      growth: PLANS.growth.try_ons,
-      pro: PLANS.pro.try_ons,
-      enterprise: PLANS.enterprise.try_ons,
-    }
     const aiReplyLimit = PLAN_AI_REPLY_LIMITS[plan as keyof typeof PLAN_AI_REPLY_LIMITS] ?? 20
     const aiCredits = PLAN_AI_CREDIT_LIMITS[plan as keyof typeof PLAN_AI_CREDIT_LIMITS] ?? 0
     await fetch(`/api/platform/sellers/${sellerId}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ plan, try_ons_limit: planLimits[plan] ?? 0, ai_credits: aiCredits, ai_reply_limit: aiReplyLimit }),
+      body: JSON.stringify({ plan, ai_credits: aiCredits, ai_reply_limit: aiReplyLimit }),
     })
-    setSellers(prev => prev.map(s => s.id === sellerId ? { ...s, plan, try_ons_limit: planLimits[plan] ?? 0, ai_reply_limit: aiReplyLimit } : s))
+    setSellers(prev => prev.map(s => s.id === sellerId ? { ...s, plan, ai_credits: aiCredits, ai_reply_limit: aiReplyLimit } : s))
     setUpdating(null)
   }
 
@@ -346,16 +338,9 @@ export default function PlatformPage() {
                 {seller.revenue_30d_inr > 0 ? fmtInr(seller.revenue_30d_inr) : '—'}
               </div>
 
-              {/* Try-ons */}
+              {/* AI credits remaining (try-on + AI photoshoot pool) */}
               <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                <div style={{ flex: 1, height: 4, borderRadius: 99, background: 'rgba(255,255,255,0.08)', maxWidth: 60 }}>
-                  <div style={{
-                    height: '100%', borderRadius: 99,
-                    width: `${Math.min(100, Math.round((seller.try_ons_used / (seller.try_ons_limit || 1)) * 100))}%`,
-                    background: seller.try_ons_used / (seller.try_ons_limit || 1) > 0.8 ? '#EF4444' : '#F72585',
-                  }} />
-                </div>
-                <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)', whiteSpace: 'nowrap' }}>{seller.try_ons_used}/{seller.try_ons_limit}</span>
+                <span style={{ fontSize: 11, color: seller.ai_credits <= 15 ? '#EF4444' : 'rgba(255,255,255,0.4)', whiteSpace: 'nowrap' }}>{seller.ai_credits} credits</span>
               </div>
 
               {/* Joined */}

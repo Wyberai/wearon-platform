@@ -1,5 +1,5 @@
 import { createAdminClient } from '@/lib/supabase/server'
-import { PLAN_AI_CREDIT_LIMITS, PLAN_AI_REPLY_LIMITS, PLAN_TRY_ON_LIMITS, type Plan } from '@/lib/constants'
+import { PLAN_AI_CREDIT_LIMITS, PLAN_AI_REPLY_LIMITS, type Plan } from '@/lib/constants'
 import crypto from 'crypto'
 
 const DODO_WEBHOOK_SECRET = process.env.DODO_WEBHOOK_SECRET ?? ''
@@ -64,13 +64,12 @@ export async function POST(request: Request) {
     const sellerId = metadata.seller_id
     const plan = metadata.plan as Plan | undefined
 
-    if (sellerId && plan && plan in PLAN_TRY_ON_LIMITS) {
+    if (sellerId && plan && plan in PLAN_AI_CREDIT_LIMITS) {
       await admin
         .from('profiles')
         .update({
           plan,
           subscription_status: 'active',
-          try_ons_limit: PLAN_TRY_ON_LIMITS[plan],
           ai_credits: PLAN_AI_CREDIT_LIMITS[plan],
           ai_reply_limit: PLAN_AI_REPLY_LIMITS[plan],
           dodo_subscription_id: obj.subscription_id ?? null,
@@ -112,7 +111,6 @@ export async function POST(request: Request) {
         .update({
           subscription_status: 'cancelled',
           plan: 'free',
-          try_ons_limit: PLAN_TRY_ON_LIMITS.free,
           ai_credits: PLAN_AI_CREDIT_LIMITS.free,
           ai_reply_limit: PLAN_AI_REPLY_LIMITS.free,
         })

@@ -9,7 +9,7 @@ export async function GET() {
   const admin = createAdminClient()
   const { data: profile } = await admin
     .from('profiles')
-    .select('referral_code, try_ons_limit')
+    .select('referral_code')
     .eq('id', user.id)
     .single()
 
