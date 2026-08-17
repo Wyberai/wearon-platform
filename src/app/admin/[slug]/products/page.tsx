@@ -2,6 +2,10 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { useParams } from 'next/navigation'
+import { useLocale } from '@/lib/i18n/use-locale'
+import { ADMIN_PRODUCTS_DICT } from '@/lib/i18n/dict/admin-products'
+
+const CATEGORY_VALUES = ['Dresses', 'Tops', 'Denim', 'Outerwear', 'Accessories', 'Other']
 
 interface Product {
   id: string
@@ -37,6 +41,8 @@ function marginPct(price: number, cost: number | null | undefined) {
 
 export default function ProductsPage() {
   const { slug } = useParams() as { slug: string }
+  const locale = useLocale()
+  const t = ADMIN_PRODUCTS_DICT[locale]
   const [products, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
@@ -78,8 +84,8 @@ export default function ProductsPage() {
     setIgLoading(false)
     if (!res.ok) {
       setIgError(data.code === 'NOT_CONNECTED'
-        ? 'Connect Instagram in Settings first, then come back to import your posts.'
-        : (data.error ?? 'Could not load your Instagram posts'))
+        ? t.connectInstagramFirst
+        : (data.error ?? t.couldNotLoadPosts))
       return
     }
     setIgMedia(data.media ?? [])
@@ -105,7 +111,7 @@ export default function ProductsPage() {
     })
     const data = await res.json()
     setImporting(false)
-    if (!res.ok) { alert(data.error ?? 'Import failed'); return }
+    if (!res.ok) { alert(data.error ?? t.importFailed); return }
     setShowImport(false)
     setSelected(new Set())
     setIgMedia([])
@@ -134,7 +140,7 @@ export default function ProductsPage() {
   }
 
   async function deleteProduct(id: string) {
-    if (!confirm('Hide this product? It will no longer appear in your store.')) return
+    if (!confirm(t.confirmHide)) return
     await fetch(`/api/admin/products/${id}`, { method: 'DELETE' })
     loadProducts()
   }
@@ -174,13 +180,13 @@ export default function ProductsPage() {
   function handleVideoFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
     if (!file) return
-    if (file.size > 50 * 1024 * 1024) { alert('Video exceeds 50 MB limit'); return }
+    if (file.size > 50 * 1024 * 1024) { alert(t.videoTooLarge); return }
     setGarmentVideoFile(file)
   }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    if (!garmentFile) return alert('Please upload a garment photo')
+    if (!garmentFile) return alert(t.pleaseUploadPhoto)
     setUploading(true)
 
     const formData = new FormData()
@@ -192,7 +198,7 @@ export default function ProductsPage() {
     const res = await fetch('/api/admin/products', { method: 'POST', body: formData })
     const data = await res.json()
 
-    if (!res.ok) { alert(data.error ?? 'Upload failed'); setUploading(false); return }
+    if (!res.ok) { alert(data.error ?? t.uploadFailed); setUploading(false); return }
 
     setUploading(false)
     setShowForm(false)
@@ -207,17 +213,17 @@ export default function ProductsPage() {
     <div>
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Products</h1>
-          <p className="text-gray-500 text-sm">{products.length} product{products.length !== 1 ? 's' : ''} in your store</p>
+          <h1 className="text-2xl font-bold text-gray-900">{t.title}</h1>
+          <p className="text-gray-500 text-sm">{t.productsInStore(products.length)}</p>
         </div>
         <div className="flex gap-2">
           <button onClick={openImport}
             className="border border-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors">
-            📷 Import from Instagram
+            {t.importFromInstagram}
           </button>
           <button onClick={() => setShowForm(!showForm)}
             className="bg-pink-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-pink-700 transition-colors">
-            {showForm ? 'Cancel' : '+ Add Product'}
+            {showForm ? t.cancel : t.addProduct}
           </button>
         </div>
       </div>
@@ -228,18 +234,18 @@ export default function ProductsPage() {
           <div className="bg-white rounded-xl max-w-3xl w-full max-h-[85vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
             <div className="flex items-center justify-between p-5 border-b border-gray-100">
               <div>
-                <h2 className="font-semibold text-gray-900">Import from Instagram</h2>
-                <p className="text-xs text-gray-500 mt-0.5">Pick posts to turn into products — you already have the photos, no need to re-upload.</p>
+                <h2 className="font-semibold text-gray-900">{t.importModalTitle}</h2>
+                <p className="text-xs text-gray-500 mt-0.5">{t.importModalSubtitle}</p>
               </div>
               <button onClick={() => setShowImport(false)} className="text-gray-400 hover:text-gray-600 text-xl leading-none">✕</button>
             </div>
             <div className="p-5">
               {igLoading ? (
-                <div className="text-center py-16 text-gray-400 text-sm">Loading your Instagram posts...</div>
+                <div className="text-center py-16 text-gray-400 text-sm">{t.loadingPosts}</div>
               ) : igError ? (
                 <div className="text-center py-16 text-gray-500 text-sm max-w-sm mx-auto">{igError}</div>
               ) : igMedia.length === 0 ? (
-                <div className="text-center py-16 text-gray-400 text-sm">No importable posts found on your Instagram.</div>
+                <div className="text-center py-16 text-gray-400 text-sm">{t.noImportablePosts}</div>
               ) : (
                 <>
                   <div className="grid grid-cols-4 gap-3 mb-5">
@@ -265,13 +271,13 @@ export default function ProductsPage() {
                     })}
                   </div>
                   <div className="flex items-center justify-between border-t border-gray-100 pt-4">
-                    <span className="text-xs text-gray-500">{selected.size} selected</span>
+                    <span className="text-xs text-gray-500">{t.selectedCount(selected.size)}</span>
                     <button
                       onClick={importSelected}
                       disabled={selected.size === 0 || importing}
                       className="bg-pink-600 text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-pink-700 disabled:opacity-40 transition-colors"
                     >
-                      {importing ? 'Importing...' : `Import ${selected.size || ''} as draft products`}
+                      {importing ? t.importing : t.importAsDraft(selected.size)}
                     </button>
                   </div>
                 </>
@@ -286,17 +292,17 @@ export default function ProductsPage() {
         <div className="flex gap-3 mb-6">
           <input
             type="text"
-            placeholder="Search products..."
+            placeholder={t.searchPlaceholder}
             value={search}
             onChange={e => setSearch(e.target.value)}
             className="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500"
           />
           <select value={sortBy} onChange={e => setSortBy(e.target.value)}
             className="border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500">
-            <option value="newest">Newest</option>
-            <option value="price_asc">Price: Low → High</option>
-            <option value="price_desc">Price: High → Low</option>
-            <option value="name">Name A–Z</option>
+            <option value="newest">{t.sortNewest}</option>
+            <option value="price_asc">{t.sortPriceAsc}</option>
+            <option value="price_desc">{t.sortPriceDesc}</option>
+            <option value="name">{t.sortName}</option>
           </select>
         </div>
       )}
@@ -304,11 +310,11 @@ export default function ProductsPage() {
       {/* Add product form */}
       {showForm && (
         <form onSubmit={handleSubmit} className="bg-white rounded-xl border border-gray-100 p-6 mb-8 space-y-4">
-          <h2 className="font-semibold text-gray-900">New Product</h2>
+          <h2 className="font-semibold text-gray-900">{t.newProduct}</h2>
 
           {/* Garment upload */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Garment Photo (on hanger or flat lay)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{t.garmentPhotoLabel}</label>
             <div
               onClick={() => fileRef.current?.click()}
               className="border-2 border-dashed border-gray-200 rounded-xl p-6 text-center cursor-pointer hover:border-pink-300 transition-colors"
@@ -318,8 +324,8 @@ export default function ProductsPage() {
               ) : (
                 <div className="text-gray-400">
                   <div className="text-3xl mb-2">📸</div>
-                  <p className="text-sm">Click to upload garment photo</p>
-                  <p className="text-xs mt-1">JPG, PNG · Clear background preferred</p>
+                  <p className="text-sm">{t.clickToUploadPhoto}</p>
+                  <p className="text-xs mt-1">{t.photoHint}</p>
                 </div>
               )}
             </div>
@@ -328,7 +334,7 @@ export default function ProductsPage() {
 
           {/* Optional video (e.g. a reel showing the garment on/moving) */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Video — optional</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{t.videoLabel}</label>
             <div
               onClick={() => videoFileRef.current?.click()}
               className="border-2 border-dashed border-gray-200 rounded-xl p-4 text-center cursor-pointer hover:border-pink-300 transition-colors"
@@ -336,7 +342,7 @@ export default function ProductsPage() {
               {garmentVideoFile ? (
                 <p className="text-sm text-gray-600">🎥 {garmentVideoFile.name}</p>
               ) : (
-                <p className="text-sm text-gray-400">Click to attach a video (max 50 MB) — shows on your product page alongside the photo</p>
+                <p className="text-sm text-gray-400">{t.clickToAttachVideo}</p>
               )}
             </div>
             <input ref={videoFileRef} type="file" accept="video/*" onChange={handleVideoFileChange} className="hidden" />
@@ -344,69 +350,69 @@ export default function ProductsPage() {
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Product Name</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">{t.productNameLabel}</label>
               <input type="text" required value={form.name} onChange={e => setForm({ ...form, name: e.target.value })}
-                placeholder="e.g. Floral Wrap Midi Dress"
+                placeholder={t.productNamePlaceholder}
                 className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">{t.categoryLabel}</label>
               <select value={form.category} onChange={e => setForm({ ...form, category: e.target.value })}
                 className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500">
-                <option value="">Select category</option>
-                {['Dresses', 'Tops', 'Denim', 'Outerwear', 'Accessories', 'Other'].map(c => <option key={c}>{c}</option>)}
+                <option value="">{t.selectCategory}</option>
+                {CATEGORY_VALUES.map((c, i) => <option key={c} value={c}>{t.categories[i]}</option>)}
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Price (₹)</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">{t.priceLabel}</label>
               <input type="number" required value={form.price_inr} onChange={e => setForm({ ...form, price_inr: e.target.value })}
                 placeholder="1499"
                 className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Original Price (₹) — optional</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">{t.originalPriceLabel}</label>
               <input type="number" value={form.original_price_inr} onChange={e => setForm({ ...form, original_price_inr: e.target.value })}
                 placeholder="1999"
                 className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Your Cost (₹) — private, for margin tracking</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">{t.costPriceLabel}</label>
               <input type="number" value={form.cost_price_inr} onChange={e => setForm({ ...form, cost_price_inr: e.target.value })}
                 placeholder="600"
                 className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500" />
-              <p className="text-xs text-gray-400 mt-1">Never shown to buyers — used to calculate your margin in Analytics.</p>
+              <p className="text-xs text-gray-400 mt-1">{t.costPriceHint}</p>
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Available Sizes (comma-separated)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">{t.sizesLabel}</label>
             <input type="text" value={form.sizes} onChange={e => setForm({ ...form, sizes: e.target.value })}
-              placeholder="XS, S, M, L, XL, XXL"
+              placeholder={t.sizesPlaceholder}
               className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500" />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">{t.descriptionLabel}</label>
             <textarea value={form.description} onChange={e => setForm({ ...form, description: e.target.value })}
-              rows={3} placeholder="Describe the fabric, fit, and occasion..."
+              rows={3} placeholder={t.descriptionPlaceholder}
               className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500 resize-none" />
           </div>
 
           <button type="submit" disabled={uploading}
             className="bg-pink-600 text-white px-6 py-2.5 rounded-lg text-sm font-medium hover:bg-pink-700 transition-colors disabled:opacity-50">
-            {uploading ? 'Uploading & processing...' : 'Add Product'}
+            {uploading ? t.uploading : t.addProduct.replace('+ ', '')}
           </button>
         </form>
       )}
 
       {/* Products grid */}
       {loading ? (
-        <div className="text-gray-400 text-sm">Loading products...</div>
+        <div className="text-gray-400 text-sm">{t.loadingProducts}</div>
       ) : products.length === 0 ? (
         <div className="text-center py-20 text-gray-400">
           <div className="text-5xl mb-4">👗</div>
-          <p className="text-lg font-medium">No products yet</p>
-          <p className="text-sm mt-1">Add your first product to make your store live</p>
+          <p className="text-lg font-medium">{t.noProductsYet}</p>
+          <p className="text-sm mt-1">{t.addFirstProduct}</p>
         </div>
       ) : (
         <div className="grid grid-cols-3 gap-4">
@@ -422,7 +428,7 @@ export default function ProductsPage() {
                 )}
                 {!product.is_active && (
                   <div className="absolute inset-0 bg-white/60 flex items-center justify-center">
-                    <span className="text-xs font-medium text-gray-500 bg-white px-2 py-1 rounded-full border">Hidden</span>
+                    <span className="text-xs font-medium text-gray-500 bg-white px-2 py-1 rounded-full border">{t.hidden}</span>
                   </div>
                 )}
               </div>
@@ -432,27 +438,27 @@ export default function ProductsPage() {
                     value={editForm.name ?? product.name}
                     onChange={e => setEditForm({ ...editForm, name: e.target.value })}
                     className="w-full border border-gray-200 rounded px-2 py-1 text-xs"
-                    placeholder="Product name"
+                    placeholder={t.editNamePlaceholder}
                   />
                   <input
                     value={editForm.price_inr ?? product.price_inr}
                     onChange={e => setEditForm({ ...editForm, price_inr: Number(e.target.value) })}
                     type="number"
                     className="w-full border border-gray-200 rounded px-2 py-1 text-xs"
-                    placeholder="Price (₹)"
+                    placeholder={t.editPricePlaceholder}
                   />
                   <input
                     value={editForm.cost_price_inr ?? product.cost_price_inr ?? ''}
                     onChange={e => setEditForm({ ...editForm, cost_price_inr: e.target.value ? Number(e.target.value) : null })}
                     type="number"
                     className="w-full border border-gray-200 rounded px-2 py-1 text-xs"
-                    placeholder="Your cost (₹)"
+                    placeholder={t.editCostPlaceholder}
                   />
                   <input
                     value={typeof editForm.sizes === 'string' ? editForm.sizes : (product.sizes ?? []).join(', ')}
                     onChange={e => setEditForm({ ...editForm, sizes: e.target.value })}
                     className="w-full border border-gray-200 rounded px-2 py-1 text-xs"
-                    placeholder="Sizes (S, M, L)"
+                    placeholder={t.editSizesPlaceholder}
                   />
                   {/* Stock per size */}
                   {(() => {
@@ -462,7 +468,7 @@ export default function ProductsPage() {
                     const stock = editForm.stock_by_variant ?? product.stock_by_variant ?? {}
                     return (
                       <div>
-                        <p className="text-xs text-gray-400 mb-1">Stock per size</p>
+                        <p className="text-xs text-gray-400 mb-1">{t.stockPerSize}</p>
                         <div className="grid grid-cols-3 gap-1">
                           {sizeList.map(size => (
                             <div key={size} className="flex items-center gap-1">
@@ -485,9 +491,9 @@ export default function ProductsPage() {
                   })()}
                   <div className="flex gap-1">
                     <button onClick={() => saveEdit(product.id)}
-                      className="flex-1 bg-pink-600 text-white text-xs py-1 rounded hover:bg-pink-700">Save</button>
+                      className="flex-1 bg-pink-600 text-white text-xs py-1 rounded hover:bg-pink-700">{t.save}</button>
                     <button onClick={() => setEditingId(null)}
-                      className="flex-1 bg-gray-100 text-gray-600 text-xs py-1 rounded hover:bg-gray-200">Cancel</button>
+                      className="flex-1 bg-gray-100 text-gray-600 text-xs py-1 rounded hover:bg-gray-200">{t.cancel}</button>
                   </div>
                 </div>
               ) : (
@@ -498,7 +504,7 @@ export default function ProductsPage() {
                     <span className="text-pink-600 font-bold">₹{product.price_inr.toLocaleString('en-IN')}</span>
                     {marginPct(product.price_inr, product.cost_price_inr) !== null && (
                       <span className="text-xs font-medium text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded">
-                        {marginPct(product.price_inr, product.cost_price_inr)}% margin
+                        {t.marginLabel(marginPct(product.price_inr, product.cost_price_inr)!)}
                       </span>
                     )}
                   </div>
@@ -508,8 +514,8 @@ export default function ProductsPage() {
                     const lowStock = entries.filter(([, qty]) => qty > 0 && qty <= 3).map(([s]) => s)
                     return (outOfStock.length > 0 || lowStock.length > 0) ? (
                       <div className="mt-1.5 flex flex-wrap gap-1">
-                        {outOfStock.map(s => <span key={s} className="text-xs px-1.5 py-0.5 rounded bg-red-50 text-red-500">{s}: OOS</span>)}
-                        {lowStock.map(s => <span key={s} className="text-xs px-1.5 py-0.5 rounded bg-amber-50 text-amber-600">{s}: {product.stock_by_variant![s]} left</span>)}
+                        {outOfStock.map(s => <span key={s} className="text-xs px-1.5 py-0.5 rounded bg-red-50 text-red-500">{s}: {t.outOfStock}</span>)}
+                        {lowStock.map(s => <span key={s} className="text-xs px-1.5 py-0.5 rounded bg-amber-50 text-amber-600">{s}: {t.leftInStock(product.stock_by_variant![s])}</span>)}
                       </div>
                     ) : null
                   })()}
@@ -517,15 +523,15 @@ export default function ProductsPage() {
                     <button
                       onClick={() => { setEditingId(product.id); setEditForm({}) }}
                       className="flex-1 text-xs border border-gray-200 rounded py-1 hover:bg-gray-50 text-gray-600"
-                    >Edit</button>
+                    >{t.edit}</button>
                     <button
                       onClick={() => toggleActive(product)}
                       className={`flex-1 text-xs border rounded py-1 ${product.is_active ? 'border-amber-200 text-amber-700 hover:bg-amber-50' : 'border-green-200 text-green-700 hover:bg-green-50'}`}
-                    >{product.is_active ? 'Hide' : 'Show'}</button>
+                    >{product.is_active ? t.hide : t.show}</button>
                     <button
                       onClick={() => deleteProduct(product.id)}
                       className="flex-1 text-xs border border-red-100 text-red-500 rounded py-1 hover:bg-red-50"
-                    >Delete</button>
+                    >{t.deleteAction}</button>
                   </div>
                 </div>
               )}

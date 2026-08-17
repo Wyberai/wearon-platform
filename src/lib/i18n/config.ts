@@ -17,3 +17,4 @@ export const LOCALE_LABELS: Record<Locale, string> = {
 
 export const DEFAULT_LOCALE: Locale = 'en'
 export const LOCALE_COOKIE = 'lang'
+export const LOCALE_CHANGE_EVENT = 'instastarz-locale-change'

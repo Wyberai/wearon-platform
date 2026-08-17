@@ -1,6 +1,8 @@
 import Link from 'next/link'
 import { createClient, createAdminClient } from '@/lib/supabase/server'
 import { PLANS } from '@/lib/constants'
+import { getLocale } from '@/lib/i18n/get-locale'
+import { ADMIN_DASHBOARD_DICT } from '@/lib/i18n/dict/admin-dashboard'
 
 const INK = '#171512'
 const ACCENT = '#A6134A'
@@ -10,6 +12,9 @@ export default async function AdminDashboard({ params }: { params: Promise<{ slu
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return null
+
+  const locale = await getLocale()
+  const t = ADMIN_DASHBOARD_DICT[locale]
 
   const admin = createAdminClient()
 
@@ -38,9 +43,9 @@ export default async function AdminDashboard({ params }: { params: Promise<{ slu
   const hasProducts = productCount > 0
   const setupDone = hasWhatsApp && hasProducts
   const setupSteps = [
-    { done: hasWhatsApp, label: 'Add your WhatsApp number', href: `/admin/${slug}/customize`, action: 'Set up' },
-    { done: hasProducts, label: 'Add your first product', href: `/admin/${slug}/products`, action: 'Add product' },
-    { done: true, label: 'Share your store link', href: null, action: null },
+    { done: hasWhatsApp, label: t.setupWhatsApp, href: `/admin/${slug}/customize`, action: t.setUp },
+    { done: hasProducts, label: t.setupFirstProduct, href: `/admin/${slug}/products`, action: t.addProduct },
+    { done: true, label: t.setupShareLink, href: null, action: null },
   ]
   const completedCount = [hasWhatsApp, hasProducts].filter(Boolean).length
 
@@ -48,8 +53,8 @@ export default async function AdminDashboard({ params }: { params: Promise<{ slu
     <div>
       <div className="flex items-center justify-between mb-7">
         <div>
-          <h1 className="text-xl font-semibold" style={{ color: INK }}>Dashboard</h1>
-          <p className="text-sm mt-0.5" style={{ color: `${INK}77` }}>Last 7 days</p>
+          <h1 className="text-xl font-semibold" style={{ color: INK }}>{t.dashboard}</h1>
+          <p className="text-sm mt-0.5" style={{ color: `${INK}77` }}>{t.last7Days}</p>
         </div>
         <Link
           href={`/store/${slug}`}
@@ -57,7 +62,7 @@ export default async function AdminDashboard({ params }: { params: Promise<{ slu
           className="text-sm font-medium px-4 py-2 rounded-lg transition-opacity hover:opacity-85"
           style={{ background: INK, color: '#fff' }}
         >
-          View my store →
+          {t.viewMyStore}
         </Link>
       </div>
 
@@ -65,8 +70,8 @@ export default async function AdminDashboard({ params }: { params: Promise<{ slu
       {!setupDone && (
         <div className="rounded-[20px] mb-6 overflow-hidden bg-white" style={{ boxShadow: '0 12px 30px -20px rgba(23,21,18,0.14)' }}>
           <div className="flex items-center justify-between px-5 py-3.5 border-b" style={{ borderColor: `${INK}0f` }}>
-            <span className="text-sm font-medium" style={{ color: INK }}>Finish setting up your store</span>
-            <span className="text-xs font-medium" style={{ color: `${INK}66` }}>{completedCount}/2 done</span>
+            <span className="text-sm font-medium" style={{ color: INK }}>{t.finishSetup}</span>
+            <span className="text-xs font-medium" style={{ color: `${INK}66` }}>{completedCount}/2 {t.done}</span>
           </div>
           <div>
             {setupSteps.map((step, i) => (
@@ -95,10 +100,10 @@ export default async function AdminDashboard({ params }: { params: Promise<{ slu
       {/* KPI row */}
       <div className="grid grid-cols-4 gap-3 mb-6">
         {[
-          { label: 'Store visits', value: totalVisits },
-          { label: 'Try-ons', value: totalTryOns },
-          { label: 'Products', value: productCount },
-          { label: 'Orders (30d)', value: orderCount },
+          { label: t.storeVisits, value: totalVisits },
+          { label: t.tryOns, value: totalTryOns },
+          { label: t.products, value: productCount },
+          { label: t.ordersLast30d, value: orderCount },
         ].map(({ label, value }) => (
           <div key={label} className="rounded-[20px] p-4 bg-white transition-shadow duration-200 hover:shadow-md" style={{ boxShadow: '0 8px 20px -16px rgba(23,21,18,0.12)' }}>
             <div className="text-2xl font-semibold" style={{ color: INK }}>{value.toLocaleString('en-IN')}</div>
@@ -112,26 +117,26 @@ export default async function AdminDashboard({ params }: { params: Promise<{ slu
         <div className="rounded-[20px] p-5 bg-white" style={{ boxShadow: '0 8px 20px -16px rgba(23,21,18,0.12)' }}>
           <div className="flex items-center justify-between mb-4">
             <div>
-              <span className="text-xs" style={{ color: `${INK}77` }}>Current plan</span>
+              <span className="text-xs" style={{ color: `${INK}77` }}>{t.currentPlan}</span>
               <h3 className="text-base font-semibold mt-0.5" style={{ color: INK }}>{plan.name}</h3>
             </div>
-            <Link href={`/admin/${slug}/billing`} className="text-xs font-semibold" style={{ color: ACCENT }}>Upgrade →</Link>
+            <Link href={`/admin/${slug}/billing`} className="text-xs font-semibold" style={{ color: ACCENT }}>{t.upgrade}</Link>
           </div>
           <div className="space-y-1.5">
             <div className="flex justify-between text-xs" style={{ color: `${INK}99` }}>
-              <span>Try-ons used</span>
+              <span>{t.tryOnsUsed}</span>
               <span className="font-medium" style={{ color: INK }}>{profile?.try_ons_used ?? 0} / {profile?.try_ons_limit ?? 20}</span>
             </div>
             <div className="w-full rounded-full h-1.5" style={{ background: `${INK}0f` }}>
               <div className="h-1.5 rounded-full" style={{ width: `${Math.min(tryOnPct, 100)}%`, background: tryOnPct > 80 ? '#dc2626' : ACCENT }} />
             </div>
-            {tryOnPct > 80 && <p className="text-xs mt-1" style={{ color: '#dc2626' }}>Running low — upgrade to avoid interruption.</p>}
+            {tryOnPct > 80 && <p className="text-xs mt-1" style={{ color: '#dc2626' }}>{t.runningLow}</p>}
           </div>
         </div>
 
         {/* 7-day chart */}
         <div className="rounded-[20px] p-5 bg-white" style={{ boxShadow: '0 8px 20px -16px rgba(23,21,18,0.12)' }}>
-          <h3 className="text-xs font-medium mb-4" style={{ color: `${INK}77` }}>TRY-ONS · LAST 7 DAYS</h3>
+          <h3 className="text-xs font-medium mb-4" style={{ color: `${INK}77` }}>{t.tryOnsLast7Days}</h3>
           {analytics.length > 0 ? (() => {
             const maxVal = Math.max(...analytics.map(d => d.try_ons), 1)
             const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
@@ -148,13 +153,13 @@ export default async function AdminDashboard({ params }: { params: Promise<{ slu
                 })}
               </div>
             )
-          })() : <p className="text-xs" style={{ color: `${INK}55` }}>No data yet</p>}
+          })() : <p className="text-xs" style={{ color: `${INK}55` }}>{t.noDataYet}</p>}
         </div>
 
         {/* Store link */}
         <div className="rounded-[20px] p-5 flex items-center justify-between gap-3 bg-white" style={{ boxShadow: '0 8px 20px -16px rgba(23,21,18,0.12)' }}>
           <div className="min-w-0">
-            <span className="text-xs" style={{ color: `${INK}77` }}>Your store link</span>
+            <span className="text-xs" style={{ color: `${INK}77` }}>{t.yourStoreLink}</span>
             <code className="block text-sm font-mono mt-1 truncate" style={{ color: INK }}>instastarz.in/store/{slug}</code>
           </div>
           <img
@@ -167,8 +172,8 @@ export default async function AdminDashboard({ params }: { params: Promise<{ slu
       {/* Quick actions — quiet rows, not emoji cards */}
       <div className="rounded-[20px] mb-5 overflow-hidden bg-white" style={{ boxShadow: '0 12px 30px -20px rgba(23,21,18,0.14)' }}>
         {[
-          { label: 'Add products', desc: 'Upload garments to your catalogue', href: `/admin/${slug}/products` },
-          { label: 'Customize store', desc: 'Logo, colors, fonts', href: `/admin/${slug}/customize` },
+          { label: t.quickAddProducts, desc: t.quickAddProductsDesc, href: `/admin/${slug}/products` },
+          { label: t.quickCustomize, desc: t.quickCustomizeDesc, href: `/admin/${slug}/customize` },
         ].map((a, i) => (
           <Link key={a.label} href={a.href} className="flex items-center justify-between px-5 py-3.5 hover:bg-black/[0.02] transition-colors"
             style={{ borderTop: i === 0 ? 'none' : `1px solid ${INK}0a` }}>
@@ -185,10 +190,10 @@ export default async function AdminDashboard({ params }: { params: Promise<{ slu
       <div className="rounded-[20px] px-5 py-4 flex items-center justify-between gap-4 bg-white" style={{ boxShadow: '0 8px 20px -16px rgba(23,21,18,0.12)' }}>
         <div>
           <h3 className="text-sm font-medium" style={{ color: INK }}>
-            {igConnected ? 'Instagram DMs connected' : 'Connect Instagram DMs'}
+            {igConnected ? t.igConnectedTitle : t.igNotConnectedTitle}
           </h3>
           <p className="text-xs mt-0.5" style={{ color: `${INK}77` }}>
-            {igConnected ? 'AI agent is handling buyer queries — check your inbox' : 'Let AI reply to buyer DMs automatically'}
+            {igConnected ? t.igConnectedDesc : t.igNotConnectedDesc}
           </p>
         </div>
         <Link
@@ -196,7 +201,7 @@ export default async function AdminDashboard({ params }: { params: Promise<{ slu
           className="text-sm font-semibold px-4 py-2 rounded-lg flex-shrink-0"
           style={{ background: INK, color: '#fff' }}
         >
-          {igConnected ? 'Open inbox →' : 'Connect →'}
+          {igConnected ? t.openInbox : t.connect}
         </Link>
       </div>
     </div>

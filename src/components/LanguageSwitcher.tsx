@@ -1,13 +1,14 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { LOCALES, LOCALE_LABELS, LOCALE_COOKIE, type Locale } from '@/lib/i18n/config'
+import { LOCALES, LOCALE_LABELS, LOCALE_COOKIE, LOCALE_CHANGE_EVENT, type Locale } from '@/lib/i18n/config'
 
 export function LanguageSwitcher({ current, dark }: { current: Locale; dark?: boolean }) {
   const router = useRouter()
 
   function setLocale(locale: Locale) {
     document.cookie = `${LOCALE_COOKIE}=${locale}; path=/; max-age=${60 * 60 * 24 * 365}`
+    window.dispatchEvent(new CustomEvent(LOCALE_CHANGE_EVENT, { detail: locale }))
     router.refresh()
   }
 
