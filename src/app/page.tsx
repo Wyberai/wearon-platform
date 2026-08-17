@@ -45,6 +45,10 @@ function USHomePage({ locale }: { locale: Locale }) {
         @media (max-width: 640px) {
           .wo-us-features { grid-template-columns: 1fr !important; gap: 32px !important; }
         }
+        .wo-feat-card { flex: 1 1 260px; max-width: 300px; }
+        @media (max-width: 640px) {
+          .wo-feat-card { flex-basis: 100% !important; max-width: 100% !important; }
+        }
         .wo-feat-fan { display: flex; }
         .wo-feat-fan div { width: 56px; height: 68px; border-radius: 6px; border: 1px solid rgba(23,21,18,0.08); margin-left: -20px; box-shadow: -3px 0 8px rgba(23,21,18,0.1); background-size: cover; background-position: center; }
         .wo-feat-fan div:first-child { margin-left: 0; }
@@ -192,11 +196,11 @@ function USHomePage({ locale }: { locale: Locale }) {
             <h2 style={{ fontFamily: 'var(--font-marketing)', fontSize: 'clamp(26px, 3.5vw, 40px)', fontWeight: 400, letterSpacing: '-1px', textAlign: 'center', marginBottom: 56, color: US_INK }}>
               {t.featuresHeadline}
             </h2>
-            <div className="wo-us-features" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '40px 48px' }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '40px 48px' }}>
               {t.features.map((f, i) => {
                 const swatch = i % 2 === 0 ? US_ACCENT : US_GOLD
                 return (
-                  <div key={f.label} style={{ borderTop: `2.5px solid ${swatch}`, paddingTop: 24 }}>
+                  <div key={f.label} className="wo-feat-card" style={{ borderTop: `2.5px solid ${swatch}`, paddingTop: 24 }}>
                     <p style={{ fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: swatch, marginBottom: 14, fontWeight: 700 }}>{f.label}</p>
                     <h3 style={{ fontFamily: 'var(--font-marketing)', fontSize: 19, fontWeight: 500, letterSpacing: '-0.2px', lineHeight: 1.25, marginBottom: 10, color: US_INK }}>{f.title}</h3>
                     <p style={{ fontSize: 14, color: `${US_INK}77`, lineHeight: 1.75 }}>{f.body}</p>
