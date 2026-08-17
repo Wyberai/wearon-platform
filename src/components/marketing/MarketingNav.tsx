@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { LanguageSwitcher } from '@/components/LanguageSwitcher'
 import { useLocale } from '@/lib/i18n/use-locale'
+import { SparkleLogo } from '@/components/SparkleLogo'
 
 const INK = '#171512'
 
@@ -23,7 +24,8 @@ export function MarketingNav() {
       }}
     >
       <div style={{ maxWidth: 1240, margin: '0 auto', padding: '14px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap' }}>
-        <Link href="/" style={{ fontFamily: 'var(--font-marketing)', fontSize: 20, fontWeight: 500, letterSpacing: '-0.3px', color: INK, textDecoration: 'none' }}>
+        <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 8, fontFamily: 'var(--font-marketing)', fontSize: 20, fontWeight: 500, letterSpacing: '-0.3px', color: INK, textDecoration: 'none' }}>
+          <SparkleLogo size={20} ink={INK} />
           Instastarz
         </Link>
         <div style={{ display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap' }}>

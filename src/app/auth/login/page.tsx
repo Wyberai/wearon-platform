@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { createBrowserClient } from '@supabase/ssr'
+import { SparkleLogo } from '@/components/SparkleLogo'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? ''
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? ''
@@ -54,7 +55,10 @@ export default function LoginPage() {
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl p-8 shadow-sm max-w-md w-full">
         <div className="text-center mb-8">
-          <span className="text-2xl font-bold text-pink-600">Instastarz</span>
+          <span className="inline-flex items-center gap-2">
+            <SparkleLogo size={22} />
+            <span className="text-2xl font-bold" style={{ color: '#111010' }}>Instastarz</span>
+          </span>
           <h1 className="text-xl font-bold text-gray-900 mt-4">Welcome back</h1>
         </div>
 
@@ -118,7 +122,7 @@ export default function LoginPage() {
         </form>
 
         <p className="text-center text-sm text-gray-500 mt-6">
-          No store yet? <Link href="/auth/signup" className="text-pink-600 font-medium">Create one free</Link>
+          No store yet? <Link href="/auth/signup" className="font-medium" style={{ color: '#A6134A' }}>Create one free</Link>
         </p>
       </div>
     </div>
