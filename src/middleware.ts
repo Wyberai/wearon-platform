@@ -1,5 +1,6 @@
 import { type NextRequest, NextResponse } from 'next/server'
 import { updateSession } from '@/lib/supabase/middleware'
+import { LOCALES, LOCALE_COOKIE } from '@/lib/i18n/config'
 
 const PLATFORM_HOSTS = ['instastarz.in', 'www.instastarz.in', 'localhost', 'wearon.wyberai.com']
 
@@ -14,7 +15,17 @@ export async function middleware(request: NextRequest) {
     return NextResponse.rewrite(url)
   }
 
-  return updateSession(request)
+  const response = await updateSession(request)
+
+  // Lets ad destination URLs (?lang=kn) land visitors straight into the
+  // matching regional locale instead of the cookie default — without this,
+  // a Kannada-language ad would drop clickers onto an English page.
+  const langParam = request.nextUrl.searchParams.get('lang')
+  if ((LOCALES as readonly string[]).includes(langParam ?? '')) {
+    response.cookies.set(LOCALE_COOKIE, langParam as string, { path: '/', maxAge: 60 * 60 * 24 * 365 })
+  }
+
+  return response
 }
 
 export const config = {
