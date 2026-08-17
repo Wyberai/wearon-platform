@@ -56,7 +56,7 @@ export default function LoginPage() {
       <div className="bg-white rounded-2xl p-8 shadow-sm max-w-md w-full">
         <div className="text-center mb-8">
           <span className="inline-flex items-center gap-2">
-            <BrandLogo size={22} />
+            <BrandLogo size={22} animated />
             <span className="text-2xl font-bold" style={{ color: '#111010' }}>Instastarz</span>
           </span>
           <h1 className="text-xl font-bold text-gray-900 mt-4">Welcome back</h1>

@@ -86,7 +86,7 @@ export default function WaitlistPage() {
 
         <div style={{ position: 'relative', zIndex: 1, maxWidth: 480, width: '100%', textAlign: 'center' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, marginBottom: 40 }}>
-            <BrandLogo size={24} />
+            <BrandLogo size={24} animated />
             <span style={{ fontFamily: 'var(--font-marketing)', fontSize: 20, fontWeight: 500, letterSpacing: '-0.3px' }}>Instastarz</span>
           </div>
 

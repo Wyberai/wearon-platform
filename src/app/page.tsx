@@ -254,7 +254,7 @@ function USHomePage({ locale }: { locale: Locale }) {
         <footer style={{ borderTop: `1px solid ${US_INK}10`, padding: '28px 24px', background: '#fff' }}>
           <div style={{ maxWidth: 900, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
             <span style={{ display: 'flex', alignItems: 'center', gap: 8, fontFamily: 'var(--font-marketing)', fontWeight: 400, fontSize: 18, letterSpacing: '-0.3px', color: US_INK }}>
-              <BrandLogo size={18} ink={US_INK} />
+              <BrandLogo size={18} ink={US_INK} animated />
               Instastarz
             </span>
             <span style={{ fontSize: 11, letterSpacing: '0.06em', color: `${US_INK}55`, textTransform: 'uppercase' }}>{t.footerTagline}</span>

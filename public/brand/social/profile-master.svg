@@ -1,10 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
-  <!-- Canonical Instastarz mark: same boutique-awning path as
-       src/components/BrandLogo.tsx / src/lib/brand.ts, on a white rounded
-       square for OG/social-share/JSON-LD use. Doorway is a plain arch (no
-       handle dot); accent color lives in the sparkle beside the awning. -->
-  <rect width="512" height="512" rx="96" ry="96" fill="#FFFFFF" />
-  <g transform="translate(96,96) scale(3.2)">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <!-- Master social-profile-photo source (FB/Instagram profile pics get
+       circle-cropped by the platform, so the mark sits inside a safe
+       central ~70% zone). Same mark as src/lib/brand.ts / BrandLogo.tsx. -->
+  <rect width="1024" height="1024" fill="#FFFFFF" />
+  <g transform="translate(212,212) scale(6.0)">
     <path d="M 20 35 A 10 10 0 0 0 40 35 A 10 10 0 0 0 60 35 A 10 10 0 0 0 80 35 L 80 20 Q 80 15 75 15 L 25 15 Q 20 15 20 20 Z" fill="#111010" />
     <rect x="22" y="48" width="14" height="27" rx="6" fill="#111010" />
     <rect x="64" y="48" width="14" height="27" rx="6" fill="#111010" />

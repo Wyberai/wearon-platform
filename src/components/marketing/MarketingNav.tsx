@@ -25,7 +25,7 @@ export function MarketingNav() {
     >
       <div style={{ maxWidth: 1240, margin: '0 auto', padding: '14px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap' }}>
         <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 8, fontFamily: 'var(--font-marketing)', fontSize: 20, fontWeight: 500, letterSpacing: '-0.3px', color: INK, textDecoration: 'none' }}>
-          <BrandLogo size={20} ink={INK} />
+          <BrandLogo size={20} ink={INK} animated />
           Instastarz
         </Link>
         <div style={{ display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap' }}>
