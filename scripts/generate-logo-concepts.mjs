@@ -56,7 +56,7 @@ async function generateAndSave(prompt, destPath) {
   console.log(`  saved ${destPath} (${(buf.length / 1024).toFixed(0)}kb)`)
 }
 
-const BASE = 'A minimal, modern vector-style logo ICON MARK (no text, no letters, no words anywhere in the image), for an Indian fashion/boutique e-commerce brand called Instastarz. Flat, geometric, single-color-friendly design on a plain solid white background, centered, generous padding, works small as an app icon. Primary color #A6134A (deep rose/maroon), secondary #111010 (near-black) if a second tone is needed. No gradients, no photorealism, no drop shadows, no mockup device frame — just the standalone icon on white.'
+const BASE = 'A minimal, modern vector-style logo ICON MARK (no text, no letters, no words anywhere in the image), for an Indian fashion/boutique e-commerce brand called Instastarz. Flat, geometric, single-color-friendly design on a plain solid white background, centered, generous padding, works small as an app icon. The mark must be filled almost entirely in near-black ink (#111010) — this is the site\'s dominant color, used for its logotype, headlines and buttons. Use the deep rose/maroon #A6134A ONLY as a tiny sparing accent detail (a single small dot, tip, or spark) covering well under 10% of the mark, never as the dominant fill. No gradients, no photorealism, no drop shadows, no mockup device frame — just the standalone icon on white.'
 
 const CONCEPTS = [
   { name: 'star-thread', prompt: `${BASE} Concept: a single four-pointed sparkle/star shape formed from one continuous looping thread or ribbon, evoking both "star" and stitching/fabric.` },

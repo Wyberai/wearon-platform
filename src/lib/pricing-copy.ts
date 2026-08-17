@@ -1,4 +1,4 @@
-import { PLANS, PLAN_AI_REPLY_LIMITS, PLAN_TRY_ON_LIMITS, PLAN_AI_CREDIT_LIMITS, DOMAIN_ELIGIBLE_PLANS, type Plan } from './constants'
+import { PLANS, PLAN_AI_REPLY_LIMITS, PLAN_TRY_ON_LIMITS, PLAN_AI_CREDIT_LIMITS, PLAN_CHANGE_REQUEST_LIMITS, CHANGE_REQUEST_OVERAGE_PRICE_INR, DOMAIN_ELIGIBLE_PLANS, type Plan } from './constants'
 
 export interface PricingCardCopy {
   key: Plan
@@ -33,6 +33,7 @@ export const PRICING_COPY: PricingCardCopy[] = [
       'Razorpay + WhatsApp ordering',
       'Analytics dashboard',
       `${PLAN_AI_REPLY_LIMITS.starter.toLocaleString('en-IN')} AI auto-replies/mo`,
+      `${PLAN_CHANGE_REQUEST_LIMITS.starter} free design/product change request/mo (₹${CHANGE_REQUEST_OVERAGE_PRICE_INR} after)`,
     ],
   },
   {
@@ -46,6 +47,7 @@ export const PRICING_COPY: PricingCardCopy[] = [
       'AI shopping — buyers can shop you from ChatGPT, Gemini & Claude',
       'Priority support',
       `${PLAN_AI_REPLY_LIMITS.growth.toLocaleString('en-IN')} AI auto-replies/mo`,
+      `${PLAN_CHANGE_REQUEST_LIMITS.growth} free change requests/mo (₹${CHANGE_REQUEST_OVERAGE_PRICE_INR} after)`,
     ],
   },
   {
@@ -58,6 +60,7 @@ export const PRICING_COPY: PricingCardCopy[] = [
       `${PLAN_TRY_ON_LIMITS.pro} AI try-ons/mo`,
       `${PLAN_AI_CREDIT_LIMITS.pro} AI photoshoot credits/mo`,
       `${PLAN_AI_REPLY_LIMITS.pro.toLocaleString('en-IN')} AI auto-replies/mo`,
+      `${PLAN_CHANGE_REQUEST_LIMITS.pro} free change requests/mo (₹${CHANGE_REQUEST_OVERAGE_PRICE_INR} after)`,
     ],
   },
 ]

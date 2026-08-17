@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
+import { ChangeRequestCard } from '@/components/admin/ChangeRequestCard'
 
 interface BuildStatus {
   status: 'none' | 'queued' | 'building' | 'complete' | 'failed'
@@ -378,6 +379,8 @@ export default function SettingsPage() {
             </>
           )}
         </Section>
+
+        <ChangeRequestCard />
 
         <div className="pb-8" />
       </div>

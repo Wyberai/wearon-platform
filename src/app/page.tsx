@@ -298,7 +298,17 @@ function USHomePage({ locale }: { locale: Locale }) {
               <LanguageSwitcher current={locale} />
             </div>
           </div>
-          <p style={{ maxWidth: 900, margin: '16px auto 0', fontSize: 11, color: `${US_INK}44`, textAlign: 'center' }}>
+          <p style={{ maxWidth: 900, margin: '16px auto 0', fontSize: 12, color: `${US_INK}88`, textAlign: 'center' }}>
+            {t.customDesignText}{' '}
+            <a
+              href={`https://wa.me/917892603192?text=${encodeURIComponent('Hi! I want a fully custom-built store on Instastarz.')}`}
+              target="_blank" rel="noopener noreferrer"
+              style={{ color: US_ACCENT, fontWeight: 700, textDecoration: 'underline' }}
+            >
+              {t.customDesignCta}
+            </a>
+          </p>
+          <p style={{ maxWidth: 900, margin: '10px auto 0', fontSize: 11, color: `${US_INK}44`, textAlign: 'center' }}>
             © 2026 Signalpulse Technologies. Instastarz is a product of Signalpulse Technologies.
           </p>
         </footer>

@@ -29,6 +29,17 @@ export const DOMAIN_ELIGIBLE_PLANS: Plan[] = ['starter', 'growth', 'pro', 'enter
 // and above, not Free or Store (₹3,000). Confirmed with the founder.
 export const MCP_ELIGIBLE_PLANS: Plan[] = ['growth', 'pro', 'enterprise']
 
+// Founder-fulfilled design/product/mobile-app change requests per calendar
+// month — not self-serve dashboard edits (Customize, Products, etc. remain
+// unlimited), but requests routed to the founder to hand-build. Counted from
+// the change_requests table, not a running profiles column, so history stays
+// queryable. Confirmed with the founder: without a cap, low-paying sellers
+// could demand daily changes at the same cost as a top-tier seller.
+export const PLAN_CHANGE_REQUEST_LIMITS: Record<Plan, number> = {
+  free: 0, starter: 1, growth: 5, pro: 10, enterprise: 20,
+}
+export const CHANGE_REQUEST_OVERAGE_PRICE_INR = 500
+
 export const PLAN_TRY_ON_LIMITS: Record<Plan, number> = {
   free: 0, starter: 0, growth: 0, pro: 300, enterprise: 99999,
 }
