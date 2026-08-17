@@ -55,6 +55,7 @@ import { configToThemeBrand, productToThemeProduct } from '@/lib/flagship/adapte
 import { demoSlugToThemeId } from '@/lib/preview-utils'
 import { ThemedDashboardMock } from '@/components/preview/ThemedDashboardMock'
 import { ThemedMobileAppMock } from '@/components/preview/ThemedMobileAppMock'
+import { AiStylistSearch } from '@/components/store/AiStylistSearch'
 import type { ThemeProduct } from '@/lib/flagship/types'
 
 const STORAGE_BASE = 'https://zhrubbutcsvhcbuaalep.supabase.co/storage/v1/object/public/product-images'
@@ -468,6 +469,8 @@ function StorePageContent() {
           </div>
         </div>
       )}
+
+      {!isDemoStore && slug && <AiStylistSearch slug={slug} />}
 
       {/* Category row — large photo tiles for themes with categoryDisplay
           'tiles', the small circular avatar row for everyone else. */}
