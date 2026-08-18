@@ -31,7 +31,6 @@ export function WaitlistClient({ locale }: { locale: Locale }) {
   const home = HOME_DICT[locale]
   const FEATURES = home.features
   const [email, setEmail] = useState('')
-  const [handle, setHandle] = useState('')
   const [status, setStatus] = useState<'idle' | 'loading' | 'done' | 'error'>('idle')
   const [error, setError] = useState<string | null>(null)
 
@@ -42,7 +41,7 @@ export function WaitlistClient({ locale }: { locale: Locale }) {
     const res = await fetch('/api/waitlist', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, instagram_handle: handle, source: 'waitlist_page', locale }),
+      body: JSON.stringify({ email, source: 'waitlist_page', locale }),
     })
     const data = await res.json()
     if (!res.ok) {
@@ -66,13 +65,6 @@ export function WaitlistClient({ locale }: { locale: Locale }) {
         value={email}
         onChange={e => setEmail(e.target.value)}
         placeholder="you@example.com"
-        style={{ padding: '14px 18px', borderRadius: 999, border: `1px solid ${INK}22`, fontSize: 15, outline: 'none' }}
-      />
-      <input
-        type="text"
-        value={handle}
-        onChange={e => setHandle(e.target.value)}
-        placeholder={t.handlePlaceholder}
         style={{ padding: '14px 18px', borderRadius: 999, border: `1px solid ${INK}22`, fontSize: 15, outline: 'none' }}
       />
       <button
