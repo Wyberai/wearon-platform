@@ -41,9 +41,12 @@ export async function POST(req: Request) {
 
   // Founder alert — fire-and-forget, same as the confirmation above. A
   // failed notify should never block or fail the visitor's signup.
+  // Use a different from address so Gmail doesn't treat it as a self-sent
+  // email (from == to == hello@instastarz.in suppresses inbox delivery).
   sendEmail({
     to: FOUNDER_EMAIL,
-    subject: `New waitlist signup (${locale}) — ${cleanEmail}`,
+    from: 'Instastarz Waitlist <notifications@instastarz.in>',
+    subject: `🔔 New waitlist signup (${locale}) — ${cleanEmail}`,
     html: `<p>New Instastarz waitlist signup:</p>
       <ul>
         <li><strong>Email:</strong> ${cleanEmail}</li>
