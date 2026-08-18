@@ -36,7 +36,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Params }) {
     .update(update)
     .eq('id', id)
     .eq('seller_id', user.id)
-    .select()
+    .select('id, status, items, total_inr, buyer_phone, buyer_email, whatsapp_confirmed, shipped_at, tracking_number, tracking_url')
     .single()
 
   if (error) return NextResponse.json({ error: error.message }, { status: 400 })
@@ -46,15 +46,24 @@ export async function PATCH(req: NextRequest, { params }: { params: Params }) {
       const { sendEmail } = await import('@/lib/email/resend')
       const { orderEmail } = await import('@/lib/email/templates/order')
       const { data: config } = await admin
-        .from('tenant_config').select('brand_name').eq('seller_id', user.id).single()
+        .from('tenant_config').select('brand_name, slug').eq('seller_id', user.id).single()
       if (config && data) {
         const tpl = orderEmail({
           brandName: config.brand_name,
           orderId: data.id,
+          slug: config.slug,
           items: (data.items ?? []) as Array<{ name: string; qty: number; price: number }>,
           totalInr: data.total_inr,
+          buyerPhone: data.buyer_phone ?? undefined,
         })
-        await sendEmail({ to: '', subject: tpl.subject, html: tpl.html })
+        const buyerEmail: string | undefined = (data as Record<string, unknown>).buyer_email as string | undefined
+        if (buyerEmail) {
+          await sendEmail({ to: buyerEmail, subject: tpl.subject, html: tpl.html })
+        }
+        const { data: sellerProfile } = await admin.from('profiles').select('email').eq('id', user.id).single()
+        if (sellerProfile?.email) {
+          await sendEmail({ to: sellerProfile.email, subject: tpl.subject, html: tpl.html })
+        }
       }
     } catch { /* email is best-effort */ }
   }

@@ -77,10 +77,9 @@ export async function POST(request: Request) {
         })
         .eq('id', sellerId)
 
-      // Send welcome email — module may not exist yet in all envs
       try {
         const { sendEmail } = await import('@/lib/email/resend')
-        const { welcomeEmail } = await import('@/lib/email/templates/welcome')
+        const { planUpgradeEmail } = await import('@/lib/email/templates/plan-upgrade')
         const { data: profile } = await admin
           .from('profiles')
           .select('email')
@@ -92,10 +91,11 @@ export async function POST(request: Request) {
           .eq('seller_id', sellerId)
           .single()
         if (profile?.email && config) {
-          const tpl = welcomeEmail({
+          const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://instastarz.in'
+          const tpl = planUpgradeEmail({
             brandName: config.brand_name,
-            sellerName: profile.email,
-            storeUrl: `${process.env.NEXT_PUBLIC_APP_URL ?? 'https://instastarz.in'}/store/${config.slug}`,
+            plan,
+            dashboardUrl: `${appUrl}/admin/${config.slug}/billing`,
           })
           await sendEmail({ to: profile.email, subject: tpl.subject, html: tpl.html })
         }

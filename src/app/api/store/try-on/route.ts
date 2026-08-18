@@ -25,7 +25,7 @@ export async function POST(req: Request) {
   // to an actual store the buyer is visiting, not a caller-supplied UUID.
   const { data: storeConfig } = await admin
     .from('tenant_config')
-    .select('user_id')
+    .select('seller_id')
     .eq('slug', store_slug)
     .single()
 
@@ -33,7 +33,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Store not found' }, { status: 404 })
   }
 
-  const seller_id = storeConfig.user_id
+  const seller_id = storeConfig.seller_id
 
   const creditNeeded = output_type === 'both'
     ? CREDIT_COSTS.buyerTryonImage + CREDIT_COSTS.buyerTryonVideo

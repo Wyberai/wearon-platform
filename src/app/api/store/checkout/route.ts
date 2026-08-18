@@ -157,6 +157,24 @@ export async function POST(req: NextRequest) {
     } catch { /* email is best-effort */ }
   }
 
+  async function sendSellerOrderEmail(orderId: string) {
+    try {
+      const { sendEmail } = await import('@/lib/email/resend')
+      const { orderEmail } = await import('@/lib/email/templates/order')
+      const { data: sellerProfile } = await supabase.from('profiles').select('email').eq('id', seller_id).single()
+      if (!sellerProfile?.email) return
+      const tpl = orderEmail({
+        brandName: tenantConfig!.brand_name ?? 'Your Store',
+        orderId,
+        slug: tenantConfig!.slug,
+        items: orderItems.map(i => ({ name: i.name, qty: i.quantity, price: i.price_inr })),
+        totalInr: total,
+        buyerPhone: buyer_phone,
+      })
+      await sendEmail({ to: sellerProfile.email, subject: tpl.subject, html: tpl.html })
+    } catch { /* email is best-effort */ }
+  }
+
   // --- 5a. Razorpay payment flow ---
   if (payment_method === 'razorpay') {
     const { razorpay_key_id, razorpay_key_secret } = paymentConfig
@@ -228,6 +246,7 @@ export async function POST(req: NextRequest) {
 
     sendPushToSeller(seller_id, 'New order! 🎉', `₹${total.toLocaleString('en-IN')} — ${summaryLabel}`, { url: `/admin/${tenantConfig.slug}/orders` }).catch(() => {})
     sendBuyerEmail(orderId).catch(() => {})
+    sendSellerOrderEmail(orderId).catch(() => {})
 
     return NextResponse.json({
       razorpay_order_id: razorpayOrder.id,
@@ -259,6 +278,7 @@ export async function POST(req: NextRequest) {
 
   sendPushToSeller(seller_id, 'New order! 🎉', `₹${total.toLocaleString('en-IN')} — ${summaryLabel} (COD)`, { url: `/admin/${tenantConfig.slug}/orders` }).catch(() => {})
   sendBuyerEmail(orderId).catch(() => {})
+  sendSellerOrderEmail(orderId).catch(() => {})
 
   return NextResponse.json({
     order_id: orderId,

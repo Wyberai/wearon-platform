@@ -1,12 +1,14 @@
 export function orderEmail({
   brandName,
   orderId,
+  slug,
   items,
   totalInr,
   buyerPhone,
 }: {
   brandName: string;
   orderId: string;
+  slug: string;
   items: { name: string; qty: number; price: number }[];
   totalInr: number;
   buyerPhone?: string;
@@ -54,7 +56,7 @@ export function orderEmail({
           <tr>
             <td style="padding:0 0 32px 0;text-align:center;">
               <span style="font-size:28px;font-weight:800;letter-spacing:-0.5px;color:#FAFAFA;">
-                Wear<span style="color:#F72585;">On</span>
+                ${brandName}
               </span>
             </td>
           </tr>
@@ -127,7 +129,7 @@ export function orderEmail({
               <table width="100%" cellpadding="0" cellspacing="0">
                 <tr>
                   <td style="padding-right:8px;">
-                    <a href="https://instastarz.in/admin/orders/${orderId}" target="_blank"
+                    <a href="https://instastarz.in/admin/${slug}/orders" target="_blank"
                       style="display:block;padding:14px 0;font-size:14px;font-weight:700;color:#FFFFFF;text-decoration:none;text-align:center;background:#F72585;border-radius:10px;">
                       View order →
                     </a>
@@ -154,7 +156,7 @@ export function orderEmail({
                 Order notifications for <strong style="color:#71717A;">${brandName}</strong> on Instastarz.
               </p>
               <p style="margin:0;font-size:13px;color:#52525B;">
-                <a href="#" style="color:#F72585;text-decoration:none;">Unsubscribe</a>
+                <a href="https://instastarz.in/admin/${slug}/settings" style="color:#F72585;text-decoration:none;">Manage notifications</a>
                 &nbsp;·&nbsp;
                 <a href="https://instastarz.in" style="color:#71717A;text-decoration:none;">instastarz.in</a>
               </p>
