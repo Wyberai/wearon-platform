@@ -3,12 +3,13 @@ import crypto from 'crypto'
 
 const RAZORPAY_WEBHOOK_SECRET = process.env.RAZORPAY_WEBHOOK_SECRET ?? ''
 
-function verifySignature(orderId: string, paymentId: string, signatureHeader: string): boolean {
+// Razorpay server-to-server webhooks sign the raw request body, NOT the
+// orderId|paymentId string (that format is for client-side capture verification).
+function verifyWebhookSignature(rawBody: string, signatureHeader: string): boolean {
   if (!RAZORPAY_WEBHOOK_SECRET) return false
-  const payload = `${orderId}|${paymentId}`
   const expected = crypto
     .createHmac('sha256', RAZORPAY_WEBHOOK_SECRET)
-    .update(payload, 'utf8')
+    .update(rawBody, 'utf8')
     .digest('hex')
   const expectedBuf = Buffer.from(expected, 'utf8')
   const actualBuf = Buffer.from(signatureHeader, 'utf8')
@@ -52,7 +53,7 @@ export async function POST(request: Request) {
 
   const signatureHeader = request.headers.get('x-razorpay-signature') ?? ''
 
-  if (!verifySignature(razorpayOrderId, razorpayPaymentId, signatureHeader)) {
+  if (!verifyWebhookSignature(rawBody, signatureHeader)) {
     return new Response('Unauthorized', { status: 401 })
   }
 

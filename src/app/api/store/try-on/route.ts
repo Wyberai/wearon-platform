@@ -7,17 +7,33 @@ import { CREDIT_COSTS } from '@/lib/ai-presets'
 export const dynamic = 'force-dynamic'
 
 // POST — buyer submits a try-on job
-// Body: { seller_id, product_id, garment_image_url, buyer_image_url, output_type?, garment_type? }
+// Body: { store_slug, product_id, garment_image_url, buyer_image_url, output_type?, garment_type? }
+// seller_id is resolved server-side from store_slug — never accepted from the caller
+// to prevent credit-drain attacks via UUID enumeration.
 // Note: buyer_image_url should be a short-lived upload URL — never stored permanently
 export async function POST(req: Request) {
   const body = await req.json()
-  const { seller_id, product_id, garment_image_url, buyer_image_url, output_type = 'both', garment_type = 'other' } = body
+  const { store_slug, product_id, garment_image_url, buyer_image_url, output_type = 'both', garment_type = 'other' } = body
 
-  if (!seller_id || !garment_image_url || !buyer_image_url) {
+  if (!store_slug || !garment_image_url || !buyer_image_url) {
     return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
   }
 
   const admin = createAdminClient()
+
+  // Resolve seller_id from the public store slug — this ties the credit deduction
+  // to an actual store the buyer is visiting, not a caller-supplied UUID.
+  const { data: storeConfig } = await admin
+    .from('tenant_config')
+    .select('user_id')
+    .eq('slug', store_slug)
+    .single()
+
+  if (!storeConfig) {
+    return NextResponse.json({ error: 'Store not found' }, { status: 404 })
+  }
+
+  const seller_id = storeConfig.user_id
 
   const creditNeeded = output_type === 'both'
     ? CREDIT_COSTS.buyerTryonImage + CREDIT_COSTS.buyerTryonVideo

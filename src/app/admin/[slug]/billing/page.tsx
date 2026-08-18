@@ -34,7 +34,7 @@ export default async function BillingPage({ params }: { params: Promise<{ slug: 
 
   function checkoutUrl(planKey: string) {
     const productId = dodoPlanIds[planKey]
-    if (!productId || !dodoBusinessId) return '/auth/login'
+    if (!productId || !dodoBusinessId) return null
     const email = user?.email ?? ''
     return `https://checkout.dodopayments.com/buy/${productId}?quantity=1&email=${encodeURIComponent(email)}&metadata[seller_id]=${user!.id}&metadata[slug]=${slug}&redirect_url=${encodeURIComponent(`${process.env.NEXT_PUBLIC_APP_URL}/admin/${slug}/billing?upgraded=1`)}`
   }
@@ -106,6 +106,7 @@ export default async function BillingPage({ params }: { params: Promise<{ slug: 
           .map(([key, p]) => {
             const features = PLAN_FEATURES[key] ?? []
             const isEnterprise = key === 'enterprise'
+            const url = checkoutUrl(key)
             return (
               <div key={key} className={`bg-white rounded-xl border-2 p-6 ${key === 'growth' ? 'border-pink-300' : 'border-gray-100'}`}>
                 {key === 'growth' && (
@@ -132,14 +133,14 @@ export default async function BillingPage({ params }: { params: Promise<{ slug: 
                   >
                     Contact Sales
                   </a>
-                ) : (
+                ) : url ? (
                   <a
-                    href={checkoutUrl(key)}
+                    href={url}
                     className={`block text-center py-2.5 rounded-lg text-sm font-semibold transition-colors ${key === 'growth' ? 'bg-pink-600 text-white hover:bg-pink-700' : 'bg-gray-900 text-white hover:bg-gray-700'}`}
                   >
                     Upgrade to {p.name} →
                   </a>
-                )}
+                ) : null}
               </div>
             )
           })
