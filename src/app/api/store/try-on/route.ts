@@ -4,6 +4,36 @@ import { submitTryOn, pollTryOn } from '@/lib/fal-tryon'
 import { submitAnimation, pollAnimation, fashionPrompt } from '@/lib/higgsfield'
 import { CREDIT_COSTS } from '@/lib/ai-presets'
 
+async function notifySellerTryOnComplete(
+  admin: ReturnType<typeof createAdminClient>,
+  sellerId: string,
+  jobId: string,
+  resultImageUrl: string | undefined
+) {
+  try {
+    const { sendEmail } = await import('@/lib/email/resend')
+    const { tryOnNotificationEmail } = await import('@/lib/email/templates/tryon')
+    const [{ data: profile }, { data: config }, { data: job }] = await Promise.all([
+      admin.from('profiles').select('email').eq('id', sellerId).single(),
+      admin.from('tenant_config').select('brand_name, slug').eq('seller_id', sellerId).single(),
+      admin.from('buyer_tryons').select('product_id').eq('id', jobId).single(),
+    ])
+    if (!profile?.email || !config) return
+    let productName = 'your product'
+    if (job?.product_id) {
+      const { data: product } = await admin.from('products').select('name').eq('id', job.product_id).single()
+      if (product?.name) productName = product.name
+    }
+    const tpl = tryOnNotificationEmail({
+      brandName: config.brand_name,
+      productName,
+      resultUrl: resultImageUrl,
+      slug: config.slug,
+    })
+    await sendEmail({ to: profile.email, subject: tpl.subject, html: tpl.html })
+  } catch { /* best-effort */ }
+}
+
 export const dynamic = 'force-dynamic'
 
 // POST — buyer submits a try-on job
@@ -177,6 +207,7 @@ async function runBuyerTryonPipeline(
 
     if (outputType === 'image') {
       await admin.from('buyer_tryons').update({ status: 'completed', result_image_url: tryonImageUrl, completed_at: new Date().toISOString() }).eq('id', jobId)
+      notifySellerTryOnComplete(admin, sellerId, jobId, tryonImageUrl).catch(() => {})
       return
     }
 
@@ -202,6 +233,7 @@ async function runBuyerTryonPipeline(
           buyer_image_temp_url: null,
           completed_at: new Date().toISOString(),
         }).eq('id', jobId)
+        notifySellerTryOnComplete(admin, sellerId, jobId, tryonImageUrl).catch(() => {})
         return
       }
       if (result.status === 'failed' || result.status === 'nsfw') throw new Error('Video failed')
