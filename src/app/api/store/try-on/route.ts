@@ -103,6 +103,24 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Store try-on unavailable right now', code: 'SELLER_NO_CREDITS' }, { status: 402 })
   }
 
+  // Warn seller when AI credits drop to 20 or below (about 1-2 try-ons remaining)
+  if (typeof balanceResult === 'number' && balanceResult <= 20 && balanceResult > 0) {
+    ;(async () => {
+      try {
+        const { sendEmail } = await import('@/lib/email/resend')
+        const { lowCreditsEmail } = await import('@/lib/email/templates/low-credits')
+        const [{ data: profile }, { data: config }] = await Promise.all([
+          admin.from('profiles').select('email').eq('id', seller_id).single(),
+          admin.from('tenant_config').select('brand_name, slug').eq('seller_id', seller_id).single(),
+        ])
+        if (profile?.email && config) {
+          const tpl = lowCreditsEmail({ brandName: config.brand_name, creditsRemaining: balanceResult, slug: config.slug })
+          await sendEmail({ to: profile.email, subject: tpl.subject, html: tpl.html })
+        }
+      } catch { /* best-effort */ }
+    })()
+  }
+
   // Fire async pipeline
   runBuyerTryonPipeline(job.id, seller_id, buyer_image_url, garment_image_url, output_type, garment_type).catch(
     err => console.error('[buyer-tryon]', err)

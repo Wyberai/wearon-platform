@@ -115,6 +115,17 @@ export async function POST(request: Request) {
           ai_reply_limit: PLAN_AI_REPLY_LIMITS.free,
         })
         .eq('id', sellerId)
+
+      try {
+        const { sendEmail } = await import('@/lib/email/resend')
+        const { subscriptionCancelledEmail } = await import('@/lib/email/templates/subscription-cancelled')
+        const { data: profile } = await admin.from('profiles').select('email').eq('id', sellerId).single()
+        const { data: config } = await admin.from('tenant_config').select('brand_name, slug').eq('seller_id', sellerId).single()
+        if (profile?.email && config) {
+          const tpl = subscriptionCancelledEmail({ brandName: config.brand_name, slug: config.slug })
+          await sendEmail({ to: profile.email, subject: tpl.subject, html: tpl.html })
+        }
+      } catch { /* best-effort */ }
     }
   } else if (event.type === 'subscription.past_due') {
     const sellerId = metadata.seller_id
@@ -123,6 +134,17 @@ export async function POST(request: Request) {
         .from('profiles')
         .update({ subscription_status: 'past_due' })
         .eq('id', sellerId)
+
+      try {
+        const { sendEmail } = await import('@/lib/email/resend')
+        const { subscriptionPastDueEmail } = await import('@/lib/email/templates/subscription-past-due')
+        const { data: profile } = await admin.from('profiles').select('email').eq('id', sellerId).single()
+        const { data: config } = await admin.from('tenant_config').select('brand_name, slug').eq('seller_id', sellerId).single()
+        if (profile?.email && config) {
+          const tpl = subscriptionPastDueEmail({ brandName: config.brand_name, slug: config.slug })
+          await sendEmail({ to: profile.email, subject: tpl.subject, html: tpl.html })
+        }
+      } catch { /* best-effort */ }
     }
   }
 

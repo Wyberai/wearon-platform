@@ -82,5 +82,25 @@ export async function POST(req: Request) {
 
   if (error || !request) return NextResponse.json({ error: 'Failed to submit request' }, { status: 500 })
 
+  // Alert founder so no request goes unnoticed
+  try {
+    const { sendEmail } = await import('@/lib/email/resend')
+    const { data: profile } = await admin.from('profiles').select('email').eq('id', user.id).single()
+    const { data: config } = await admin.from('tenant_config').select('brand_name, slug').eq('seller_id', user.id).single()
+    const sellerEmail = profile?.email ?? 'unknown'
+    const brandName = config?.brand_name ?? 'Unknown store'
+    const dashboardUrl = config ? `https://instastarz.in/admin/${config.slug}/change-requests` : 'https://instastarz.in/admin'
+    await sendEmail({
+      to: 'hello@instastarz.in',
+      subject: `[Change Request] ${request_type} from ${brandName}${billable ? ' — BILLABLE' : ''}`,
+      html: `<p>New change request from <strong>${brandName}</strong> (${sellerEmail}).</p>
+<p><strong>Type:</strong> ${request_type}</p>
+<p><strong>Description:</strong></p>
+<blockquote style="border-left:3px solid #A6134A;margin:8px 0;padding:8px 12px;background:#FAF7F3;">${(description ?? '').replace(/\n/g, '<br/>')}</blockquote>
+${billable ? `<p><strong style="color:#B45309;">⚠ Billable overage — ₹${CHANGE_REQUEST_OVERAGE_PRICE_INR}</strong></p>` : ''}
+<p><a href="${dashboardUrl}">View in dashboard →</a></p>`,
+    })
+  } catch { /* best-effort */ }
+
   return NextResponse.json({ request, billable, charge_amount_inr: billable ? CHANGE_REQUEST_OVERAGE_PRICE_INR : null })
 }

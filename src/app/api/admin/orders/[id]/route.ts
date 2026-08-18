@@ -41,6 +41,27 @@ export async function PATCH(req: NextRequest, { params }: { params: Params }) {
 
   if (error) return NextResponse.json({ error: error.message }, { status: 400 })
 
+  if (status === 'confirmed') {
+    try {
+      const { sendEmail } = await import('@/lib/email/resend')
+      const { buyerConfirmationEmail } = await import('@/lib/email/templates/buyer-confirmation')
+      const { data: config } = await admin
+        .from('tenant_config').select('brand_name, slug, primary_color').eq('seller_id', user.id).single()
+      const buyerEmail: string | undefined = (data as Record<string, unknown>).buyer_email as string | undefined
+      if (config && data && buyerEmail) {
+        const tpl = buyerConfirmationEmail({
+          brandName: config.brand_name,
+          primaryColor: config.primary_color ?? undefined,
+          orderId: data.id,
+          items: (data.items ?? []) as Array<{ name: string; qty: number; price: number }>,
+          totalInr: data.total_inr,
+          storeSlug: config.slug,
+        })
+        await sendEmail({ to: buyerEmail, subject: tpl.subject, html: tpl.html })
+      }
+    } catch { /* email is best-effort */ }
+  }
+
   if (status === 'shipped') {
     try {
       const { sendEmail } = await import('@/lib/email/resend')
@@ -64,6 +85,27 @@ export async function PATCH(req: NextRequest, { params }: { params: Params }) {
         if (sellerProfile?.email) {
           await sendEmail({ to: sellerProfile.email, subject: tpl.subject, html: tpl.html })
         }
+      }
+    } catch { /* email is best-effort */ }
+  }
+
+  if (status === 'delivered') {
+    try {
+      const { sendEmail } = await import('@/lib/email/resend')
+      const { deliveryConfirmationEmail } = await import('@/lib/email/templates/delivery-confirmation')
+      const { data: config } = await admin
+        .from('tenant_config').select('brand_name, slug, primary_color').eq('seller_id', user.id).single()
+      const buyerEmail: string | undefined = (data as Record<string, unknown>).buyer_email as string | undefined
+      if (config && data && buyerEmail) {
+        const tpl = deliveryConfirmationEmail({
+          brandName: config.brand_name,
+          primaryColor: config.primary_color ?? undefined,
+          orderId: data.id,
+          items: (data.items ?? []) as Array<{ name: string; qty: number; price: number }>,
+          totalInr: data.total_inr,
+          storeSlug: config.slug,
+        })
+        await sendEmail({ to: buyerEmail, subject: tpl.subject, html: tpl.html })
       }
     } catch { /* email is best-effort */ }
   }

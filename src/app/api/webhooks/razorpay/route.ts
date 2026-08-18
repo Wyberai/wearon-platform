@@ -89,6 +89,34 @@ export async function POST(request: Request) {
         razorpay_payment_id: razorpayPaymentId,
       })
       .eq('id', order.id)
+
+    try {
+      const { sendEmail } = await import('@/lib/email/resend')
+      const { buyerConfirmationEmail } = await import('@/lib/email/templates/buyer-confirmation')
+      const { data: fullOrder } = await admin
+        .from('orders')
+        .select('id, items, total_inr, buyer_email, seller_id')
+        .eq('id', order.id)
+        .single()
+      if (fullOrder?.buyer_email) {
+        const { data: config } = await admin
+          .from('tenant_config')
+          .select('brand_name, slug, primary_color')
+          .eq('seller_id', fullOrder.seller_id)
+          .single()
+        if (config) {
+          const tpl = buyerConfirmationEmail({
+            brandName: config.brand_name,
+            primaryColor: config.primary_color ?? undefined,
+            orderId: fullOrder.id,
+            items: (fullOrder.items ?? []) as Array<{ name: string; qty: number; price: number }>,
+            totalInr: fullOrder.total_inr,
+            storeSlug: config.slug,
+          })
+          await sendEmail({ to: fullOrder.buyer_email, subject: tpl.subject, html: tpl.html })
+        }
+      }
+    } catch { /* best-effort */ }
   }
 
   try {
