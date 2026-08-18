@@ -4,9 +4,9 @@ import { randomBytes } from 'crypto'
 import { CREDIT_COSTS } from '@/lib/ai-presets'
 
 export async function POST(req: NextRequest) {
-  const apiKey = req.headers.get('x-wearon-key')
+  const apiKey = req.headers.get('x-instastarz-key')
   if (!apiKey) {
-    return NextResponse.json({ error: 'Missing X-WearOn-Key header' }, { status: 401 })
+    return NextResponse.json({ error: 'Missing X-Instastarz-Key header' }, { status: 401 })
   }
 
   const admin = createAdminClient()

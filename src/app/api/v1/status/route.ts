@@ -2,9 +2,9 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/server'
 
 export async function GET(req: NextRequest) {
-  const apiKey = req.headers.get('x-wearon-key')
+  const apiKey = req.headers.get('x-instastarz-key')
   if (!apiKey) {
-    return NextResponse.json({ error: 'Missing X-WearOn-Key header' }, { status: 401 })
+    return NextResponse.json({ error: 'Missing X-Instastarz-Key header' }, { status: 401 })
   }
 
   const jobId = req.nextUrl.searchParams.get('job_id')

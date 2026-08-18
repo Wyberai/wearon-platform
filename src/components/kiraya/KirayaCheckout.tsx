@@ -159,7 +159,7 @@ export function KirayaCheckout({ brand }: { brand: ThemeBrand }) {
                 return (
                   <div key={`${line.productId}-${line.size}-${line.color}`} className="flex gap-4 pb-5 border-b" style={{ borderColor: 'var(--ki-line)' }}>
                     <div className="w-20 h-24 rounded-lg flex-shrink-0 overflow-hidden" style={{ background: 'var(--ki-plum)' }}>
-                      <img src={line.image} alt={line.name} className="w-full h-full object-cover" onError={e => { e.currentTarget.style.display = 'none' }} />
+                      <div className="w-full h-full bg-cover bg-center" style={{ backgroundImage: `url(${line.image})` }} />
                     </div>
                     <div className="flex-1">
                       <p className="text-sm font-medium">{line.name}</p>

@@ -48,12 +48,11 @@ export function TaanaImg({
 }) {
   return (
     <div className={wrapperClassName} style={{ background: bg, ...style }}>
-      <img
-        src={src}
-        alt={alt}
-        loading={priority ? 'eager' : 'lazy'}
-        className={imgClassName}
-        onError={e => { e.currentTarget.style.display = 'none' }}
+      <div
+        className="w-full h-full bg-cover bg-center"
+        style={{ backgroundImage: `url(${src})` }}
+        role="img"
+        aria-label={alt}
       />
     </div>
   )

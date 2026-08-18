@@ -27,12 +27,11 @@ export function KirayaProductCard({ product, slug, priority = false }: { product
   return (
     <Link href={`/store/${slug}/product/${product.slug}`} className="group block">
       <div className="relative aspect-[4/5] overflow-hidden rounded-xl" style={{ background: 'var(--ki-plum)' }}>
-        <img
-          src={product.image}
-          alt={product.name}
-          loading={priority ? 'eager' : 'lazy'}
-          className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
-          onError={e => { e.currentTarget.style.display = 'none' }}
+        <div
+          className="w-full h-full bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+          style={{ backgroundImage: `url(${product.image})` }}
+          role="img"
+          aria-label={product.name}
         />
         {product.tags.includes('new') && (
           <span className="absolute top-3 left-3 text-[10px] tracking-[0.1em] uppercase px-2.5 py-1 rounded-full font-medium" style={{ background: 'var(--ki-bg)', color: 'var(--ki-ink)' }}>New</span>

@@ -249,7 +249,7 @@ async function main() {
     ['NEXT_PUBLIC_SUPABASE_ANON_KEY', anonKey],
     ['SUPABASE_SERVICE_ROLE_KEY', serviceKey],
     ['RESEND_API_KEY', resendKey],
-    ['EMAIL_FROM', `noreply@${SELLER_DOMAIN ?? 'wearon.in'}`],
+    ['EMAIL_FROM', `noreply@${SELLER_DOMAIN ?? 'instastarz.in'}`],
     ['NEXT_PUBLIC_APP_URL', appUrl],
     ['NEXT_PUBLIC_SUPABASE_REDIRECT_URL', `${appUrl}/auth/callback`],
     ['OPENAI_API_KEY', OPENAI_KEY],

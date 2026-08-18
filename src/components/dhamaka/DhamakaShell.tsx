@@ -210,13 +210,8 @@ function DhamakaCartDrawer({ brand }: { brand: ThemeBrand }) {
                 <div className="flex-1 overflow-y-auto px-6 py-5 flex flex-col gap-5">
                   {lines.map(line => (
                     <div key={`${line.productId}-${line.size}-${line.color}`} className="flex gap-4">
-                      <div className="w-20 h-24 rounded-lg flex-shrink-0" style={{ background: 'var(--dh-card)' }}>
-                        <img
-                          src={line.image}
-                          alt={line.name}
-                          className="w-20 h-24 object-cover rounded-lg"
-                          onError={e => { e.currentTarget.style.display = 'none' }}
-                        />
+                      <div className="w-20 h-24 rounded-lg flex-shrink-0 overflow-hidden" style={{ background: 'var(--dh-card)' }}>
+                        <div className="w-full h-full bg-cover bg-center" style={{ backgroundImage: `url(${line.image})` }} />
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-start justify-between gap-2">

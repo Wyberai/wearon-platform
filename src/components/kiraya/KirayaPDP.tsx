@@ -52,7 +52,7 @@ export function KirayaPDP({ brand, product, related = [] }: { brand: ThemeBrand;
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16">
         <div className="relative aspect-[4/5] md:aspect-auto md:h-[calc(100vh-8rem)] md:sticky md:top-24 overflow-hidden rounded-xl" style={{ background: 'var(--ki-plum)' }}>
-          <img src={product.image} alt={product.name} className="w-full h-full object-cover" onError={e => { e.currentTarget.style.display = 'none' }} />
+          <div className="w-full h-full bg-cover bg-center" style={{ backgroundImage: `url(${product.image})` }} role="img" aria-label={product.name} />
         </div>
 
         <div className="pt-2">

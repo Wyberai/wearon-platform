@@ -44,7 +44,7 @@ export function KirayaHome({ brand, products }: { brand: ThemeBrand; products: T
       {/* Hero — mount-triggered fade only, never scroll-linked (Reveal.tsx). */}
       <div className="relative h-[92vh] min-h-[560px] overflow-hidden" style={{ background: 'var(--ki-plum)' }}>
         <div className="absolute inset-0">
-          <img src={KIRAYA_CAMPAIGN.hero} alt="" className="w-full h-full object-cover" onError={e => { e.currentTarget.style.display = 'none' }} />
+          <div className="w-full h-full bg-cover bg-center" style={{ backgroundImage: `url(${KIRAYA_CAMPAIGN.hero})` }} />
           <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(21,11,22,0.15) 0%, rgba(21,11,22,0.72) 100%)' }} />
         </div>
         <motion.div
@@ -87,7 +87,7 @@ export function KirayaHome({ brand, products }: { brand: ThemeBrand; products: T
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 items-stretch">
           <Reveal className="md:row-span-2">
             <div className="w-full h-full rounded-xl min-h-[320px] overflow-hidden" style={{ background: 'var(--ki-plum)' }}>
-              <img src={KIRAYA_CAMPAIGN.dressingRoom} alt="" className="w-full h-full object-cover" onError={e => { e.currentTarget.style.display = 'none' }} />
+              <div className="w-full h-full bg-cover bg-center" style={{ backgroundImage: `url(${KIRAYA_CAMPAIGN.dressingRoom})` }} />
             </div>
           </Reveal>
           <Reveal delay={0.1}>
@@ -101,7 +101,7 @@ export function KirayaHome({ brand, products }: { brand: ThemeBrand; products: T
           </Reveal>
           <Reveal delay={0.15}>
             <div className="w-full h-full rounded-xl min-h-[220px] overflow-hidden" style={{ background: 'var(--ki-plum)' }}>
-              <img src={KIRAYA_CAMPAIGN.texture} alt="" className="w-full h-full object-cover" onError={e => { e.currentTarget.style.display = 'none' }} />
+              <div className="w-full h-full bg-cover bg-center" style={{ backgroundImage: `url(${KIRAYA_CAMPAIGN.texture})` }} />
             </div>
           </Reveal>
         </div>
@@ -123,7 +123,7 @@ export function KirayaHome({ brand, products }: { brand: ThemeBrand; products: T
             {categories.map((c, i) => (
               <Reveal key={c.name} delay={i * 0.05}>
                 <Link href={`/store/${slug}/shop?category=${encodeURIComponent(c.name)}`} className="group block relative aspect-[3/4] overflow-hidden rounded-xl" style={{ background: 'var(--ki-plum)' }}>
-                  {c.image && <img src={c.image} alt={c.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.05]" onError={e => { e.currentTarget.style.display = 'none' }} />}
+                  {c.image && <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-[1.05]" style={{ backgroundImage: `url(${c.image})` }} />}
                   <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, transparent 40%, rgba(21,11,22,0.7) 100%)' }} />
                   <span className="absolute bottom-4 left-4 text-sm tracking-wide" style={{ color: '#fff' }}>{c.name}</span>
                 </Link>
@@ -157,7 +157,7 @@ export function KirayaHome({ brand, products }: { brand: ThemeBrand; products: T
         <Reveal>
           <div className="max-w-[1440px] mx-auto px-6 md:px-10">
             <div className="relative rounded-xl overflow-hidden" style={{ background: 'var(--ki-plum)' }}>
-              <img src={KIRAYA_CAMPAIGN.flatlayOutfit} alt="" className="w-full h-[380px] md:h-[460px] object-cover" onError={e => { e.currentTarget.style.display = 'none' }} />
+              <div className="w-full h-[380px] md:h-[460px] bg-cover bg-center" style={{ backgroundImage: `url(${KIRAYA_CAMPAIGN.flatlayOutfit})` }} />
               <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6" style={{ background: 'linear-gradient(180deg, rgba(21,11,22,0.1) 0%, rgba(21,11,22,0.75) 100%)' }}>
                 <p className="text-[11px] tracking-[0.25em] uppercase mb-4 font-medium" style={{ color: 'var(--ki-accent)' }}>Got a date on the calendar?</p>
                 <h2 className="kiraya-display italic text-3xl md:text-5xl mb-6" style={{ color: '#F3E9E6' }}>Rent the outfit. Keep the memory.</h2>

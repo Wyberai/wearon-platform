@@ -127,14 +127,7 @@ export function DhamakaHome({ brand, products }: { brand: ThemeBrand; products: 
             {categories.map((c, i) => (
               <Reveal key={c.name} delay={i * 0.05}>
                 <Link href={`/store/${slug}/shop?category=${encodeURIComponent(c.name)}`} className="group block relative aspect-[3/4] overflow-hidden rounded" style={{ background: 'var(--dh-card)' }}>
-                  {c.image && (
-                    <img
-                      src={c.image}
-                      alt={c.name}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.05]"
-                      onError={e => { e.currentTarget.style.display = 'none' }}
-                    />
-                  )}
+                  {c.image && <div className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-[1.05]" style={{ backgroundImage: `url(${c.image})` }} />}
                   <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, transparent 40%, rgba(18,18,18,0.75) 100%)' }} />
                   <span className="absolute bottom-4 left-4 text-sm font-black uppercase tracking-wide" style={{ color: 'var(--dh-yellow)' }}>{c.name}</span>
                 </Link>

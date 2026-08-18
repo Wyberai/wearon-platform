@@ -262,7 +262,7 @@ function KirayaCartDrawer({ brand }: { brand: ThemeBrand }) {
                     return (
                       <div key={`${line.productId}-${line.size}-${line.color}`} className="flex gap-4">
                         <div className="w-20 h-24 rounded-xl flex-shrink-0 overflow-hidden" style={{ background: 'var(--ki-plum)' }}>
-                          <img src={line.image} alt={line.name} className="w-full h-full object-cover" onError={e => { e.currentTarget.style.display = 'none' }} />
+                          <div className="w-full h-full bg-cover bg-center" style={{ backgroundImage: `url(${line.image})` }} />
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-start justify-between gap-2">

@@ -2,7 +2,7 @@ import { type NextRequest, NextResponse } from 'next/server'
 import { updateSession } from '@/lib/supabase/middleware'
 import { LOCALES, LOCALE_COOKIE } from '@/lib/i18n/config'
 
-const PLATFORM_HOSTS = ['instastarz.in', 'www.instastarz.in', 'localhost', 'wearon.wyberai.com']
+const PLATFORM_HOSTS = ['instastarz.in', 'www.instastarz.in', 'localhost']
 
 export async function middleware(request: NextRequest) {
   const hostname = (request.headers.get('host') ?? '').split(':')[0]
