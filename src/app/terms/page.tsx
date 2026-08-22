@@ -33,7 +33,7 @@ export default function TermsPage() {
         </Section>
 
         <Section title="What Instastarz provides">
-          <p>A branded storefront, checkout (Razorpay, Stripe, WhatsApp ordering, and cash on delivery), and optional AI-native features (AI Buyer, AI product photos, AI auto-replies) depending on your plan. Every plan is a flat monthly subscription — we do not take a percentage of your sales.</p>
+          <p>A branded storefront, checkout (Razorpay, WhatsApp ordering, and cash on delivery), and optional AI-native features (AI Buyer, AI product photos, AI auto-replies) depending on your plan. Every plan is a flat monthly subscription — we do not take a percentage of your sales.</p>
         </Section>
 
         <Section title="Plans and billing">
@@ -42,7 +42,7 @@ export default function TermsPage() {
         </Section>
 
         <Section title="Your responsibilities as a seller">
-          <p>You&apos;re responsible for the accuracy of your product listings, pricing, and fulfilling orders you accept. You must not use Instastarz to sell counterfeit goods, prohibited items, or anything that violates Indian law or Razorpay&apos;s/Stripe&apos;s acceptable use policies.</p>
+          <p>You&apos;re responsible for the accuracy of your product listings, pricing, and fulfilling orders you accept. You must not use Instastarz to sell counterfeit goods, prohibited items, or anything that violates Indian law or Razorpay&apos;s acceptable use policies.</p>
         </Section>
 
         <Section title="Demo stores">

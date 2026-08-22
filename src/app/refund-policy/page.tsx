@@ -49,7 +49,7 @@ export default function RefundPolicyPage() {
         </Section>
 
         <Section title="How refunds are processed">
-          <p>Approved refunds are issued to the original payment method via Razorpay or Stripe, typically within 5-7 business days depending on your bank.</p>
+          <p>Approved refunds are issued to the original payment method via Razorpay, typically within 5-7 business days depending on your bank.</p>
         </Section>
 
         <Section title="Requesting a refund">

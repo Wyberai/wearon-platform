@@ -67,7 +67,7 @@ export const HOME_DICT: Record<Locale, HomeDict> = {
     steps: [
       { title: 'Pick a theme', body: 'Twelve flagship themes, each a genuinely different shopping mechanic. Preview any of them with a live demo before you commit.' },
       { title: 'Add your products', body: 'Upload your catalog directly, or import straight from Instagram — photos and Reels, not just thumbnails.' },
-      { title: 'Go live', body: 'Razorpay, Stripe, WhatsApp, and COD checkout are already built in. No extra setup, no waiting on approval.' },
+      { title: 'Go live', body: 'Razorpay, WhatsApp, and COD checkout are already built in. No extra setup, no waiting on approval.' },
     ],
     featuresEyebrow: 'Everything we\'re bringing to Instastarz',
     featuresHeadline: 'Built for agents. Owned by you.',
@@ -129,7 +129,7 @@ export const HOME_DICT: Record<Locale, HomeDict> = {
     steps: [
       { title: 'एक थीम चुनें', body: 'बारह फ्लैगशिप थीम, हर एक सच में अलग शॉपिंग तरीका। तय करने से पहले किसी भी थीम को लाइव डेमो में देखें।' },
       { title: 'अपने प्रोडक्ट जोड़ें', body: 'सीधे अपना कैटलॉग अपलोड करें, या Instagram से इंपोर्ट करें — फ़ोटो और Reels, सिर्फ़ थंबनेल नहीं।' },
-      { title: 'लाइव हो जाएं', body: 'Razorpay, Stripe, WhatsApp, और COD चेकआउट पहले से बने हुए हैं। कोई अतिरिक्त सेटअप नहीं, किसी मंज़ूरी का इंतज़ार नहीं।' },
+      { title: 'लाइव हो जाएं', body: 'Razorpay, WhatsApp, और COD चेकआउट पहले से बने हुए हैं। कोई अतिरिक्त सेटअप नहीं, किसी मंज़ूरी का इंतज़ार नहीं।' },
     ],
     featuresEyebrow: 'Instastarz में हम जो कुछ ला रहे हैं',
     featuresHeadline: 'AI एजेंट्स के लिए बना। मालिक आप हैं।',
@@ -191,7 +191,7 @@ export const HOME_DICT: Record<Locale, HomeDict> = {
     steps: [
       { title: 'ಒಂದು ಥೀಮ್ ಆಯ್ಕೆಮಾಡಿ', body: 'ಹನ್ನೆರಡು ಫ್ಲ್ಯಾಗ್‌ಶಿಪ್ ಥೀಮ್‌ಗಳು, ಪ್ರತಿಯೊಂದೂ ನಿಜವಾಗಿಯೂ ವಿಭಿನ್ನ ಶಾಪಿಂಗ್ ವಿಧಾನ. ನಿರ್ಧರಿಸುವ ಮೊದಲು ಯಾವುದೇ ಥೀಮ್ ಅನ್ನು ಲೈವ್ ಡೆಮೊದಲ್ಲಿ ನೋಡಿ.' },
       { title: 'ನಿಮ್ಮ ಉತ್ಪನ್ನಗಳನ್ನು ಸೇರಿಸಿ', body: 'ನೇರವಾಗಿ ನಿಮ್ಮ ಕ್ಯಾಟಲಾಗ್ ಅಪ್‌ಲೋಡ್ ಮಾಡಿ, ಅಥವಾ Instagram ನಿಂದ ಆಮದು ಮಾಡಿ — ಫೋಟೋಗಳು ಮತ್ತು Reels, ಕೇವಲ ಥಂಬ್‌ನೇಲ್ ಅಲ್ಲ.' },
-      { title: 'ಲೈವ್ ಆಗಿ', body: 'Razorpay, Stripe, WhatsApp, ಮತ್ತು COD ಚೆಕ್‌ಔಟ್ ಈಗಾಗಲೇ ನಿರ್ಮಿಸಲಾಗಿದೆ. ಯಾವುದೇ ಹೆಚ್ಚುವರಿ ಸೆಟಪ್ ಇಲ್ಲ, ಯಾವುದೇ ಅನುಮೋದನೆಗಾಗಿ ಕಾಯುವಿಕೆ ಇಲ್ಲ.' },
+      { title: 'ಲೈವ್ ಆಗಿ', body: 'Razorpay, WhatsApp, ಮತ್ತು COD ಚೆಕ್‌ಔಟ್ ಈಗಾಗಲೇ ನಿರ್ಮಿಸಲಾಗಿದೆ. ಯಾವುದೇ ಹೆಚ್ಚುವರಿ ಸೆಟಪ್ ಇಲ್ಲ, ಯಾವುದೇ ಅನುಮೋದನೆಗಾಗಿ ಕಾಯುವಿಕೆ ಇಲ್ಲ.' },
     ],
     featuresEyebrow: 'Instastarz ಗೆ ನಾವು ತರುತ್ತಿರುವ ಎಲ್ಲವೂ',
     featuresHeadline: 'ಏಜೆಂಟ್‌ಗಳಿಗಾಗಿ ನಿರ್ಮಿಸಲಾಗಿದೆ. ಮಾಲೀಕರು ನೀವು.',
@@ -253,7 +253,7 @@ export const HOME_DICT: Record<Locale, HomeDict> = {
     steps: [
       { title: 'ఒక థీమ్ ఎంచుకోండి', body: 'పన్నెండు ఫ్లాగ్‌షిప్ థీమ్‌లు, ప్రతి ఒక్కటీ నిజంగా వేరైన షాపింగ్ పద్ధతి. నిర్ణయించుకునే ముందు ఏదైనా థీమ్‌ను లైవ్ డెమోలో చూడండి.' },
       { title: 'మీ ఉత్పత్తులను జోడించండి', body: 'నేరుగా మీ కేటలాగ్‌ను అప్‌లోడ్ చేయండి, లేదా Instagram నుండి దిగుమతి చేయండి — ఫోటోలు మరియు Reels, కేవలం థంబ్‌నెయిల్ కాదు.' },
-      { title: 'లైవ్ అవ్వండి', body: 'Razorpay, Stripe, WhatsApp, మరియు COD చెక్‌అవుట్ ఇప్పటికే నిర్మించబడ్డాయి. అదనపు సెటప్ లేదు, ఆమోదం కోసం వేచి ఉండాల్సిన అవసరం లేదు.' },
+      { title: 'లైవ్ అవ్వండి', body: 'Razorpay, WhatsApp, మరియు COD చెక్‌అవుట్ ఇప్పటికే నిర్మించబడ్డాయి. అదనపు సెటప్ లేదు, ఆమోదం కోసం వేచి ఉండాల్సిన అవసరం లేదు.' },
     ],
     featuresEyebrow: 'Instastarz కి మేము తీసుకువస్తున్నవన్నీ',
     featuresHeadline: 'ఏజెంట్ల కోసం నిర్మించబడింది. యజమాని మీరే.',
@@ -315,7 +315,7 @@ export const HOME_DICT: Record<Locale, HomeDict> = {
     steps: [
       { title: 'एक थीम निवडा', body: 'बारा फ्लॅगशिप थीम, प्रत्येक खरोखर वेगळी शॉपिंग पद्धत. ठरवण्यापूर्वी कोणतीही थीम लाइव्ह डेमोमध्ये पाहा.' },
       { title: 'तुमची उत्पादने जोडा', body: 'थेट तुमचा कॅटलॉग अपलोड करा, किंवा Instagram वरून आयात करा — फोटो आणि Reels, फक्त थंबनेल नाही.' },
-      { title: 'लाइव्ह व्हा', body: 'Razorpay, Stripe, WhatsApp, आणि COD चेकआउट आधीच तयार आहेत. कोणतेही अतिरिक्त सेटअप नाही, कोणत्याही मंजुरीची वाट पाहावी लागत नाही.' },
+      { title: 'लाइव्ह व्हा', body: 'Razorpay, WhatsApp, आणि COD चेकआउट आधीच तयार आहेत. कोणतेही अतिरिक्त सेटअप नाही, कोणत्याही मंजुरीची वाट पाहावी लागत नाही.' },
     ],
     featuresEyebrow: 'Instastarz मध्ये आम्ही आणत असलेले सर्व काही',
     featuresHeadline: 'एजंट्ससाठी तयार. मालक तुम्ही.',
@@ -377,7 +377,7 @@ export const HOME_DICT: Record<Locale, HomeDict> = {
     steps: [
       { title: 'ஒரு தீமைத் தேர்ந்தெடுங்கள்', body: 'பன்னிரண்டு ஃபிளாக்ஷிப் தீம்கள், ஒவ்வொன்றும் உண்மையிலேயே வித்தியாசமான ஷாப்பிங் முறை. முடிவெடுப்பதற்கு முன் எந்த தீமையும் லைவ் டெமோவில் பாருங்கள்.' },
       { title: 'உங்கள் பொருட்களைச் சேர்க்கவும்', body: 'நேரடியாக உங்கள் கேட்டலாக்கை பதிவேற்றவும், அல்லது Instagram இலிருந்து இறக்குமதி செய்யவும் — புகைப்படங்கள் மற்றும் Reels, சிறு படங்கள் மட்டுமல்ல.' },
-      { title: 'லைவ் ஆகுங்கள்', body: 'Razorpay, Stripe, WhatsApp, மற்றும் COD செக்அவுட் ஏற்கனவே உருவாக்கப்பட்டுள்ளன. கூடுதல் அமைப்பு இல்லை, ஒப்புதலுக்காக காத்திருக்க வேண்டியதில்லை.' },
+      { title: 'லைவ் ஆகுங்கள்', body: 'Razorpay, WhatsApp, மற்றும் COD செக்அவுட் ஏற்கனவே உருவாக்கப்பட்டுள்ளன. கூடுதல் அமைப்பு இல்லை, ஒப்புதலுக்காக காத்திருக்க வேண்டியதில்லை.' },
     ],
     featuresEyebrow: 'Instastarz-க்குக் கொண்டு வருபவை அனைத்தும்',
     featuresHeadline: 'ஏஜென்ட்களுக்காக உருவாக்கப்பட்டது. உரிமையாளர் நீங்களே.',

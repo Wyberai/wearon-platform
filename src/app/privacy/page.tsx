@@ -38,15 +38,15 @@ export default function PrivacyPage() {
         </Section>
 
         <Section title="How we use it">
-          <p>To run your store (checkout, order management, analytics), to process payments through Razorpay or Stripe, to send transactional messages via WhatsApp or email, and to power optional AI features (product photos, auto-replies, AI Buyer) you explicitly enable. We do not sell your data to third parties.</p>
+          <p>To run your store (checkout, order management, analytics), to process payments through Razorpay, to send transactional messages via WhatsApp or email, and to power optional AI features (product photos, auto-replies, AI Buyer) you explicitly enable. We do not sell your data to third parties.</p>
         </Section>
 
         <Section title="Payment processing">
-          <p>Card and UPI payments are processed by Razorpay and Stripe, not stored on our servers. We never see or store your full card number. Cash-on-delivery and WhatsApp orders are recorded directly by us to fulfil the transaction.</p>
+          <p>Card and UPI payments are processed by Razorpay, not stored on our servers. We never see or store your full card number. Cash-on-delivery and WhatsApp orders are recorded directly by us to fulfil the transaction.</p>
         </Section>
 
         <Section title="Third-party services we use">
-          <p>Razorpay and Stripe (payments), WhatsApp Business Platform and Meta (messaging, Instagram import), Supabase (database and file storage), Vercel (hosting), Resend (transactional email). Each processes only the data required for the specific function you use.</p>
+          <p>Razorpay (payments), WhatsApp Business Platform and Meta (messaging, Instagram import), Supabase (database and file storage), Vercel (hosting), Resend (transactional email). Each processes only the data required for the specific function you use.</p>
         </Section>
 
         <Section title="Data retention">

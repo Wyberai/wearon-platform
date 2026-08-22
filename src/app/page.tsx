@@ -99,10 +99,7 @@ function USHomePage({ locale }: { locale: Locale }) {
 
         {/* TRUST STRIP — real integration partners, not fabricated customer
             logos (this site has zero real sellers yet on the fresh DB, so
-            inventing customer names would be dishonest). Deliberately NOT
-            listing Stripe here even though it's technically in the checkout
-            stack — Stripe barely operates for Indian merchants in practice,
-            so it doesn't build local credibility the way Razorpay does. */}
+            inventing customer names would be dishonest). */}
         <section style={{ padding: '28px 24px', borderBottom: `1px solid ${US_INK}0E` }}>
           <div style={{ maxWidth: 900, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 40, flexWrap: 'wrap' }}>
             <span style={{ fontSize: 11, letterSpacing: '0.1em', textTransform: 'uppercase', color: `${US_INK}44` }}>{t.worksWith}</span>
@@ -149,7 +146,7 @@ function USHomePage({ locale }: { locale: Locale }) {
         <div style={{ background: US_INK, color: '#fff', padding: '13px 0', overflow: 'hidden', whiteSpace: 'nowrap' }}>
           <style>{`@keyframes wo-scroll { from { transform: translateX(0) } to { transform: translateX(-50%) } }`}</style>
           <div style={{ display: 'inline-block', animation: 'wo-scroll 24s linear infinite' }}>
-            {['AI BUYER — SEASONAL EDITS', 'SHOP FROM CHATGPT, GEMINI & CLAUDE', 'DM CHECKOUT', 'AI VISIBILITY DASHBOARD', 'STRIPE + RAZORPAY', 'YOUR OWN DOMAIN', 'AI PRODUCT PHOTOS', 'FREE TO START', 'AI BUYER — SEASONAL EDITS', 'SHOP FROM CHATGPT, GEMINI & CLAUDE', 'DM CHECKOUT', 'AI VISIBILITY DASHBOARD', 'STRIPE + RAZORPAY', 'YOUR OWN DOMAIN', 'AI PRODUCT PHOTOS', 'FREE TO START'].map((item, i) => (
+            {['AI BUYER — SEASONAL EDITS', 'SHOP FROM CHATGPT, GEMINI & CLAUDE', 'DM CHECKOUT', 'AI VISIBILITY DASHBOARD', 'RAZORPAY', 'YOUR OWN DOMAIN', 'AI PRODUCT PHOTOS', 'FREE TO START', 'AI BUYER — SEASONAL EDITS', 'SHOP FROM CHATGPT, GEMINI & CLAUDE', 'DM CHECKOUT', 'AI VISIBILITY DASHBOARD', 'RAZORPAY', 'YOUR OWN DOMAIN', 'AI PRODUCT PHOTOS', 'FREE TO START'].map((item, i) => (
               <span key={i} style={{ fontSize: 11, letterSpacing: '0.18em', fontWeight: 500 }}>
                 {item}<span style={{ margin: '0 28px', opacity: 0.3 }}>·</span>
               </span>
