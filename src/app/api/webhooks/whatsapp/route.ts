@@ -86,8 +86,15 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: true })
   }
 
-  // Process async so we don't block Meta
-  processWebhook(body).catch(err => console.error('[whatsapp-webhook]', err))
+  // Must await — Vercel freezes the function once a response is sent, so a
+  // fire-and-forget call here gets killed mid-flight before any DB write
+  // lands. Meta tolerates several seconds before it considers delivery
+  // failed, well within what this processing takes.
+  try {
+    await processWebhook(body)
+  } catch (err) {
+    console.error('[whatsapp-webhook]', err)
+  }
 
   return NextResponse.json({ ok: true })
 }
