@@ -132,7 +132,9 @@ function StorePageRouter() {
 
   if (slug === 'august') {
     const b = previewName ? { ...AUGUST_BRAND, name: previewName } : AUGUST_BRAND
-    return <>{banner}<AugustHome brand={b} products={AUGUST_PRODUCTS} />{b.whatsappNumber && <WhatsAppBubble phone={b.whatsappNumber} message={`Hi! I have a question about ${b.name}.`} />}<AiStylistSearch slug={slug} /></>
+    // August already has its own "Ask AUGUST" stylist drawer (AugustShell) — skip
+    // the generic AiStylistSearch here so real sellers on this theme don't get two.
+    return <>{banner}<AugustHome brand={b} products={AUGUST_PRODUCTS} />{b.whatsappNumber && <WhatsAppBubble phone={b.whatsappNumber} message={`Hi! I have a question about ${b.name}.`} />}</>
   }
   if (slug === 'ember') {
     const b = previewName ? { ...EMBER_BRAND, name: previewName } : EMBER_BRAND
@@ -364,7 +366,9 @@ function StorePageContent() {
   // component tree, rendered with their own brand + product data.
   if (config?.theme_id === 'january') {
     const b = configToThemeBrand(effectiveConfig!, slug)
-    return <><AugustHome brand={b} products={products.filter(p => p.is_active).map(productToThemeProduct)} />{b.whatsappNumber && <WhatsAppBubble phone={b.whatsappNumber} message={`Hi! I have a question about ${b.name}.`} />}<AiStylistSearch slug={slug} /></>
+    // August already has its own "Ask AUGUST" stylist drawer (AugustShell) — skip
+    // the generic AiStylistSearch here so real sellers on this theme don't get two.
+    return <><AugustHome brand={b} products={products.filter(p => p.is_active).map(productToThemeProduct)} />{b.whatsappNumber && <WhatsAppBubble phone={b.whatsappNumber} message={`Hi! I have a question about ${b.name}.`} />}</>
   }
   if (config?.theme_id === 'february') {
     const b = configToThemeBrand(effectiveConfig!, slug)
