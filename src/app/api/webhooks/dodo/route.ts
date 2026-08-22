@@ -4,23 +4,38 @@ import crypto from 'crypto'
 
 const DODO_WEBHOOK_SECRET = process.env.DODO_WEBHOOK_SECRET ?? ''
 
-function verifySignature(rawBody: string, signatureHeader: string): boolean {
-  if (!DODO_WEBHOOK_SECRET) return false
-  const expected = crypto
-    .createHmac('sha256', DODO_WEBHOOK_SECRET)
-    .update(rawBody, 'utf8')
-    .digest('hex')
+// Dodo follows the Standard Webhooks spec (https://www.standardwebhooks.com/),
+// not a bare HMAC-over-body scheme: the secret is base64, prefixed `whsec_`;
+// the signed content is `{webhook-id}.{webhook-timestamp}.{body}`; the
+// signature is base64 HMAC-SHA256, sent as a space-delimited list of
+// `v1,<sig>` values (supports key rotation, hence checking every entry).
+function verifySignature(webhookId: string, timestamp: string, rawBody: string, signatureHeader: string): boolean {
+  if (!DODO_WEBHOOK_SECRET || !webhookId || !timestamp || !signatureHeader) return false
+
+  // Reject stale/replayed deliveries — 5 minute tolerance, same as Stripe's default.
+  const timestampMs = Number(timestamp) * 1000
+  if (!Number.isFinite(timestampMs) || Math.abs(Date.now() - timestampMs) > 5 * 60 * 1000) return false
+
+  const secretKey = Buffer.from(DODO_WEBHOOK_SECRET.replace(/^whsec_/, ''), 'base64')
+  const signedContent = `${webhookId}.${timestamp}.${rawBody}`
+  const expected = crypto.createHmac('sha256', secretKey).update(signedContent, 'utf8').digest('base64')
   const expectedBuf = Buffer.from(expected, 'utf8')
-  const actualBuf = Buffer.from(signatureHeader, 'utf8')
-  if (expectedBuf.length !== actualBuf.length) return false
-  return crypto.timingSafeEqual(expectedBuf, actualBuf)
+
+  return signatureHeader.split(' ').some(entry => {
+    const [version, value] = entry.split(',')
+    if (version !== 'v1' || !value) return false
+    const actualBuf = Buffer.from(value, 'utf8')
+    return expectedBuf.length === actualBuf.length && crypto.timingSafeEqual(expectedBuf, actualBuf)
+  })
 }
 
 export async function POST(request: Request) {
   const rawBody = await request.text()
-  const signatureHeader = request.headers.get('dodo-signature') ?? ''
+  const webhookId = request.headers.get('webhook-id') ?? ''
+  const timestamp = request.headers.get('webhook-timestamp') ?? ''
+  const signatureHeader = request.headers.get('webhook-signature') ?? ''
 
-  if (!verifySignature(rawBody, signatureHeader)) {
+  if (!verifySignature(webhookId, timestamp, rawBody, signatureHeader)) {
     return new Response('Unauthorized', { status: 401 })
   }
 
@@ -127,7 +142,7 @@ export async function POST(request: Request) {
         }
       } catch { /* best-effort */ }
     }
-  } else if (event.type === 'subscription.past_due') {
+  } else if (event.type === 'subscription.on_hold') {
     const sellerId = metadata.seller_id
     if (sellerId) {
       await admin
