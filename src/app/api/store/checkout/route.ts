@@ -23,6 +23,7 @@ interface CheckoutBody {
   buyer_name?: string
   buyer_email?: string
   shipping_address?: { name?: string; line1?: string; line2?: string; city?: string; state?: string; pincode?: string; country?: string }
+  discount_code?: string
 }
 
 interface OrderItem {
@@ -60,7 +61,7 @@ export async function POST(req: NextRequest) {
     return badRequest('Invalid JSON body')
   }
 
-  const { seller_id, payment_method, device_token, buyer_phone, buyer_name, buyer_email, shipping_address } = body
+  const { seller_id, payment_method, device_token, buyer_phone, buyer_name, buyer_email, shipping_address, discount_code } = body
 
   if (!seller_id || typeof seller_id !== 'string') return badRequest('seller_id is required')
   if (payment_method !== 'razorpay' && payment_method !== 'cod') {
@@ -87,7 +88,7 @@ export async function POST(req: NextRequest) {
   const productIds = [...new Set(cart.map(i => i.product_id))]
   const { data: products, error: productError } = await supabase
     .from('products')
-    .select('id, seller_id, name, price_inr, cost_price_inr, is_active, sizes')
+    .select('id, seller_id, name, price_inr, cost_price_inr, is_active, sizes, stock_by_variant')
     .in('id', productIds)
     .eq('seller_id', seller_id)
 
@@ -99,6 +100,21 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: `${inactive.name} is no longer available` }, { status: 410 })
   }
   const productById = new Map(products.map(p => [p.id, p]))
+
+  // --- 2b. Per-size stock check — null/missing entry means unlimited stock,
+  // an explicit 0 means sold out for that size. Doesn't lock the row, so a
+  // last-unit race between two simultaneous buyers is still possible; the
+  // decrement below closes most of that window without needing a new RPC.
+  for (const item of cart) {
+    const product = productById.get(item.product_id)!
+    const stockByVariant = product.stock_by_variant as Record<string, number> | null
+    if (item.size && stockByVariant && typeof stockByVariant[item.size] === 'number' && stockByVariant[item.size] < item.quantity) {
+      return NextResponse.json(
+        { error: stockByVariant[item.size] <= 0 ? `${product.name} (${item.size}) is out of stock` : `Only ${stockByVariant[item.size]} left of ${product.name} (${item.size})` },
+        { status: 409 }
+      )
+    }
+  }
 
   // --- 3. Fetch tenant_config for payment credentials ---
   const { data: tenantConfig, error: configError } = await supabase
@@ -127,8 +143,34 @@ export async function POST(req: NextRequest) {
       ...(item.size ? { size: item.size } : {}),
     }
   })
-  const total = orderItems.reduce((sum, i) => sum + i.price_inr * i.quantity, 0)
+  const subtotal = orderItems.reduce((sum, i) => sum + i.price_inr * i.quantity, 0)
   const summaryLabel = orderItems.length === 1 ? orderItems[0].name : `${orderItems.length} items`
+
+  // --- 4b. Discount code — re-validated server-side against the real
+  // subtotal rather than trusting a client-computed amount, same rules as
+  // the buyer-facing /api/store/discount preview endpoint.
+  let discountAmount = 0
+  let appliedDiscountId: string | null = null
+  if (discount_code && typeof discount_code === 'string' && discount_code.trim()) {
+    const { data: dc } = await supabase
+      .from('discount_codes')
+      .select('*')
+      .eq('seller_id', seller_id)
+      .eq('code', discount_code.toUpperCase().trim())
+      .eq('is_active', true)
+      .single()
+
+    if (!dc) return badRequest('Discount code not found or inactive')
+    if (dc.expires_at && new Date(dc.expires_at) < new Date()) return badRequest('Discount code has expired')
+    if (dc.max_uses && dc.uses_count >= dc.max_uses) return badRequest('Discount code has reached its usage limit')
+    if (dc.min_order_inr && subtotal < dc.min_order_inr) return badRequest(`Minimum order of ₹${dc.min_order_inr} required for this code`)
+
+    discountAmount = dc.discount_type === 'percent'
+      ? Math.round((subtotal * dc.discount_value) / 100)
+      : Math.min(dc.discount_value, subtotal)
+    appliedDiscountId = dc.id
+  }
+  const total = Math.max(0, subtotal - discountAmount)
 
   const orderId = crypto.randomUUID()
 
@@ -173,6 +215,28 @@ export async function POST(req: NextRequest) {
       })
       await sendEmail({ to: sellerProfile.email, subject: tpl.subject, html: tpl.html })
     } catch { /* email is best-effort */ }
+  }
+
+  // Best-effort post-order bookkeeping shared by both payment paths — a
+  // discount code's use count and per-size stock. Not row-locked, so a
+  // handful of simultaneous last-unit orders could still both succeed; an
+  // RPC would close that fully but isn't worth the extra migration for a
+  // low-frequency edge case, matching how tightly the rest of checkout
+  // matches its actual traffic (unlike ai_credits, which really does race).
+  async function applyOrderSideEffects() {
+    if (appliedDiscountId) {
+      const { data: dc } = await supabase.from('discount_codes').select('uses_count').eq('id', appliedDiscountId).single()
+      if (dc) await supabase.from('discount_codes').update({ uses_count: dc.uses_count + 1 }).eq('id', appliedDiscountId)
+    }
+    for (const item of cart) {
+      if (!item.size) continue
+      const product = productById.get(item.product_id)!
+      const stockByVariant = product.stock_by_variant as Record<string, number> | null
+      if (stockByVariant && typeof stockByVariant[item.size] === 'number') {
+        const updated = { ...stockByVariant, [item.size]: Math.max(0, stockByVariant[item.size] - item.quantity) }
+        await supabase.from('products').update({ stock_by_variant: updated }).eq('id', item.product_id)
+      }
+    }
   }
 
   // --- 5a. Razorpay payment flow ---
@@ -237,6 +301,8 @@ export async function POST(req: NextRequest) {
       buyer_email: buyer_email ?? null,
       buyer_phone: buyer_phone ?? null,
       buyer_notes: Object.keys(buyerNotes).length > 0 ? JSON.stringify(buyerNotes) : null,
+      discount_code: appliedDiscountId ? discount_code!.toUpperCase().trim() : null,
+      discount_amount_inr: discountAmount || null,
     })
 
     if (insertError) {
@@ -244,6 +310,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Failed to record order' }, { status: 500 })
     }
 
+    applyOrderSideEffects().catch(() => {})
     sendPushToSeller(seller_id, 'New order! 🎉', `₹${total.toLocaleString('en-IN')} — ${summaryLabel}`, { url: `/admin/${tenantConfig.slug}/orders` }).catch(() => {})
     sendBuyerEmail(orderId).catch(() => {})
     sendSellerOrderEmail(orderId).catch(() => {})
@@ -269,6 +336,8 @@ export async function POST(req: NextRequest) {
     buyer_email: buyer_email ?? null,
     buyer_phone: buyer_phone ?? null,
     buyer_notes: Object.keys(buyerNotes).length > 0 ? JSON.stringify(buyerNotes) : null,
+    discount_code: appliedDiscountId ? discount_code!.toUpperCase().trim() : null,
+    discount_amount_inr: discountAmount || null,
   })
 
   if (insertError) {
@@ -276,6 +345,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Failed to record order' }, { status: 500 })
   }
 
+  applyOrderSideEffects().catch(() => {})
   sendPushToSeller(seller_id, 'New order! 🎉', `₹${total.toLocaleString('en-IN')} — ${summaryLabel} (COD)`, { url: `/admin/${tenantConfig.slug}/orders` }).catch(() => {})
   sendBuyerEmail(orderId).catch(() => {})
   sendSellerOrderEmail(orderId).catch(() => {})

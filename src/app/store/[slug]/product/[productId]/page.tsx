@@ -106,7 +106,7 @@ export default function ProductDetailPage() {
     if (!product) return notFound()
     return <>
       <AugustPDP brand={AUGUST_BRAND} product={product} related={relatedProducts(AUGUST_PRODUCTS, product)} />
-      <div style={{ maxWidth: 480, margin: '0 auto', padding: '0 20px' }}><TryOnLauncher slug={slug} productName={product.name} garmentImageUrl={product.image} priceInr={product.price} currency={AUGUST_BRAND.currency} whatsappNumber={AUGUST_BRAND.whatsappNumber} /></div>
+      <div style={{ maxWidth: 480, margin: '0 auto', padding: '0 20px' }}><TryOnLauncher slug={slug} productName={product.name} garmentImageUrl={product.image} priceInr={product.price} currency={AUGUST_BRAND.currency} whatsappNumber={AUGUST_BRAND.whatsappNumber} videoUrl={product.video} sellerId={AUGUST_BRAND.sellerId} productId={product.id} /></div>
       {AUGUST_BRAND.whatsappNumber && <WhatsAppBubble phone={AUGUST_BRAND.whatsappNumber} message={`Hi! I have a question about ${product.name}.`} />}
     </>
   }
@@ -115,7 +115,7 @@ export default function ProductDetailPage() {
     if (!product) return notFound()
     return <>
       <EmberPDP brand={EMBER_BRAND} product={product} related={relatedEmberProducts(EMBER_PRODUCTS, product)} />
-      <div style={{ maxWidth: 480, margin: '0 auto', padding: '0 20px' }}><TryOnLauncher slug={slug} productName={product.name} garmentImageUrl={product.image} priceInr={product.price} currency={EMBER_BRAND.currency} whatsappNumber={EMBER_BRAND.whatsappNumber} /></div>
+      <div style={{ maxWidth: 480, margin: '0 auto', padding: '0 20px' }}><TryOnLauncher slug={slug} productName={product.name} garmentImageUrl={product.image} priceInr={product.price} currency={EMBER_BRAND.currency} whatsappNumber={EMBER_BRAND.whatsappNumber} videoUrl={product.video} sellerId={EMBER_BRAND.sellerId} productId={product.id} /></div>
       {EMBER_BRAND.whatsappNumber && <WhatsAppBubble phone={EMBER_BRAND.whatsappNumber} message={`Hi! I have a question about ${product.name}.`} />}
     </>
   }
@@ -124,7 +124,7 @@ export default function ProductDetailPage() {
     if (!product) return notFound()
     return <>
       <BloomPDP brand={BLOOM_BRAND} product={product} related={relatedBloomProducts(BLOOM_PRODUCTS, product)} />
-      <div style={{ maxWidth: 480, margin: '0 auto', padding: '0 20px' }}><TryOnLauncher slug={slug} productName={product.name} garmentImageUrl={product.image} priceInr={product.price} currency={BLOOM_BRAND.currency} whatsappNumber={BLOOM_BRAND.whatsappNumber} /></div>
+      <div style={{ maxWidth: 480, margin: '0 auto', padding: '0 20px' }}><TryOnLauncher slug={slug} productName={product.name} garmentImageUrl={product.image} priceInr={product.price} currency={BLOOM_BRAND.currency} whatsappNumber={BLOOM_BRAND.whatsappNumber} videoUrl={product.video} sellerId={BLOOM_BRAND.sellerId} productId={product.id} /></div>
       {BLOOM_BRAND.whatsappNumber && <WhatsAppBubble phone={BLOOM_BRAND.whatsappNumber} message={`Hi! I have a question about ${product.name}.`} />}
     </>
   }
@@ -133,7 +133,7 @@ export default function ProductDetailPage() {
     if (!product) return notFound()
     return <>
       <MelaPDP brand={MELA_BRAND} product={product} related={relatedMelaProducts(MELA_PRODUCTS, product)} />
-      <div style={{ maxWidth: 480, margin: '0 auto', padding: '0 20px' }}><TryOnLauncher slug={slug} productName={product.name} garmentImageUrl={product.image} priceInr={product.price} currency={MELA_BRAND.currency} whatsappNumber={MELA_BRAND.whatsappNumber} /></div>
+      <div style={{ maxWidth: 480, margin: '0 auto', padding: '0 20px' }}><TryOnLauncher slug={slug} productName={product.name} garmentImageUrl={product.image} priceInr={product.price} currency={MELA_BRAND.currency} whatsappNumber={MELA_BRAND.whatsappNumber} videoUrl={product.video} sellerId={MELA_BRAND.sellerId} productId={product.id} /></div>
       {MELA_BRAND.whatsappNumber && <WhatsAppBubble phone={MELA_BRAND.whatsappNumber} message={`Hi! I have a question about ${product.name}.`} />}
     </>
   }
@@ -142,7 +142,7 @@ export default function ProductDetailPage() {
     if (!product) return notFound()
     return <>
       <TaanaPDP brand={TAANA_BRAND} product={product} related={relatedTaanaProducts(TAANA_PRODUCTS, product)} />
-      <div style={{ maxWidth: 480, margin: '0 auto', padding: '0 20px' }}><TryOnLauncher slug={slug} productName={product.name} garmentImageUrl={product.image} priceInr={product.price} currency={TAANA_BRAND.currency} whatsappNumber={TAANA_BRAND.whatsappNumber} /></div>
+      <div style={{ maxWidth: 480, margin: '0 auto', padding: '0 20px' }}><TryOnLauncher slug={slug} productName={product.name} garmentImageUrl={product.image} priceInr={product.price} currency={TAANA_BRAND.currency} whatsappNumber={TAANA_BRAND.whatsappNumber} videoUrl={product.video} sellerId={TAANA_BRAND.sellerId} productId={product.id} /></div>
       {TAANA_BRAND.whatsappNumber && <WhatsAppBubble phone={TAANA_BRAND.whatsappNumber} message={`Hi! I have a question about ${product.name}.`} />}
     </>
   }
@@ -151,7 +151,7 @@ export default function ProductDetailPage() {
     if (!product) return notFound()
     return <>
       <SaajPDP brand={SAAJ_BRAND} product={product} related={relatedSaajProducts(SAAJ_PRODUCTS, product)} />
-      <div style={{ maxWidth: 480, margin: '0 auto', padding: '0 20px' }}><TryOnLauncher slug={slug} productName={product.name} garmentImageUrl={product.image} priceInr={product.price} currency={SAAJ_BRAND.currency} whatsappNumber={SAAJ_BRAND.whatsappNumber} /></div>
+      <div style={{ maxWidth: 480, margin: '0 auto', padding: '0 20px' }}><TryOnLauncher slug={slug} productName={product.name} garmentImageUrl={product.image} priceInr={product.price} currency={SAAJ_BRAND.currency} whatsappNumber={SAAJ_BRAND.whatsappNumber} videoUrl={product.video} sellerId={SAAJ_BRAND.sellerId} productId={product.id} /></div>
       {SAAJ_BRAND.whatsappNumber && <WhatsAppBubble phone={SAAJ_BRAND.whatsappNumber} message={`Hi! I have a question about ${product.name}.`} />}
     </>
   }
@@ -160,7 +160,7 @@ export default function ProductDetailPage() {
     if (!product) return notFound()
     return <>
       <ScrollPDP brand={SCROLL_BRAND} product={product} related={relatedScrollProducts(SCROLL_PRODUCTS, product)} />
-      <div style={{ maxWidth: 480, margin: '0 auto', padding: '0 20px' }}><TryOnLauncher slug={slug} productName={product.name} garmentImageUrl={product.image} priceInr={product.price} currency={SCROLL_BRAND.currency} whatsappNumber={SCROLL_BRAND.whatsappNumber} /></div>
+      <div style={{ maxWidth: 480, margin: '0 auto', padding: '0 20px' }}><TryOnLauncher slug={slug} productName={product.name} garmentImageUrl={product.image} priceInr={product.price} currency={SCROLL_BRAND.currency} whatsappNumber={SCROLL_BRAND.whatsappNumber} videoUrl={product.video} sellerId={SCROLL_BRAND.sellerId} productId={product.id} /></div>
       {SCROLL_BRAND.whatsappNumber && <WhatsAppBubble phone={SCROLL_BRAND.whatsappNumber} message={`Hi! I have a question about ${product.name}.`} />}
     </>
   }
@@ -169,7 +169,7 @@ export default function ProductDetailPage() {
     if (!product) return notFound()
     return <>
       <DhamakaPDP brand={DHAMAKA_BRAND} product={product} related={relatedDhamakaProducts(DHAMAKA_PRODUCTS, product)} />
-      <div style={{ maxWidth: 480, margin: '0 auto', padding: '0 20px' }}><TryOnLauncher slug={slug} productName={product.name} garmentImageUrl={product.image} priceInr={product.price} currency={DHAMAKA_BRAND.currency} whatsappNumber={DHAMAKA_BRAND.whatsappNumber} /></div>
+      <div style={{ maxWidth: 480, margin: '0 auto', padding: '0 20px' }}><TryOnLauncher slug={slug} productName={product.name} garmentImageUrl={product.image} priceInr={product.price} currency={DHAMAKA_BRAND.currency} whatsappNumber={DHAMAKA_BRAND.whatsappNumber} videoUrl={product.video} sellerId={DHAMAKA_BRAND.sellerId} productId={product.id} /></div>
       {DHAMAKA_BRAND.whatsappNumber && <WhatsAppBubble phone={DHAMAKA_BRAND.whatsappNumber} message={`Hi! I have a question about ${product.name}.`} />}
     </>
   }
@@ -178,7 +178,7 @@ export default function ProductDetailPage() {
     if (!product) return notFound()
     return <>
       <AaramPDP brand={AARAM_BRAND} product={product} related={relatedAaramProducts(AARAM_PRODUCTS, product)} />
-      <div style={{ maxWidth: 480, margin: '0 auto', padding: '0 20px' }}><TryOnLauncher slug={slug} productName={product.name} garmentImageUrl={product.image} priceInr={product.price} currency={AARAM_BRAND.currency} whatsappNumber={AARAM_BRAND.whatsappNumber} /></div>
+      <div style={{ maxWidth: 480, margin: '0 auto', padding: '0 20px' }}><TryOnLauncher slug={slug} productName={product.name} garmentImageUrl={product.image} priceInr={product.price} currency={AARAM_BRAND.currency} whatsappNumber={AARAM_BRAND.whatsappNumber} videoUrl={product.video} sellerId={AARAM_BRAND.sellerId} productId={product.id} /></div>
       {AARAM_BRAND.whatsappNumber && <WhatsAppBubble phone={AARAM_BRAND.whatsappNumber} message={`Hi! I have a question about ${product.name}.`} />}
     </>
   }
@@ -187,7 +187,7 @@ export default function ProductDetailPage() {
     if (!product) return notFound()
     return <>
       <UtsavPDP brand={UTSAV_BRAND} product={product} related={relatedUtsavProducts(UTSAV_PRODUCTS, product)} />
-      <div style={{ maxWidth: 480, margin: '0 auto', padding: '0 20px' }}><TryOnLauncher slug={slug} productName={product.name} garmentImageUrl={product.image} priceInr={product.price} currency={UTSAV_BRAND.currency} whatsappNumber={UTSAV_BRAND.whatsappNumber} /></div>
+      <div style={{ maxWidth: 480, margin: '0 auto', padding: '0 20px' }}><TryOnLauncher slug={slug} productName={product.name} garmentImageUrl={product.image} priceInr={product.price} currency={UTSAV_BRAND.currency} whatsappNumber={UTSAV_BRAND.whatsappNumber} videoUrl={product.video} sellerId={UTSAV_BRAND.sellerId} productId={product.id} /></div>
       {UTSAV_BRAND.whatsappNumber && <WhatsAppBubble phone={UTSAV_BRAND.whatsappNumber} message={`Hi! I have a question about ${product.name}.`} />}
     </>
   }
@@ -196,7 +196,7 @@ export default function ProductDetailPage() {
     if (!product) return notFound()
     return <>
       <GalliPDP brand={GALLI_BRAND} product={product} related={relatedGalliProducts(GALLI_PRODUCTS, product)} />
-      <div style={{ maxWidth: 480, margin: '0 auto', padding: '0 20px' }}><TryOnLauncher slug={slug} productName={product.name} garmentImageUrl={product.image} priceInr={product.price} currency={GALLI_BRAND.currency} whatsappNumber={GALLI_BRAND.whatsappNumber} /></div>
+      <div style={{ maxWidth: 480, margin: '0 auto', padding: '0 20px' }}><TryOnLauncher slug={slug} productName={product.name} garmentImageUrl={product.image} priceInr={product.price} currency={GALLI_BRAND.currency} whatsappNumber={GALLI_BRAND.whatsappNumber} videoUrl={product.video} sellerId={GALLI_BRAND.sellerId} productId={product.id} /></div>
       {GALLI_BRAND.whatsappNumber && <WhatsAppBubble phone={GALLI_BRAND.whatsappNumber} message={`Hi! I have a question about ${product.name}.`} />}
     </>
   }
@@ -205,7 +205,7 @@ export default function ProductDetailPage() {
     if (!product) return notFound()
     return <>
       <KirayaPDP brand={KIRAYA_BRAND} product={product} related={relatedKirayaProducts(KIRAYA_PRODUCTS, product)} />
-      <div style={{ maxWidth: 480, margin: '0 auto', padding: '0 20px' }}><TryOnLauncher slug={slug} productName={product.name} garmentImageUrl={product.image} priceInr={product.price} currency={KIRAYA_BRAND.currency} whatsappNumber={KIRAYA_BRAND.whatsappNumber} /></div>
+      <div style={{ maxWidth: 480, margin: '0 auto', padding: '0 20px' }}><TryOnLauncher slug={slug} productName={product.name} garmentImageUrl={product.image} priceInr={product.price} currency={KIRAYA_BRAND.currency} whatsappNumber={KIRAYA_BRAND.whatsappNumber} videoUrl={product.video} sellerId={KIRAYA_BRAND.sellerId} productId={product.id} /></div>
       {KIRAYA_BRAND.whatsappNumber && <WhatsAppBubble phone={KIRAYA_BRAND.whatsappNumber} message={`Hi! I have a question about ${product.name}.`} />}
     </>
   }
@@ -455,7 +455,7 @@ function GenericProductDetailPage({ slug, productId }: { slug: string; productId
             created_at: '',
           })}
         />
-        <div style={{ maxWidth: 480, margin: '0 auto', padding: '0 20px' }}><TryOnLauncher slug={slug} productName={product.name} garmentImageUrl={product.garment_image_url} priceInr={product.price_inr} currency={config.currency} whatsappNumber={config.whatsapp_number} /></div>
+        <div style={{ maxWidth: 480, margin: '0 auto', padding: '0 20px' }}><TryOnLauncher slug={slug} productName={product.name} garmentImageUrl={product.garment_image_url} priceInr={product.price_inr} currency={config.currency} whatsappNumber={config.whatsapp_number} videoUrl={product.garment_video_url} sellerId={config.seller_id} productId={product.id} /></div>
         {config.whatsapp_number && <WhatsAppBubble phone={config.whatsapp_number} message={`Hi! I have a question about ${product.name}.`} />}
       </>
     )
@@ -484,7 +484,7 @@ function GenericProductDetailPage({ slug, productId }: { slug: string; productId
             created_at: '',
           })}
         />
-        <div style={{ maxWidth: 480, margin: '0 auto', padding: '0 20px' }}><TryOnLauncher slug={slug} productName={product.name} garmentImageUrl={product.garment_image_url} priceInr={product.price_inr} currency={config.currency} whatsappNumber={config.whatsapp_number} /></div>
+        <div style={{ maxWidth: 480, margin: '0 auto', padding: '0 20px' }}><TryOnLauncher slug={slug} productName={product.name} garmentImageUrl={product.garment_image_url} priceInr={product.price_inr} currency={config.currency} whatsappNumber={config.whatsapp_number} videoUrl={product.garment_video_url} sellerId={config.seller_id} productId={product.id} /></div>
         {config.whatsapp_number && <WhatsAppBubble phone={config.whatsapp_number} message={`Hi! I have a question about ${product.name}.`} />}
       </>
     )
@@ -513,7 +513,7 @@ function GenericProductDetailPage({ slug, productId }: { slug: string; productId
             created_at: '',
           })}
         />
-        <div style={{ maxWidth: 480, margin: '0 auto', padding: '0 20px' }}><TryOnLauncher slug={slug} productName={product.name} garmentImageUrl={product.garment_image_url} priceInr={product.price_inr} currency={config.currency} whatsappNumber={config.whatsapp_number} /></div>
+        <div style={{ maxWidth: 480, margin: '0 auto', padding: '0 20px' }}><TryOnLauncher slug={slug} productName={product.name} garmentImageUrl={product.garment_image_url} priceInr={product.price_inr} currency={config.currency} whatsappNumber={config.whatsapp_number} videoUrl={product.garment_video_url} sellerId={config.seller_id} productId={product.id} /></div>
         {config.whatsapp_number && <WhatsAppBubble phone={config.whatsapp_number} message={`Hi! I have a question about ${product.name}.`} />}
       </>
     )
@@ -542,7 +542,7 @@ function GenericProductDetailPage({ slug, productId }: { slug: string; productId
             created_at: '',
           })}
         />
-        <div style={{ maxWidth: 480, margin: '0 auto', padding: '0 20px' }}><TryOnLauncher slug={slug} productName={product.name} garmentImageUrl={product.garment_image_url} priceInr={product.price_inr} currency={config.currency} whatsappNumber={config.whatsapp_number} /></div>
+        <div style={{ maxWidth: 480, margin: '0 auto', padding: '0 20px' }}><TryOnLauncher slug={slug} productName={product.name} garmentImageUrl={product.garment_image_url} priceInr={product.price_inr} currency={config.currency} whatsappNumber={config.whatsapp_number} videoUrl={product.garment_video_url} sellerId={config.seller_id} productId={product.id} /></div>
         {config.whatsapp_number && <WhatsAppBubble phone={config.whatsapp_number} message={`Hi! I have a question about ${product.name}.`} />}
       </>
     )
@@ -571,7 +571,7 @@ function GenericProductDetailPage({ slug, productId }: { slug: string; productId
             created_at: '',
           })}
         />
-        <div style={{ maxWidth: 480, margin: '0 auto', padding: '0 20px' }}><TryOnLauncher slug={slug} productName={product.name} garmentImageUrl={product.garment_image_url} priceInr={product.price_inr} currency={config.currency} whatsappNumber={config.whatsapp_number} /></div>
+        <div style={{ maxWidth: 480, margin: '0 auto', padding: '0 20px' }}><TryOnLauncher slug={slug} productName={product.name} garmentImageUrl={product.garment_image_url} priceInr={product.price_inr} currency={config.currency} whatsappNumber={config.whatsapp_number} videoUrl={product.garment_video_url} sellerId={config.seller_id} productId={product.id} /></div>
         {config.whatsapp_number && <WhatsAppBubble phone={config.whatsapp_number} message={`Hi! I have a question about ${product.name}.`} />}
       </>
     )
@@ -600,7 +600,7 @@ function GenericProductDetailPage({ slug, productId }: { slug: string; productId
             created_at: '',
           })}
         />
-        <div style={{ maxWidth: 480, margin: '0 auto', padding: '0 20px' }}><TryOnLauncher slug={slug} productName={product.name} garmentImageUrl={product.garment_image_url} priceInr={product.price_inr} currency={config.currency} whatsappNumber={config.whatsapp_number} /></div>
+        <div style={{ maxWidth: 480, margin: '0 auto', padding: '0 20px' }}><TryOnLauncher slug={slug} productName={product.name} garmentImageUrl={product.garment_image_url} priceInr={product.price_inr} currency={config.currency} whatsappNumber={config.whatsapp_number} videoUrl={product.garment_video_url} sellerId={config.seller_id} productId={product.id} /></div>
         {config.whatsapp_number && <WhatsAppBubble phone={config.whatsapp_number} message={`Hi! I have a question about ${product.name}.`} />}
       </>
     )
@@ -629,7 +629,7 @@ function GenericProductDetailPage({ slug, productId }: { slug: string; productId
             created_at: '',
           })}
         />
-        <div style={{ maxWidth: 480, margin: '0 auto', padding: '0 20px' }}><TryOnLauncher slug={slug} productName={product.name} garmentImageUrl={product.garment_image_url} priceInr={product.price_inr} currency={config.currency} whatsappNumber={config.whatsapp_number} /></div>
+        <div style={{ maxWidth: 480, margin: '0 auto', padding: '0 20px' }}><TryOnLauncher slug={slug} productName={product.name} garmentImageUrl={product.garment_image_url} priceInr={product.price_inr} currency={config.currency} whatsappNumber={config.whatsapp_number} videoUrl={product.garment_video_url} sellerId={config.seller_id} productId={product.id} /></div>
         {config.whatsapp_number && <WhatsAppBubble phone={config.whatsapp_number} message={`Hi! I have a question about ${product.name}.`} />}
       </>
     )
@@ -658,7 +658,7 @@ function GenericProductDetailPage({ slug, productId }: { slug: string; productId
             created_at: '',
           })}
         />
-        <div style={{ maxWidth: 480, margin: '0 auto', padding: '0 20px' }}><TryOnLauncher slug={slug} productName={product.name} garmentImageUrl={product.garment_image_url} priceInr={product.price_inr} currency={config.currency} whatsappNumber={config.whatsapp_number} /></div>
+        <div style={{ maxWidth: 480, margin: '0 auto', padding: '0 20px' }}><TryOnLauncher slug={slug} productName={product.name} garmentImageUrl={product.garment_image_url} priceInr={product.price_inr} currency={config.currency} whatsappNumber={config.whatsapp_number} videoUrl={product.garment_video_url} sellerId={config.seller_id} productId={product.id} /></div>
         {config.whatsapp_number && <WhatsAppBubble phone={config.whatsapp_number} message={`Hi! I have a question about ${product.name}.`} />}
       </>
     )
@@ -687,7 +687,7 @@ function GenericProductDetailPage({ slug, productId }: { slug: string; productId
             created_at: '',
           })}
         />
-        <div style={{ maxWidth: 480, margin: '0 auto', padding: '0 20px' }}><TryOnLauncher slug={slug} productName={product.name} garmentImageUrl={product.garment_image_url} priceInr={product.price_inr} currency={config.currency} whatsappNumber={config.whatsapp_number} /></div>
+        <div style={{ maxWidth: 480, margin: '0 auto', padding: '0 20px' }}><TryOnLauncher slug={slug} productName={product.name} garmentImageUrl={product.garment_image_url} priceInr={product.price_inr} currency={config.currency} whatsappNumber={config.whatsapp_number} videoUrl={product.garment_video_url} sellerId={config.seller_id} productId={product.id} /></div>
         {config.whatsapp_number && <WhatsAppBubble phone={config.whatsapp_number} message={`Hi! I have a question about ${product.name}.`} />}
       </>
     )
@@ -716,7 +716,7 @@ function GenericProductDetailPage({ slug, productId }: { slug: string; productId
             created_at: '',
           })}
         />
-        <div style={{ maxWidth: 480, margin: '0 auto', padding: '0 20px' }}><TryOnLauncher slug={slug} productName={product.name} garmentImageUrl={product.garment_image_url} priceInr={product.price_inr} currency={config.currency} whatsappNumber={config.whatsapp_number} /></div>
+        <div style={{ maxWidth: 480, margin: '0 auto', padding: '0 20px' }}><TryOnLauncher slug={slug} productName={product.name} garmentImageUrl={product.garment_image_url} priceInr={product.price_inr} currency={config.currency} whatsappNumber={config.whatsapp_number} videoUrl={product.garment_video_url} sellerId={config.seller_id} productId={product.id} /></div>
         {config.whatsapp_number && <WhatsAppBubble phone={config.whatsapp_number} message={`Hi! I have a question about ${product.name}.`} />}
       </>
     )
@@ -745,7 +745,7 @@ function GenericProductDetailPage({ slug, productId }: { slug: string; productId
             created_at: '',
           })}
         />
-        <div style={{ maxWidth: 480, margin: '0 auto', padding: '0 20px' }}><TryOnLauncher slug={slug} productName={product.name} garmentImageUrl={product.garment_image_url} priceInr={product.price_inr} currency={config.currency} whatsappNumber={config.whatsapp_number} /></div>
+        <div style={{ maxWidth: 480, margin: '0 auto', padding: '0 20px' }}><TryOnLauncher slug={slug} productName={product.name} garmentImageUrl={product.garment_image_url} priceInr={product.price_inr} currency={config.currency} whatsappNumber={config.whatsapp_number} videoUrl={product.garment_video_url} sellerId={config.seller_id} productId={product.id} /></div>
         {config.whatsapp_number && <WhatsAppBubble phone={config.whatsapp_number} message={`Hi! I have a question about ${product.name}.`} />}
       </>
     )
@@ -774,7 +774,7 @@ function GenericProductDetailPage({ slug, productId }: { slug: string; productId
             created_at: '',
           })}
         />
-        <div style={{ maxWidth: 480, margin: '0 auto', padding: '0 20px' }}><TryOnLauncher slug={slug} productName={product.name} garmentImageUrl={product.garment_image_url} priceInr={product.price_inr} currency={config.currency} whatsappNumber={config.whatsapp_number} /></div>
+        <div style={{ maxWidth: 480, margin: '0 auto', padding: '0 20px' }}><TryOnLauncher slug={slug} productName={product.name} garmentImageUrl={product.garment_image_url} priceInr={product.price_inr} currency={config.currency} whatsappNumber={config.whatsapp_number} videoUrl={product.garment_video_url} sellerId={config.seller_id} productId={product.id} /></div>
         {config.whatsapp_number && <WhatsAppBubble phone={config.whatsapp_number} message={`Hi! I have a question about ${product.name}.`} />}
       </>
     )

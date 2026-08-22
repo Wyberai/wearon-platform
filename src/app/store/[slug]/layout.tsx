@@ -35,6 +35,7 @@ import { THEGRID_BRAND } from '@/lib/thegrid/catalog'
 import { TryItOnShell } from '@/components/tryiton/TryItOnShell'
 import { TRYITON_BRAND } from '@/lib/tryiton/catalog'
 import { configToThemeBrand } from '@/lib/flagship/adapters'
+import { AccountLinkBubble } from '@/components/store/AccountLinkBubble'
 
 // Fetch tenant config server-side and inject CSS variables
 export default async function StoreLayout({
@@ -110,40 +111,40 @@ export default async function StoreLayout({
   // Any real seller who has picked the "January" theme also gets the bespoke
   // component tree, rendered with their own brand data.
   if (config?.theme_id === 'january') {
-    return <AugustShell brand={configToThemeBrand(config, slug)}>{children}</AugustShell>
+    return <><AugustShell brand={configToThemeBrand(config, slug)}>{children}</AugustShell><AccountLinkBubble slug={slug} /></>
   }
   if (config?.theme_id === 'february') {
-    return <EmberShell brand={configToThemeBrand(config, slug)}>{children}</EmberShell>
+    return <><EmberShell brand={configToThemeBrand(config, slug)}>{children}</EmberShell><AccountLinkBubble slug={slug} /></>
   }
   if (config?.theme_id === 'march') {
-    return <BloomShell brand={configToThemeBrand(config, slug)}>{children}</BloomShell>
+    return <><BloomShell brand={configToThemeBrand(config, slug)}>{children}</BloomShell><AccountLinkBubble slug={slug} /></>
   }
   if (config?.theme_id === 'april') {
-    return <MelaShell brand={configToThemeBrand(config, slug)}>{children}</MelaShell>
+    return <><MelaShell brand={configToThemeBrand(config, slug)}>{children}</MelaShell><AccountLinkBubble slug={slug} /></>
   }
   if (config?.theme_id === 'may') {
-    return <TaanaShell brand={configToThemeBrand(config, slug)}>{children}</TaanaShell>
+    return <><TaanaShell brand={configToThemeBrand(config, slug)}>{children}</TaanaShell><AccountLinkBubble slug={slug} /></>
   }
   if (config?.theme_id === 'june') {
-    return <SaajShell brand={configToThemeBrand(config, slug)}>{children}</SaajShell>
+    return <><SaajShell brand={configToThemeBrand(config, slug)}>{children}</SaajShell><AccountLinkBubble slug={slug} /></>
   }
   if (config?.theme_id === 'july') {
-    return <ScrollShell brand={configToThemeBrand(config, slug)}>{children}</ScrollShell>
+    return <><ScrollShell brand={configToThemeBrand(config, slug)}>{children}</ScrollShell><AccountLinkBubble slug={slug} /></>
   }
   if (config?.theme_id === 'august') {
-    return <DhamakaShell brand={configToThemeBrand(config, slug)}>{children}</DhamakaShell>
+    return <><DhamakaShell brand={configToThemeBrand(config, slug)}>{children}</DhamakaShell><AccountLinkBubble slug={slug} /></>
   }
   if (config?.theme_id === 'september') {
-    return <AaramShell brand={configToThemeBrand(config, slug)}>{children}</AaramShell>
+    return <><AaramShell brand={configToThemeBrand(config, slug)}>{children}</AaramShell><AccountLinkBubble slug={slug} /></>
   }
   if (config?.theme_id === 'october') {
-    return <UtsavShell brand={configToThemeBrand(config, slug)}>{children}</UtsavShell>
+    return <><UtsavShell brand={configToThemeBrand(config, slug)}>{children}</UtsavShell><AccountLinkBubble slug={slug} /></>
   }
   if (config?.theme_id === 'november') {
-    return <GalliShell brand={configToThemeBrand(config, slug)}>{children}</GalliShell>
+    return <><GalliShell brand={configToThemeBrand(config, slug)}>{children}</GalliShell><AccountLinkBubble slug={slug} /></>
   }
   if (config?.theme_id === 'december') {
-    return <KirayaShell brand={configToThemeBrand(config, slug)}>{children}</KirayaShell>
+    return <><KirayaShell brand={configToThemeBrand(config, slug)}>{children}</KirayaShell><AccountLinkBubble slug={slug} /></>
   }
   if (config?.theme_id === 'reelrack') {
     return <ReelRackShell brand={configToThemeBrand(config, slug)}>{children}</ReelRackShell>

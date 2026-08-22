@@ -6,6 +6,7 @@ import type { ThemeBrand, ThemeProduct } from '@/lib/flagship/types'
 import { ScrollStoriesBar } from './ScrollStoriesBar'
 import { ScrollFeedPost } from './ScrollFeedPost'
 import { ScrollDMSheet } from './ScrollDMSheet'
+import { getOrCreateDeviceToken } from '@/lib/device-token'
 
 const WISHLIST_KEY = 'scroll_wishlist_v1'
 const TIME_LABELS = ['2 HOURS AGO', '4 HOURS AGO', '6 HOURS AGO', '1 DAY AGO', '2 DAYS AGO', '3 DAYS AGO', '1 WEEK AGO']
@@ -21,10 +22,12 @@ function readWishlist(): Set<string> {
 
 // SCROLL's homepage IS the shopping paradigm — a stories bar of new-drop
 // teasers above a single vertical feed of "posts" (one product per post).
-// Double-tapping a post's image likes it into a simple localStorage-backed
-// wishlist (kept deliberately separate from the real add-to-bag cart, since
-// "like" and "buy" are different actions on a real feed too); "DM to
-// order" opens an in-app chat-bubble overlay, never a real messaging
+// Double-tapping a post's image likes it — instant/optimistic like a real
+// feed, backed by localStorage for this-device state, and also persisted to
+// the real wishlist backend (POST/DELETE /api/store/wishlist) for a real
+// seller so it survives across devices instead of being purely cosmetic;
+// demo showcases (brand.sellerId null) skip the network call entirely.
+// "DM to order" opens an in-app chat-bubble overlay, never a real messaging
 // backend.
 export function ScrollHome({ brand, products }: { brand: ThemeBrand; products: ThemeProduct[] }) {
   const slug = brand.slug
@@ -43,12 +46,29 @@ export function ScrollHome({ brand, products }: { brand: ThemeBrand; products: T
   }, [wishlist, hydrated])
 
   function toggleLike(productId: string) {
+    const nowLiked = !wishlist.has(productId)
     setWishlist(prev => {
       const next = new Set(prev)
       if (next.has(productId)) next.delete(productId)
       else next.add(productId)
       return next
     })
+
+    if (!brand.sellerId) return
+    const device_token = getOrCreateDeviceToken()
+    if (nowLiked) {
+      fetch('/api/store/wishlist', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ seller_id: brand.sellerId, product_id: productId, device_token }),
+      }).catch(() => {})
+    } else {
+      fetch('/api/store/wishlist', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ product_id: productId, device_token }),
+      }).catch(() => {})
+    }
   }
 
   return (

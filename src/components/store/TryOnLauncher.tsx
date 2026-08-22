@@ -1,6 +1,7 @@
 'use client'
 
 import { useRef, useState } from 'react'
+import { getOrCreateDeviceToken } from '@/lib/device-token'
 
 type TryOnStep = 'idle' | 'upload' | 'generating' | 'done' | 'error'
 
@@ -11,6 +12,9 @@ interface TryOnLauncherProps {
   priceInr: number
   currency?: string
   whatsappNumber?: string | null
+  videoUrl?: string | null
+  sellerId?: string | null
+  productId?: string
 }
 
 // Theme-native like AiStylistSearch — reads the same --primary/--store-*
@@ -21,15 +25,38 @@ interface TryOnLauncherProps {
 // is resolved server-side from the slug for a real seller, but the reserved
 // demo slugs (august, dhamaka, etc.) resolve to no seller, so this correctly
 // self-hides via the SELLER_NO_CREDITS/store-not-found response on those.
-export function TryOnLauncher({ slug, productName, garmentImageUrl, priceInr, currency, whatsappNumber }: TryOnLauncherProps) {
+// Also renders the product's garment_video_url (if set) above the button —
+// bundled here rather than as a separate component since this is already
+// the one shared injection point wired into all 12 flagship PDPs.
+export function TryOnLauncher({ slug, productName, garmentImageUrl, priceInr, currency, whatsappNumber, videoUrl, sellerId, productId }: TryOnLauncherProps) {
   const [step, setStep] = useState<TryOnStep>('idle')
   const [error, setError] = useState('')
   const [result, setResult] = useState<{ image_url?: string; video_url?: string } | null>(null)
   const [photoPreview, setPhotoPreview] = useState<string | null>(null)
   const [photoDataUrl, setPhotoDataUrl] = useState<string | null>(null)
   const [hidden, setHidden] = useState(false)
+  const [saved, setSaved] = useState(false)
+  const [saving, setSaving] = useState(false)
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
+
+  // Real wishlist backend (POST /api/store/wishlist) — no per-item "is this
+  // saved" check exists server-side, so this reflects only what happened in
+  // this page view, not prior visits; still a genuine save, unlike the
+  // localStorage-only version this replaces on Scroll.
+  async function toggleWishlist() {
+    if (!sellerId || !productId || saving) return
+    setSaving(true)
+    try {
+      await fetch('/api/store/wishlist', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ seller_id: sellerId, product_id: productId, device_token: getOrCreateDeviceToken() }),
+      })
+      setSaved(true)
+    } catch { /* best-effort */ }
+    setSaving(false)
+  }
 
   const currencySymbol = currency === 'USD' ? '$' : '₹'
   const priceLocale = currency === 'USD' ? 'en-US' : 'en-IN'
@@ -119,17 +146,43 @@ export function TryOnLauncher({ slug, productName, garmentImageUrl, priceInr, cu
 
   return (
     <>
-      <button
-        onClick={() => setStep('upload')}
-        style={{
-          width: '100%', padding: '14px', borderRadius: 16, fontSize: 14, fontWeight: 700,
-          border: `2px solid ${primary}`, color: primary, background: 'transparent',
-          cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
-          fontFamily: 'var(--store-font, inherit)', margin: '12px 0',
-        }}
-      >
-        <span style={{ fontSize: 18 }}>🪄</span> See yourself wearing this
-      </button>
+      {videoUrl && (
+        <video
+          src={videoUrl}
+          controls
+          playsInline
+          preload="metadata"
+          style={{ width: '100%', borderRadius: 16, marginBottom: 12, display: 'block', background: '#000' }}
+        />
+      )}
+      <div style={{ display: 'flex', gap: 8, margin: '12px 0' }}>
+        <button
+          onClick={() => setStep('upload')}
+          style={{
+            flex: 1, padding: '14px', borderRadius: 16, fontSize: 14, fontWeight: 700,
+            border: `2px solid ${primary}`, color: primary, background: 'transparent',
+            cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+            fontFamily: 'var(--store-font, inherit)',
+          }}
+        >
+          <span style={{ fontSize: 18 }}>🪄</span> See yourself wearing this
+        </button>
+        {sellerId && productId && (
+          <button
+            onClick={toggleWishlist}
+            disabled={saving}
+            aria-label={saved ? 'Saved to wishlist' : 'Save to wishlist'}
+            style={{
+              width: 52, flexShrink: 0, borderRadius: 16, fontSize: 18,
+              border: `2px solid ${saved ? primary : 'color-mix(in srgb, var(--store-ink, #171512) 20%, transparent)'}`,
+              background: 'transparent', color: saved ? primary : 'var(--store-ink, #171512)',
+              cursor: saving ? 'default' : 'pointer', opacity: saving ? 0.6 : 1,
+            }}
+          >
+            {saved ? '♥' : '♡'}
+          </button>
+        )}
+      </div>
 
       {step !== 'idle' && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', zIndex: 100, display: 'flex', alignItems: 'flex-end', justifyContent: 'center' }}>
