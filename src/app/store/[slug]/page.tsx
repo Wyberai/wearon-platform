@@ -132,51 +132,51 @@ function StorePageRouter() {
 
   if (slug === 'august') {
     const b = previewName ? { ...AUGUST_BRAND, name: previewName } : AUGUST_BRAND
-    return <>{banner}<AugustHome brand={b} products={AUGUST_PRODUCTS} /></>
+    return <>{banner}<AugustHome brand={b} products={AUGUST_PRODUCTS} />{b.whatsappNumber && <WhatsAppBubble phone={b.whatsappNumber} message={`Hi! I have a question about ${b.name}.`} />}<AiStylistSearch slug={slug} /></>
   }
   if (slug === 'ember') {
     const b = previewName ? { ...EMBER_BRAND, name: previewName } : EMBER_BRAND
-    return <>{banner}<EmberHome brand={b} products={EMBER_PRODUCTS} /></>
+    return <>{banner}<EmberHome brand={b} products={EMBER_PRODUCTS} />{b.whatsappNumber && <WhatsAppBubble phone={b.whatsappNumber} message={`Hi! I have a question about ${b.name}.`} />}<AiStylistSearch slug={slug} /></>
   }
   if (slug === 'bloom') {
     const b = previewName ? { ...BLOOM_BRAND, name: previewName } : BLOOM_BRAND
-    return <>{banner}<BloomHome brand={b} products={BLOOM_PRODUCTS} /></>
+    return <>{banner}<BloomHome brand={b} products={BLOOM_PRODUCTS} />{b.whatsappNumber && <WhatsAppBubble phone={b.whatsappNumber} message={`Hi! I have a question about ${b.name}.`} />}<AiStylistSearch slug={slug} /></>
   }
   if (slug === 'mela') {
     const b = previewName ? { ...MELA_BRAND, name: previewName } : MELA_BRAND
-    return <>{banner}<MelaHome brand={b} products={MELA_PRODUCTS} /></>
+    return <>{banner}<MelaHome brand={b} products={MELA_PRODUCTS} />{b.whatsappNumber && <WhatsAppBubble phone={b.whatsappNumber} message={`Hi! I have a question about ${b.name}.`} />}<AiStylistSearch slug={slug} /></>
   }
   if (slug === 'taana') {
     const b = previewName ? { ...TAANA_BRAND, name: previewName } : TAANA_BRAND
-    return <>{banner}<TaanaHome brand={b} products={TAANA_PRODUCTS} /></>
+    return <>{banner}<TaanaHome brand={b} products={TAANA_PRODUCTS} />{b.whatsappNumber && <WhatsAppBubble phone={b.whatsappNumber} message={`Hi! I have a question about ${b.name}.`} />}<AiStylistSearch slug={slug} /></>
   }
   if (slug === 'saaj') {
     const b = previewName ? { ...SAAJ_BRAND, name: previewName } : SAAJ_BRAND
-    return <>{banner}<SaajHome brand={b} products={SAAJ_PRODUCTS} /></>
+    return <>{banner}<SaajHome brand={b} products={SAAJ_PRODUCTS} />{b.whatsappNumber && <WhatsAppBubble phone={b.whatsappNumber} message={`Hi! I have a question about ${b.name}.`} />}<AiStylistSearch slug={slug} /></>
   }
   if (slug === 'scroll') {
     const b = previewName ? { ...SCROLL_BRAND, name: previewName } : SCROLL_BRAND
-    return <>{banner}<ScrollHome brand={b} products={SCROLL_PRODUCTS} /></>
+    return <>{banner}<ScrollHome brand={b} products={SCROLL_PRODUCTS} />{b.whatsappNumber && <WhatsAppBubble phone={b.whatsappNumber} message={`Hi! I have a question about ${b.name}.`} />}<AiStylistSearch slug={slug} /></>
   }
   if (slug === 'dhamaka') {
     const b = previewName ? { ...DHAMAKA_BRAND, name: previewName } : DHAMAKA_BRAND
-    return <>{banner}<DhamakaHome brand={b} products={DHAMAKA_PRODUCTS} /></>
+    return <>{banner}<DhamakaHome brand={b} products={DHAMAKA_PRODUCTS} />{b.whatsappNumber && <WhatsAppBubble phone={b.whatsappNumber} message={`Hi! I have a question about ${b.name}.`} />}<AiStylistSearch slug={slug} /></>
   }
   if (slug === 'aaram') {
     const b = previewName ? { ...AARAM_BRAND, name: previewName } : AARAM_BRAND
-    return <>{banner}<AaramHome brand={b} products={AARAM_PRODUCTS} /></>
+    return <>{banner}<AaramHome brand={b} products={AARAM_PRODUCTS} />{b.whatsappNumber && <WhatsAppBubble phone={b.whatsappNumber} message={`Hi! I have a question about ${b.name}.`} />}<AiStylistSearch slug={slug} /></>
   }
   if (slug === 'utsav') {
     const b = previewName ? { ...UTSAV_BRAND, name: previewName } : UTSAV_BRAND
-    return <>{banner}<UtsavHome brand={b} products={UTSAV_PRODUCTS} /></>
+    return <>{banner}<UtsavHome brand={b} products={UTSAV_PRODUCTS} />{b.whatsappNumber && <WhatsAppBubble phone={b.whatsappNumber} message={`Hi! I have a question about ${b.name}.`} />}<AiStylistSearch slug={slug} /></>
   }
   if (slug === 'galli') {
     const b = previewName ? { ...GALLI_BRAND, name: previewName } : GALLI_BRAND
-    return <>{banner}<GalliHome brand={b} products={GALLI_PRODUCTS} /></>
+    return <>{banner}<GalliHome brand={b} products={GALLI_PRODUCTS} />{b.whatsappNumber && <WhatsAppBubble phone={b.whatsappNumber} message={`Hi! I have a question about ${b.name}.`} />}<AiStylistSearch slug={slug} /></>
   }
   if (slug === 'kiraya') {
     const b = previewName ? { ...KIRAYA_BRAND, name: previewName } : KIRAYA_BRAND
-    return <>{banner}<KirayaHome brand={b} products={KIRAYA_PRODUCTS} /></>
+    return <>{banner}<KirayaHome brand={b} products={KIRAYA_PRODUCTS} />{b.whatsappNumber && <WhatsAppBubble phone={b.whatsappNumber} message={`Hi! I have a question about ${b.name}.`} />}<AiStylistSearch slug={slug} /></>
   }
   if (slug === 'reelrack') {
     const b = previewName ? { ...REELRACK_BRAND, name: previewName } : REELRACK_BRAND
@@ -363,40 +363,52 @@ function StorePageContent() {
   // Any real seller on the "January" flagship theme gets the bespoke
   // component tree, rendered with their own brand + product data.
   if (config?.theme_id === 'january') {
-    return <AugustHome brand={configToThemeBrand(effectiveConfig!, slug)} products={products.filter(p => p.is_active).map(productToThemeProduct)} />
+    const b = configToThemeBrand(effectiveConfig!, slug)
+    return <><AugustHome brand={b} products={products.filter(p => p.is_active).map(productToThemeProduct)} />{b.whatsappNumber && <WhatsAppBubble phone={b.whatsappNumber} message={`Hi! I have a question about ${b.name}.`} />}<AiStylistSearch slug={slug} /></>
   }
   if (config?.theme_id === 'february') {
-    return <EmberHome brand={configToThemeBrand(effectiveConfig!, slug)} products={products.filter(p => p.is_active).map(productToThemeProduct)} />
+    const b = configToThemeBrand(effectiveConfig!, slug)
+    return <><EmberHome brand={b} products={products.filter(p => p.is_active).map(productToThemeProduct)} />{b.whatsappNumber && <WhatsAppBubble phone={b.whatsappNumber} message={`Hi! I have a question about ${b.name}.`} />}<AiStylistSearch slug={slug} /></>
   }
   if (config?.theme_id === 'march') {
-    return <BloomHome brand={configToThemeBrand(effectiveConfig!, slug)} products={products.filter(p => p.is_active).map(productToThemeProduct)} />
+    const b = configToThemeBrand(effectiveConfig!, slug)
+    return <><BloomHome brand={b} products={products.filter(p => p.is_active).map(productToThemeProduct)} />{b.whatsappNumber && <WhatsAppBubble phone={b.whatsappNumber} message={`Hi! I have a question about ${b.name}.`} />}<AiStylistSearch slug={slug} /></>
   }
   if (config?.theme_id === 'april') {
-    return <MelaHome brand={configToThemeBrand(effectiveConfig!, slug)} products={products.filter(p => p.is_active).map(productToThemeProduct)} />
+    const b = configToThemeBrand(effectiveConfig!, slug)
+    return <><MelaHome brand={b} products={products.filter(p => p.is_active).map(productToThemeProduct)} />{b.whatsappNumber && <WhatsAppBubble phone={b.whatsappNumber} message={`Hi! I have a question about ${b.name}.`} />}<AiStylistSearch slug={slug} /></>
   }
   if (config?.theme_id === 'may') {
-    return <TaanaHome brand={configToThemeBrand(effectiveConfig!, slug)} products={products.filter(p => p.is_active).map(productToThemeProduct)} />
+    const b = configToThemeBrand(effectiveConfig!, slug)
+    return <><TaanaHome brand={b} products={products.filter(p => p.is_active).map(productToThemeProduct)} />{b.whatsappNumber && <WhatsAppBubble phone={b.whatsappNumber} message={`Hi! I have a question about ${b.name}.`} />}<AiStylistSearch slug={slug} /></>
   }
   if (config?.theme_id === 'june') {
-    return <SaajHome brand={configToThemeBrand(effectiveConfig!, slug)} products={products.filter(p => p.is_active).map(productToThemeProduct)} />
+    const b = configToThemeBrand(effectiveConfig!, slug)
+    return <><SaajHome brand={b} products={products.filter(p => p.is_active).map(productToThemeProduct)} />{b.whatsappNumber && <WhatsAppBubble phone={b.whatsappNumber} message={`Hi! I have a question about ${b.name}.`} />}<AiStylistSearch slug={slug} /></>
   }
   if (config?.theme_id === 'july') {
-    return <ScrollHome brand={configToThemeBrand(effectiveConfig!, slug)} products={products.filter(p => p.is_active).map(productToThemeProduct)} />
+    const b = configToThemeBrand(effectiveConfig!, slug)
+    return <><ScrollHome brand={b} products={products.filter(p => p.is_active).map(productToThemeProduct)} />{b.whatsappNumber && <WhatsAppBubble phone={b.whatsappNumber} message={`Hi! I have a question about ${b.name}.`} />}<AiStylistSearch slug={slug} /></>
   }
   if (config?.theme_id === 'august') {
-    return <DhamakaHome brand={configToThemeBrand(effectiveConfig!, slug)} products={products.filter(p => p.is_active).map(productToThemeProduct)} />
+    const b = configToThemeBrand(effectiveConfig!, slug)
+    return <><DhamakaHome brand={b} products={products.filter(p => p.is_active).map(productToThemeProduct)} />{b.whatsappNumber && <WhatsAppBubble phone={b.whatsappNumber} message={`Hi! I have a question about ${b.name}.`} />}<AiStylistSearch slug={slug} /></>
   }
   if (config?.theme_id === 'september') {
-    return <AaramHome brand={configToThemeBrand(effectiveConfig!, slug)} products={products.filter(p => p.is_active).map(productToThemeProduct)} />
+    const b = configToThemeBrand(effectiveConfig!, slug)
+    return <><AaramHome brand={b} products={products.filter(p => p.is_active).map(productToThemeProduct)} />{b.whatsappNumber && <WhatsAppBubble phone={b.whatsappNumber} message={`Hi! I have a question about ${b.name}.`} />}<AiStylistSearch slug={slug} /></>
   }
   if (config?.theme_id === 'october') {
-    return <UtsavHome brand={configToThemeBrand(effectiveConfig!, slug)} products={products.filter(p => p.is_active).map(productToThemeProduct)} />
+    const b = configToThemeBrand(effectiveConfig!, slug)
+    return <><UtsavHome brand={b} products={products.filter(p => p.is_active).map(productToThemeProduct)} />{b.whatsappNumber && <WhatsAppBubble phone={b.whatsappNumber} message={`Hi! I have a question about ${b.name}.`} />}<AiStylistSearch slug={slug} /></>
   }
   if (config?.theme_id === 'november') {
-    return <GalliHome brand={configToThemeBrand(effectiveConfig!, slug)} products={products.filter(p => p.is_active).map(productToThemeProduct)} />
+    const b = configToThemeBrand(effectiveConfig!, slug)
+    return <><GalliHome brand={b} products={products.filter(p => p.is_active).map(productToThemeProduct)} />{b.whatsappNumber && <WhatsAppBubble phone={b.whatsappNumber} message={`Hi! I have a question about ${b.name}.`} />}<AiStylistSearch slug={slug} /></>
   }
   if (config?.theme_id === 'december') {
-    return <KirayaHome brand={configToThemeBrand(effectiveConfig!, slug)} products={products.filter(p => p.is_active).map(productToThemeProduct)} />
+    const b = configToThemeBrand(effectiveConfig!, slug)
+    return <><KirayaHome brand={b} products={products.filter(p => p.is_active).map(productToThemeProduct)} />{b.whatsappNumber && <WhatsAppBubble phone={b.whatsappNumber} message={`Hi! I have a question about ${b.name}.`} />}<AiStylistSearch slug={slug} /></>
   }
   if (config?.theme_id === 'reelrack') {
     return <ReelRackHome brand={configToThemeBrand(effectiveConfig!, slug)} products={products.filter(p => p.is_active).map(productToThemeProduct)} />
