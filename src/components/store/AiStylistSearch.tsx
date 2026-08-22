@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 interface AgentProduct {
   id: string
@@ -27,7 +27,21 @@ export function AiStylistSearch({ slug }: { slug: string }) {
   const [loading, setLoading] = useState(false)
   const [results, setResults] = useState<AgentProduct[] | null>(null)
   const [error, setError] = useState<string | null>(null)
-  const [dismissed, setDismissed] = useState(false)
+  // Starts hidden — a demo/free-tier store never becomes eligible, so
+  // defaulting to visible-then-self-hide-on-submit (the old behavior) meant
+  // the box rendered fully on every demo storefront and only disappeared if
+  // a visitor actually tried it. This checks the free GET eligibility probe
+  // on mount instead, so it never renders where it can't work.
+  const [dismissed, setDismissed] = useState(true)
+
+  useEffect(() => {
+    let cancelled = false
+    fetch(`/api/store/${slug}/ai-search`)
+      .then(res => res.json())
+      .then(data => { if (!cancelled) setDismissed(!data.eligible) })
+      .catch(() => { if (!cancelled) setDismissed(true) })
+    return () => { cancelled = true }
+  }, [slug])
 
   async function handleSearch(e: React.FormEvent) {
     e.preventDefault()

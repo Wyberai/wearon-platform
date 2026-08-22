@@ -4,6 +4,16 @@ import { getSellerIdForSlug, getSellerPlanForSlug } from '@/lib/agent-tracking'
 import { createAdminClient } from '@/lib/supabase/server'
 import { MCP_ELIGIBLE_PLANS, type Plan } from '@/lib/constants'
 
+// GET /api/store/{slug}/ai-search — cheap eligibility probe so the buyer-facing
+// search box can hide itself before ever rendering on a demo/free-tier store,
+// instead of only discovering NOT_ELIGIBLE after a buyer submits a query.
+// Never touches ai_reply quota or calls OpenAI, unlike POST below.
+export async function GET(_req: Request, { params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params
+  const plan = await getSellerPlanForSlug(slug)
+  return NextResponse.json({ eligible: !!plan && MCP_ELIGIBLE_PLANS.includes(plan as Plan) })
+}
+
 // POST /api/store/{slug}/ai-search — buyer-facing natural-language product
 // search ("what should I wear for a wedding today?"). Same plan gate as
 // AI shopping (MCP_ELIGIBLE_PLANS) since, unlike MCP (external AI apps
