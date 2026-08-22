@@ -56,8 +56,8 @@ export function EmberPDP({ brand, product, related = [] }: { brand: ThemeBrand; 
           <p className="text-[11px] tracking-[0.2em] uppercase mb-2" style={{ color: 'var(--e-ink-dim)' }}>{product.category}</p>
           <h1 className="ember-display text-3xl md:text-4xl leading-tight mb-3" style={{ fontWeight: 700 }}>{product.name}</h1>
           <div className="flex items-baseline gap-3 mb-6">
-            <span className="text-lg font-medium" style={{ color: product.originalPrice ? 'var(--e-accent)' : 'var(--e-ink)' }}>${product.price}</span>
-            {product.originalPrice && <span className="text-sm line-through" style={{ color: 'var(--e-ink-dim)' }}>${product.originalPrice}</span>}
+            <span className="text-lg font-medium" style={{ color: product.originalPrice ? 'var(--e-accent)' : 'var(--e-ink)' }}>₹{product.price.toLocaleString('en-IN')}</span>
+            {product.originalPrice && <span className="text-sm line-through" style={{ color: 'var(--e-ink-dim)' }}>₹{product.originalPrice.toLocaleString('en-IN')}</span>}
           </div>
           <p className="text-sm leading-relaxed mb-8" style={{ color: 'var(--e-ink-muted)' }}>{product.description}</p>
 

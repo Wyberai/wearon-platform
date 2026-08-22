@@ -55,9 +55,9 @@ export function BloomProductCard({ product, slug, priority = false }: { product:
           <p className="text-xs mt-0.5" style={{ color: 'var(--bl-ink-dim)' }}>{product.colors[0]}</p>
         </div>
         <div className="text-right flex-shrink-0">
-          <p className="text-sm" style={{ color: product.originalPrice ? 'var(--bl-accent)' : 'var(--bl-ink)' }}>${product.price}</p>
+          <p className="text-sm" style={{ color: product.originalPrice ? 'var(--bl-accent)' : 'var(--bl-ink)' }}>₹{product.price.toLocaleString('en-IN')}</p>
           {product.originalPrice && (
-            <p className="text-xs line-through" style={{ color: 'var(--bl-ink-dim)' }}>${product.originalPrice}</p>
+            <p className="text-xs line-through" style={{ color: 'var(--bl-ink-dim)' }}>₹{product.originalPrice.toLocaleString('en-IN')}</p>
           )}
         </div>
       </div>

@@ -135,7 +135,7 @@ export function BloomCheckout({ brand }: { brand: ThemeBrand }) {
                     <p className="text-sm font-medium">{line.name}</p>
                     <p className="text-xs mt-1" style={{ color: 'var(--bl-ink-muted)' }}>{line.color}{line.size ? ` · ${line.size}` : ''} · Qty {line.quantity}</p>
                   </div>
-                  <p className="text-sm">${line.price * line.quantity}</p>
+                  <p className="text-sm">₹{(line.price * line.quantity).toLocaleString('en-IN')}</p>
                 </div>
               ))}
             </div>

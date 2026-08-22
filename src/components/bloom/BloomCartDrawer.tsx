@@ -48,7 +48,7 @@ export function BloomCartDrawer({ brand }: { brand: ThemeBrand }) {
                       <div className="flex-1 min-w-0">
                         <div className="flex items-start justify-between gap-2">
                           <p className="text-sm font-medium">{line.name}</p>
-                          <p className="text-sm flex-shrink-0">${line.price * line.quantity}</p>
+                          <p className="text-sm flex-shrink-0">₹{(line.price * line.quantity).toLocaleString('en-IN')}</p>
                         </div>
                         <p className="text-xs mt-1" style={{ color: 'var(--bl-ink-muted)' }}>
                           {line.color}{line.size ? ` · ${line.size}` : ''}

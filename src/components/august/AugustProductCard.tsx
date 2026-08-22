@@ -55,9 +55,9 @@ export function AugustProductCard({ product, slug, priority = false }: { product
           <p className="text-xs mt-0.5" style={{ color: 'var(--a-ink-dim)' }}>{product.colors[0]}</p>
         </div>
         <div className="text-right flex-shrink-0">
-          <p className="text-sm" style={{ color: product.originalPrice ? 'var(--a-accent)' : 'var(--a-ink)' }}>${product.price}</p>
+          <p className="text-sm" style={{ color: product.originalPrice ? 'var(--a-accent)' : 'var(--a-ink)' }}>₹{product.price.toLocaleString('en-IN')}</p>
           {product.originalPrice && (
-            <p className="text-xs line-through" style={{ color: 'var(--a-ink-dim)' }}>${product.originalPrice}</p>
+            <p className="text-xs line-through" style={{ color: 'var(--a-ink-dim)' }}>₹{product.originalPrice.toLocaleString('en-IN')}</p>
           )}
         </div>
       </div>
