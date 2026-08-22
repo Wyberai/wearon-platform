@@ -46,7 +46,7 @@ export const HOME_DICT: Record<Locale, HomeDict> = {
   en: {
     announcementText: 'Start free — no credit card required.',
     announcementCta: 'Launch your store →',
-    launchBadge: '🚀 Launching August 21, 2026',
+    launchBadge: '🚀 Now live',
     heroEyebrow: 'For Instagram sellers ready to grow up',
     heroHeadline: 'Turn your Instagram page into a real online store.',
     heroSubcopy: "Right now you're taking orders through DMs and comments. Instastarz gives you a real storefront — a catalog buyers can browse, real checkout, your own domain — live in minutes, not months.",
@@ -108,7 +108,7 @@ export const HOME_DICT: Record<Locale, HomeDict> = {
   hi: {
     announcementText: 'मुफ़्त शुरू करें — किसी क्रेडिट कार्ड की ज़रूरत नहीं।',
     announcementCta: 'अपना स्टोर शुरू करें →',
-    launchBadge: '🚀 21 अगस्त, 2026 को लॉन्च हो रहा है',
+    launchBadge: '🚀 अभी लाइव है',
     heroEyebrow: 'Instagram विक्रेताओं के लिए जो आगे बढ़ने को तैयार हैं',
     heroHeadline: 'अपने Instagram पेज को एक असली ऑनलाइन स्टोर बनाएं।',
     heroSubcopy: 'अभी आप DM और कमेंट्स के ज़रिए ऑर्डर ले रहे हैं। Instastarz आपको एक असली स्टोरफ्रंट देता है — खरीदार ब्राउज़ कर सकें ऐसा कैटलॉग, असली चेकआउट, आपका अपना डोमेन — महीनों में नहीं, मिनटों में लाइव।',
@@ -170,7 +170,7 @@ export const HOME_DICT: Record<Locale, HomeDict> = {
   kn: {
     announcementText: 'ಉಚಿತವಾಗಿ ಪ್ರಾರಂಭಿಸಿ — ಕ್ರೆಡಿಟ್ ಕಾರ್ಡ್ ಅಗತ್ಯವಿಲ್ಲ.',
     announcementCta: 'ನಿಮ್ಮ ಸ್ಟೋರ್ ಪ್ರಾರಂಭಿಸಿ →',
-    launchBadge: '🚀 ಆಗಸ್ಟ್ 21, 2026 ರಂದು ಲಾಂಚ್ ಆಗುತ್ತಿದೆ',
+    launchBadge: '🚀 ಈಗ ಲೈವ್ ಆಗಿದೆ',
     heroEyebrow: 'ಬೆಳೆಯಲು ಸಿದ್ಧರಿರುವ Instagram ಮಾರಾಟಗಾರರಿಗಾಗಿ',
     heroHeadline: 'ನಿಮ್ಮ Instagram ಪೇಜ್ ಅನ್ನು ನಿಜವಾದ ಆನ್‌ಲೈನ್ ಸ್ಟೋರ್ ಆಗಿ ಪರಿವರ್ತಿಸಿ.',
     heroSubcopy: 'ಈಗ ನೀವು DM ಮತ್ತು ಕಮೆಂಟ್‌ಗಳ ಮೂಲಕ ಆರ್ಡರ್ ತೆಗೆದುಕೊಳ್ಳುತ್ತಿದ್ದೀರಿ. Instastarz ನಿಮಗೆ ನಿಜವಾದ ಸ್ಟೋರ್‌ಫ್ರಂಟ್ ನೀಡುತ್ತದೆ — ಖರೀದಿದಾರರು ಬ್ರೌಸ್ ಮಾಡಬಹುದಾದ ಕ್ಯಾಟಲಾಗ್, ನಿಜವಾದ ಚೆಕ್‌ಔಟ್, ನಿಮ್ಮ ಸ್ವಂತ ಡೊಮೇನ್ — ತಿಂಗಳುಗಳಲ್ಲಿ ಅಲ್ಲ, ನಿಮಿಷಗಳಲ್ಲಿ ಲೈವ್.',
@@ -232,7 +232,7 @@ export const HOME_DICT: Record<Locale, HomeDict> = {
   te: {
     announcementText: 'ఉచితంగా ప్రారంభించండి — క్రెడిట్ కార్డ్ అవసరం లేదు.',
     announcementCta: 'మీ స్టోర్ ప్రారంభించండి →',
-    launchBadge: '🚀 ఆగస్టు 21, 2026న లాంచ్ అవుతోంది',
+    launchBadge: '🚀 ఇప్పుడు లైవ్‌లో ఉంది',
     heroEyebrow: 'ఎదగడానికి సిద్ధంగా ఉన్న Instagram విక్రేతల కోసం',
     heroHeadline: 'మీ Instagram పేజీని నిజమైన ఆన్‌లైన్ స్టోర్‌గా మార్చండి.',
     heroSubcopy: 'ఇప్పుడు మీరు DMలు మరియు కామెంట్‌ల ద్వారా ఆర్డర్లు తీసుకుంటున్నారు. Instastarz మీకు నిజమైన స్టోర్‌ఫ్రంట్ ఇస్తుంది — కొనుగోలుదారులు బ్రౌజ్ చేయగల కేటలాగ్, నిజమైన చెక్‌అవుట్, మీ స్వంత డొమైన్ — నెలల్లో కాదు, నిమిషాల్లో లైవ్.',
@@ -294,7 +294,7 @@ export const HOME_DICT: Record<Locale, HomeDict> = {
   mr: {
     announcementText: 'मोफत सुरू करा — क्रेडिट कार्डची गरज नाही.',
     announcementCta: 'तुमचे स्टोअर सुरू करा →',
-    launchBadge: '🚀 २१ ऑगस्ट, २०२६ रोजी लाँच होत आहे',
+    launchBadge: '🚀 आता लाइव्ह आहे',
     heroEyebrow: 'वाढण्यास तयार असलेल्या Instagram विक्रेत्यांसाठी',
     heroHeadline: 'तुमच्या Instagram पेजला खऱ्या ऑनलाइन स्टोअरमध्ये बदला.',
     heroSubcopy: 'सध्या तुम्ही DM आणि कमेंट्सद्वारे ऑर्डर घेत आहात. Instastarz तुम्हाला खरे स्टोअरफ्रंट देते — खरेदीदार पाहू शकतील असा कॅटलॉग, खरा चेकआउट, तुमचे स्वतःचे डोमेन — महिन्यांत नाही, मिनिटांत लाइव्ह.',
@@ -356,7 +356,7 @@ export const HOME_DICT: Record<Locale, HomeDict> = {
   ta: {
     announcementText: 'இலவசமாகத் தொடங்குங்கள் — கிரெடிட் கார்டு தேவையில்லை.',
     announcementCta: 'உங்கள் ஸ்டோரைத் தொடங்குங்கள் →',
-    launchBadge: '🚀 ஆகஸ்ட் 21, 2026 அன்று லாஞ்ச் ஆகிறது',
+    launchBadge: '🚀 இப்போது லைவ்',
     heroEyebrow: 'வளர தயாராக இருக்கும் Instagram விற்பனையாளர்களுக்காக',
     heroHeadline: 'உங்கள் Instagram பக்கத்தை உண்மையான ஆன்லைன் ஸ்டோராக மாற்றுங்கள்.',
     heroSubcopy: 'இப்போது நீங்கள் DM மற்றும் கமெண்ட்கள் மூலம் ஆர்டர்களை எடுக்கிறீர்கள். Instastarz உங்களுக்கு உண்மையான ஸ்டோர்ஃப்ரண்டைத் தருகிறது — வாங்குபவர்கள் உலாவக்கூடிய கேட்டலாக், உண்மையான செக்அவுட், உங்கள் சொந்த டொமைன் — மாதங்களில் அல்ல, நிமிடங்களில் லைவ்.',

@@ -127,7 +127,7 @@ export function WaitlistClient({ locale }: { locale: Locale }) {
         </div>
       </div>
 
-      {/* FEATURES — everything shipping for the Aug 21 launch */}
+      {/* FEATURES — everything live now */}
       <div style={{ borderTop: `1px solid ${INK}0E`, padding: '80px 24px 96px' }}>
         <div style={{ maxWidth: 960, margin: '0 auto' }}>
           <p style={{ fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: `${INK}44`, marginBottom: 14, textAlign: 'center' }}>
