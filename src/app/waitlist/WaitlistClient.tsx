@@ -10,17 +10,6 @@ const INK = '#111010'
 const ACCENT = '#A6134A'
 const GOLD = '#B8842E'
 
-// Same launch-video creative used in the Meta ad campaigns, one cut per
-// language, hosted in the marketing-assets bucket (separate from
-// wearon-assets, which is image-only and 10MB-capped — these are ~34MB).
-const LAUNCH_VIDEO_URLS: Record<Locale, string> = {
-  en: 'https://dhecdsoppqwpehrmklxf.supabase.co/storage/v1/object/public/marketing-assets/launch-videos/en-1080p.mp4',
-  hi: 'https://dhecdsoppqwpehrmklxf.supabase.co/storage/v1/object/public/marketing-assets/launch-videos/hi-1080p.mp4',
-  kn: 'https://dhecdsoppqwpehrmklxf.supabase.co/storage/v1/object/public/marketing-assets/launch-videos/kn-1080p.mp4',
-  te: 'https://dhecdsoppqwpehrmklxf.supabase.co/storage/v1/object/public/marketing-assets/launch-videos/te-1080p.mp4',
-  mr: 'https://dhecdsoppqwpehrmklxf.supabase.co/storage/v1/object/public/marketing-assets/launch-videos/mr-1080p.mp4',
-  ta: 'https://dhecdsoppqwpehrmklxf.supabase.co/storage/v1/object/public/marketing-assets/launch-videos/ta-1080p.mp4',
-}
 
 // Locale comes in as a server-resolved prop (from the ?lang= URL param or
 // the cookie) rather than being read client-side — reading document.cookie
@@ -112,20 +101,6 @@ export function WaitlistClient({ locale }: { locale: Locale }) {
         </div>
       </div>
 
-      {/* LAUNCH VIDEO — same creative running in the ad campaigns, in this visitor's language */}
-      <div style={{ padding: '0 24px 80px' }}>
-        <div style={{ maxWidth: 720, margin: '0 auto' }}>
-          <video
-            key={locale}
-            controls
-            playsInline
-            preload="metadata"
-            style={{ width: '100%', borderRadius: 20, display: 'block', boxShadow: '0 20px 60px rgba(0,0,0,0.12)' }}
-          >
-            <source src={LAUNCH_VIDEO_URLS[locale]} type="video/mp4" />
-          </video>
-        </div>
-      </div>
 
       {/* FEATURES — everything live now */}
       <div style={{ borderTop: `1px solid ${INK}0E`, padding: '80px 24px 96px' }}>
