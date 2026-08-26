@@ -32,6 +32,9 @@ export function MarketingNav() {
           <Link href="/themes" className="wo-hover-fade" style={{ fontSize: 14, color: `${INK}cc`, textDecoration: 'none' }}>
             Themes
           </Link>
+          <Link href="/pricing" className="wo-hover-fade" style={{ fontSize: 14, color: `${INK}cc`, textDecoration: 'none' }}>
+            Pricing
+          </Link>
           <Link href="/auth/login" className="wo-hover-fade" style={{ fontSize: 14, color: `${INK}cc`, textDecoration: 'none' }}>
             Login
           </Link>
