@@ -46,7 +46,7 @@ export default function TermsPage() {
         </Section>
 
         <Section title="Demo stores">
-          <p>The 12 flagship demo stores (August, Ember, and so on) shown on our homepage and /themes page are illustrative previews with sample products — they are not real storefronts you can purchase from, and the products shown are not available for sale until a seller builds their own catalog on that theme.</p>
+          <p>The 100 flagship demo stores (August, Ember, and so on) shown on our homepage and /themes page are illustrative previews with sample products — they are not real storefronts you can purchase from, and the products shown are not available for sale until a seller builds their own catalog on that theme.</p>
         </Section>
 
         <Section title="AI features">

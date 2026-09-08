@@ -7,6 +7,8 @@ import { getOrCreateDeviceToken } from '@/lib/device-token'
 import { productToJsonLd } from '@/lib/schema-org'
 import { ArrowLeft, Share2 } from 'lucide-react'
 import { notFound } from 'next/navigation'
+import { FLAGSHIP_REGISTRY } from '@/lib/flagship-generic/registry'
+import { GenericPDP } from '@/components/flagship-generic/GenericPDP'
 import { AugustPDP } from '@/components/august/AugustPDP'
 import { AUGUST_BRAND, AUGUST_PRODUCTS, findProduct, relatedProducts } from '@/lib/august/catalog'
 import { EmberPDP } from '@/components/ember/EmberPDP'
@@ -223,6 +225,12 @@ export default function ProductDetailPage() {
     const product = findTryItOnProduct(TRYITON_PRODUCTS, productId)
     if (!product) return notFound()
     return <TryItOnPDP brand={TRYITON_BRAND} product={product} related={relatedTryItOnProducts(TRYITON_PRODUCTS, product)} />
+  }
+  if (FLAGSHIP_REGISTRY[slug]) {
+    const entry = FLAGSHIP_REGISTRY[slug]
+    const product = entry.products.find(p => p.slug === productId)
+    if (!product) return notFound()
+    return <GenericPDP brand={entry.brand} product={product} related={entry.products.filter(p => p.id !== product.id).slice(0, 4)} />
   }
 
   return <GenericProductDetailPage slug={slug} productId={productId} />

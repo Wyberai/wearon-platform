@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from 'react'
 import { useParams, notFound } from 'next/navigation'
+import { FLAGSHIP_REGISTRY } from '@/lib/flagship-generic/registry'
+import { GenericCheckout } from '@/components/flagship-generic/GenericCheckout'
 import { AugustCheckout } from '@/components/august/AugustCheckout'
 import { AUGUST_BRAND } from '@/lib/august/catalog'
 import { EmberCheckout } from '@/components/ember/EmberCheckout'
@@ -90,6 +92,9 @@ export default function CheckoutPage() {
   }
   if (slug === 'tryiton') {
     return <TryItOnCheckout brand={TRYITON_BRAND} />
+  }
+  if (FLAGSHIP_REGISTRY[slug]) {
+    return <GenericCheckout brand={FLAGSHIP_REGISTRY[slug].brand} />
   }
 
   return <RealSellerCheckout slug={slug} />

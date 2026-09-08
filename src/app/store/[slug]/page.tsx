@@ -16,6 +16,10 @@ interface FeaturedCollection {
   products?: { id: string; name: string; garment_image_url: string; price_inr: number }[]
 }
 import { getTheme, HEADING_TYPE, LOGO_RADIUS, type Theme } from '@/lib/themes'
+import { FLAGSHIP_DEMO_CONTENT } from '@/lib/flagship-demo-content'
+import { FLAGSHIP_REGISTRY } from '@/lib/flagship-generic/registry'
+import { GenericHome } from '@/components/flagship-generic/GenericHome'
+import { OPEN_GENERIC_MECHANIC_EVENT } from '@/components/flagship-generic/GenericShell'
 import { FONTS } from '@/lib/constants'
 import { getOrCreateDeviceToken } from '@/lib/device-token'
 import { StoreFeedLayout } from '@/components/store/StoreFeedLayout'
@@ -68,6 +72,11 @@ const PRODUCTS_BY_SLUG: Record<string, ThemeProduct[]> = {
   taana: TAANA_PRODUCTS, saaj: SAAJ_PRODUCTS, scroll: SCROLL_PRODUCTS, dhamaka: DHAMAKA_PRODUCTS,
   aaram: AARAM_PRODUCTS, utsav: UTSAV_PRODUCTS, galli: GALLI_PRODUCTS, kiraya: KIRAYA_PRODUCTS,
   reelrack: REELRACK_PRODUCTS, thegrid: THEGRID_PRODUCTS, tryiton: TRYITON_PRODUCTS,
+  // The 88 generic-kit flagship stores (src/lib/flagship-generic/registry.ts)
+  // get the same marketing-preview Dashboard/Mobile-app mockup tabs as the
+  // 15 above — ThemedDashboardMock/ThemedMobileAppMock are already generic
+  // over any Theme + product list, so this is the only wiring they needed.
+  ...Object.fromEntries(Object.entries(FLAGSHIP_REGISTRY).map(([slug, entry]) => [slug, entry.products])),
 }
 
 // Heading treatment per theme.headingStyle — case/weight/tracking only, the
@@ -193,6 +202,15 @@ function StorePageRouter() {
     return <>{banner}<TryItOnHome brand={b} products={TRYITON_PRODUCTS} /></>
   }
 
+  // Generic-kit flagship stores (src/lib/flagship-generic/registry.ts) — same
+  // early-return-by-slug pattern as the 15 bespoke themes above, just backed
+  // by the reusable Generic* component kit instead of a per-brand tree.
+  const genericEntry = FLAGSHIP_REGISTRY[slug]
+  if (genericEntry) {
+    const b = previewName ? { ...genericEntry.brand, name: previewName } : genericEntry.brand
+    return <>{banner}<GenericHome brand={b} products={genericEntry.products} mechanicLabel={genericEntry.mechanicLabel} onOpenMechanic={() => window.dispatchEvent(new CustomEvent(OPEN_GENERIC_MECHANIC_EVENT))} /></>
+  }
+
   return <StorePageContent />
 }
 
@@ -228,14 +246,20 @@ function StorePageContent() {
       const prodData = await prodRes.json()
       const colData = await colRes.json()
 
-      setConfig(cfgData.config ?? null)
-      setProducts(isDemoStore ? getDemoProducts() : (prodData.products ?? []))
+      // A themed demo preview (?theme=<one of the 88 storefront themes>)
+      // otherwise shows the same generic "Luna Boutique" brand/catalog as
+      // every other theme, regardless of aesthetic — see
+      // flagship-demo-content.ts's header comment. Only ever touches the
+      // zero-real-data demo path; a real seller's fetched config is untouched.
+      const themedDemo = isDemoStore ? FLAGSHIP_DEMO_CONTENT[themeOverride ?? ''] : undefined
+      setConfig(themedDemo ? { ...cfgData.config, brand_name: themedDemo.brandName, tagline: themedDemo.tagline, categories: themedDemo.categories } : (cfgData.config ?? null))
+      setProducts(isDemoStore ? (themedDemo?.products ?? getDemoProducts()) : (prodData.products ?? []))
       setCollections(colData.collections ?? [])
     } catch {
-      if (isDemoStore) setProducts(getDemoProducts())
+      if (isDemoStore) setProducts(FLAGSHIP_DEMO_CONTENT[themeOverride ?? '']?.products ?? getDemoProducts())
     }
     setLoading(false)
-  }, [slug, isDemoStore])
+  }, [slug, isDemoStore, themeOverride])
 
   useEffect(() => { loadData() }, [loadData])
 

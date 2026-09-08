@@ -27,8 +27,7 @@ export async function POST(req: NextRequest) {
 - Camel Trench Coat ($195) — belted trench, water-repellent, timeless silhouette
 - Cropped Ribbed Tank ($32) — thick-rib jersey, pairs with everything`
 
-  const apiKey = process.env.OPENAI_API_KEY
-  if (!apiKey) {
+  function demoResponse() {
     const demoText = `Based on your style preference for "${query}", here are curated picks:\n\n✨ **Satin Slip Maxi Dress** — Perfect for your aesthetic. Fluid satin with adjustable straps — effortlessly chic for any occasion.\n\n🌟 **Floral Wrap Midi Dress** — Elevate your look with this lightweight wrap silhouette. The adjustable tie waist flatters every figure.\n\n💫 **Oversized Wool Blazer** — For moments that call for polished elegance. A herringbone wool blend that works from brunch to boardroom.`
     const encoder = new TextEncoder()
     const stream = new ReadableStream({
@@ -40,37 +39,53 @@ export async function POST(req: NextRequest) {
     return new Response(stream, { headers: { 'Content-Type': 'text/plain; charset=utf-8', 'Cache-Control': 'no-cache' } })
   }
 
-  const client = new OpenAI({ apiKey })
-  const openaiStream = await client.chat.completions.create({
-    model: 'gpt-4o',
-    stream: true,
-    max_tokens: 240,
-    messages: [
-      {
-        role: 'system',
-        content: `${persona}
+  const apiKey = process.env.OPENAI_API_KEY
+  if (!apiKey) return demoResponse()
+
+  // A live API failure (rate limit, exhausted billing, transient outage)
+  // must never surface as an unhandled 500 to every flagship theme's AI
+  // feature (Mood Match, Gift Finder, the generic Ask-the-Stylist mechanic,
+  // etc.) — fall back to the same demo text a missing key already produces.
+  try {
+    const client = new OpenAI({ apiKey })
+    const openaiStream = await client.chat.completions.create({
+      model: 'gpt-4o',
+      stream: true,
+      max_tokens: 240,
+      messages: [
+        {
+          role: 'system',
+          content: `${persona}
 
 Given a style preference or occasion, suggest 3 specific outfit picks from this catalog. Format each with an emoji, bold product name, and one compelling sentence. Keep it concise — max 200 words total. No filler text.
 
 Catalog:
 ${catalogText}`,
+        },
+        { role: 'user', content: query },
+      ],
+    })
+
+    const encoder = new TextEncoder()
+    const stream = new ReadableStream({
+      async start(controller) {
+        try {
+          for await (const chunk of openaiStream) {
+            const text = chunk.choices[0]?.delta?.content ?? ''
+            if (text) controller.enqueue(encoder.encode(text))
+          }
+        } catch {
+          // Stream broke mid-flight (e.g. connection drop) — close what we have
+          // rather than leaving the reader hanging.
+        }
+        controller.close()
       },
-      { role: 'user', content: query },
-    ],
-  })
+    })
 
-  const encoder = new TextEncoder()
-  const stream = new ReadableStream({
-    async start(controller) {
-      for await (const chunk of openaiStream) {
-        const text = chunk.choices[0]?.delta?.content ?? ''
-        if (text) controller.enqueue(encoder.encode(text))
-      }
-      controller.close()
-    },
-  })
-
-  return new Response(stream, {
-    headers: { 'Content-Type': 'text/plain; charset=utf-8', 'Cache-Control': 'no-cache' },
-  })
+    return new Response(stream, {
+      headers: { 'Content-Type': 'text/plain; charset=utf-8', 'Cache-Control': 'no-cache' },
+    })
+  } catch {
+    return demoResponse()
+  }
 }

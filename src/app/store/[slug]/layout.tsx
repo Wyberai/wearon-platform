@@ -36,6 +36,8 @@ import { TryItOnShell } from '@/components/tryiton/TryItOnShell'
 import { TRYITON_BRAND } from '@/lib/tryiton/catalog'
 import { configToThemeBrand } from '@/lib/flagship/adapters'
 import { AccountLinkBubble } from '@/components/store/AccountLinkBubble'
+import { FLAGSHIP_REGISTRY } from '@/lib/flagship-generic/registry'
+import { GenericFlagshipShell } from '@/components/flagship-generic/GenericShell'
 
 // Fetch tenant config server-side and inject CSS variables
 export default async function StoreLayout({
@@ -98,6 +100,15 @@ export default async function StoreLayout({
   }
   if (slug === 'tryiton') {
     return <TryItOnShell brand={TRYITON_BRAND}>{children}</TryItOnShell>
+  }
+
+  // Generic-kit flagship stores (see src/lib/flagship-generic/registry.ts) —
+  // same bespoke-feeling experience shape as the 15 slugs above, built on a
+  // reusable component kit instead of a hand-written tree per brand. Slugs
+  // here never collide with the ones above or with real seller slugs.
+  const genericFlagship = FLAGSHIP_REGISTRY[slug]
+  if (genericFlagship) {
+    return <GenericFlagshipShell entry={genericFlagship}>{children}</GenericFlagshipShell>
   }
 
   const admin = createAdminClient()

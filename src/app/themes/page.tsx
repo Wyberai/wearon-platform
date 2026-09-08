@@ -4,10 +4,11 @@ import { MarketingNav } from '@/components/marketing/MarketingNav'
 import { AUGUST_CAMPAIGN } from '@/lib/august/catalog'
 import { EMBER_CAMPAIGN } from '@/lib/ember/catalog'
 import { BLOOM_CAMPAIGN } from '@/lib/bloom/catalog'
+import { FLAGSHIP_REGISTRY } from '@/lib/flagship-generic/registry'
 
 export const metadata: Metadata = {
   title: 'Flagship Themes — Instastarz',
-  description: 'Twelve flagship storefront themes, one for every month. Preview them live, then build your store on the one that\'s you.',
+  description: '100 flagship storefront themes, each fully live. Preview them live, then build your store on the one that\'s you.',
 }
 
 const INK = '#171512'
@@ -58,10 +59,10 @@ export default function ThemesPage() {
             Flagship Themes
           </p>
           <h1 style={{ fontFamily: 'var(--font-marketing)', fontSize: 'clamp(36px, 6vw, 60px)', lineHeight: 1.02, letterSpacing: '-0.02em', maxWidth: 720, marginBottom: 20 }}>
-            One flagship theme a month. Pick the one that&apos;s you.
+            100 flagship themes. Pick the one that&apos;s you.
           </h1>
           <p style={{ fontSize: 16, color: `${INK}99`, maxWidth: 560, lineHeight: 1.6 }}>
-            Every store on Instastarz starts from a theme — a complete, considered design system, not a template you fight with. We&apos;re building twelve flagship themes, one per month, each with its own aesthetic and its own AI-native features. Preview them live before you pick.
+            Every store on Instastarz starts from a theme — a complete, considered design system, not a template you fight with. 100 flagship themes, each with its own aesthetic and its own AI-native feature. Preview any of them live before you pick.
           </p>
         </section>
 
@@ -107,6 +108,40 @@ export default function ThemesPage() {
                       Preview the live store →
                     </Link>
                   )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section style={{ maxWidth: 1240, margin: '0 auto', padding: '40px 24px 20px' }}>
+          <p style={{ fontSize: 12, letterSpacing: '0.2em', textTransform: 'uppercase', color: ACCENT, marginBottom: 16 }}>
+            + 88 More Flagship-Tier Stores
+          </p>
+          <h2 style={{ fontFamily: 'var(--font-marketing)', fontSize: 'clamp(28px, 4.5vw, 44px)', lineHeight: 1.05, letterSpacing: '-0.02em', maxWidth: 720, marginBottom: 16 }}>
+            Every one of these is a real, working store — not a mockup.
+          </h2>
+          <p style={{ fontSize: 15, color: `${INK}99`, maxWidth: 620, lineHeight: 1.6 }}>
+            Same bespoke experience as the flagships above — its own brand, its own catalog, its own AI-native feature (a stylist, a fit quiz, a drop countdown, or a rewards tracker) — built on a shared component system so all 88 are fully live today.
+          </p>
+        </section>
+
+        <section style={{ maxWidth: 1240, margin: '0 auto', padding: '0 24px 100px' }}>
+          <div className="th-grid">
+            {Object.values(FLAGSHIP_REGISTRY).map(entry => (
+              <div key={entry.slug} className="th-hover-lift" style={{ borderRadius: 16, overflow: 'hidden', background: '#fff', border: `1px solid ${INK}12` }}>
+                <div style={{ position: 'relative', aspectRatio: '4/3', background: `${INK}0a` }}>
+                  {entry.products[0]?.image && <img src={entry.products[0].image} alt={entry.brand.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />}
+                  <span style={{ position: 'absolute', top: 12, left: 12, fontSize: 11, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '4px 10px', borderRadius: 999, background: entry.palette.accent, color: '#fff' }}>
+                    {entry.mechanicLabel}
+                  </span>
+                </div>
+                <div style={{ padding: '18px 20px 22px' }}>
+                  <h3 style={{ fontFamily: 'var(--font-marketing)', fontSize: 20, marginBottom: 8 }}>{entry.brand.name}</h3>
+                  <p style={{ fontSize: 13.5, color: `${INK}99`, lineHeight: 1.5, marginBottom: 16, minHeight: 40 }}>{entry.brand.tagline}</p>
+                  <Link href={`/store/${entry.slug}`} target="_blank" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 14, fontWeight: 600, color: ACCENT, textDecoration: 'none' }}>
+                    Preview the live store →
+                  </Link>
                 </div>
               </div>
             ))}

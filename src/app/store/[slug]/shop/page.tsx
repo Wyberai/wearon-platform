@@ -34,6 +34,8 @@ import { TryItOnShopGrid } from '@/components/tryiton/TryItOnShopGrid'
 import { TRYITON_BRAND, TRYITON_PRODUCTS } from '@/lib/tryiton/catalog'
 import { configToThemeBrand, productToThemeProduct } from '@/lib/flagship/adapters'
 import type { ThemeBrand, ThemeProduct } from '@/lib/flagship/types'
+import { FLAGSHIP_REGISTRY } from '@/lib/flagship-generic/registry'
+import { GenericShopGrid } from '@/components/flagship-generic/GenericShopGrid'
 
 const FLAGSHIP_THEME_IDS = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december', 'reelrack', 'thegrid', 'tryiton'] as const
 type FlagshipThemeId = (typeof FLAGSHIP_THEME_IDS)[number]
@@ -97,6 +99,10 @@ function ShopPageContent() {
   }
   if (slug === 'tryiton') {
     return <TryItOnShopGrid brand={TRYITON_BRAND} products={TRYITON_PRODUCTS} initialCategory={searchParams.get('category')} />
+  }
+  if (FLAGSHIP_REGISTRY[slug]) {
+    const entry = FLAGSHIP_REGISTRY[slug]
+    return <GenericShopGrid brand={entry.brand} products={entry.products} initialCategory={searchParams.get('category')} />
   }
 
   return <RealSellerShopGrid slug={slug} initialCategory={searchParams.get('category')} />
