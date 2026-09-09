@@ -196,6 +196,11 @@ const IMG = {
   ms3: 'photo-1605763254018-7d59bdbdc9cd', ms4: 'photo-1721578382328-1873cbb342bb',
   ms5: 'photo-1579207238889-e1122bfc0c89', ms6: 'photo-1591050248611-e6cc135c8f11',
   ms7: 'photo-1708221235482-a6e2a807198f', ms8: 'photo-1517574012247-6941b83050d5',
+  // Hand-curated for santafe-adobe.
+  sa1: 'photo-1646765562758-3236045c40cd', sa2: 'photo-1683660107856-cdad7a562d12',
+  sa3: 'photo-1780301400923-82bcd25b7ebf', sa4: 'photo-1620961049392-16fe6d81ca3a',
+  sa5: 'photo-1762236097115-4aaf0e7a2d20', sa6: 'photo-1510384641993-29af32a8324c',
+  sa7: 'photo-1515168746408-0f924dbb5c39', sa8: 'photo-1776951129328-d85072dbdefe',
 } as const
 type ImgKey = keyof typeof IMG
 
@@ -1089,14 +1094,14 @@ export const FLAGSHIP_DEMO_CONTENT: Record<string, FlagshipDemoEntry> = Object.f
     { name: 'Woven Palm Hat', category: 'Lei & Shell Accents', price: 900, img: 'w62' },
   ]),
   entry('santafe-adobe', 'Adobe Sky Studio', 'Sun-baked adobe pink, turquoise accent, high-desert stillness.', ['Adobe Layers', 'Turquoise Tops', 'Desert Outer', 'High-Desert Accents'], [
-    { name: 'Adobe Pink Wrap Dress', category: 'Adobe Layers', price: 2800, img: 'w87', tags: ['bestseller'] },
-    { name: 'Sun-Baked Linen Dress', category: 'Adobe Layers', price: 2600, img: 'w63' },
-    { name: 'Turquoise Trim Blouse', category: 'Turquoise Tops', price: 1700, img: 'w64', tags: ['new'] },
-    { name: 'Desert Rose Top', category: 'Turquoise Tops', price: 1500, img: 'w65' },
-    { name: 'Suede Desert Jacket', category: 'Desert Outer', price: 3400, img: 'w66' },
-    { name: 'Adobe-Tone Poncho', category: 'Desert Outer', price: 2600, img: 'w67' },
-    { name: 'Turquoise Cluster Ring', category: 'High-Desert Accents', price: 700, img: 'w68' },
-    { name: 'Woven Desert Belt', category: 'High-Desert Accents', price: 600, img: 'w69' },
+    { name: 'Adobe Pink Wrap Dress', category: 'Adobe Layers', price: 2800, img: 'sa1', tags: ['bestseller'] },
+    { name: 'Sun-Baked Linen Dress', category: 'Adobe Layers', price: 2600, img: 'sa2' },
+    { name: 'Turquoise Trim Blouse', category: 'Turquoise Tops', price: 1700, img: 'sa3', tags: ['new'] },
+    { name: 'Desert Rose Top', category: 'Turquoise Tops', price: 1500, img: 'sa4' },
+    { name: 'Suede Desert Jacket', category: 'Desert Outer', price: 3400, img: 'sa5' },
+    { name: 'Adobe-Tone Poncho', category: 'Desert Outer', price: 2600, img: 'sa6' },
+    { name: 'Turquoise Cluster Ring', category: 'High-Desert Accents', price: 700, img: 'sa7' },
+    { name: 'Woven Desert Belt', category: 'High-Desert Accents', price: 600, img: 'sa8' },
   ]),
   entry('neworleans-jazz', 'French Quarter Velvet', 'Deep velvet jewel tones, brass-band gold, French Quarter romance.', ['Jazz Velvet', 'Brass-Gold Tops', 'Quarter Layers', 'Jazz Age Accents'], [
     { name: 'Velvet Jazz Gown', category: 'Jazz Velvet', price: 5200, img: 'w88', tags: ['bestseller'] },

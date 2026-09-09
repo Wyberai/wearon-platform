@@ -26,6 +26,8 @@ import { NycGrungeHome } from '@/components/flagship-generic/nyc-grunge-style/Ny
 import { OPEN_NYCGRUNGE_MECHANIC_EVENT } from '@/components/flagship-generic/nyc-grunge-style/NycGrungeShell'
 import { SoukHome } from '@/components/flagship-generic/moroccan-souk-style/SoukHome'
 import { OPEN_SOUK_MECHANIC_EVENT } from '@/components/flagship-generic/moroccan-souk-style/SoukShell'
+import { AdobeHome } from '@/components/flagship-generic/santafe-adobe-style/AdobeHome'
+import { OPEN_ADOBE_MECHANIC_EVENT } from '@/components/flagship-generic/santafe-adobe-style/AdobeShell'
 import { FONTS } from '@/lib/constants'
 import { getOrCreateDeviceToken } from '@/lib/device-token'
 import { StoreFeedLayout } from '@/components/store/StoreFeedLayout'
@@ -227,6 +229,12 @@ function StorePageRouter() {
     const entry = FLAGSHIP_REGISTRY[slug]
     const b = previewName ? { ...entry.brand, name: previewName } : entry.brand
     return <>{banner}<SoukHome brand={b} products={entry.products} mechanicLabel={entry.mechanicLabel} onOpenMechanic={() => window.dispatchEvent(new CustomEvent(OPEN_SOUK_MECHANIC_EVENT))} /></>
+  }
+
+  if (slug === 'santafe-adobe' && FLAGSHIP_REGISTRY[slug]) {
+    const entry = FLAGSHIP_REGISTRY[slug]
+    const b = previewName ? { ...entry.brand, name: previewName } : entry.brand
+    return <>{banner}<AdobeHome brand={b} products={entry.products} mechanicLabel={entry.mechanicLabel} onOpenMechanic={() => window.dispatchEvent(new CustomEvent(OPEN_ADOBE_MECHANIC_EVENT))} /></>
   }
 
   // Generic-kit flagship stores (src/lib/flagship-generic/registry.ts) — same

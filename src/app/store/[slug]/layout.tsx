@@ -41,6 +41,7 @@ import { GenericFlagshipShell } from '@/components/flagship-generic/GenericShell
 import { ReformationShell } from '@/components/flagship-generic/reformation-style/ReformationShell'
 import { NycGrungeShell } from '@/components/flagship-generic/nyc-grunge-style/NycGrungeShell'
 import { SoukShell } from '@/components/flagship-generic/moroccan-souk-style/SoukShell'
+import { AdobeShell } from '@/components/flagship-generic/santafe-adobe-style/AdobeShell'
 
 // Fetch tenant config server-side and inject CSS variables
 export default async function StoreLayout({
@@ -123,6 +124,12 @@ export default async function StoreLayout({
   // collage promo grid, alternating full-bleed category banners).
   if (slug === 'moroccan-souk' && FLAGSHIP_REGISTRY[slug]) {
     return <SoukShell entry={FLAGSHIP_REGISTRY[slug]}>{children}</SoukShell>
+  }
+
+  // santafe-adobe — modeled on shopdoen.com (refined serif nav, full-bleed
+  // vintage-editorial photo stack with flourish dividers, size-run cards).
+  if (slug === 'santafe-adobe' && FLAGSHIP_REGISTRY[slug]) {
+    return <AdobeShell entry={FLAGSHIP_REGISTRY[slug]}>{children}</AdobeShell>
   }
 
   // Generic-kit flagship stores (see src/lib/flagship-generic/registry.ts) —
