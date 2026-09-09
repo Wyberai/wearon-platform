@@ -28,6 +28,8 @@ import { SoukHome } from '@/components/flagship-generic/moroccan-souk-style/Souk
 import { OPEN_SOUK_MECHANIC_EVENT } from '@/components/flagship-generic/moroccan-souk-style/SoukShell'
 import { AdobeHome } from '@/components/flagship-generic/santafe-adobe-style/AdobeHome'
 import { OPEN_ADOBE_MECHANIC_EVENT } from '@/components/flagship-generic/santafe-adobe-style/AdobeShell'
+import { ResortHome } from '@/components/flagship-generic/tropical-resort-style/ResortHome'
+import { OPEN_RESORT_MECHANIC_EVENT } from '@/components/flagship-generic/tropical-resort-style/ResortShell'
 import { FONTS } from '@/lib/constants'
 import { getOrCreateDeviceToken } from '@/lib/device-token'
 import { StoreFeedLayout } from '@/components/store/StoreFeedLayout'
@@ -235,6 +237,12 @@ function StorePageRouter() {
     const entry = FLAGSHIP_REGISTRY[slug]
     const b = previewName ? { ...entry.brand, name: previewName } : entry.brand
     return <>{banner}<AdobeHome brand={b} products={entry.products} mechanicLabel={entry.mechanicLabel} onOpenMechanic={() => window.dispatchEvent(new CustomEvent(OPEN_ADOBE_MECHANIC_EVENT))} /></>
+  }
+
+  if (slug === 'tropical-resort' && FLAGSHIP_REGISTRY[slug]) {
+    const entry = FLAGSHIP_REGISTRY[slug]
+    const b = previewName ? { ...entry.brand, name: previewName } : entry.brand
+    return <>{banner}<ResortHome brand={b} products={entry.products} mechanicLabel={entry.mechanicLabel} onOpenMechanic={() => window.dispatchEvent(new CustomEvent(OPEN_RESORT_MECHANIC_EVENT))} /></>
   }
 
   // Generic-kit flagship stores (src/lib/flagship-generic/registry.ts) — same

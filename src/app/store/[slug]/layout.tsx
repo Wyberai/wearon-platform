@@ -42,6 +42,7 @@ import { ReformationShell } from '@/components/flagship-generic/reformation-styl
 import { NycGrungeShell } from '@/components/flagship-generic/nyc-grunge-style/NycGrungeShell'
 import { SoukShell } from '@/components/flagship-generic/moroccan-souk-style/SoukShell'
 import { AdobeShell } from '@/components/flagship-generic/santafe-adobe-style/AdobeShell'
+import { ResortShell } from '@/components/flagship-generic/tropical-resort-style/ResortShell'
 
 // Fetch tenant config server-side and inject CSS variables
 export default async function StoreLayout({
@@ -130,6 +131,12 @@ export default async function StoreLayout({
   // vintage-editorial photo stack with flourish dividers, size-run cards).
   if (slug === 'santafe-adobe' && FLAGSHIP_REGISTRY[slug]) {
     return <AdobeShell entry={FLAGSHIP_REGISTRY[slug]}>{children}</AdobeShell>
+  }
+
+  // tropical-resort — modeled on vacation.inc (VHS-grain hero, cursive
+  // script logo, star-rating social proof, folded-corner promo badge).
+  if (slug === 'tropical-resort' && FLAGSHIP_REGISTRY[slug]) {
+    return <ResortShell entry={FLAGSHIP_REGISTRY[slug]}>{children}</ResortShell>
   }
 
   // Generic-kit flagship stores (see src/lib/flagship-generic/registry.ts) —

@@ -201,6 +201,13 @@ const IMG = {
   sa3: 'photo-1780301400923-82bcd25b7ebf', sa4: 'photo-1620961049392-16fe6d81ca3a',
   sa5: 'photo-1762236097115-4aaf0e7a2d20', sa6: 'photo-1510384641993-29af32a8324c',
   sa7: 'photo-1515168746408-0f924dbb5c39', sa8: 'photo-1776951129328-d85072dbdefe',
+  // Hand-curated for tropical-resort — avoided several candidates showing
+  // bikini close-ups or a deep-plunge lace dress as too revealing for a
+  // storefront product photo.
+  tr1: 'photo-1651411070013-99a9076bc703', tr2: 'photo-1616280560177-79c8155e556f',
+  tr3: 'photo-1517191297489-48c463380e8f', tr4: 'photo-1569084755066-cbff1d9fd473',
+  tr5: 'photo-1781036151153-2a4198251af8', tr6: 'photo-1619799087974-1e16384e4306',
+  tr7: 'photo-1593360871505-046499505840', tr8: 'photo-1630331010250-7524271ed506',
 } as const
 type ImgKey = keyof typeof IMG
 
@@ -294,14 +301,14 @@ export const FLAGSHIP_DEMO_CONTENT: Record<string, FlagshipDemoEntry> = Object.f
     { name: 'Concho Belt', category: 'Turquoise Accents', price: 1100, img: 'w82' },
   ]),
   entry('tropical-resort', 'Palma Club', 'Palm-print and citrus brights for poolside ease.', ['Resort Dresses', 'Print Shirts', 'Swim & Cover-Ups', 'Poolside Accents'], [
-    { name: 'Palm Print Maxi', category: 'Resort Dresses', price: 2900, img: 'w7', tags: ['bestseller'] },
-    { name: 'Citrus Slip Dress', category: 'Resort Dresses', price: 2600, img: 'w83' },
-    { name: 'Tropical Camp Shirt', category: 'Print Shirts', price: 1800, img: 'w84', tags: ['new'] },
-    { name: 'Batik Short-Sleeve', category: 'Print Shirts', price: 1700, img: 'w85' },
-    { name: 'Sarong Cover-Up', category: 'Swim & Cover-Ups', price: 1400, img: 'w86' },
-    { name: 'Crochet Beach Kaftan', category: 'Swim & Cover-Ups', price: 2100, img: 'w87' },
-    { name: 'Raffia Sun Hat', category: 'Poolside Accents', price: 900, img: 'w88' },
-    { name: 'Shell Charm Anklet', category: 'Poolside Accents', price: 500, img: 'w89' },
+    { name: 'Palm Print Maxi', category: 'Resort Dresses', price: 2900, img: 'tr1', tags: ['bestseller'] },
+    { name: 'Citrus Slip Dress', category: 'Resort Dresses', price: 2600, img: 'tr2' },
+    { name: 'Tropical Camp Shirt', category: 'Print Shirts', price: 1800, img: 'tr3', tags: ['new'] },
+    { name: 'Batik Short-Sleeve', category: 'Print Shirts', price: 1700, img: 'tr4' },
+    { name: 'Sarong Cover-Up', category: 'Swim & Cover-Ups', price: 1400, img: 'tr5' },
+    { name: 'Crochet Beach Kaftan', category: 'Swim & Cover-Ups', price: 2100, img: 'tr6' },
+    { name: 'Raffia Sun Hat', category: 'Poolside Accents', price: 900, img: 'tr7' },
+    { name: 'Shell Charm Anklet', category: 'Poolside Accents', price: 500, img: 'tr8' },
   ]),
   entry('nordic-noir', 'Fenrir & Frost', 'Charcoal wool and muted navy, cinematic Nordic gloom.', ['Charcoal Outer', 'Structured Knits', 'Noir Denim', 'Muted Accents'], [
     { name: 'Charcoal Wool Coat', category: 'Charcoal Outer', price: 6800, img: 'w8', tags: ['bestseller'] },
