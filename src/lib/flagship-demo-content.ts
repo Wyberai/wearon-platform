@@ -218,6 +218,11 @@ const IMG = {
   pc3: 'photo-1671040570322-4fd572741609', pc4: 'photo-1621991491834-23a3dd4a5b2d',
   pc5: 'photo-1620414722177-eedc5b07da1f', pc6: 'photo-1762316110550-2a1a05d722f4',
   pc7: 'photo-1551908349-8dae1c2eac85', pc8: 'photo-1638657973790-1c3aee160bf9',
+  // Hand-curated for scandi-minimal.
+  sm1: 'photo-1619470149201-63960dec27cf', sm2: 'photo-1641574694314-f2d5bad17614',
+  sm3: 'photo-1719710844666-956ea4834e0d', sm4: 'photo-1637928115738-8a4a7c59e376',
+  sm5: 'photo-1585131609775-8eecc878fdfc', sm6: 'photo-1647103992458-e8254f49f268',
+  sm7: 'photo-1659355110966-42fe631ffb9a', sm8: 'photo-1747398690600-ffe8ecda9df1',
 } as const
 type ImgKey = keyof typeof IMG
 
@@ -271,14 +276,14 @@ export const FLAGSHIP_DEMO_CONTENT: Record<string, FlagshipDemoEntry> = Object.f
     { name: 'Straw Bonnet', category: 'Ribbon Trims', price: 900, img: 'pc8' },
   ]),
   entry('scandi-minimal', 'Form & Fjord', 'Pale wood tones, white space, function over ornament.', ['Essentials', 'Outerwear', 'Knitwear', 'Objects'], [
-    { name: 'Boxy Wool Coat', category: 'Outerwear', price: 6200, img: 'w3', tags: ['bestseller'] },
-    { name: 'Structured Parka', category: 'Outerwear', price: 5400, img: 'w55' },
-    { name: 'Merino Crew Knit', category: 'Knitwear', price: 2600, img: 'w56', tags: ['new'] },
-    { name: 'Ribbed Turtleneck', category: 'Knitwear', price: 2100, img: 'w57' },
-    { name: 'Column Midi Dress', category: 'Essentials', price: 3100, img: 'w58' },
-    { name: 'Wide-Leg Wool Trouser', category: 'Essentials', price: 3400, img: 'w59' },
-    { name: 'Oat Ceramic Mug', category: 'Objects', price: 400, img: 'w60' },
-    { name: 'Birch Hair Comb', category: 'Objects', price: 300, img: 'w61' },
+    { name: 'Boxy Wool Coat', category: 'Outerwear', price: 6200, img: 'sm1', tags: ['bestseller'] },
+    { name: 'Structured Parka', category: 'Outerwear', price: 5400, img: 'sm2' },
+    { name: 'Merino Crew Knit', category: 'Knitwear', price: 2600, img: 'sm3', tags: ['new'] },
+    { name: 'Ribbed Turtleneck', category: 'Knitwear', price: 2100, img: 'sm4' },
+    { name: 'Column Midi Dress', category: 'Essentials', price: 3100, img: 'sm5' },
+    { name: 'Wide-Leg Wool Trouser', category: 'Essentials', price: 3400, img: 'sm6' },
+    { name: 'Oat Ceramic Mug', category: 'Objects', price: 400, img: 'sm7' },
+    { name: 'Birch Hair Comb', category: 'Objects', price: 300, img: 'sm8' },
   ]),
   entry('wabi-sabi', 'Kintsugi House', 'Imperfect textures, muted earth, quiet reverence for wear.', ['Undyed Layers', 'Textured Tops', 'Raw Hem Bottoms', 'Ceramic-Inspired Accents'], [
     { name: 'Undyed Linen Robe', category: 'Undyed Layers', price: 3400, img: 'w4', tags: ['bestseller'] },

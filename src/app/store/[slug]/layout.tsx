@@ -45,6 +45,7 @@ import { AdobeShell } from '@/components/flagship-generic/santafe-adobe-style/Ad
 import { ResortShell } from '@/components/flagship-generic/tropical-resort-style/ResortShell'
 import { NoirShell } from '@/components/flagship-generic/nordic-noir-style/NoirShell'
 import { PrairieShell } from '@/components/flagship-generic/prairie-cottagecore-style/PrairieShell'
+import { FjordShell } from '@/components/flagship-generic/scandi-minimal-style/FjordShell'
 
 // Fetch tenant config server-side and inject CSS variables
 export default async function StoreLayout({
@@ -153,6 +154,13 @@ export default async function StoreLayout({
   // bordered brand-moment panel).
   if (slug === 'prairie-cottagecore' && FLAGSHIP_REGISTRY[slug]) {
     return <PrairieShell entry={FLAGSHIP_REGISTRY[slug]}>{children}</PrairieShell>
+  }
+
+  // scandi-minimal — a faithful clone of arket.com (always-visible search
+  // bar, plain-text category list, journal/editorial section with real
+  // long-form writing before any product grid).
+  if (slug === 'scandi-minimal' && FLAGSHIP_REGISTRY[slug]) {
+    return <FjordShell entry={FLAGSHIP_REGISTRY[slug]}>{children}</FjordShell>
   }
 
   // Generic-kit flagship stores (see src/lib/flagship-generic/registry.ts) —

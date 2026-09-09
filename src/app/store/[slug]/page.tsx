@@ -34,6 +34,8 @@ import { NoirHome } from '@/components/flagship-generic/nordic-noir-style/NoirHo
 import { OPEN_NOIR_MECHANIC_EVENT } from '@/components/flagship-generic/nordic-noir-style/NoirShell'
 import { PrairieHome } from '@/components/flagship-generic/prairie-cottagecore-style/PrairieHome'
 import { OPEN_PRAIRIE_MECHANIC_EVENT } from '@/components/flagship-generic/prairie-cottagecore-style/PrairieShell'
+import { FjordHome } from '@/components/flagship-generic/scandi-minimal-style/FjordHome'
+import { OPEN_FJORD_MECHANIC_EVENT } from '@/components/flagship-generic/scandi-minimal-style/FjordShell'
 import { FONTS } from '@/lib/constants'
 import { getOrCreateDeviceToken } from '@/lib/device-token'
 import { StoreFeedLayout } from '@/components/store/StoreFeedLayout'
@@ -259,6 +261,12 @@ function StorePageRouter() {
     const entry = FLAGSHIP_REGISTRY[slug]
     const b = previewName ? { ...entry.brand, name: previewName } : entry.brand
     return <>{banner}<PrairieHome brand={b} products={entry.products} mechanicLabel={entry.mechanicLabel} onOpenMechanic={() => window.dispatchEvent(new CustomEvent(OPEN_PRAIRIE_MECHANIC_EVENT))} /></>
+  }
+
+  if (slug === 'scandi-minimal' && FLAGSHIP_REGISTRY[slug]) {
+    const entry = FLAGSHIP_REGISTRY[slug]
+    const b = previewName ? { ...entry.brand, name: previewName } : entry.brand
+    return <>{banner}<FjordHome brand={b} products={entry.products} mechanicLabel={entry.mechanicLabel} mechanicIntro={entry.mechanicIntro} onOpenMechanic={() => window.dispatchEvent(new CustomEvent(OPEN_FJORD_MECHANIC_EVENT))} /></>
   }
 
   // Generic-kit flagship stores (src/lib/flagship-generic/registry.ts) — same
