@@ -213,6 +213,11 @@ const IMG = {
   nn3: 'photo-1584658556169-5e2eeb66e5ab', nn4: 'photo-1637763762772-0908bf89cd22',
   nn5: 'photo-1587763776627-6fd8b39365ce', nn6: 'photo-1611312449408-fcece27cdbb7',
   nn7: 'photo-1628785517892-dbcd2f2719ed', nn8: 'photo-1552224614-2b4a2c4604ec',
+  // Hand-curated for prairie-cottagecore.
+  pc1: 'photo-1786365424981-ccf927cbeffe', pc2: 'photo-1603902032593-74c26216bc99',
+  pc3: 'photo-1671040570322-4fd572741609', pc4: 'photo-1621991491834-23a3dd4a5b2d',
+  pc5: 'photo-1620414722177-eedc5b07da1f', pc6: 'photo-1762316110550-2a1a05d722f4',
+  pc7: 'photo-1551908349-8dae1c2eac85', pc8: 'photo-1638657973790-1c3aee160bf9',
 } as const
 type ImgKey = keyof typeof IMG
 
@@ -256,14 +261,14 @@ export const FLAGSHIP_DEMO_CONTENT: Record<string, FlagshipDemoEntry> = Object.f
     { name: 'Shell Drop Earrings', category: 'Woven Accessories', price: 700, img: 'cl8' },
   ]),
   entry('prairie-cottagecore', 'Wildflower Field Co.', 'Ditsy florals and gingham, straight off the porch swing.', ['Prairie Dresses', 'Gingham Tops', 'Garden Layers', 'Ribbon Trims'], [
-    { name: 'Meadow Ditsy Dress', category: 'Prairie Dresses', price: 2800, img: 'w2', tags: ['bestseller'] },
-    { name: 'Gingham Pinafore', category: 'Prairie Dresses', price: 2500, img: 'w48', tags: ['new'] },
-    { name: 'Puff-Sleeve Blouse', category: 'Gingham Tops', price: 1700, img: 'w49' },
-    { name: 'Checked Milkmaid Top', category: 'Gingham Tops', price: 1600, img: 'w50' },
-    { name: 'Homestead Cardigan', category: 'Garden Layers', price: 2200, img: 'w51' },
-    { name: 'Quilted Porch Vest', category: 'Garden Layers', price: 2100, img: 'w52' },
-    { name: 'Ribbon Hair Clips (Set)', category: 'Ribbon Trims', price: 500, img: 'w53' },
-    { name: 'Straw Bonnet', category: 'Ribbon Trims', price: 900, img: 'w54' },
+    { name: 'Meadow Ditsy Dress', category: 'Prairie Dresses', price: 2800, img: 'pc1', tags: ['bestseller'] },
+    { name: 'Gingham Pinafore', category: 'Prairie Dresses', price: 2500, img: 'pc2', tags: ['new'] },
+    { name: 'Puff-Sleeve Blouse', category: 'Gingham Tops', price: 1700, img: 'pc3' },
+    { name: 'Checked Milkmaid Top', category: 'Gingham Tops', price: 1600, img: 'pc4' },
+    { name: 'Homestead Cardigan', category: 'Garden Layers', price: 2200, img: 'pc5' },
+    { name: 'Quilted Porch Vest', category: 'Garden Layers', price: 2100, img: 'pc6' },
+    { name: 'Ribbon Hair Clips (Set)', category: 'Ribbon Trims', price: 500, img: 'pc7' },
+    { name: 'Straw Bonnet', category: 'Ribbon Trims', price: 900, img: 'pc8' },
   ]),
   entry('scandi-minimal', 'Form & Fjord', 'Pale wood tones, white space, function over ornament.', ['Essentials', 'Outerwear', 'Knitwear', 'Objects'], [
     { name: 'Boxy Wool Coat', category: 'Outerwear', price: 6200, img: 'w3', tags: ['bestseller'] },

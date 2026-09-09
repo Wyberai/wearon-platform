@@ -32,6 +32,8 @@ import { ResortHome } from '@/components/flagship-generic/tropical-resort-style/
 import { OPEN_RESORT_MECHANIC_EVENT } from '@/components/flagship-generic/tropical-resort-style/ResortShell'
 import { NoirHome } from '@/components/flagship-generic/nordic-noir-style/NoirHome'
 import { OPEN_NOIR_MECHANIC_EVENT } from '@/components/flagship-generic/nordic-noir-style/NoirShell'
+import { PrairieHome } from '@/components/flagship-generic/prairie-cottagecore-style/PrairieHome'
+import { OPEN_PRAIRIE_MECHANIC_EVENT } from '@/components/flagship-generic/prairie-cottagecore-style/PrairieShell'
 import { FONTS } from '@/lib/constants'
 import { getOrCreateDeviceToken } from '@/lib/device-token'
 import { StoreFeedLayout } from '@/components/store/StoreFeedLayout'
@@ -251,6 +253,12 @@ function StorePageRouter() {
     const entry = FLAGSHIP_REGISTRY[slug]
     const b = previewName ? { ...entry.brand, name: previewName } : entry.brand
     return <>{banner}<NoirHome brand={b} products={entry.products} mechanicLabel={entry.mechanicLabel} mechanicIntro={entry.mechanicIntro} onOpenMechanic={() => window.dispatchEvent(new CustomEvent(OPEN_NOIR_MECHANIC_EVENT))} /></>
+  }
+
+  if (slug === 'prairie-cottagecore' && FLAGSHIP_REGISTRY[slug]) {
+    const entry = FLAGSHIP_REGISTRY[slug]
+    const b = previewName ? { ...entry.brand, name: previewName } : entry.brand
+    return <>{banner}<PrairieHome brand={b} products={entry.products} mechanicLabel={entry.mechanicLabel} onOpenMechanic={() => window.dispatchEvent(new CustomEvent(OPEN_PRAIRIE_MECHANIC_EVENT))} /></>
   }
 
   // Generic-kit flagship stores (src/lib/flagship-generic/registry.ts) — same

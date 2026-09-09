@@ -44,6 +44,7 @@ import { SoukShell } from '@/components/flagship-generic/moroccan-souk-style/Sou
 import { AdobeShell } from '@/components/flagship-generic/santafe-adobe-style/AdobeShell'
 import { ResortShell } from '@/components/flagship-generic/tropical-resort-style/ResortShell'
 import { NoirShell } from '@/components/flagship-generic/nordic-noir-style/NoirShell'
+import { PrairieShell } from '@/components/flagship-generic/prairie-cottagecore-style/PrairieShell'
 
 // Fetch tenant config server-side and inject CSS variables
 export default async function StoreLayout({
@@ -145,6 +146,13 @@ export default async function StoreLayout({
   // material/construction copywriting instead of marketing headlines.
   if (slug === 'nordic-noir' && FLAGSHIP_REGISTRY[slug]) {
     return <NoirShell entry={FLAGSHIP_REGISTRY[slug]}>{children}</NoirShell>
+  }
+
+  // prairie-cottagecore — a faithful clone of loveshackfancy.com (two-tier
+  // nav, mixed serif+script headline, pink category-tile section, floral-
+  // bordered brand-moment panel).
+  if (slug === 'prairie-cottagecore' && FLAGSHIP_REGISTRY[slug]) {
+    return <PrairieShell entry={FLAGSHIP_REGISTRY[slug]}>{children}</PrairieShell>
   }
 
   // Generic-kit flagship stores (see src/lib/flagship-generic/registry.ts) —
