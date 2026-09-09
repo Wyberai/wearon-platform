@@ -11,9 +11,46 @@ import { THEMES } from '@/lib/themes'
 import { FONTS } from '@/lib/constants'
 import { FLAGSHIP_DEMO_CONTENT } from '@/lib/flagship-demo-content'
 import { productToThemeProduct } from '@/lib/flagship/adapters'
-import type { FlagshipEntry, MechanicType } from './types'
+import type { FlagshipEntry, HomeArchetype, MechanicType } from './types'
 
 interface MechanicSpec { type: MechanicType; label: string; intro: string }
+
+// Which of the 6 structurally distinct home/shell layouts (see types.ts)
+// each brand actually reads as — judged off its real tagline/category mix,
+// not a mechanical rotation. Heritage/craft brands skew 'magazine' since
+// that's genuinely the largest natural cluster in this catalog.
+const ARCHETYPES: Record<string, HomeArchetype> = {
+  'coastal-linen': 'editorial', 'prairie-cottagecore': 'magazine', 'scandi-minimal': 'editorial',
+  'wabi-sabi': 'editorial', 'alpine-lodge': 'magazine', 'desert-boho': 'magazine',
+  'tropical-resort': 'bold', 'nordic-noir': 'editorial', 'parisian-chic': 'split',
+  'milanese-tailoring': 'split', 'tokyo-streetstyle': 'street', 'seoul-y2k': 'street',
+  'london-punk': 'street', 'berlin-utilitarian': 'street', 'nyc-grunge': 'street',
+  'la-skate': 'street', 'miami-vice': 'bold', 'southern-prep': 'magazine',
+  'ivy-varsity': 'magazine', 'countryside-tweed': 'magazine', 'highland-tartan': 'magazine',
+  'andalusian-flamenco': 'bold', 'moroccan-souk': 'market', 'indian-block-print': 'market',
+  'balinese-batik': 'market', 'outback': 'magazine', 'icelandic-wool': 'magazine',
+  'swiss-precision': 'editorial', 'dutch-design': 'bold', 'danish-hygge': 'magazine',
+  'bauhaus': 'bold', 'italian-riviera': 'bold', 'greek-island': 'editorial',
+  'cycladic-blue': 'editorial', 'provencal-lavender': 'magazine', 'tuscan-terracotta': 'magazine',
+  'amalfi-citrus': 'bold', 'portuguese-azulejo': 'market', 'copenhagen-street': 'editorial',
+  'amsterdam-bike': 'editorial', 'zurich-corporate': 'split', 'vienna-secession': 'split',
+  'prague-gothic': 'split', 'budapest-ruinbar': 'street', 'warsaw-brutalist': 'street',
+  'moscow-constructivist': 'bold', 'kyoto-zen': 'editorial', 'osaka-neon': 'street',
+  'shanghai-artdeco': 'split', 'hongkong-neonnoir': 'street', 'singapore-tropical': 'editorial',
+  'bangkok-night-market': 'market', 'manila-jeepney': 'bold', 'jakarta-batik': 'market',
+  'mumbai-bollywood': 'bold', 'delhi-durbar': 'magazine', 'kolkata-colonial': 'magazine',
+  'chennai-templesilk': 'magazine', 'bengaluru-tech': 'editorial', 'karachi-chikankari': 'market',
+  'lahore-mughal': 'magazine', 'dhaka-handloom': 'market', 'colombo-ceylon': 'editorial',
+  'kathmandu-himalayan': 'magazine', 'cairo-souk-gold': 'market', 'marrakech-riad': 'market',
+  'nairobi-maasai': 'bold', 'lagos-ankara': 'bold', 'accra-kente': 'magazine',
+  'capetown-safari': 'magazine', 'rio-carnival': 'bold', 'saopaulo-concrete': 'street',
+  'buenosaires-tango': 'split', 'bogota-andean': 'magazine', 'lima-alpaca': 'magazine',
+  'havana-chrome': 'bold', 'mexicocity-talavera': 'market', 'toronto-minimal': 'editorial',
+  'vancouver-rain': 'editorial', 'montreal-bistro': 'split', 'chicago-industrial': 'street',
+  'austin-cowboy': 'magazine', 'nashville-denim': 'magazine', 'portland-indie': 'magazine',
+  'seattle-grunge': 'street', 'honolulu-aloha': 'bold', 'santafe-adobe': 'split',
+  'neworleans-jazz': 'split',
+}
 
 // Built in passes of 10 (see comment banners below). Mechanic choice matches
 // each brand's actual character (a quiet-minimal brand gets a fit quiz, not
@@ -130,7 +167,8 @@ function buildEntry(themeId: string): FlagshipEntry | null {
   const theme = THEMES.find(t => t.id === themeId)
   const demo = FLAGSHIP_DEMO_CONTENT[themeId]
   const mech = MECHANICS[themeId]
-  if (!theme || !demo || !mech) return null
+  const archetype = ARCHETYPES[themeId]
+  if (!theme || !demo || !mech || !archetype) return null
 
   return {
     slug: themeId,
@@ -154,6 +192,7 @@ function buildEntry(themeId: string): FlagshipEntry | null {
     mechanic: mech.type,
     mechanicLabel: mech.label,
     mechanicIntro: mech.intro,
+    archetype,
   }
 }
 

@@ -11,6 +11,17 @@ import type { ThemeBrand, ThemeProduct } from '@/lib/flagship/types'
 
 export type MechanicType = 'stylist' | 'quiz' | 'countdown' | 'loyalty'
 
+// Six structurally distinct home/shell layouts — not a shared skeleton with
+// swapped colors. Each has its own hero composition, section order, nav
+// chrome, and grid treatment, matched to the brand's actual genre:
+//   editorial — minimalist/luxury calm (left nav rail, huge negative space)
+//   street    — bold/edgy drop culture (marquee ticker, color-block hero)
+//   market    — bazaar/souk discovery (no hero, horizontal curated rails)
+//   magazine  — heritage/craft lookbook (collaged hero, manifesto pull-quote)
+//   split     — atelier/quiet-luxury (fixed-text / scrolling-image split)
+//   bold      — resort/vintage/playful (angled color-block, rounded type)
+export type HomeArchetype = 'editorial' | 'street' | 'market' | 'magazine' | 'split' | 'bold'
+
 export interface FlagshipPalette {
   bg: string
   ink: string
@@ -28,4 +39,5 @@ export interface FlagshipEntry {
   mechanic: MechanicType
   mechanicLabel: string // e.g. "Ask the Stylist", "Find My Fit"
   mechanicIntro: string
+  archetype: HomeArchetype
 }

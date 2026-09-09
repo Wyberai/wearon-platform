@@ -38,6 +38,9 @@ import { configToThemeBrand } from '@/lib/flagship/adapters'
 import { AccountLinkBubble } from '@/components/store/AccountLinkBubble'
 import { FLAGSHIP_REGISTRY } from '@/lib/flagship-generic/registry'
 import { GenericFlagshipShell } from '@/components/flagship-generic/GenericShell'
+import { ReformationShell } from '@/components/flagship-generic/reformation-style/ReformationShell'
+import { NycGrungeShell } from '@/components/flagship-generic/nyc-grunge-style/NycGrungeShell'
+import { SoukShell } from '@/components/flagship-generic/moroccan-souk-style/SoukShell'
 
 // Fetch tenant config server-side and inject CSS variables
 export default async function StoreLayout({
@@ -100,6 +103,26 @@ export default async function StoreLayout({
   }
   if (slug === 'tryiton') {
     return <TryItOnShell brand={TRYITON_BRAND}>{children}</TryItOnShell>
+  }
+
+  // coastal-linen is a proof-of-concept rebuild modeled directly on
+  // thereformation.com's real structure (giant overlapping wordmark hero,
+  // editorial product-rail modules, sparse text nav) — a one-off override
+  // ahead of FLAGSHIP_REGISTRY, same precedent as the 15 slugs above.
+  if (slug === 'coastal-linen' && FLAGSHIP_REGISTRY[slug]) {
+    return <ReformationShell entry={FLAGSHIP_REGISTRY[slug]}>{children}</ReformationShell>
+  }
+
+  // nyc-grunge — modeled on aimeleondore.com (hamburger-drawer nav, live
+  // dateline strip, full-bleed macro product photography, no lifestyle hero).
+  if (slug === 'nyc-grunge' && FLAGSHIP_REGISTRY[slug]) {
+    return <NycGrungeShell entry={FLAGSHIP_REGISTRY[slug]}>{children}</NycGrungeShell>
+  }
+
+  // moroccan-souk — modeled on freepeople.com (prominent search bar, 2x2
+  // collage promo grid, alternating full-bleed category banners).
+  if (slug === 'moroccan-souk' && FLAGSHIP_REGISTRY[slug]) {
+    return <SoukShell entry={FLAGSHIP_REGISTRY[slug]}>{children}</SoukShell>
   }
 
   // Generic-kit flagship stores (see src/lib/flagship-generic/registry.ts) —

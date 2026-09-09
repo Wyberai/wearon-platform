@@ -20,6 +20,12 @@ import { FLAGSHIP_DEMO_CONTENT } from '@/lib/flagship-demo-content'
 import { FLAGSHIP_REGISTRY } from '@/lib/flagship-generic/registry'
 import { GenericHome } from '@/components/flagship-generic/GenericHome'
 import { OPEN_GENERIC_MECHANIC_EVENT } from '@/components/flagship-generic/GenericShell'
+import { ReformationHome } from '@/components/flagship-generic/reformation-style/ReformationHome'
+import { OPEN_REFORMATION_MECHANIC_EVENT } from '@/components/flagship-generic/reformation-style/ReformationShell'
+import { NycGrungeHome } from '@/components/flagship-generic/nyc-grunge-style/NycGrungeHome'
+import { OPEN_NYCGRUNGE_MECHANIC_EVENT } from '@/components/flagship-generic/nyc-grunge-style/NycGrungeShell'
+import { SoukHome } from '@/components/flagship-generic/moroccan-souk-style/SoukHome'
+import { OPEN_SOUK_MECHANIC_EVENT } from '@/components/flagship-generic/moroccan-souk-style/SoukShell'
 import { FONTS } from '@/lib/constants'
 import { getOrCreateDeviceToken } from '@/lib/device-token'
 import { StoreFeedLayout } from '@/components/store/StoreFeedLayout'
@@ -200,6 +206,27 @@ function StorePageRouter() {
   if (slug === 'tryiton') {
     const b = previewName ? { ...TRYITON_BRAND, name: previewName } : TRYITON_BRAND
     return <>{banner}<TryItOnHome brand={b} products={TRYITON_PRODUCTS} /></>
+  }
+
+  // coastal-linen — proof-of-concept rebuild modeled on thereformation.com's
+  // real homepage structure. Overrides before the generic dispatch below,
+  // same precedent as the 15 bespoke slugs.
+  if (slug === 'coastal-linen' && FLAGSHIP_REGISTRY[slug]) {
+    const entry = FLAGSHIP_REGISTRY[slug]
+    const b = previewName ? { ...entry.brand, name: previewName } : entry.brand
+    return <>{banner}<ReformationHome brand={b} products={entry.products} mechanicLabel={entry.mechanicLabel} onOpenMechanic={() => window.dispatchEvent(new CustomEvent(OPEN_REFORMATION_MECHANIC_EVENT))} /></>
+  }
+
+  if (slug === 'nyc-grunge' && FLAGSHIP_REGISTRY[slug]) {
+    const entry = FLAGSHIP_REGISTRY[slug]
+    const b = previewName ? { ...entry.brand, name: previewName } : entry.brand
+    return <>{banner}<NycGrungeHome brand={b} products={entry.products} mechanicLabel={entry.mechanicLabel} onOpenMechanic={() => window.dispatchEvent(new CustomEvent(OPEN_NYCGRUNGE_MECHANIC_EVENT))} /></>
+  }
+
+  if (slug === 'moroccan-souk' && FLAGSHIP_REGISTRY[slug]) {
+    const entry = FLAGSHIP_REGISTRY[slug]
+    const b = previewName ? { ...entry.brand, name: previewName } : entry.brand
+    return <>{banner}<SoukHome brand={b} products={entry.products} mechanicLabel={entry.mechanicLabel} onOpenMechanic={() => window.dispatchEvent(new CustomEvent(OPEN_SOUK_MECHANIC_EVENT))} /></>
   }
 
   // Generic-kit flagship stores (src/lib/flagship-generic/registry.ts) — same

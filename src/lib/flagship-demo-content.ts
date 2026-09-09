@@ -177,6 +177,25 @@ const IMG = {
   w143: 'photo-1545912193-41b5212f30ee',
   w144: 'photo-1541840031508-326b77c9a17e',
   w145: 'photo-1529391409740-59f2cea08bc6',
+  // Hand-curated for coastal-linen (Reformation-style rebuild) — real,
+  // visually-verified matches for each product, not the generic rotation.
+  cl1: 'photo-1759825413448-e555c09988f7', cl2: 'photo-1785348056988-c4d7c2248248',
+  cl3: 'photo-1625158244856-e5e20f733c1f', cl4: 'photo-1783113298894-eeb3b71315d9',
+  cl5: 'photo-1591911894795-253b780dc774', cl6: 'photo-1675470387999-5b97eebbbef4',
+  cl7: 'photo-1524679813234-66a389fe1a42', cl8: 'photo-1778182553300-7593326ca29d',
+  // Hand-curated for nyc-grunge — avoided several candidates with real,
+  // identifiable band logos/photos (Beatles, Rolling Stones tees) and a
+  // competing brand's logo (Dickies label) printed in-frame.
+  ng1: 'photo-1571455786673-9d9d6c194f90', ng2: 'photo-1633756887168-44c79bddf8b3',
+  ng3: 'photo-1524532582199-7a66dba88be6', ng4: 'photo-1786053287996-b607c503273b',
+  ng5: 'photo-1610886886310-be2828d6afd5', ng6: 'photo-1511237499363-177130e8a933',
+  ng7: 'photo-1582771415755-5d373717fcb0', ng8: 'photo-1544816155-12df9643f363',
+  // Hand-curated for moroccan-souk — avoided a candidate with a real small
+  // business's stall signage visible in-frame and a Gucci belt buckle logo.
+  ms1: 'photo-1605763052285-ee53bf0b7f39', ms2: 'photo-1629936058792-4976e99fb6aa',
+  ms3: 'photo-1605763254018-7d59bdbdc9cd', ms4: 'photo-1721578382328-1873cbb342bb',
+  ms5: 'photo-1579207238889-e1122bfc0c89', ms6: 'photo-1591050248611-e6cc135c8f11',
+  ms7: 'photo-1708221235482-a6e2a807198f', ms8: 'photo-1517574012247-6941b83050d5',
 } as const
 type ImgKey = keyof typeof IMG
 
@@ -210,14 +229,14 @@ function entry(themeId: string, brandName: string, tagline: string, categories: 
 
 export const FLAGSHIP_DEMO_CONTENT: Record<string, FlagshipDemoEntry> = Object.fromEntries([
   entry('coastal-linen', 'Driftwood & Sail', 'Sun-bleached linen for unhurried coastal days.', ['Linen Dresses', 'Resort Tops', 'Beach Layers', 'Woven Accessories'], [
-    { name: 'Linen Wrap Dress', category: 'Linen Dresses', price: 3200, img: 'w1', tags: ['bestseller'], desc: 'Airy linen, tie waist, barefoot-ready.' },
-    { name: 'Sea Salt Midi Dress', category: 'Linen Dresses', price: 2900, img: 'w41', desc: 'Relaxed cut in stone-washed linen.' },
-    { name: 'Driftwood Linen Shirt', category: 'Resort Tops', price: 1900, img: 'w42', tags: ['new'] },
-    { name: 'Sail Cloth Camisole', category: 'Resort Tops', price: 1400, img: 'w43' },
-    { name: 'Boardwalk Wide Trouser', category: 'Beach Layers', price: 2600, img: 'w44' },
-    { name: 'Harbor Cardigan', category: 'Beach Layers', price: 2400, img: 'w45', tags: ['sale'], original: 3100 },
-    { name: 'Rope-Weave Tote', category: 'Woven Accessories', price: 1600, img: 'w46' },
-    { name: 'Shell Drop Earrings', category: 'Woven Accessories', price: 700, img: 'w47' },
+    { name: 'Linen Wrap Dress', category: 'Linen Dresses', price: 3200, img: 'cl2', tags: ['bestseller'], desc: 'Airy linen, tie waist, barefoot-ready.' },
+    { name: 'Sea Salt Midi Dress', category: 'Linen Dresses', price: 2900, img: 'cl3', desc: 'Relaxed cut in stone-washed linen.' },
+    { name: 'Driftwood Linen Shirt', category: 'Resort Tops', price: 1900, img: 'cl1', tags: ['new'] },
+    { name: 'Sail Cloth Camisole', category: 'Resort Tops', price: 1400, img: 'cl4' },
+    { name: 'Boardwalk Wide Trouser', category: 'Beach Layers', price: 2600, img: 'cl5' },
+    { name: 'Harbor Cardigan', category: 'Beach Layers', price: 2400, img: 'cl6', tags: ['sale'], original: 3100 },
+    { name: 'Rope-Weave Tote', category: 'Woven Accessories', price: 1600, img: 'cl7' },
+    { name: 'Shell Drop Earrings', category: 'Woven Accessories', price: 700, img: 'cl8' },
   ]),
   entry('prairie-cottagecore', 'Wildflower Field Co.', 'Ditsy florals and gingham, straight off the porch swing.', ['Prairie Dresses', 'Gingham Tops', 'Garden Layers', 'Ribbon Trims'], [
     { name: 'Meadow Ditsy Dress', category: 'Prairie Dresses', price: 2800, img: 'w2', tags: ['bestseller'] },
@@ -350,14 +369,14 @@ export const FLAGSHIP_DEMO_CONTENT: Record<string, FlagshipDemoEntry> = Object.f
     { name: 'Buckle Choker', category: 'Hardware Accents', price: 500, img: 'w138' },
   ]),
   entry('nyc-grunge', 'Bowery Static', 'Vintage band tees, worn leather, downtown nonchalance.', ['Vintage Tees', 'Worn Leather', 'Flannel Layers', 'Downtown Accents'], [
-    { name: 'Distressed Band Tee', category: 'Vintage Tees', price: 1300, img: 'w15', tags: ['bestseller'] },
-    { name: 'Cropped Ringer Tee', category: 'Vintage Tees', price: 1200, img: 'w139' },
-    { name: 'Worn Leather Jacket', category: 'Worn Leather', price: 4800, img: 'w140', tags: ['new'] },
-    { name: 'Leather Mini Skirt', category: 'Worn Leather', price: 2400, img: 'w141' },
-    { name: 'Oversized Flannel', category: 'Flannel Layers', price: 1900, img: 'w142' },
-    { name: 'Layered Flannel Dress', category: 'Flannel Layers', price: 2600, img: 'w143' },
-    { name: 'Chain Sunglasses', category: 'Downtown Accents', price: 600, img: 'w144' },
-    { name: 'Beat-Up Tote', category: 'Downtown Accents', price: 1100, img: 'w145' },
+    { name: 'Distressed Band Tee', category: 'Vintage Tees', price: 1300, img: 'ng1', tags: ['bestseller'] },
+    { name: 'Cropped Ringer Tee', category: 'Vintage Tees', price: 1200, img: 'ng2' },
+    { name: 'Worn Leather Jacket', category: 'Worn Leather', price: 4800, img: 'ng3', tags: ['new'] },
+    { name: 'Leather Mini Skirt', category: 'Worn Leather', price: 2400, img: 'ng4' },
+    { name: 'Oversized Flannel', category: 'Flannel Layers', price: 1900, img: 'ng5' },
+    { name: 'Layered Flannel Dress', category: 'Flannel Layers', price: 2600, img: 'ng6' },
+    { name: 'Chain Sunglasses', category: 'Downtown Accents', price: 600, img: 'ng7' },
+    { name: 'Beat-Up Tote', category: 'Downtown Accents', price: 1100, img: 'ng8' },
   ]),
   entry('la-skate', 'Venice Deck Co.', 'Baggy fits, sun-faded graphics, Venice Beach skate energy.', ['Baggy Fits', 'Graphic Tees', 'Skate Denim', 'Board Accents'], [
     { name: 'Baggy Cargo Pant', category: 'Baggy Fits', price: 2400, img: 'w16', tags: ['bestseller'] },
@@ -430,14 +449,14 @@ export const FLAGSHIP_DEMO_CONTENT: Record<string, FlagshipDemoEntry> = Object.f
     { name: 'Hand Fan', category: 'Fan & Comb Accents', price: 500, img: 'w49' },
   ]),
   entry('moroccan-souk', 'Kasbah Market', 'Jewel-tone kaftans, brass and tile, market-alley richness.', ['Kaftans', 'Embroidered Tops', 'Souk Layers', 'Brass Accents'], [
-    { name: 'Embroidered Kaftan', category: 'Kaftans', price: 3400, img: 'w23', tags: ['bestseller'] },
-    { name: 'Jewel-Tone Kaftan', category: 'Kaftans', price: 3200, img: 'w50' },
-    { name: 'Beaded Tunic', category: 'Embroidered Tops', price: 2100, img: 'w51', tags: ['new'] },
-    { name: 'Embroidered Blouse', category: 'Embroidered Tops', price: 1900, img: 'w52' },
-    { name: 'Quilted Souk Vest', category: 'Souk Layers', price: 2400, img: 'w53' },
-    { name: 'Tasseled Robe', category: 'Souk Layers', price: 2900, img: 'w54' },
-    { name: 'Brass Cuff', category: 'Brass Accents', price: 900, img: 'w55' },
-    { name: 'Tile-Inspired Earrings', category: 'Brass Accents', price: 700, img: 'w56' },
+    { name: 'Embroidered Kaftan', category: 'Kaftans', price: 3400, img: 'ms1', tags: ['bestseller'] },
+    { name: 'Jewel-Tone Kaftan', category: 'Kaftans', price: 3200, img: 'ms2' },
+    { name: 'Beaded Tunic', category: 'Embroidered Tops', price: 2100, img: 'ms3', tags: ['new'] },
+    { name: 'Embroidered Blouse', category: 'Embroidered Tops', price: 1900, img: 'ms4' },
+    { name: 'Quilted Souk Vest', category: 'Souk Layers', price: 2400, img: 'ms5' },
+    { name: 'Tasseled Robe', category: 'Souk Layers', price: 2900, img: 'ms6' },
+    { name: 'Brass Cuff', category: 'Brass Accents', price: 900, img: 'ms7' },
+    { name: 'Tile-Inspired Earrings', category: 'Brass Accents', price: 700, img: 'ms8' },
   ]),
   entry('indian-block-print', 'Rajwada Print House', 'Hand-blocked cotton, indigo and madder, artisan-slow craft.', ['Block Print Sets', 'Hand-Loom Tops', 'Indigo Layers', 'Artisan Accents'], [
     { name: 'Hand-Block Anarkali', category: 'Block Print Sets', price: 3600, img: 'w24', tags: ['bestseller'] },
