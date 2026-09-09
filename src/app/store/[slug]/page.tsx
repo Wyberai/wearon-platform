@@ -30,6 +30,8 @@ import { AdobeHome } from '@/components/flagship-generic/santafe-adobe-style/Ado
 import { OPEN_ADOBE_MECHANIC_EVENT } from '@/components/flagship-generic/santafe-adobe-style/AdobeShell'
 import { ResortHome } from '@/components/flagship-generic/tropical-resort-style/ResortHome'
 import { OPEN_RESORT_MECHANIC_EVENT } from '@/components/flagship-generic/tropical-resort-style/ResortShell'
+import { NoirHome } from '@/components/flagship-generic/nordic-noir-style/NoirHome'
+import { OPEN_NOIR_MECHANIC_EVENT } from '@/components/flagship-generic/nordic-noir-style/NoirShell'
 import { FONTS } from '@/lib/constants'
 import { getOrCreateDeviceToken } from '@/lib/device-token'
 import { StoreFeedLayout } from '@/components/store/StoreFeedLayout'
@@ -243,6 +245,12 @@ function StorePageRouter() {
     const entry = FLAGSHIP_REGISTRY[slug]
     const b = previewName ? { ...entry.brand, name: previewName } : entry.brand
     return <>{banner}<ResortHome brand={b} products={entry.products} mechanicLabel={entry.mechanicLabel} onOpenMechanic={() => window.dispatchEvent(new CustomEvent(OPEN_RESORT_MECHANIC_EVENT))} /></>
+  }
+
+  if (slug === 'nordic-noir' && FLAGSHIP_REGISTRY[slug]) {
+    const entry = FLAGSHIP_REGISTRY[slug]
+    const b = previewName ? { ...entry.brand, name: previewName } : entry.brand
+    return <>{banner}<NoirHome brand={b} products={entry.products} mechanicLabel={entry.mechanicLabel} mechanicIntro={entry.mechanicIntro} onOpenMechanic={() => window.dispatchEvent(new CustomEvent(OPEN_NOIR_MECHANIC_EVENT))} /></>
   }
 
   // Generic-kit flagship stores (src/lib/flagship-generic/registry.ts) — same

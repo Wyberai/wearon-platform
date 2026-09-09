@@ -208,6 +208,11 @@ const IMG = {
   tr3: 'photo-1517191297489-48c463380e8f', tr4: 'photo-1569084755066-cbff1d9fd473',
   tr5: 'photo-1781036151153-2a4198251af8', tr6: 'photo-1619799087974-1e16384e4306',
   tr7: 'photo-1593360871505-046499505840', tr8: 'photo-1630331010250-7524271ed506',
+  // Hand-curated for nordic-noir.
+  nn1: 'photo-1645561305502-63a9ba09ab09', nn2: 'photo-1762468145669-943b551430d4',
+  nn3: 'photo-1584658556169-5e2eeb66e5ab', nn4: 'photo-1637763762772-0908bf89cd22',
+  nn5: 'photo-1587763776627-6fd8b39365ce', nn6: 'photo-1611312449408-fcece27cdbb7',
+  nn7: 'photo-1628785517892-dbcd2f2719ed', nn8: 'photo-1552224614-2b4a2c4604ec',
 } as const
 type ImgKey = keyof typeof IMG
 
@@ -311,14 +316,14 @@ export const FLAGSHIP_DEMO_CONTENT: Record<string, FlagshipDemoEntry> = Object.f
     { name: 'Shell Charm Anklet', category: 'Poolside Accents', price: 500, img: 'tr8' },
   ]),
   entry('nordic-noir', 'Fenrir & Frost', 'Charcoal wool and muted navy, cinematic Nordic gloom.', ['Charcoal Outer', 'Structured Knits', 'Noir Denim', 'Muted Accents'], [
-    { name: 'Charcoal Wool Coat', category: 'Charcoal Outer', price: 6800, img: 'w8', tags: ['bestseller'] },
-    { name: 'Storm Trench', category: 'Charcoal Outer', price: 5900, img: 'w90' },
-    { name: 'Ribbed Navy Knit', category: 'Structured Knits', price: 2500, img: 'w91', tags: ['new'] },
-    { name: 'High-Neck Merino Top', category: 'Structured Knits', price: 2300, img: 'w92' },
-    { name: 'Slate Straight Jean', category: 'Noir Denim', price: 2900, img: 'w93' },
-    { name: 'Ink-Wash Denim Jacket', category: 'Noir Denim', price: 3200, img: 'w94' },
-    { name: 'Steel-Tone Cuff', category: 'Muted Accents', price: 700, img: 'w95' },
-    { name: 'Matte Leather Belt', category: 'Muted Accents', price: 800, img: 'w96' },
+    { name: 'Charcoal Wool Coat', category: 'Charcoal Outer', price: 6800, img: 'nn1', tags: ['bestseller'] },
+    { name: 'Storm Trench', category: 'Charcoal Outer', price: 5900, img: 'nn2' },
+    { name: 'Ribbed Navy Knit', category: 'Structured Knits', price: 2500, img: 'nn3', tags: ['new'] },
+    { name: 'High-Neck Merino Top', category: 'Structured Knits', price: 2300, img: 'nn4' },
+    { name: 'Slate Straight Jean', category: 'Noir Denim', price: 2900, img: 'nn5' },
+    { name: 'Ink-Wash Denim Jacket', category: 'Noir Denim', price: 3200, img: 'nn6' },
+    { name: 'Steel-Tone Cuff', category: 'Muted Accents', price: 700, img: 'nn7' },
+    { name: 'Matte Leather Belt', category: 'Muted Accents', price: 800, img: 'nn8' },
   ]),
   entry('parisian-chic', 'Rive Gauche Atelier', 'Effortless tailoring and quiet confidence.', ['Tailored Essentials', 'Silk Layers', 'Trench Coats', 'Understated Accents'], [
     { name: 'Wool Blazer', category: 'Tailored Essentials', price: 5200, img: 'w9', tags: ['bestseller'] },

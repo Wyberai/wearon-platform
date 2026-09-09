@@ -43,6 +43,7 @@ import { NycGrungeShell } from '@/components/flagship-generic/nyc-grunge-style/N
 import { SoukShell } from '@/components/flagship-generic/moroccan-souk-style/SoukShell'
 import { AdobeShell } from '@/components/flagship-generic/santafe-adobe-style/AdobeShell'
 import { ResortShell } from '@/components/flagship-generic/tropical-resort-style/ResortShell'
+import { NoirShell } from '@/components/flagship-generic/nordic-noir-style/NoirShell'
 
 // Fetch tenant config server-side and inject CSS variables
 export default async function StoreLayout({
@@ -137,6 +138,13 @@ export default async function StoreLayout({
   // script logo, star-rating social proof, folded-corner promo badge).
   if (slug === 'tropical-resort' && FLAGSHIP_REGISTRY[slug]) {
     return <ResortShell entry={FLAGSHIP_REGISTRY[slug]}>{children}</ResortShell>
+  }
+
+  // nordic-noir — a faithful clone of norseprojects.com: transparent-to-
+  // solid nav, no-headline hero, asymmetric editorial sections with real
+  // material/construction copywriting instead of marketing headlines.
+  if (slug === 'nordic-noir' && FLAGSHIP_REGISTRY[slug]) {
+    return <NoirShell entry={FLAGSHIP_REGISTRY[slug]}>{children}</NoirShell>
   }
 
   // Generic-kit flagship stores (see src/lib/flagship-generic/registry.ts) —
