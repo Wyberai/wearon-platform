@@ -49,6 +49,7 @@ import { FjordShell } from '@/components/flagship-generic/scandi-minimal-style/F
 import { KintsugiShell } from '@/components/flagship-generic/wabi-sabi-style/KintsugiShell'
 import { RiveShell } from '@/components/flagship-generic/parisian-chic-style/RiveShell'
 import { SartoriaShell } from '@/components/flagship-generic/milanese-tailoring-style/SartoriaShell'
+import { ShibuyaShell } from '@/components/flagship-generic/tokyo-streetstyle-style/ShibuyaShell'
 
 // Fetch tenant config server-side and inject CSS variables
 export default async function StoreLayout({
@@ -185,6 +186,14 @@ export default async function StoreLayout({
   // em-dash category links, "The Look" material-tagged outfit section).
   if (slug === 'milanese-tailoring' && FLAGSHIP_REGISTRY[slug]) {
     return <SartoriaShell entry={FLAGSHIP_REGISTRY[slug]}>{children}</SartoriaShell>
+  }
+
+  // tokyo-streetstyle — a faithful clone of shop.doverstreetmarket.com
+  // (house-crest icon, massive bold condensed wordmark, plain text-only
+  // nav labels with no icon glyphs, 2-column campaign blocks with the
+  // caption below the image rather than overlaid).
+  if (slug === 'tokyo-streetstyle' && FLAGSHIP_REGISTRY[slug]) {
+    return <ShibuyaShell entry={FLAGSHIP_REGISTRY[slug]}>{children}</ShibuyaShell>
   }
 
   // Generic-kit flagship stores (see src/lib/flagship-generic/registry.ts) —

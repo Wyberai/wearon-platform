@@ -238,6 +238,11 @@ const IMG = {
   cs3: 'photo-1704775991298-38b9139fdad9', cs4: 'photo-1616244094558-2b62c9cc97db',
   cs5: 'photo-1550101361-43e550ffbf66', cs6: 'photo-1640476583533-ad753ed2617c',
   cs7: 'photo-1583484370773-c1af4e528d5e', cs8: 'photo-1642609881636-f8f67f770c0c',
+  // Hand-curated for tokyo-streetstyle.
+  sl1: 'photo-1546672657-61d12fae638c', sl2: 'photo-1522198084771-b0a485d70dfc',
+  sl3: 'photo-1621446511130-0ed6519bfeb6', sl4: 'photo-1624021383922-b7d2cf131d59',
+  sl5: 'photo-1552902865-b72c031ac5ea', sl6: 'photo-1619292843545-96ba1f41c4f4',
+  sl7: 'photo-1622560482379-c9813322e95a', sl8: 'photo-1667255831766-099566b55504',
 } as const
 type ImgKey = keyof typeof IMG
 
@@ -371,14 +376,14 @@ export const FLAGSHIP_DEMO_CONTENT: Record<string, FlagshipDemoEntry> = Object.f
     { name: 'Signet Cuff', category: 'Gold Accents', price: 1200, img: 'cs8' },
   ]),
   entry('tokyo-streetstyle', 'Shibuya Layer', 'Layered silhouettes, monochrome with one loud accent.', ['Layered Outer', 'Graphic Tees', 'Utility Bottoms', 'Statement Accents'], [
-    { name: 'Deconstructed Trench', category: 'Layered Outer', price: 4200, img: 'w11', tags: ['bestseller'] },
-    { name: 'Asymmetric Bomber', category: 'Layered Outer', price: 3800, img: 'w111' },
-    { name: 'Oversized Graphic Tee', category: 'Graphic Tees', price: 1400, img: 'w112', tags: ['new'] },
-    { name: 'Mesh Layer Top', category: 'Graphic Tees', price: 1300, img: 'w113' },
-    { name: 'Cargo Utility Pant', category: 'Utility Bottoms', price: 2800, img: 'w114' },
-    { name: 'Pleated Wide Trouser', category: 'Utility Bottoms', price: 2600, img: 'w115' },
-    { name: 'Neon Strap Bag', category: 'Statement Accents', price: 1600, img: 'w116' },
-    { name: 'Chain Choker', category: 'Statement Accents', price: 600, img: 'w117' },
+    { name: 'Deconstructed Trench', category: 'Layered Outer', price: 4200, img: 'sl1', tags: ['bestseller'] },
+    { name: 'Asymmetric Bomber', category: 'Layered Outer', price: 3800, img: 'sl2' },
+    { name: 'Oversized Graphic Tee', category: 'Graphic Tees', price: 1400, img: 'sl3', tags: ['new'] },
+    { name: 'Mesh Layer Top', category: 'Graphic Tees', price: 1300, img: 'sl4' },
+    { name: 'Cargo Utility Pant', category: 'Utility Bottoms', price: 2800, img: 'sl5' },
+    { name: 'Pleated Wide Trouser', category: 'Utility Bottoms', price: 2600, img: 'sl6' },
+    { name: 'Neon Strap Bag', category: 'Statement Accents', price: 1600, img: 'sl7' },
+    { name: 'Chain Choker', category: 'Statement Accents', price: 600, img: 'sl8' },
   ]),
   entry('seoul-y2k', 'Gangnam Chrome', 'Chrome, glitter, low-rise nostalgia with K-pop polish.', ['Y2K Tops', 'Low-Rise Bottoms', 'Chrome Layers', 'Glitter Accents'], [
     { name: 'Baby Tee (Chrome Print)', category: 'Y2K Tops', price: 1200, img: 'w12', tags: ['bestseller'] },

@@ -42,6 +42,8 @@ import { RiveHome } from '@/components/flagship-generic/parisian-chic-style/Rive
 import { OPEN_RIVE_MECHANIC_EVENT } from '@/components/flagship-generic/parisian-chic-style/RiveShell'
 import { SartoriaHome } from '@/components/flagship-generic/milanese-tailoring-style/SartoriaHome'
 import { OPEN_SARTORIA_MECHANIC_EVENT } from '@/components/flagship-generic/milanese-tailoring-style/SartoriaShell'
+import { ShibuyaHome } from '@/components/flagship-generic/tokyo-streetstyle-style/ShibuyaHome'
+import { OPEN_SHIBUYA_MECHANIC_EVENT } from '@/components/flagship-generic/tokyo-streetstyle-style/ShibuyaShell'
 import { FONTS } from '@/lib/constants'
 import { getOrCreateDeviceToken } from '@/lib/device-token'
 import { StoreFeedLayout } from '@/components/store/StoreFeedLayout'
@@ -291,6 +293,12 @@ function StorePageRouter() {
     const entry = FLAGSHIP_REGISTRY[slug]
     const b = previewName ? { ...entry.brand, name: previewName } : entry.brand
     return <>{banner}<SartoriaHome brand={b} products={entry.products} mechanicLabel={entry.mechanicLabel} mechanicIntro={entry.mechanicIntro} onOpenMechanic={() => window.dispatchEvent(new CustomEvent(OPEN_SARTORIA_MECHANIC_EVENT))} /></>
+  }
+
+  if (slug === 'tokyo-streetstyle' && FLAGSHIP_REGISTRY[slug]) {
+    const entry = FLAGSHIP_REGISTRY[slug]
+    const b = previewName ? { ...entry.brand, name: previewName } : entry.brand
+    return <>{banner}<ShibuyaHome brand={b} products={entry.products} mechanicLabel={entry.mechanicLabel} mechanicIntro={entry.mechanicIntro} onOpenMechanic={() => window.dispatchEvent(new CustomEvent(OPEN_SHIBUYA_MECHANIC_EVENT))} /></>
   }
 
   // Generic-kit flagship stores (src/lib/flagship-generic/registry.ts) — same
