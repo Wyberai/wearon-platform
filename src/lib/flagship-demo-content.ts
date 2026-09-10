@@ -243,6 +243,11 @@ const IMG = {
   sl3: 'photo-1621446511130-0ed6519bfeb6', sl4: 'photo-1624021383922-b7d2cf131d59',
   sl5: 'photo-1552902865-b72c031ac5ea', sl6: 'photo-1619292843545-96ba1f41c4f4',
   sl7: 'photo-1622560482379-c9813322e95a', sl8: 'photo-1667255831766-099566b55504',
+  // Hand-curated for seoul-y2k.
+  gc1: 'photo-1618143445383-88324d0ba719', gc2: 'photo-1637562784818-11e6766d0d38',
+  gc3: 'photo-1622531651659-e452433e6c0c', gc4: 'photo-1655741265877-9e011909ab96',
+  gc5: 'photo-1590087950483-8b5782fa8f20', gc6: 'photo-1591079886542-53db52add557',
+  gc7: 'photo-1630489160151-2b52de7df6e5', gc8: 'photo-1600328831856-f1b50710d204',
 } as const
 type ImgKey = keyof typeof IMG
 
@@ -386,14 +391,14 @@ export const FLAGSHIP_DEMO_CONTENT: Record<string, FlagshipDemoEntry> = Object.f
     { name: 'Chain Choker', category: 'Statement Accents', price: 600, img: 'sl8' },
   ]),
   entry('seoul-y2k', 'Gangnam Chrome', 'Chrome, glitter, low-rise nostalgia with K-pop polish.', ['Y2K Tops', 'Low-Rise Bottoms', 'Chrome Layers', 'Glitter Accents'], [
-    { name: 'Baby Tee (Chrome Print)', category: 'Y2K Tops', price: 1200, img: 'w12', tags: ['bestseller'] },
-    { name: 'Halter Mesh Top', category: 'Y2K Tops', price: 1300, img: 'w118', tags: ['new'] },
-    { name: 'Low-Rise Cargo Jean', category: 'Low-Rise Bottoms', price: 2400, img: 'w119' },
-    { name: 'Pleated Mini Skirt', category: 'Low-Rise Bottoms', price: 1600, img: 'w120' },
-    { name: 'Metallic Puffer Jacket', category: 'Chrome Layers', price: 3200, img: 'w121' },
-    { name: 'Vinyl Trench', category: 'Chrome Layers', price: 3400, img: 'w122' },
-    { name: 'Butterfly Hair Clips', category: 'Glitter Accents', price: 400, img: 'w123' },
-    { name: 'Chunky Platform Charm', category: 'Glitter Accents', price: 500, img: 'w124' },
+    { name: 'Baby Tee (Chrome Print)', category: 'Y2K Tops', price: 1200, img: 'gc1', tags: ['bestseller'] },
+    { name: 'Halter Mesh Top', category: 'Y2K Tops', price: 1300, img: 'gc2', tags: ['new'] },
+    { name: 'Low-Rise Cargo Jean', category: 'Low-Rise Bottoms', price: 2400, img: 'gc3' },
+    { name: 'Pleated Mini Skirt', category: 'Low-Rise Bottoms', price: 1600, img: 'gc4' },
+    { name: 'Metallic Puffer Jacket', category: 'Chrome Layers', price: 3200, img: 'gc5' },
+    { name: 'Vinyl Trench', category: 'Chrome Layers', price: 3400, img: 'gc6' },
+    { name: 'Butterfly Hair Clips', category: 'Glitter Accents', price: 400, img: 'gc7' },
+    { name: 'Chunky Platform Charm', category: 'Glitter Accents', price: 500, img: 'gc8' },
   ]),
   entry('london-punk', 'Kings Road Riot', 'Tartan safety-pins, distressed denim, defiant DIY energy.', ['Tartan Layers', 'Distressed Denim', 'Studded Outer', 'Pin & Patch Accents'], [
     { name: 'Tartan Mini Kilt', category: 'Tartan Layers', price: 2100, img: 'w13', tags: ['bestseller'] },

@@ -50,6 +50,7 @@ import { KintsugiShell } from '@/components/flagship-generic/wabi-sabi-style/Kin
 import { RiveShell } from '@/components/flagship-generic/parisian-chic-style/RiveShell'
 import { SartoriaShell } from '@/components/flagship-generic/milanese-tailoring-style/SartoriaShell'
 import { ShibuyaShell } from '@/components/flagship-generic/tokyo-streetstyle-style/ShibuyaShell'
+import { GangnamShell } from '@/components/flagship-generic/seoul-y2k-style/GangnamShell'
 
 // Fetch tenant config server-side and inject CSS variables
 export default async function StoreLayout({
@@ -194,6 +195,13 @@ export default async function StoreLayout({
   // caption below the image rather than overlaid).
   if (slug === 'tokyo-streetstyle' && FLAGSHIP_REGISTRY[slug]) {
     return <ShibuyaShell entry={FLAGSHIP_REGISTRY[slug]}>{children}</ShibuyaShell>
+  }
+
+  // seoul-y2k — a faithful clone of motelrocks.com (rotating marquee
+  // promo strip, lowercase script wordmark, "Most Wanted" curated tile
+  // row, a drop/fit-guide callout, Instagram-style UGC grid).
+  if (slug === 'seoul-y2k' && FLAGSHIP_REGISTRY[slug]) {
+    return <GangnamShell entry={FLAGSHIP_REGISTRY[slug]}>{children}</GangnamShell>
   }
 
   // Generic-kit flagship stores (see src/lib/flagship-generic/registry.ts) —
