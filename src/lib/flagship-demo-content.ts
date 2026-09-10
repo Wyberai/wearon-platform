@@ -228,6 +228,11 @@ const IMG = {
   ws3: 'photo-1615899486509-84e2c782b0da', ws4: 'photo-1625131060936-3aacb5e266bd',
   ws5: 'photo-1651895884377-5f631be84282', ws6: 'photo-1682421938316-4b186e25174c',
   ws7: 'photo-1643940527732-0f1e6e6c8f38', ws8: 'photo-1611937685025-8d1df67a80b6',
+  // Hand-curated for parisian-chic.
+  rg1: 'photo-1613915617430-8ab0fd7c6baf', rg2: 'photo-1584273143981-41c073dfe8f8',
+  rg3: 'photo-1646337508131-e6e39c22343f', rg4: 'photo-1583772085030-100dfe2c5e2d',
+  rg5: 'photo-1687742180233-45ad6deec0ee', rg6: 'photo-1620352513405-96906bda69b9',
+  rg7: 'photo-1628022622594-5b4580f345ed', rg8: 'photo-1543163836-2e529843d1e4',
 } as const
 type ImgKey = keyof typeof IMG
 
@@ -341,14 +346,14 @@ export const FLAGSHIP_DEMO_CONTENT: Record<string, FlagshipDemoEntry> = Object.f
     { name: 'Matte Leather Belt', category: 'Muted Accents', price: 800, img: 'nn8' },
   ]),
   entry('parisian-chic', 'Rive Gauche Atelier', 'Effortless tailoring and quiet confidence.', ['Tailored Essentials', 'Silk Layers', 'Trench Coats', 'Understated Accents'], [
-    { name: 'Wool Blazer', category: 'Tailored Essentials', price: 5200, img: 'w9', tags: ['bestseller'] },
-    { name: 'Cigarette Trouser', category: 'Tailored Essentials', price: 2900, img: 'w97' },
-    { name: 'Silk Blouse', category: 'Silk Layers', price: 2600, img: 'w98', tags: ['new'] },
-    { name: 'Bias-Cut Slip', category: 'Silk Layers', price: 2400, img: 'w99' },
-    { name: 'Classic Trench', category: 'Trench Coats', price: 6100, img: 'w100' },
-    { name: 'Belted Rain Coat', category: 'Trench Coats', price: 5800, img: 'w101' },
-    { name: 'Silk Neck Scarf', category: 'Understated Accents', price: 900, img: 'w102' },
-    { name: 'Leather Crossbody', category: 'Understated Accents', price: 2200, img: 'w103' },
+    { name: 'Wool Blazer', category: 'Tailored Essentials', price: 5200, img: 'rg1', tags: ['bestseller'] },
+    { name: 'Cigarette Trouser', category: 'Tailored Essentials', price: 2900, img: 'rg2' },
+    { name: 'Silk Blouse', category: 'Silk Layers', price: 2600, img: 'rg3', tags: ['new'] },
+    { name: 'Bias-Cut Slip', category: 'Silk Layers', price: 2400, img: 'rg4' },
+    { name: 'Classic Trench', category: 'Trench Coats', price: 6100, img: 'rg5' },
+    { name: 'Belted Rain Coat', category: 'Trench Coats', price: 5800, img: 'rg6' },
+    { name: 'Silk Neck Scarf', category: 'Understated Accents', price: 900, img: 'rg7' },
+    { name: 'Leather Crossbody', category: 'Understated Accents', price: 2200, img: 'rg8' },
   ]),
   entry('milanese-tailoring', 'Casa Sartoria', 'Sharp shoulders, rich fabric, confident Italian polish.', ['Tailored Suiting', 'Silk Shirting', 'Luxury Outerwear', 'Gold Accents'], [
     { name: 'Double-Breasted Blazer', category: 'Tailored Suiting', price: 7400, img: 'w10', tags: ['bestseller'] },

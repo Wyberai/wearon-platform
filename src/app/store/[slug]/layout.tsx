@@ -47,6 +47,7 @@ import { NoirShell } from '@/components/flagship-generic/nordic-noir-style/NoirS
 import { PrairieShell } from '@/components/flagship-generic/prairie-cottagecore-style/PrairieShell'
 import { FjordShell } from '@/components/flagship-generic/scandi-minimal-style/FjordShell'
 import { KintsugiShell } from '@/components/flagship-generic/wabi-sabi-style/KintsugiShell'
+import { RiveShell } from '@/components/flagship-generic/parisian-chic-style/RiveShell'
 
 // Fetch tenant config server-side and inject CSS variables
 export default async function StoreLayout({
@@ -169,6 +170,13 @@ export default async function StoreLayout({
   // editorial passage, craft/maker magazine section).
   if (slug === 'wabi-sabi' && FLAGSHIP_REGISTRY[slug]) {
     return <KintsugiShell entry={FLAGSHIP_REGISTRY[slug]}>{children}</KintsugiShell>
+  }
+
+  // parisian-chic — a faithful clone of sezane.com (icon-only header with
+  // no text labels, category-tile hero grid with centered white serif
+  // labels instead of a headline, members'-circle editorial section).
+  if (slug === 'parisian-chic' && FLAGSHIP_REGISTRY[slug]) {
+    return <RiveShell entry={FLAGSHIP_REGISTRY[slug]}>{children}</RiveShell>
   }
 
   // Generic-kit flagship stores (see src/lib/flagship-generic/registry.ts) —

@@ -38,6 +38,8 @@ import { FjordHome } from '@/components/flagship-generic/scandi-minimal-style/Fj
 import { OPEN_FJORD_MECHANIC_EVENT } from '@/components/flagship-generic/scandi-minimal-style/FjordShell'
 import { KintsugiHome } from '@/components/flagship-generic/wabi-sabi-style/KintsugiHome'
 import { OPEN_KINTSUGI_MECHANIC_EVENT } from '@/components/flagship-generic/wabi-sabi-style/KintsugiShell'
+import { RiveHome } from '@/components/flagship-generic/parisian-chic-style/RiveHome'
+import { OPEN_RIVE_MECHANIC_EVENT } from '@/components/flagship-generic/parisian-chic-style/RiveShell'
 import { FONTS } from '@/lib/constants'
 import { getOrCreateDeviceToken } from '@/lib/device-token'
 import { StoreFeedLayout } from '@/components/store/StoreFeedLayout'
@@ -275,6 +277,12 @@ function StorePageRouter() {
     const entry = FLAGSHIP_REGISTRY[slug]
     const b = previewName ? { ...entry.brand, name: previewName } : entry.brand
     return <>{banner}<KintsugiHome brand={b} products={entry.products} mechanicLabel={entry.mechanicLabel} mechanicIntro={entry.mechanicIntro} onOpenMechanic={() => window.dispatchEvent(new CustomEvent(OPEN_KINTSUGI_MECHANIC_EVENT))} /></>
+  }
+
+  if (slug === 'parisian-chic' && FLAGSHIP_REGISTRY[slug]) {
+    const entry = FLAGSHIP_REGISTRY[slug]
+    const b = previewName ? { ...entry.brand, name: previewName } : entry.brand
+    return <>{banner}<RiveHome brand={b} products={entry.products} mechanicLabel={entry.mechanicLabel} mechanicIntro={entry.mechanicIntro} onOpenMechanic={() => window.dispatchEvent(new CustomEvent(OPEN_RIVE_MECHANIC_EVENT))} /></>
   }
 
   // Generic-kit flagship stores (src/lib/flagship-generic/registry.ts) — same
