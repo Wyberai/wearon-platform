@@ -46,6 +46,7 @@ import { ResortShell } from '@/components/flagship-generic/tropical-resort-style
 import { NoirShell } from '@/components/flagship-generic/nordic-noir-style/NoirShell'
 import { PrairieShell } from '@/components/flagship-generic/prairie-cottagecore-style/PrairieShell'
 import { FjordShell } from '@/components/flagship-generic/scandi-minimal-style/FjordShell'
+import { KintsugiShell } from '@/components/flagship-generic/wabi-sabi-style/KintsugiShell'
 
 // Fetch tenant config server-side and inject CSS variables
 export default async function StoreLayout({
@@ -161,6 +162,13 @@ export default async function StoreLayout({
   // long-form writing before any product grid).
   if (slug === 'scandi-minimal' && FLAGSHIP_REGISTRY[slug]) {
     return <FjordShell entry={FLAGSHIP_REGISTRY[slug]}>{children}</FjordShell>
+  }
+
+  // wabi-sabi — a faithful clone of toa.st (quiet "Menu"/"Bag" text chrome,
+  // split two-column hero with boxed text-link CTAs, seasonal poetic
+  // editorial passage, craft/maker magazine section).
+  if (slug === 'wabi-sabi' && FLAGSHIP_REGISTRY[slug]) {
+    return <KintsugiShell entry={FLAGSHIP_REGISTRY[slug]}>{children}</KintsugiShell>
   }
 
   // Generic-kit flagship stores (see src/lib/flagship-generic/registry.ts) —

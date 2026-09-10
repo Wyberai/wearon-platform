@@ -223,6 +223,11 @@ const IMG = {
   sm3: 'photo-1719710844666-956ea4834e0d', sm4: 'photo-1637928115738-8a4a7c59e376',
   sm5: 'photo-1585131609775-8eecc878fdfc', sm6: 'photo-1647103992458-e8254f49f268',
   sm7: 'photo-1659355110966-42fe631ffb9a', sm8: 'photo-1747398690600-ffe8ecda9df1',
+  // Hand-curated for wabi-sabi.
+  ws1: 'photo-1572853566605-af9816b0a77a', ws2: 'photo-1627148572788-38d6f237fd6d',
+  ws3: 'photo-1615899486509-84e2c782b0da', ws4: 'photo-1625131060936-3aacb5e266bd',
+  ws5: 'photo-1651895884377-5f631be84282', ws6: 'photo-1682421938316-4b186e25174c',
+  ws7: 'photo-1643940527732-0f1e6e6c8f38', ws8: 'photo-1611937685025-8d1df67a80b6',
 } as const
 type ImgKey = keyof typeof IMG
 
@@ -286,14 +291,14 @@ export const FLAGSHIP_DEMO_CONTENT: Record<string, FlagshipDemoEntry> = Object.f
     { name: 'Birch Hair Comb', category: 'Objects', price: 300, img: 'sm8' },
   ]),
   entry('wabi-sabi', 'Kintsugi House', 'Imperfect textures, muted earth, quiet reverence for wear.', ['Undyed Layers', 'Textured Tops', 'Raw Hem Bottoms', 'Ceramic-Inspired Accents'], [
-    { name: 'Undyed Linen Robe', category: 'Undyed Layers', price: 3400, img: 'w4', tags: ['bestseller'] },
-    { name: 'Raw Cotton Wrap', category: 'Undyed Layers', price: 2700, img: 'w62' },
-    { name: 'Slub Weave Tee', category: 'Textured Tops', price: 1500, img: 'w63' },
-    { name: 'Hand-Frayed Tunic', category: 'Textured Tops', price: 1900, img: 'w64', tags: ['new'] },
-    { name: 'Raw Hem Trouser', category: 'Raw Hem Bottoms', price: 2600, img: 'w65' },
-    { name: 'Unfinished Edge Skirt', category: 'Raw Hem Bottoms', price: 2300, img: 'w66' },
-    { name: 'Crackle-Glaze Pendant', category: 'Ceramic-Inspired Accents', price: 800, img: 'w67' },
-    { name: 'Clay-Toned Belt', category: 'Ceramic-Inspired Accents', price: 700, img: 'w68' },
+    { name: 'Undyed Linen Robe', category: 'Undyed Layers', price: 3400, img: 'ws1', tags: ['bestseller'] },
+    { name: 'Raw Cotton Wrap', category: 'Undyed Layers', price: 2700, img: 'ws2' },
+    { name: 'Slub Weave Tee', category: 'Textured Tops', price: 1500, img: 'ws3' },
+    { name: 'Hand-Frayed Tunic', category: 'Textured Tops', price: 1900, img: 'ws4', tags: ['new'] },
+    { name: 'Raw Hem Trouser', category: 'Raw Hem Bottoms', price: 2600, img: 'ws5' },
+    { name: 'Unfinished Edge Skirt', category: 'Raw Hem Bottoms', price: 2300, img: 'ws6' },
+    { name: 'Crackle-Glaze Pendant', category: 'Ceramic-Inspired Accents', price: 800, img: 'ws7' },
+    { name: 'Clay-Toned Belt', category: 'Ceramic-Inspired Accents', price: 700, img: 'ws8' },
   ]),
   entry('alpine-lodge', 'Timber & Snow', 'Knit textures, fireside warmth, chalet mornings.', ['Chunky Knitwear', 'Shearling Outer', 'Lodge Layers', 'Fireside Accents'], [
     { name: 'Cable-Knit Sweater', category: 'Chunky Knitwear', price: 3200, img: 'w5', tags: ['bestseller'] },
