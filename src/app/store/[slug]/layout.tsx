@@ -57,6 +57,7 @@ import { VeniceShell } from '@/components/flagship-generic/la-skate-style/Venice
 import { OceanShell } from '@/components/flagship-generic/miami-vice-style/OceanShell'
 import { MagnoliaShell } from '@/components/flagship-generic/southern-prep-style/MagnoliaShell'
 import { CampusShell } from '@/components/flagship-generic/ivy-varsity-style/CampusShell'
+import { HedgerowShell } from '@/components/flagship-generic/countryside-tweed-style/HedgerowShell'
 
 // Fetch tenant config server-side and inject CSS variables
 export default async function StoreLayout({
@@ -254,6 +255,14 @@ export default async function StoreLayout({
   // Quick View hover on product tiles).
   if (slug === 'ivy-varsity' && FLAGSHIP_REGISTRY[slug]) {
     return <CampusShell entry={FLAGSHIP_REGISTRY[slug]}>{children}</CampusShell>
+  }
+
+  // countryside-tweed — a faithful clone of barbour.com (crest icon
+  // above a serif wordmark with an "Established" subtitle, a split
+  // monochrome campaign hero with dual CTA buttons, a "Repair Hub"
+  // heritage-craft passage reframed as a mending room).
+  if (slug === 'countryside-tweed' && FLAGSHIP_REGISTRY[slug]) {
+    return <HedgerowShell entry={FLAGSHIP_REGISTRY[slug]}>{children}</HedgerowShell>
   }
 
   // Generic-kit flagship stores (see src/lib/flagship-generic/registry.ts) —

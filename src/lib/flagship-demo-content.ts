@@ -278,6 +278,11 @@ const IMG = {
   oc3: 'photo-1762232979295-47b301ef9782', oc4: 'photo-1667916707363-d0d42c51913c',
   oc5: 'photo-1782422101881-c17385d507a8', oc6: 'photo-1611937669166-be4e0503b115',
   oc7: 'photo-1614775717935-a7ecf0c2d072', oc8: 'photo-1609803384069-19f3e5a70e75',
+  // Hand-curated for countryside-tweed.
+  hh1: 'photo-1613667240884-45d0a697f69d', hh2: 'photo-1682313918680-185e6355d2cf',
+  hh3: 'photo-1629580626780-7fe7fb0523e9', hh4: 'photo-1613824535575-c19019486149',
+  hh5: 'photo-1607125439463-3a4512abb7b4', hh6: 'photo-1603289242110-544e9ea77419',
+  hh7: 'photo-1479219136056-56bb6495a005', hh8: 'photo-1707302923174-e0cf4293ac67',
 } as const
 type ImgKey = keyof typeof IMG
 
@@ -501,14 +506,14 @@ export const FLAGSHIP_DEMO_CONTENT: Record<string, FlagshipDemoEntry> = Object.f
     { name: 'Striped Scarf', category: 'Letterman Accents', price: 600, img: 'oc8' },
   ]),
   entry('countryside-tweed', 'Hedgerow & Hound', 'Herringbone wool, wellingtons, manor-house heritage.', ['Tweed Outer', 'Wool Knitwear', 'Field Bottoms', 'Countryside Accents'], [
-    { name: 'Herringbone Blazer', category: 'Tweed Outer', price: 5800, img: 'w20', tags: ['bestseller'] },
-    { name: 'Tweed Waistcoat', category: 'Tweed Outer', price: 3200, img: 'w29' },
-    { name: 'Fisherman Knit Jumper', category: 'Wool Knitwear', price: 2700, img: 'w30', tags: ['new'] },
-    { name: 'Lambswool Cardigan', category: 'Wool Knitwear', price: 2500, img: 'w31' },
-    { name: 'Moleskin Trouser', category: 'Field Bottoms', price: 2600, img: 'w32' },
-    { name: 'Tweed Skirt', category: 'Field Bottoms', price: 2400, img: 'w33' },
-    { name: 'Leather Satchel', category: 'Countryside Accents', price: 3400, img: 'w34' },
-    { name: 'Flat Cap', category: 'Countryside Accents', price: 900, img: 'w35' },
+    { name: 'Herringbone Blazer', category: 'Tweed Outer', price: 5800, img: 'hh1', tags: ['bestseller'] },
+    { name: 'Tweed Waistcoat', category: 'Tweed Outer', price: 3200, img: 'hh2' },
+    { name: 'Fisherman Knit Jumper', category: 'Wool Knitwear', price: 2700, img: 'hh3', tags: ['new'] },
+    { name: 'Lambswool Cardigan', category: 'Wool Knitwear', price: 2500, img: 'hh4' },
+    { name: 'Moleskin Trouser', category: 'Field Bottoms', price: 2600, img: 'hh5' },
+    { name: 'Tweed Skirt', category: 'Field Bottoms', price: 2400, img: 'hh6' },
+    { name: 'Leather Satchel', category: 'Countryside Accents', price: 3400, img: 'hh7' },
+    { name: 'Flat Cap', category: 'Countryside Accents', price: 900, img: 'hh8' },
   ]),
   entry('highland-tartan', 'Glenmore Clan', 'Clan plaid, kilts, rugged Scottish highland character.', ['Tartan Kilts', 'Highland Knitwear', 'Wool Outer', 'Clan Accents'], [
     { name: 'Clan Tartan Kilt', category: 'Tartan Kilts', price: 4200, img: 'w21', tags: ['bestseller'] },
