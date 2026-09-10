@@ -248,6 +248,11 @@ const IMG = {
   gc3: 'photo-1622531651659-e452433e6c0c', gc4: 'photo-1655741265877-9e011909ab96',
   gc5: 'photo-1590087950483-8b5782fa8f20', gc6: 'photo-1591079886542-53db52add557',
   gc7: 'photo-1630489160151-2b52de7df6e5', gc8: 'photo-1600328831856-f1b50710d204',
+  // Hand-curated for london-punk.
+  kr1: 'photo-1550935806-0c4c53d8b8d4', kr2: 'photo-1628336705279-5f5799f8c9a4',
+  kr3: 'photo-1611693345580-a961174352b8', kr4: 'photo-1652561816256-4e399506d88c',
+  kr5: 'photo-1669720187557-6169ea077ec7', kr6: 'photo-1517273570167-36c69226ab59',
+  kr7: 'photo-1659641384782-b4bce92e1c5f', kr8: 'photo-1680144990604-4867a52532df',
 } as const
 type ImgKey = keyof typeof IMG
 
@@ -401,14 +406,14 @@ export const FLAGSHIP_DEMO_CONTENT: Record<string, FlagshipDemoEntry> = Object.f
     { name: 'Chunky Platform Charm', category: 'Glitter Accents', price: 500, img: 'gc8' },
   ]),
   entry('london-punk', 'Kings Road Riot', 'Tartan safety-pins, distressed denim, defiant DIY energy.', ['Tartan Layers', 'Distressed Denim', 'Studded Outer', 'Pin & Patch Accents'], [
-    { name: 'Tartan Mini Kilt', category: 'Tartan Layers', price: 2100, img: 'w13', tags: ['bestseller'] },
-    { name: 'Plaid Wrap Top', category: 'Tartan Layers', price: 1500, img: 'w125' },
-    { name: 'Ripped Skinny Jean', category: 'Distressed Denim', price: 2400, img: 'w126', tags: ['new'] },
-    { name: 'Bleached Denim Jacket', category: 'Distressed Denim', price: 2900, img: 'w127' },
-    { name: 'Studded Leather Jacket', category: 'Studded Outer', price: 4600, img: 'w128' },
-    { name: 'Safety-Pin Vest', category: 'Studded Outer', price: 2200, img: 'w129' },
-    { name: 'Patch-Covered Belt', category: 'Pin & Patch Accents', price: 700, img: 'w130' },
-    { name: 'Chain Wallet', category: 'Pin & Patch Accents', price: 600, img: 'w131' },
+    { name: 'Tartan Mini Kilt', category: 'Tartan Layers', price: 2100, img: 'kr1', tags: ['bestseller'] },
+    { name: 'Plaid Wrap Top', category: 'Tartan Layers', price: 1500, img: 'kr2' },
+    { name: 'Ripped Skinny Jean', category: 'Distressed Denim', price: 2400, img: 'kr3', tags: ['new'] },
+    { name: 'Bleached Denim Jacket', category: 'Distressed Denim', price: 2900, img: 'kr4' },
+    { name: 'Studded Leather Jacket', category: 'Studded Outer', price: 4600, img: 'kr5' },
+    { name: 'Safety-Pin Vest', category: 'Studded Outer', price: 2200, img: 'kr6' },
+    { name: 'Patch-Covered Belt', category: 'Pin & Patch Accents', price: 700, img: 'kr7' },
+    { name: 'Chain Wallet', category: 'Pin & Patch Accents', price: 600, img: 'kr8' },
   ]),
   entry('berlin-utilitarian', 'Kraftwerk Utility', 'Matte black, cargo pockets, industrial nightlife function.', ['Utility Outer', 'Tech Tops', 'Cargo Bottoms', 'Hardware Accents'], [
     { name: 'Multi-Pocket Vest', category: 'Utility Outer', price: 2900, img: 'w14', tags: ['bestseller'] },

@@ -51,6 +51,7 @@ import { RiveShell } from '@/components/flagship-generic/parisian-chic-style/Riv
 import { SartoriaShell } from '@/components/flagship-generic/milanese-tailoring-style/SartoriaShell'
 import { ShibuyaShell } from '@/components/flagship-generic/tokyo-streetstyle-style/ShibuyaShell'
 import { GangnamShell } from '@/components/flagship-generic/seoul-y2k-style/GangnamShell'
+import { RiotShell } from '@/components/flagship-generic/london-punk-style/RiotShell'
 
 // Fetch tenant config server-side and inject CSS variables
 export default async function StoreLayout({
@@ -202,6 +203,13 @@ export default async function StoreLayout({
   // row, a drop/fit-guide callout, Instagram-style UGC grid).
   if (slug === 'seoul-y2k' && FLAGSHIP_REGISTRY[slug]) {
     return <GangnamShell entry={FLAGSHIP_REGISTRY[slug]}>{children}</GangnamShell>
+  }
+
+  // london-punk — a faithful clone of viviennewestwood.com (black promo
+  // strip, orb crest above a two-line serif wordmark, Quick View hover
+  // on product tiles, a punchy pull-quote section, heritage editorial).
+  if (slug === 'london-punk' && FLAGSHIP_REGISTRY[slug]) {
+    return <RiotShell entry={FLAGSHIP_REGISTRY[slug]}>{children}</RiotShell>
   }
 
   // Generic-kit flagship stores (see src/lib/flagship-generic/registry.ts) —

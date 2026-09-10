@@ -46,6 +46,8 @@ import { ShibuyaHome } from '@/components/flagship-generic/tokyo-streetstyle-sty
 import { OPEN_SHIBUYA_MECHANIC_EVENT } from '@/components/flagship-generic/tokyo-streetstyle-style/ShibuyaShell'
 import { GangnamHome } from '@/components/flagship-generic/seoul-y2k-style/GangnamHome'
 import { OPEN_GANGNAM_MECHANIC_EVENT } from '@/components/flagship-generic/seoul-y2k-style/GangnamShell'
+import { RiotHome } from '@/components/flagship-generic/london-punk-style/RiotHome'
+import { OPEN_RIOT_MECHANIC_EVENT } from '@/components/flagship-generic/london-punk-style/RiotShell'
 import { FONTS } from '@/lib/constants'
 import { getOrCreateDeviceToken } from '@/lib/device-token'
 import { StoreFeedLayout } from '@/components/store/StoreFeedLayout'
@@ -307,6 +309,12 @@ function StorePageRouter() {
     const entry = FLAGSHIP_REGISTRY[slug]
     const b = previewName ? { ...entry.brand, name: previewName } : entry.brand
     return <>{banner}<GangnamHome brand={b} products={entry.products} mechanicLabel={entry.mechanicLabel} mechanicIntro={entry.mechanicIntro} onOpenMechanic={() => window.dispatchEvent(new CustomEvent(OPEN_GANGNAM_MECHANIC_EVENT))} /></>
+  }
+
+  if (slug === 'london-punk' && FLAGSHIP_REGISTRY[slug]) {
+    const entry = FLAGSHIP_REGISTRY[slug]
+    const b = previewName ? { ...entry.brand, name: previewName } : entry.brand
+    return <>{banner}<RiotHome brand={b} products={entry.products} mechanicLabel={entry.mechanicLabel} mechanicIntro={entry.mechanicIntro} onOpenMechanic={() => window.dispatchEvent(new CustomEvent(OPEN_RIOT_MECHANIC_EVENT))} /></>
   }
 
   // Generic-kit flagship stores (src/lib/flagship-generic/registry.ts) — same
