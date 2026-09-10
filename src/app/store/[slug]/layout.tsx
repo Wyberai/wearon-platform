@@ -48,6 +48,7 @@ import { PrairieShell } from '@/components/flagship-generic/prairie-cottagecore-
 import { FjordShell } from '@/components/flagship-generic/scandi-minimal-style/FjordShell'
 import { KintsugiShell } from '@/components/flagship-generic/wabi-sabi-style/KintsugiShell'
 import { RiveShell } from '@/components/flagship-generic/parisian-chic-style/RiveShell'
+import { SartoriaShell } from '@/components/flagship-generic/milanese-tailoring-style/SartoriaShell'
 
 // Fetch tenant config server-side and inject CSS variables
 export default async function StoreLayout({
@@ -177,6 +178,13 @@ export default async function StoreLayout({
   // labels instead of a headline, members'-circle editorial section).
   if (slug === 'parisian-chic' && FLAGSHIP_REGISTRY[slug]) {
     return <RiveShell entry={FLAGSHIP_REGISTRY[slug]}>{children}</RiveShell>
+  }
+
+  // milanese-tailoring — a faithful clone of loropiana.com (rotating
+  // service announcement strip, hero with a bottom white card and
+  // em-dash category links, "The Look" material-tagged outfit section).
+  if (slug === 'milanese-tailoring' && FLAGSHIP_REGISTRY[slug]) {
+    return <SartoriaShell entry={FLAGSHIP_REGISTRY[slug]}>{children}</SartoriaShell>
   }
 
   // Generic-kit flagship stores (see src/lib/flagship-generic/registry.ts) —

@@ -233,6 +233,11 @@ const IMG = {
   rg3: 'photo-1646337508131-e6e39c22343f', rg4: 'photo-1583772085030-100dfe2c5e2d',
   rg5: 'photo-1687742180233-45ad6deec0ee', rg6: 'photo-1620352513405-96906bda69b9',
   rg7: 'photo-1628022622594-5b4580f345ed', rg8: 'photo-1543163836-2e529843d1e4',
+  // Hand-curated for milanese-tailoring.
+  cs1: 'photo-1550517556-b39897318dd5', cs2: 'photo-1612215327100-60fc5c4d7938',
+  cs3: 'photo-1704775991298-38b9139fdad9', cs4: 'photo-1616244094558-2b62c9cc97db',
+  cs5: 'photo-1550101361-43e550ffbf66', cs6: 'photo-1640476583533-ad753ed2617c',
+  cs7: 'photo-1583484370773-c1af4e528d5e', cs8: 'photo-1642609881636-f8f67f770c0c',
 } as const
 type ImgKey = keyof typeof IMG
 
@@ -356,14 +361,14 @@ export const FLAGSHIP_DEMO_CONTENT: Record<string, FlagshipDemoEntry> = Object.f
     { name: 'Leather Crossbody', category: 'Understated Accents', price: 2200, img: 'rg8' },
   ]),
   entry('milanese-tailoring', 'Casa Sartoria', 'Sharp shoulders, rich fabric, confident Italian polish.', ['Tailored Suiting', 'Silk Shirting', 'Luxury Outerwear', 'Gold Accents'], [
-    { name: 'Double-Breasted Blazer', category: 'Tailored Suiting', price: 7400, img: 'w10', tags: ['bestseller'] },
-    { name: 'Pleated Wool Trouser', category: 'Tailored Suiting', price: 3600, img: 'w104' },
-    { name: 'Silk Charmeuse Shirt', category: 'Silk Shirting', price: 3100, img: 'w105', tags: ['new'] },
-    { name: 'Printed Silk Camisole', category: 'Silk Shirting', price: 2400, img: 'w106' },
-    { name: 'Cashmere Overcoat', category: 'Luxury Outerwear', price: 9200, img: 'w107' },
-    { name: 'Suede Trench', category: 'Luxury Outerwear', price: 8600, img: 'w108' },
-    { name: 'Gold Chain Belt', category: 'Gold Accents', price: 1400, img: 'w109' },
-    { name: 'Signet Cuff', category: 'Gold Accents', price: 1200, img: 'w110' },
+    { name: 'Double-Breasted Blazer', category: 'Tailored Suiting', price: 7400, img: 'cs1', tags: ['bestseller'] },
+    { name: 'Pleated Wool Trouser', category: 'Tailored Suiting', price: 3600, img: 'cs2' },
+    { name: 'Silk Charmeuse Shirt', category: 'Silk Shirting', price: 3100, img: 'cs3', tags: ['new'] },
+    { name: 'Printed Silk Camisole', category: 'Silk Shirting', price: 2400, img: 'cs4' },
+    { name: 'Cashmere Overcoat', category: 'Luxury Outerwear', price: 9200, img: 'cs5' },
+    { name: 'Suede Trench', category: 'Luxury Outerwear', price: 8600, img: 'cs6' },
+    { name: 'Gold Chain Belt', category: 'Gold Accents', price: 1400, img: 'cs7' },
+    { name: 'Signet Cuff', category: 'Gold Accents', price: 1200, img: 'cs8' },
   ]),
   entry('tokyo-streetstyle', 'Shibuya Layer', 'Layered silhouettes, monochrome with one loud accent.', ['Layered Outer', 'Graphic Tees', 'Utility Bottoms', 'Statement Accents'], [
     { name: 'Deconstructed Trench', category: 'Layered Outer', price: 4200, img: 'w11', tags: ['bestseller'] },
