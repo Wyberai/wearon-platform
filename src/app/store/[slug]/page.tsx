@@ -54,6 +54,8 @@ import { VeniceHome } from '@/components/flagship-generic/la-skate-style/VeniceH
 import { OPEN_VENICE_MECHANIC_EVENT } from '@/components/flagship-generic/la-skate-style/VeniceShell'
 import { OceanHome } from '@/components/flagship-generic/miami-vice-style/OceanHome'
 import { OPEN_OCEAN_MECHANIC_EVENT } from '@/components/flagship-generic/miami-vice-style/OceanShell'
+import { MagnoliaHome } from '@/components/flagship-generic/southern-prep-style/MagnoliaHome'
+import { OPEN_MAGNOLIA_MECHANIC_EVENT } from '@/components/flagship-generic/southern-prep-style/MagnoliaShell'
 import { FONTS } from '@/lib/constants'
 import { getOrCreateDeviceToken } from '@/lib/device-token'
 import { StoreFeedLayout } from '@/components/store/StoreFeedLayout'
@@ -339,6 +341,12 @@ function StorePageRouter() {
     const entry = FLAGSHIP_REGISTRY[slug]
     const b = previewName ? { ...entry.brand, name: previewName } : entry.brand
     return <>{banner}<OceanHome brand={b} products={entry.products} mechanicLabel={entry.mechanicLabel} mechanicIntro={entry.mechanicIntro} onOpenMechanic={() => window.dispatchEvent(new CustomEvent(OPEN_OCEAN_MECHANIC_EVENT))} /></>
+  }
+
+  if (slug === 'southern-prep' && FLAGSHIP_REGISTRY[slug]) {
+    const entry = FLAGSHIP_REGISTRY[slug]
+    const b = previewName ? { ...entry.brand, name: previewName } : entry.brand
+    return <>{banner}<MagnoliaHome brand={b} products={entry.products} mechanicLabel={entry.mechanicLabel} mechanicIntro={entry.mechanicIntro} onOpenMechanic={() => window.dispatchEvent(new CustomEvent(OPEN_MAGNOLIA_MECHANIC_EVENT))} /></>
   }
 
   // Generic-kit flagship stores (src/lib/flagship-generic/registry.ts) — same

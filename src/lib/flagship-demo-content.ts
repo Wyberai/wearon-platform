@@ -268,6 +268,11 @@ const IMG = {
   od3: 'photo-1615559301915-ee4f4eb0400b', od4: 'photo-1619365734748-fa7462f53a4e',
   od5: 'photo-1587993941345-b40aa98c6ecc', od6: 'photo-1548516904-fd85ff4e6c4e',
   od7: 'photo-1631982681280-8ca46226a5c9', od8: 'photo-1610904347227-94142558dfa8',
+  // Hand-curated for southern-prep.
+  mc1: 'photo-1597201677634-1c93aef553a2', mc2: 'photo-1596768600798-159ad10ddf94',
+  mc3: 'photo-1720514496505-d6756368b0b3', mc4: 'photo-1523112951144-905a147818c8',
+  mc5: 'photo-1549417338-6f137ab2cd20', mc6: 'photo-1614453965422-33e3600d033d',
+  mc7: 'photo-1611653842967-39eb011b2ca3', mc8: 'photo-1578220154766-1c39bcecc1dc',
 } as const
 type ImgKey = keyof typeof IMG
 
@@ -471,14 +476,14 @@ export const FLAGSHIP_DEMO_CONTENT: Record<string, FlagshipDemoEntry> = Object.f
     { name: 'Mirror Sunglasses', category: 'Chrome Accents', price: 700, img: 'od8' },
   ]),
   entry('southern-prep', 'Magnolia & Crest', 'Seersucker, monograms, garden-party polish.', ['Seersucker', 'Monogram Tops', 'Garden Layers', 'Pearl Accents'], [
-    { name: 'Seersucker Shift Dress', category: 'Seersucker', price: 2800, img: 'w18', tags: ['bestseller'] },
-    { name: 'Seersucker Trouser', category: 'Seersucker', price: 2400, img: 'w15' },
-    { name: 'Monogram Polo', category: 'Monogram Tops', price: 1600, img: 'w16', tags: ['new'] },
-    { name: 'Ribbon-Trim Blouse', category: 'Monogram Tops', price: 1900, img: 'w17' },
-    { name: 'Garden Party Cardigan', category: 'Garden Layers', price: 2300, img: 'w18' },
-    { name: 'Quilted Vest', category: 'Garden Layers', price: 2200, img: 'w19' },
-    { name: 'Pearl Drop Earrings', category: 'Pearl Accents', price: 700, img: 'w20' },
-    { name: 'Pearl Hair Band', category: 'Pearl Accents', price: 500, img: 'w21' },
+    { name: 'Seersucker Shift Dress', category: 'Seersucker', price: 2800, img: 'mc1', tags: ['bestseller'] },
+    { name: 'Seersucker Trouser', category: 'Seersucker', price: 2400, img: 'mc2' },
+    { name: 'Monogram Polo', category: 'Monogram Tops', price: 1600, img: 'mc3', tags: ['new'] },
+    { name: 'Ribbon-Trim Blouse', category: 'Monogram Tops', price: 1900, img: 'mc4' },
+    { name: 'Garden Party Cardigan', category: 'Garden Layers', price: 2300, img: 'mc5' },
+    { name: 'Quilted Vest', category: 'Garden Layers', price: 2200, img: 'mc6' },
+    { name: 'Pearl Drop Earrings', category: 'Pearl Accents', price: 700, img: 'mc7' },
+    { name: 'Pearl Hair Band', category: 'Pearl Accents', price: 500, img: 'mc8' },
   ]),
   entry('ivy-varsity', 'Old Campus Club', 'Wool blazers, crest patches, old-campus tradition.', ['Varsity Blazers', 'Crest Knitwear', 'Campus Bottoms', 'Letterman Accents'], [
     { name: 'Crest Wool Blazer', category: 'Varsity Blazers', price: 5600, img: 'w19', tags: ['bestseller'] },

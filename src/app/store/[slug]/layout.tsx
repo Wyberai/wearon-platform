@@ -55,6 +55,7 @@ import { RiotShell } from '@/components/flagship-generic/london-punk-style/RiotS
 import { KraftShell } from '@/components/flagship-generic/berlin-utilitarian-style/KraftShell'
 import { VeniceShell } from '@/components/flagship-generic/la-skate-style/VeniceShell'
 import { OceanShell } from '@/components/flagship-generic/miami-vice-style/OceanShell'
+import { MagnoliaShell } from '@/components/flagship-generic/southern-prep-style/MagnoliaShell'
 
 // Fetch tenant config server-side and inject CSS variables
 export default async function StoreLayout({
@@ -236,6 +237,14 @@ export default async function StoreLayout({
   // blocks by product type).
   if (slug === 'miami-vice' && FLAGSHIP_REGISTRY[slug]) {
     return <OceanShell entry={FLAGSHIP_REGISTRY[slug]}>{children}</OceanShell>
+  }
+
+  // southern-prep — a faithful clone of draperjames.com (navy promo
+  // strip over cream, centered serif wordmark, a pull-quote hero, an
+  // "In with the New" narrative passage, an original founder's-story
+  // section closing with a family saying).
+  if (slug === 'southern-prep' && FLAGSHIP_REGISTRY[slug]) {
+    return <MagnoliaShell entry={FLAGSHIP_REGISTRY[slug]}>{children}</MagnoliaShell>
   }
 
   // Generic-kit flagship stores (see src/lib/flagship-generic/registry.ts) —
