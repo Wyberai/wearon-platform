@@ -273,6 +273,11 @@ const IMG = {
   mc3: 'photo-1720514496505-d6756368b0b3', mc4: 'photo-1523112951144-905a147818c8',
   mc5: 'photo-1549417338-6f137ab2cd20', mc6: 'photo-1614453965422-33e3600d033d',
   mc7: 'photo-1611653842967-39eb011b2ca3', mc8: 'photo-1578220154766-1c39bcecc1dc',
+  // Hand-curated for ivy-varsity.
+  oc1: 'photo-1566827886031-7d0f288f76ed', oc2: 'photo-1539533018447-63fcce2678e3',
+  oc3: 'photo-1762232979295-47b301ef9782', oc4: 'photo-1667916707363-d0d42c51913c',
+  oc5: 'photo-1782422101881-c17385d507a8', oc6: 'photo-1611937669166-be4e0503b115',
+  oc7: 'photo-1614775717935-a7ecf0c2d072', oc8: 'photo-1609803384069-19f3e5a70e75',
 } as const
 type ImgKey = keyof typeof IMG
 
@@ -486,14 +491,14 @@ export const FLAGSHIP_DEMO_CONTENT: Record<string, FlagshipDemoEntry> = Object.f
     { name: 'Pearl Hair Band', category: 'Pearl Accents', price: 500, img: 'mc8' },
   ]),
   entry('ivy-varsity', 'Old Campus Club', 'Wool blazers, crest patches, old-campus tradition.', ['Varsity Blazers', 'Crest Knitwear', 'Campus Bottoms', 'Letterman Accents'], [
-    { name: 'Crest Wool Blazer', category: 'Varsity Blazers', price: 5600, img: 'w19', tags: ['bestseller'] },
-    { name: 'Double-Breasted Coat', category: 'Varsity Blazers', price: 6400, img: 'w22' },
-    { name: 'Cable Crest Sweater', category: 'Crest Knitwear', price: 2600, img: 'w23', tags: ['new'] },
-    { name: 'Cricket Sweater Vest', category: 'Crest Knitwear', price: 2100, img: 'w24' },
-    { name: 'Pleated Campus Skirt', category: 'Campus Bottoms', price: 2000, img: 'w25' },
-    { name: 'Wool Trouser', category: 'Campus Bottoms', price: 2400, img: 'w26' },
-    { name: 'Crest Pin Set', category: 'Letterman Accents', price: 400, img: 'w27' },
-    { name: 'Striped Scarf', category: 'Letterman Accents', price: 600, img: 'w28' },
+    { name: 'Crest Wool Blazer', category: 'Varsity Blazers', price: 5600, img: 'oc1', tags: ['bestseller'] },
+    { name: 'Double-Breasted Coat', category: 'Varsity Blazers', price: 6400, img: 'oc2' },
+    { name: 'Cable Crest Sweater', category: 'Crest Knitwear', price: 2600, img: 'oc3', tags: ['new'] },
+    { name: 'Cricket Sweater Vest', category: 'Crest Knitwear', price: 2100, img: 'oc4' },
+    { name: 'Pleated Campus Skirt', category: 'Campus Bottoms', price: 2000, img: 'oc5' },
+    { name: 'Wool Trouser', category: 'Campus Bottoms', price: 2400, img: 'oc6' },
+    { name: 'Crest Pin Set', category: 'Letterman Accents', price: 400, img: 'oc7' },
+    { name: 'Striped Scarf', category: 'Letterman Accents', price: 600, img: 'oc8' },
   ]),
   entry('countryside-tweed', 'Hedgerow & Hound', 'Herringbone wool, wellingtons, manor-house heritage.', ['Tweed Outer', 'Wool Knitwear', 'Field Bottoms', 'Countryside Accents'], [
     { name: 'Herringbone Blazer', category: 'Tweed Outer', price: 5800, img: 'w20', tags: ['bestseller'] },

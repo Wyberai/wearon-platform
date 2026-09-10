@@ -56,6 +56,7 @@ import { KraftShell } from '@/components/flagship-generic/berlin-utilitarian-sty
 import { VeniceShell } from '@/components/flagship-generic/la-skate-style/VeniceShell'
 import { OceanShell } from '@/components/flagship-generic/miami-vice-style/OceanShell'
 import { MagnoliaShell } from '@/components/flagship-generic/southern-prep-style/MagnoliaShell'
+import { CampusShell } from '@/components/flagship-generic/ivy-varsity-style/CampusShell'
 
 // Fetch tenant config server-side and inject CSS variables
 export default async function StoreLayout({
@@ -245,6 +246,14 @@ export default async function StoreLayout({
   // section closing with a family saying).
   if (slug === 'southern-prep' && FLAGSHIP_REGISTRY[slug]) {
     return <MagnoliaShell entry={FLAGSHIP_REGISTRY[slug]}>{children}</MagnoliaShell>
+  }
+
+  // ivy-varsity — a faithful clone of rowingblazers.com (bold serif
+  // wordmark, full text nav, a season-labeled campus-life hero, a
+  // "Shop By Category" link row, a named collab campaign banner,
+  // Quick View hover on product tiles).
+  if (slug === 'ivy-varsity' && FLAGSHIP_REGISTRY[slug]) {
+    return <CampusShell entry={FLAGSHIP_REGISTRY[slug]}>{children}</CampusShell>
   }
 
   // Generic-kit flagship stores (see src/lib/flagship-generic/registry.ts) —
