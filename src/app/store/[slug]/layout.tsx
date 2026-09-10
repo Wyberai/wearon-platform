@@ -52,6 +52,7 @@ import { SartoriaShell } from '@/components/flagship-generic/milanese-tailoring-
 import { ShibuyaShell } from '@/components/flagship-generic/tokyo-streetstyle-style/ShibuyaShell'
 import { GangnamShell } from '@/components/flagship-generic/seoul-y2k-style/GangnamShell'
 import { RiotShell } from '@/components/flagship-generic/london-punk-style/RiotShell'
+import { KraftShell } from '@/components/flagship-generic/berlin-utilitarian-style/KraftShell'
 
 // Fetch tenant config server-side and inject CSS variables
 export default async function StoreLayout({
@@ -210,6 +211,14 @@ export default async function StoreLayout({
   // on product tiles, a punchy pull-quote section, heritage editorial).
   if (slug === 'london-punk' && FLAGSHIP_REGISTRY[slug]) {
     return <RiotShell entry={FLAGSHIP_REGISTRY[slug]}>{children}</RiotShell>
+  }
+
+  // berlin-utilitarian — a faithful clone of acrnm.com (pure white
+  // ground, stark black type, plain function-first text nav with no
+  // icons, no hero — a dense grid of cryptic alphanumeric product
+  // codes as the entire homepage).
+  if (slug === 'berlin-utilitarian' && FLAGSHIP_REGISTRY[slug]) {
+    return <KraftShell entry={FLAGSHIP_REGISTRY[slug]}>{children}</KraftShell>
   }
 
   // Generic-kit flagship stores (see src/lib/flagship-generic/registry.ts) —

@@ -253,6 +253,11 @@ const IMG = {
   kr3: 'photo-1611693345580-a961174352b8', kr4: 'photo-1652561816256-4e399506d88c',
   kr5: 'photo-1669720187557-6169ea077ec7', kr6: 'photo-1517273570167-36c69226ab59',
   kr7: 'photo-1659641384782-b4bce92e1c5f', kr8: 'photo-1680144990604-4867a52532df',
+  // Hand-curated for berlin-utilitarian.
+  ku1: 'photo-1625683152688-60704081cd9c', ku2: 'photo-1613005346461-81cfd2696eeb',
+  ku3: 'photo-1637562779639-2d7d7f45fcb0', ku4: 'photo-1587930638782-4fc81e5ae747',
+  ku5: 'photo-1618375182602-8ffc31e64d27', ku6: 'photo-1600219824033-9a84dd41455c',
+  ku7: 'photo-1761129129986-feb1ed224733', ku8: 'photo-1650126208568-54f652b5b26d',
 } as const
 type ImgKey = keyof typeof IMG
 
@@ -416,14 +421,14 @@ export const FLAGSHIP_DEMO_CONTENT: Record<string, FlagshipDemoEntry> = Object.f
     { name: 'Chain Wallet', category: 'Pin & Patch Accents', price: 600, img: 'kr8' },
   ]),
   entry('berlin-utilitarian', 'Kraftwerk Utility', 'Matte black, cargo pockets, industrial nightlife function.', ['Utility Outer', 'Tech Tops', 'Cargo Bottoms', 'Hardware Accents'], [
-    { name: 'Multi-Pocket Vest', category: 'Utility Outer', price: 2900, img: 'w14', tags: ['bestseller'] },
-    { name: 'Rubberized Trench', category: 'Utility Outer', price: 3600, img: 'w132' },
-    { name: 'Mesh Long-Sleeve', category: 'Tech Tops', price: 1400, img: 'w133', tags: ['new'] },
-    { name: 'Reflective Panel Tee', category: 'Tech Tops', price: 1300, img: 'w134' },
-    { name: 'Cargo Trouser', category: 'Cargo Bottoms', price: 2500, img: 'w135' },
-    { name: 'Bondage Strap Pant', category: 'Cargo Bottoms', price: 2700, img: 'w136' },
-    { name: 'Carabiner Keychain Bag', category: 'Hardware Accents', price: 900, img: 'w137' },
-    { name: 'Buckle Choker', category: 'Hardware Accents', price: 500, img: 'w138' },
+    { name: 'Multi-Pocket Vest', category: 'Utility Outer', price: 2900, img: 'ku1', tags: ['bestseller'] },
+    { name: 'Rubberized Trench', category: 'Utility Outer', price: 3600, img: 'ku2' },
+    { name: 'Mesh Long-Sleeve', category: 'Tech Tops', price: 1400, img: 'ku3', tags: ['new'] },
+    { name: 'Reflective Panel Tee', category: 'Tech Tops', price: 1300, img: 'ku4' },
+    { name: 'Cargo Trouser', category: 'Cargo Bottoms', price: 2500, img: 'ku5' },
+    { name: 'Bondage Strap Pant', category: 'Cargo Bottoms', price: 2700, img: 'ku6' },
+    { name: 'Carabiner Keychain Bag', category: 'Hardware Accents', price: 900, img: 'ku7' },
+    { name: 'Buckle Choker', category: 'Hardware Accents', price: 500, img: 'ku8' },
   ]),
   entry('nyc-grunge', 'Bowery Static', 'Vintage band tees, worn leather, downtown nonchalance.', ['Vintage Tees', 'Worn Leather', 'Flannel Layers', 'Downtown Accents'], [
     { name: 'Distressed Band Tee', category: 'Vintage Tees', price: 1300, img: 'ng1', tags: ['bestseller'] },
