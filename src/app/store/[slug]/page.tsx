@@ -50,6 +50,8 @@ import { RiotHome } from '@/components/flagship-generic/london-punk-style/RiotHo
 import { OPEN_RIOT_MECHANIC_EVENT } from '@/components/flagship-generic/london-punk-style/RiotShell'
 import { KraftHome } from '@/components/flagship-generic/berlin-utilitarian-style/KraftHome'
 import { OPEN_KRAFT_MECHANIC_EVENT } from '@/components/flagship-generic/berlin-utilitarian-style/KraftShell'
+import { VeniceHome } from '@/components/flagship-generic/la-skate-style/VeniceHome'
+import { OPEN_VENICE_MECHANIC_EVENT } from '@/components/flagship-generic/la-skate-style/VeniceShell'
 import { FONTS } from '@/lib/constants'
 import { getOrCreateDeviceToken } from '@/lib/device-token'
 import { StoreFeedLayout } from '@/components/store/StoreFeedLayout'
@@ -323,6 +325,12 @@ function StorePageRouter() {
     const entry = FLAGSHIP_REGISTRY[slug]
     const b = previewName ? { ...entry.brand, name: previewName } : entry.brand
     return <>{banner}<KraftHome brand={b} products={entry.products} mechanicLabel={entry.mechanicLabel} mechanicIntro={entry.mechanicIntro} onOpenMechanic={() => window.dispatchEvent(new CustomEvent(OPEN_KRAFT_MECHANIC_EVENT))} /></>
+  }
+
+  if (slug === 'la-skate' && FLAGSHIP_REGISTRY[slug]) {
+    const entry = FLAGSHIP_REGISTRY[slug]
+    const b = previewName ? { ...entry.brand, name: previewName } : entry.brand
+    return <>{banner}<VeniceHome brand={b} products={entry.products} mechanicLabel={entry.mechanicLabel} mechanicIntro={entry.mechanicIntro} onOpenMechanic={() => window.dispatchEvent(new CustomEvent(OPEN_VENICE_MECHANIC_EVENT))} /></>
   }
 
   // Generic-kit flagship stores (src/lib/flagship-generic/registry.ts) — same

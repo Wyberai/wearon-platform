@@ -258,6 +258,11 @@ const IMG = {
   ku3: 'photo-1637562779639-2d7d7f45fcb0', ku4: 'photo-1587930638782-4fc81e5ae747',
   ku5: 'photo-1618375182602-8ffc31e64d27', ku6: 'photo-1600219824033-9a84dd41455c',
   ku7: 'photo-1761129129986-feb1ed224733', ku8: 'photo-1650126208568-54f652b5b26d',
+  // Hand-curated for la-skate.
+  vd1: 'photo-1607822900436-5b43bf94360c', vd2: 'photo-1601396344868-31e008cd6e7c',
+  vd3: 'photo-1699266689331-2fa457f3303b', vd4: 'photo-1611261964748-8882f640de22',
+  vd5: 'photo-1760551732069-2c1cad56adf7', vd6: 'photo-1618165280121-70edd4756d74',
+  vd7: 'photo-1595500037491-b81fa08512d7', vd8: 'photo-1731001196525-6185a1881c17',
 } as const
 type ImgKey = keyof typeof IMG
 
@@ -441,14 +446,14 @@ export const FLAGSHIP_DEMO_CONTENT: Record<string, FlagshipDemoEntry> = Object.f
     { name: 'Beat-Up Tote', category: 'Downtown Accents', price: 1100, img: 'ng8' },
   ]),
   entry('la-skate', 'Venice Deck Co.', 'Baggy fits, sun-faded graphics, Venice Beach skate energy.', ['Baggy Fits', 'Graphic Tees', 'Skate Denim', 'Board Accents'], [
-    { name: 'Baggy Cargo Pant', category: 'Baggy Fits', price: 2400, img: 'w16', tags: ['bestseller'] },
-    { name: 'Oversized Hoodie', category: 'Baggy Fits', price: 2200, img: 'w1' },
-    { name: 'Sun-Faded Graphic Tee', category: 'Graphic Tees', price: 1200, img: 'w2', tags: ['new'] },
-    { name: 'Boxy Logo Tee', category: 'Graphic Tees', price: 1100, img: 'w3' },
-    { name: 'Wide Skate Jean', category: 'Skate Denim', price: 2500, img: 'w4' },
-    { name: 'Patchwork Denim Short', category: 'Skate Denim', price: 1600, img: 'w5' },
-    { name: 'Canvas Board Bag', category: 'Board Accents', price: 1400, img: 'w6' },
-    { name: 'Beaded Ankle Chain', category: 'Board Accents', price: 500, img: 'w7' },
+    { name: 'Baggy Cargo Pant', category: 'Baggy Fits', price: 2400, img: 'vd1', tags: ['bestseller'] },
+    { name: 'Oversized Hoodie', category: 'Baggy Fits', price: 2200, img: 'vd2' },
+    { name: 'Sun-Faded Graphic Tee', category: 'Graphic Tees', price: 1200, img: 'vd3', tags: ['new'] },
+    { name: 'Boxy Logo Tee', category: 'Graphic Tees', price: 1100, img: 'vd4' },
+    { name: 'Wide Skate Jean', category: 'Skate Denim', price: 2500, img: 'vd5' },
+    { name: 'Patchwork Denim Short', category: 'Skate Denim', price: 1600, img: 'vd6' },
+    { name: 'Canvas Board Bag', category: 'Board Accents', price: 1400, img: 'vd7' },
+    { name: 'Beaded Ankle Chain', category: 'Board Accents', price: 500, img: 'vd8' },
   ]),
   entry('miami-vice', 'Ocean Drive Neon', 'Pastel neon and palm silhouettes, 1980s South Beach glamour.', ['Neon Sets', 'Palm Print', 'Pastel Outer', 'Chrome Accents'], [
     { name: 'Pastel Blazer Set', category: 'Neon Sets', price: 4200, img: 'w17', tags: ['bestseller'] },

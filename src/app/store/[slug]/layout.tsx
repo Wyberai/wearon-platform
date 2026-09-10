@@ -53,6 +53,7 @@ import { ShibuyaShell } from '@/components/flagship-generic/tokyo-streetstyle-st
 import { GangnamShell } from '@/components/flagship-generic/seoul-y2k-style/GangnamShell'
 import { RiotShell } from '@/components/flagship-generic/london-punk-style/RiotShell'
 import { KraftShell } from '@/components/flagship-generic/berlin-utilitarian-style/KraftShell'
+import { VeniceShell } from '@/components/flagship-generic/la-skate-style/VeniceShell'
 
 // Fetch tenant config server-side and inject CSS variables
 export default async function StoreLayout({
@@ -219,6 +220,13 @@ export default async function StoreLayout({
   // codes as the entire homepage).
   if (slug === 'berlin-utilitarian' && FLAGSHIP_REGISTRY[slug]) {
     return <KraftShell entry={FLAGSHIP_REGISTRY[slug]}>{children}</KraftShell>
+  }
+
+  // la-skate — a faithful clone of santacruzskateboards.com (circular
+  // badge-seal logo, action-photo hero with a rotating badge overlay,
+  // "Customer Favorites"/"Browse X" merchandising rows per category).
+  if (slug === 'la-skate' && FLAGSHIP_REGISTRY[slug]) {
+    return <VeniceShell entry={FLAGSHIP_REGISTRY[slug]}>{children}</VeniceShell>
   }
 
   // Generic-kit flagship stores (see src/lib/flagship-generic/registry.ts) —
