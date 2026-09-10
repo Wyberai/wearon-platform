@@ -54,6 +54,7 @@ import { GangnamShell } from '@/components/flagship-generic/seoul-y2k-style/Gang
 import { RiotShell } from '@/components/flagship-generic/london-punk-style/RiotShell'
 import { KraftShell } from '@/components/flagship-generic/berlin-utilitarian-style/KraftShell'
 import { VeniceShell } from '@/components/flagship-generic/la-skate-style/VeniceShell'
+import { OceanShell } from '@/components/flagship-generic/miami-vice-style/OceanShell'
 
 // Fetch tenant config server-side and inject CSS variables
 export default async function StoreLayout({
@@ -227,6 +228,14 @@ export default async function StoreLayout({
   // "Customer Favorites"/"Browse X" merchandising rows per category).
   if (slug === 'la-skate' && FLAGSHIP_REGISTRY[slug]) {
     return <VeniceShell entry={FLAGSHIP_REGISTRY[slug]}>{children}</VeniceShell>
+  }
+
+  // miami-vice — a faithful clone of trinaturk.com (bold-color promo
+  // strip over a dark announcement bar, a split vivid campaign hero,
+  // a "Modern Resort Lifestyle" brand-story passage, category showcase
+  // blocks by product type).
+  if (slug === 'miami-vice' && FLAGSHIP_REGISTRY[slug]) {
+    return <OceanShell entry={FLAGSHIP_REGISTRY[slug]}>{children}</OceanShell>
   }
 
   // Generic-kit flagship stores (see src/lib/flagship-generic/registry.ts) —

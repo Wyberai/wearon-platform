@@ -263,6 +263,11 @@ const IMG = {
   vd3: 'photo-1699266689331-2fa457f3303b', vd4: 'photo-1611261964748-8882f640de22',
   vd5: 'photo-1760551732069-2c1cad56adf7', vd6: 'photo-1618165280121-70edd4756d74',
   vd7: 'photo-1595500037491-b81fa08512d7', vd8: 'photo-1731001196525-6185a1881c17',
+  // Hand-curated for miami-vice.
+  od1: 'photo-1628938364552-44b9862579e5', od2: 'photo-1544170091-999be5a59e8f',
+  od3: 'photo-1615559301915-ee4f4eb0400b', od4: 'photo-1619365734748-fa7462f53a4e',
+  od5: 'photo-1587993941345-b40aa98c6ecc', od6: 'photo-1548516904-fd85ff4e6c4e',
+  od7: 'photo-1631982681280-8ca46226a5c9', od8: 'photo-1610904347227-94142558dfa8',
 } as const
 type ImgKey = keyof typeof IMG
 
@@ -456,14 +461,14 @@ export const FLAGSHIP_DEMO_CONTENT: Record<string, FlagshipDemoEntry> = Object.f
     { name: 'Beaded Ankle Chain', category: 'Board Accents', price: 500, img: 'vd8' },
   ]),
   entry('miami-vice', 'Ocean Drive Neon', 'Pastel neon and palm silhouettes, 1980s South Beach glamour.', ['Neon Sets', 'Palm Print', 'Pastel Outer', 'Chrome Accents'], [
-    { name: 'Pastel Blazer Set', category: 'Neon Sets', price: 4200, img: 'w17', tags: ['bestseller'] },
-    { name: 'Neon Bodysuit', category: 'Neon Sets', price: 1800, img: 'w8' },
-    { name: 'Palm Print Shirt', category: 'Palm Print', price: 1700, img: 'w9', tags: ['new'] },
-    { name: 'Palm Silk Dress', category: 'Palm Print', price: 2900, img: 'w10' },
-    { name: 'Pastel Windbreaker', category: 'Pastel Outer', price: 2600, img: 'w11' },
-    { name: 'Satin Bomber', category: 'Pastel Outer', price: 3100, img: 'w12' },
-    { name: 'Chrome Hoop Earrings', category: 'Chrome Accents', price: 500, img: 'w13' },
-    { name: 'Mirror Sunglasses', category: 'Chrome Accents', price: 700, img: 'w14' },
+    { name: 'Pastel Blazer Set', category: 'Neon Sets', price: 4200, img: 'od1', tags: ['bestseller'] },
+    { name: 'Neon Bodysuit', category: 'Neon Sets', price: 1800, img: 'od2' },
+    { name: 'Palm Print Shirt', category: 'Palm Print', price: 1700, img: 'od3', tags: ['new'] },
+    { name: 'Palm Silk Dress', category: 'Palm Print', price: 2900, img: 'od4' },
+    { name: 'Pastel Windbreaker', category: 'Pastel Outer', price: 2600, img: 'od5' },
+    { name: 'Satin Bomber', category: 'Pastel Outer', price: 3100, img: 'od6' },
+    { name: 'Chrome Hoop Earrings', category: 'Chrome Accents', price: 500, img: 'od7' },
+    { name: 'Mirror Sunglasses', category: 'Chrome Accents', price: 700, img: 'od8' },
   ]),
   entry('southern-prep', 'Magnolia & Crest', 'Seersucker, monograms, garden-party polish.', ['Seersucker', 'Monogram Tops', 'Garden Layers', 'Pearl Accents'], [
     { name: 'Seersucker Shift Dress', category: 'Seersucker', price: 2800, img: 'w18', tags: ['bestseller'] },
