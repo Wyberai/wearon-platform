@@ -303,6 +303,11 @@ const IMG = {
   ub3: 'photo-1597196526281-fe4861daa915', ub4: 'photo-1613652047115-2a0ac4bf4b7a',
   ub5: 'photo-1618459202720-af38020a8b3a', ub6: 'photo-1478146896981-b80fe463b330',
   ub7: 'photo-1624232005863-70df87c61a44', ub8: 'photo-1641946188146-848152c45baf',
+  // Hand-curated for outback.
+  rd1: 'photo-1548883354-d056ab7b441f', rd2: 'photo-1634423865103-14306b444661',
+  rd3: 'photo-1609212346247-457747d7b57a', rd4: 'photo-1628210726948-4979adb3d9d0',
+  rd5: 'photo-1564812761548-d2e62622ca5e', rd6: 'photo-1616411598297-e0053c6ee59d',
+  rd7: 'photo-1511225426861-65dc038d9eb7', rd8: 'photo-1519144674309-fcb7fbc1a054',
 } as const
 type ImgKey = keyof typeof IMG
 
@@ -586,14 +591,14 @@ export const FLAGSHIP_DEMO_CONTENT: Record<string, FlagshipDemoEntry> = Object.f
     { name: 'Beaded Anklet', category: 'Wood & Bead Accents', price: 400, img: 'ub8' },
   ]),
   entry('outback', 'Red Dust Supply Co.', 'Sun-worn khaki, dusty red earth, no-nonsense durability.', ['Khaki Outer', 'Field Shirts', 'Canvas Bottoms', 'Trail Accents'], [
-    { name: 'Canvas Field Jacket', category: 'Khaki Outer', price: 3400, img: 'w26', tags: ['bestseller'] },
-    { name: 'Oilskin Duster', category: 'Khaki Outer', price: 4600, img: 'w71' },
-    { name: 'Khaki Field Shirt', category: 'Field Shirts', price: 1700, img: 'w72', tags: ['new'] },
-    { name: 'Cotton Bush Shirt', category: 'Field Shirts', price: 1600, img: 'w73' },
-    { name: 'Canvas Cargo Trouser', category: 'Canvas Bottoms', price: 2400, img: 'w74' },
-    { name: 'Dust-Wash Jean', category: 'Canvas Bottoms', price: 2300, img: 'w75' },
-    { name: 'Leather Bush Hat', category: 'Trail Accents', price: 1300, img: 'w76' },
-    { name: 'Canvas Satchel', category: 'Trail Accents', price: 1600, img: 'w77' },
+    { name: 'Canvas Field Jacket', category: 'Khaki Outer', price: 3400, img: 'rd1', tags: ['bestseller'] },
+    { name: 'Oilskin Duster', category: 'Khaki Outer', price: 4600, img: 'rd2' },
+    { name: 'Khaki Field Shirt', category: 'Field Shirts', price: 1700, img: 'rd3', tags: ['new'] },
+    { name: 'Cotton Bush Shirt', category: 'Field Shirts', price: 1600, img: 'rd4' },
+    { name: 'Canvas Cargo Trouser', category: 'Canvas Bottoms', price: 2400, img: 'rd5' },
+    { name: 'Dust-Wash Jean', category: 'Canvas Bottoms', price: 2300, img: 'rd6' },
+    { name: 'Leather Bush Hat', category: 'Trail Accents', price: 1300, img: 'rd7' },
+    { name: 'Canvas Satchel', category: 'Trail Accents', price: 1600, img: 'rd8' },
   ]),
   entry('icelandic-wool', 'Lopapeysa Co.', 'Chunky lopapeysa knits, glacier tones, elemental warmth.', ['Lopapeysa Knits', 'Wool Layers', 'Glacier Outer', 'Wool Accents'], [
     { name: 'Classic Lopapeysa Sweater', category: 'Lopapeysa Knits', price: 3600, img: 'w27', tags: ['bestseller'] },

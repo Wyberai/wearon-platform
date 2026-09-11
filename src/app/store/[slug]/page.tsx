@@ -68,6 +68,8 @@ import { RajwadaHome } from '@/components/flagship-generic/indian-block-print-st
 import { OPEN_RAJWADA_MECHANIC_EVENT } from '@/components/flagship-generic/indian-block-print-style/RajwadaShell'
 import { UbudHome } from '@/components/flagship-generic/balinese-batik-style/UbudHome'
 import { OPEN_UBUD_MECHANIC_EVENT } from '@/components/flagship-generic/balinese-batik-style/UbudShell'
+import { DustHome } from '@/components/flagship-generic/outback-style/DustHome'
+import { OPEN_DUST_MECHANIC_EVENT } from '@/components/flagship-generic/outback-style/DustShell'
 import { FONTS } from '@/lib/constants'
 import { getOrCreateDeviceToken } from '@/lib/device-token'
 import { StoreFeedLayout } from '@/components/store/StoreFeedLayout'
@@ -395,6 +397,12 @@ function StorePageRouter() {
     const entry = FLAGSHIP_REGISTRY[slug]
     const b = previewName ? { ...entry.brand, name: previewName } : entry.brand
     return <>{banner}<UbudHome brand={b} products={entry.products} mechanicLabel={entry.mechanicLabel} mechanicIntro={entry.mechanicIntro} onOpenMechanic={() => window.dispatchEvent(new CustomEvent(OPEN_UBUD_MECHANIC_EVENT))} /></>
+  }
+
+  if (slug === 'outback' && FLAGSHIP_REGISTRY[slug]) {
+    const entry = FLAGSHIP_REGISTRY[slug]
+    const b = previewName ? { ...entry.brand, name: previewName } : entry.brand
+    return <>{banner}<DustHome brand={b} products={entry.products} mechanicLabel={entry.mechanicLabel} mechanicIntro={entry.mechanicIntro} onOpenMechanic={() => window.dispatchEvent(new CustomEvent(OPEN_DUST_MECHANIC_EVENT))} /></>
   }
 
   // Generic-kit flagship stores (src/lib/flagship-generic/registry.ts) — same

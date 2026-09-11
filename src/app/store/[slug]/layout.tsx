@@ -62,6 +62,7 @@ import { GlenmoreShell } from '@/components/flagship-generic/highland-tartan-sty
 import { FlamencaShell } from '@/components/flagship-generic/andalusian-flamenco-style/FlamencaShell'
 import { RajwadaShell } from '@/components/flagship-generic/indian-block-print-style/RajwadaShell'
 import { UbudShell } from '@/components/flagship-generic/balinese-batik-style/UbudShell'
+import { DustShell } from '@/components/flagship-generic/outback-style/DustShell'
 
 // Fetch tenant config server-side and inject CSS variables
 export default async function StoreLayout({
@@ -299,6 +300,14 @@ export default async function StoreLayout({
   // urgency badges).
   if (slug === 'balinese-batik' && FLAGSHIP_REGISTRY[slug]) {
     return <UbudShell entry={FLAGSHIP_REGISTRY[slug]}>{children}</UbudShell>
+  }
+
+  // outback — a faithful clone of rmwilliams.com.au (spaced-letter
+  // wordmark with an "Est." heritage subtitle, a pill-shaped search
+  // bar, a rustic hero with rounded pill CTA buttons, an "Explore Our
+  // Range" category grid, a named product-collection block).
+  if (slug === 'outback' && FLAGSHIP_REGISTRY[slug]) {
+    return <DustShell entry={FLAGSHIP_REGISTRY[slug]}>{children}</DustShell>
   }
 
   // Generic-kit flagship stores (see src/lib/flagship-generic/registry.ts) —
