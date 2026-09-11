@@ -61,6 +61,7 @@ import { HedgerowShell } from '@/components/flagship-generic/countryside-tweed-s
 import { GlenmoreShell } from '@/components/flagship-generic/highland-tartan-style/GlenmoreShell'
 import { FlamencaShell } from '@/components/flagship-generic/andalusian-flamenco-style/FlamencaShell'
 import { RajwadaShell } from '@/components/flagship-generic/indian-block-print-style/RajwadaShell'
+import { UbudShell } from '@/components/flagship-generic/balinese-batik-style/UbudShell'
 
 // Fetch tenant config server-side and inject CSS variables
 export default async function StoreLayout({
@@ -290,6 +291,14 @@ export default async function StoreLayout({
   // towns, an "Our Story" etymology note).
   if (slug === 'indian-block-print' && FLAGSHIP_REGISTRY[slug]) {
     return <RajwadaShell entry={FLAGSHIP_REGISTRY[slug]}>{children}</RajwadaShell>
+  }
+
+  // balinese-batik — a faithful clone of BIASA (black promo strip, a
+  // brush-lettered wordmark, a brand-philosophy statement, named
+  // seasonal-collection passages, person-named products with stock-
+  // urgency badges).
+  if (slug === 'balinese-batik' && FLAGSHIP_REGISTRY[slug]) {
+    return <UbudShell entry={FLAGSHIP_REGISTRY[slug]}>{children}</UbudShell>
   }
 
   // Generic-kit flagship stores (see src/lib/flagship-generic/registry.ts) —

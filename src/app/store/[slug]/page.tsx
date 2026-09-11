@@ -66,6 +66,8 @@ import { FlamencaHome } from '@/components/flagship-generic/andalusian-flamenco-
 import { OPEN_FLAMENCA_MECHANIC_EVENT } from '@/components/flagship-generic/andalusian-flamenco-style/FlamencaShell'
 import { RajwadaHome } from '@/components/flagship-generic/indian-block-print-style/RajwadaHome'
 import { OPEN_RAJWADA_MECHANIC_EVENT } from '@/components/flagship-generic/indian-block-print-style/RajwadaShell'
+import { UbudHome } from '@/components/flagship-generic/balinese-batik-style/UbudHome'
+import { OPEN_UBUD_MECHANIC_EVENT } from '@/components/flagship-generic/balinese-batik-style/UbudShell'
 import { FONTS } from '@/lib/constants'
 import { getOrCreateDeviceToken } from '@/lib/device-token'
 import { StoreFeedLayout } from '@/components/store/StoreFeedLayout'
@@ -387,6 +389,12 @@ function StorePageRouter() {
     const entry = FLAGSHIP_REGISTRY[slug]
     const b = previewName ? { ...entry.brand, name: previewName } : entry.brand
     return <>{banner}<RajwadaHome brand={b} products={entry.products} mechanicLabel={entry.mechanicLabel} mechanicIntro={entry.mechanicIntro} onOpenMechanic={() => window.dispatchEvent(new CustomEvent(OPEN_RAJWADA_MECHANIC_EVENT))} /></>
+  }
+
+  if (slug === 'balinese-batik' && FLAGSHIP_REGISTRY[slug]) {
+    const entry = FLAGSHIP_REGISTRY[slug]
+    const b = previewName ? { ...entry.brand, name: previewName } : entry.brand
+    return <>{banner}<UbudHome brand={b} products={entry.products} mechanicLabel={entry.mechanicLabel} mechanicIntro={entry.mechanicIntro} onOpenMechanic={() => window.dispatchEvent(new CustomEvent(OPEN_UBUD_MECHANIC_EVENT))} /></>
   }
 
   // Generic-kit flagship stores (src/lib/flagship-generic/registry.ts) — same

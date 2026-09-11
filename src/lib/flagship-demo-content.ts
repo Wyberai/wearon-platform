@@ -298,6 +298,11 @@ const IMG = {
   rp3: 'photo-1605763904409-a712a9a50323', rp4: 'photo-1601314907697-6b861883aa10',
   rp5: 'photo-1558703374-f9a51255e1cc', rp6: 'photo-1627359212239-3d82a215af75',
   rp7: 'photo-1609252908235-20aeac3bbf8f', rp8: 'photo-1591548244205-3c9b9ad258f6',
+  // Hand-curated for balinese-batik.
+  ub1: 'photo-1649821789936-ba3d711d9858', ub2: 'photo-1548777812-810508310e88',
+  ub3: 'photo-1597196526281-fe4861daa915', ub4: 'photo-1613652047115-2a0ac4bf4b7a',
+  ub5: 'photo-1618459202720-af38020a8b3a', ub6: 'photo-1478146896981-b80fe463b330',
+  ub7: 'photo-1624232005863-70df87c61a44', ub8: 'photo-1641946188146-848152c45baf',
 } as const
 type ImgKey = keyof typeof IMG
 
@@ -571,14 +576,14 @@ export const FLAGSHIP_DEMO_CONTENT: Record<string, FlagshipDemoEntry> = Object.f
     { name: 'Hand-Woven Jhola Bag', category: 'Artisan Accents', price: 900, img: 'rp8' },
   ]),
   entry('balinese-batik', 'Ubud Batik House', 'Wax-resist patterns, warm browns, island-temple serenity.', ['Batik Wraps', 'Resort Sets', 'Temple Layers', 'Wood & Bead Accents'], [
-    { name: 'Batik Wrap Dress', category: 'Batik Wraps', price: 2900, img: 'w25', tags: ['bestseller'] },
-    { name: 'Batik Sarong Skirt', category: 'Batik Wraps', price: 1700, img: 'w64' },
-    { name: 'Linen Resort Set', category: 'Resort Sets', price: 2600, img: 'w65', tags: ['new'] },
-    { name: 'Batik Print Shirt', category: 'Resort Sets', price: 1600, img: 'w66' },
-    { name: 'Temple Print Kimono', category: 'Temple Layers', price: 2200, img: 'w67' },
-    { name: 'Batik Kaftan', category: 'Temple Layers', price: 2400, img: 'w68' },
-    { name: 'Carved Wood Bangle', category: 'Wood & Bead Accents', price: 500, img: 'w69' },
-    { name: 'Beaded Anklet', category: 'Wood & Bead Accents', price: 400, img: 'w70' },
+    { name: 'Batik Wrap Dress', category: 'Batik Wraps', price: 2900, img: 'ub1', tags: ['bestseller'] },
+    { name: 'Batik Sarong Skirt', category: 'Batik Wraps', price: 1700, img: 'ub2' },
+    { name: 'Linen Resort Set', category: 'Resort Sets', price: 2600, img: 'ub3', tags: ['new'] },
+    { name: 'Batik Print Shirt', category: 'Resort Sets', price: 1600, img: 'ub4' },
+    { name: 'Temple Print Kimono', category: 'Temple Layers', price: 2200, img: 'ub5' },
+    { name: 'Batik Kaftan', category: 'Temple Layers', price: 2400, img: 'ub6' },
+    { name: 'Carved Wood Bangle', category: 'Wood & Bead Accents', price: 500, img: 'ub7' },
+    { name: 'Beaded Anklet', category: 'Wood & Bead Accents', price: 400, img: 'ub8' },
   ]),
   entry('outback', 'Red Dust Supply Co.', 'Sun-worn khaki, dusty red earth, no-nonsense durability.', ['Khaki Outer', 'Field Shirts', 'Canvas Bottoms', 'Trail Accents'], [
     { name: 'Canvas Field Jacket', category: 'Khaki Outer', price: 3400, img: 'w26', tags: ['bestseller'] },
