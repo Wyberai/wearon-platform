@@ -288,6 +288,11 @@ const IMG = {
   gm3: 'photo-1619622376461-28732c2b88c8', gm4: 'photo-1744566737679-e79b2ba735a4',
   gm5: 'photo-1608457006016-1a561c3ab15c', gm6: 'photo-1612302368183-df27217bfb4e',
   gm7: 'photo-1608253458784-355ada87ba76', gm8: 'photo-1782776853128-f2bda42ef8ae',
+  // Hand-curated for andalusian-flamenco.
+  cf1: 'photo-1533854257392-71c5ff28dff7', cf2: 'photo-1786865573367-637a638958bc',
+  cf3: 'photo-1622782045724-5c7cddda7e70', cf4: 'photo-1600075113742-7548019e70ff',
+  cf5: 'photo-1593504891806-cc4c04398e7c', cf6: 'photo-1601637025250-ebb0d9e7faeb',
+  cf7: 'photo-1587477444258-096b2d514c12', cf8: 'photo-1507006899057-6a72c95e8ef4',
 } as const
 type ImgKey = keyof typeof IMG
 
@@ -531,14 +536,14 @@ export const FLAGSHIP_DEMO_CONTENT: Record<string, FlagshipDemoEntry> = Object.f
     { name: 'Sporran Bag', category: 'Clan Accents', price: 1600, img: 'gm8' },
   ]),
   entry('andalusian-flamenco', 'Casa Flamenca', 'Ruffled polka-dot, deep reds, passionate southern-Spain flair.', ['Flamenco Dresses', 'Ruffle Tops', 'Polka Dot Layers', 'Fan & Comb Accents'], [
-    { name: 'Ruffled Flamenco Dress', category: 'Flamenco Dresses', price: 4200, img: 'w22', tags: ['bestseller'] },
-    { name: 'Polka Dot Midi', category: 'Flamenco Dresses', price: 3100, img: 'w43' },
-    { name: 'Ruffle Sleeve Blouse', category: 'Ruffle Tops', price: 1900, img: 'w44', tags: ['new'] },
-    { name: 'Off-Shoulder Ruffle Top', category: 'Ruffle Tops', price: 1800, img: 'w45' },
-    { name: 'Polka Dot Shawl', category: 'Polka Dot Layers', price: 1600, img: 'w46' },
-    { name: 'Fringed Bolero', category: 'Polka Dot Layers', price: 2000, img: 'w47' },
-    { name: 'Carved Hair Comb', category: 'Fan & Comb Accents', price: 700, img: 'w48' },
-    { name: 'Hand Fan', category: 'Fan & Comb Accents', price: 500, img: 'w49' },
+    { name: 'Ruffled Flamenco Dress', category: 'Flamenco Dresses', price: 4200, img: 'cf1', tags: ['bestseller'] },
+    { name: 'Polka Dot Midi', category: 'Flamenco Dresses', price: 3100, img: 'cf2' },
+    { name: 'Ruffle Sleeve Blouse', category: 'Ruffle Tops', price: 1900, img: 'cf3', tags: ['new'] },
+    { name: 'Off-Shoulder Ruffle Top', category: 'Ruffle Tops', price: 1800, img: 'cf4' },
+    { name: 'Polka Dot Shawl', category: 'Polka Dot Layers', price: 1600, img: 'cf5' },
+    { name: 'Fringed Bolero', category: 'Polka Dot Layers', price: 2000, img: 'cf6' },
+    { name: 'Carved Hair Comb', category: 'Fan & Comb Accents', price: 700, img: 'cf7' },
+    { name: 'Hand Fan', category: 'Fan & Comb Accents', price: 500, img: 'cf8' },
   ]),
   entry('moroccan-souk', 'Kasbah Market', 'Jewel-tone kaftans, brass and tile, market-alley richness.', ['Kaftans', 'Embroidered Tops', 'Souk Layers', 'Brass Accents'], [
     { name: 'Embroidered Kaftan', category: 'Kaftans', price: 3400, img: 'ms1', tags: ['bestseller'] },

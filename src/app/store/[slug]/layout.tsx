@@ -59,6 +59,7 @@ import { MagnoliaShell } from '@/components/flagship-generic/southern-prep-style
 import { CampusShell } from '@/components/flagship-generic/ivy-varsity-style/CampusShell'
 import { HedgerowShell } from '@/components/flagship-generic/countryside-tweed-style/HedgerowShell'
 import { GlenmoreShell } from '@/components/flagship-generic/highland-tartan-style/GlenmoreShell'
+import { FlamencaShell } from '@/components/flagship-generic/andalusian-flamenco-style/FlamencaShell'
 
 // Fetch tenant config server-side and inject CSS variables
 export default async function StoreLayout({
@@ -272,6 +273,14 @@ export default async function StoreLayout({
   // a "Refurbish your kilt" heritage-repair section, a dated magazine).
   if (slug === 'highland-tartan' && FLAGSHIP_REGISTRY[slug]) {
     return <GlenmoreShell entry={FLAGSHIP_REGISTRY[slug]}>{children}</GlenmoreShell>
+  }
+
+  // andalusian-flamenco — a faithful clone of Aires de Feria (red promo
+  // strip, script wordmark, full-bleed hero with an outlined DESCUBRIR
+  // button, a genuine live countdown to the next Feria de Abril, named
+  // product styling, a craft-copy passage in Spanish).
+  if (slug === 'andalusian-flamenco' && FLAGSHIP_REGISTRY[slug]) {
+    return <FlamencaShell entry={FLAGSHIP_REGISTRY[slug]}>{children}</FlamencaShell>
   }
 
   // Generic-kit flagship stores (see src/lib/flagship-generic/registry.ts) —
