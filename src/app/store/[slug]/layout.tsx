@@ -64,6 +64,7 @@ import { RajwadaShell } from '@/components/flagship-generic/indian-block-print-s
 import { UbudShell } from '@/components/flagship-generic/balinese-batik-style/UbudShell'
 import { DustShell } from '@/components/flagship-generic/outback-style/DustShell'
 import { LopapeysaShell } from '@/components/flagship-generic/icelandic-wool-style/LopapeysaShell'
+import { GridShell } from '@/components/flagship-generic/swiss-precision-style/GridShell'
 
 // Fetch tenant config server-side and inject CSS variables
 export default async function StoreLayout({
@@ -317,6 +318,15 @@ export default async function StoreLayout({
   // white-labeled category tiles, a founder-voice brand passage).
   if (slug === 'icelandic-wool' && FLAGSHIP_REGISTRY[slug]) {
     return <LopapeysaShell entry={FLAGSHIP_REGISTRY[slug]}>{children}</LopapeysaShell>
+  }
+
+  // swiss-precision — a faithful clone of Akris' real chrome (hamburger
+  // + search left, spaced-letter hyphenated wordmark centered,
+  // account/wishlist/bag right, a horizontal "New Arrivals" rail, a
+  // circular-graphic sub-collection split, and a "Codes of the Studio"
+  // materials passage).
+  if (slug === 'swiss-precision' && FLAGSHIP_REGISTRY[slug]) {
+    return <GridShell entry={FLAGSHIP_REGISTRY[slug]}>{children}</GridShell>
   }
 
   // Generic-kit flagship stores (see src/lib/flagship-generic/registry.ts) —

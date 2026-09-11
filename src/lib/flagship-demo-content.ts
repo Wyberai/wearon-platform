@@ -313,6 +313,11 @@ const IMG = {
   lp3: 'photo-1604573824419-289a9a10672c', lp4: 'photo-1786901543379-73cadc33dfea',
   lp5: 'photo-1605524786949-84e9ab36aeda', lp6: 'photo-1635090431958-170491953c6e',
   lp7: 'photo-1771766355697-da69c0432a1f', lp8: 'photo-1736310567197-9bcff429c7c1',
+  // Hand-curated for swiss-precision.
+  sw1: 'photo-1726591383658-37fc19442523', sw2: 'photo-1619470149201-63960dec27cf',
+  sw3: 'photo-1574201635302-388dd92a4c3f', sw4: 'photo-1762796159038-053707dab326',
+  sw5: 'photo-1767631338127-8cd80ee2f9df', sw6: 'photo-1762343038913-2d0b726c291e',
+  sw7: 'photo-1681091639096-a7b2eb1d4990', sw8: 'photo-1601592996763-f05c9c80a7f1',
 } as const
 type ImgKey = keyof typeof IMG
 
@@ -616,14 +621,14 @@ export const FLAGSHIP_DEMO_CONTENT: Record<string, FlagshipDemoEntry> = Object.f
     { name: 'Wool Beanie', category: 'Wool Accents', price: 500, img: 'lp8' },
   ]),
   entry('swiss-precision', 'Grid & Line', 'Grid-aligned typography, neutral tones, engineered clarity.', ['Precision Tailoring', 'Technical Knits', 'Structured Bottoms', 'Minimal Accents'], [
-    { name: 'Structured Shirt Dress', category: 'Precision Tailoring', price: 3200, img: 'w28', tags: ['bestseller'] },
-    { name: 'Boxy Wool Blazer', category: 'Precision Tailoring', price: 5200, img: 'w85' },
-    { name: 'Merino Base Knit', category: 'Technical Knits', price: 2100, img: 'w86', tags: ['new'] },
-    { name: 'Ribbed Mock Neck', category: 'Technical Knits', price: 1900, img: 'w87' },
-    { name: 'Tailored Trouser', category: 'Structured Bottoms', price: 2700, img: 'w88' },
-    { name: 'Pleated Column Skirt', category: 'Structured Bottoms', price: 2400, img: 'w89' },
-    { name: 'Steel Cuff', category: 'Minimal Accents', price: 600, img: 'w90' },
-    { name: 'Canvas Card Holder', category: 'Minimal Accents', price: 400, img: 'w91' },
+    { name: 'Structured Shirt Dress', category: 'Precision Tailoring', price: 3200, img: 'sw1', tags: ['bestseller'] },
+    { name: 'Boxy Wool Blazer', category: 'Precision Tailoring', price: 5200, img: 'sw2' },
+    { name: 'Merino Base Knit', category: 'Technical Knits', price: 2100, img: 'sw3', tags: ['new'] },
+    { name: 'Ribbed Mock Neck', category: 'Technical Knits', price: 1900, img: 'sw4' },
+    { name: 'Tailored Trouser', category: 'Structured Bottoms', price: 2700, img: 'sw5' },
+    { name: 'Pleated Column Skirt', category: 'Structured Bottoms', price: 2400, img: 'sw6' },
+    { name: 'Steel Cuff', category: 'Minimal Accents', price: 600, img: 'sw7' },
+    { name: 'Canvas Card Holder', category: 'Minimal Accents', price: 400, img: 'sw8' },
   ]),
   entry('dutch-design', 'De Stijl Studio', 'Bold primary color-blocking, graphic confidence.', ['Color-Block Sets', 'Graphic Knits', 'Structured Outer', 'Geometric Accents'], [
     { name: 'Color-Block Shift Dress', category: 'Color-Block Sets', price: 3100, img: 'w29', tags: ['bestseller'] },
