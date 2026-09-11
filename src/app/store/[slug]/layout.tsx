@@ -63,6 +63,7 @@ import { FlamencaShell } from '@/components/flagship-generic/andalusian-flamenco
 import { RajwadaShell } from '@/components/flagship-generic/indian-block-print-style/RajwadaShell'
 import { UbudShell } from '@/components/flagship-generic/balinese-batik-style/UbudShell'
 import { DustShell } from '@/components/flagship-generic/outback-style/DustShell'
+import { LopapeysaShell } from '@/components/flagship-generic/icelandic-wool-style/LopapeysaShell'
 
 // Fetch tenant config server-side and inject CSS variables
 export default async function StoreLayout({
@@ -308,6 +309,14 @@ export default async function StoreLayout({
   // Range" category grid, a named product-collection block).
   if (slug === 'outback' && FLAGSHIP_REGISTRY[slug]) {
     return <DustShell entry={FLAGSHIP_REGISTRY[slug]}>{children}</DustShell>
+  }
+
+  // icelandic-wool — a faithful clone of farmersmarket.is (plain "Menu"
+  // text header, centered wordmark, "Icelandic" language toggle, a
+  // full-bleed hero with a star-badge crest + stacked wordmark, bold
+  // white-labeled category tiles, a founder-voice brand passage).
+  if (slug === 'icelandic-wool' && FLAGSHIP_REGISTRY[slug]) {
+    return <LopapeysaShell entry={FLAGSHIP_REGISTRY[slug]}>{children}</LopapeysaShell>
   }
 
   // Generic-kit flagship stores (see src/lib/flagship-generic/registry.ts) —

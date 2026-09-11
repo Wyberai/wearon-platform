@@ -308,6 +308,11 @@ const IMG = {
   rd3: 'photo-1609212346247-457747d7b57a', rd4: 'photo-1628210726948-4979adb3d9d0',
   rd5: 'photo-1564812761548-d2e62622ca5e', rd6: 'photo-1616411598297-e0053c6ee59d',
   rd7: 'photo-1511225426861-65dc038d9eb7', rd8: 'photo-1519144674309-fcb7fbc1a054',
+  // Hand-curated for icelandic-wool.
+  lp1: 'photo-1543690261-f800f5e8719d', lp2: 'photo-1758981400268-1181291b9503',
+  lp3: 'photo-1604573824419-289a9a10672c', lp4: 'photo-1786901543379-73cadc33dfea',
+  lp5: 'photo-1605524786949-84e9ab36aeda', lp6: 'photo-1635090431958-170491953c6e',
+  lp7: 'photo-1771766355697-da69c0432a1f', lp8: 'photo-1736310567197-9bcff429c7c1',
 } as const
 type ImgKey = keyof typeof IMG
 
@@ -601,14 +606,14 @@ export const FLAGSHIP_DEMO_CONTENT: Record<string, FlagshipDemoEntry> = Object.f
     { name: 'Canvas Satchel', category: 'Trail Accents', price: 1600, img: 'rd8' },
   ]),
   entry('icelandic-wool', 'Lopapeysa Co.', 'Chunky lopapeysa knits, glacier tones, elemental warmth.', ['Lopapeysa Knits', 'Wool Layers', 'Glacier Outer', 'Wool Accents'], [
-    { name: 'Classic Lopapeysa Sweater', category: 'Lopapeysa Knits', price: 3600, img: 'w27', tags: ['bestseller'] },
-    { name: 'Yoke-Pattern Cardigan', category: 'Lopapeysa Knits', price: 3400, img: 'w78' },
-    { name: 'Wool Base Layer', category: 'Wool Layers', price: 1900, img: 'w79', tags: ['new'] },
-    { name: 'Felted Wool Skirt', category: 'Wool Layers', price: 2200, img: 'w80' },
-    { name: 'Glacier Shell Parka', category: 'Glacier Outer', price: 5600, img: 'w81' },
-    { name: 'Quilted Wool Vest', category: 'Glacier Outer', price: 2800, img: 'w82' },
-    { name: 'Wool Mittens', category: 'Wool Accents', price: 600, img: 'w83' },
-    { name: 'Wool Beanie', category: 'Wool Accents', price: 500, img: 'w84' },
+    { name: 'Classic Lopapeysa Sweater', category: 'Lopapeysa Knits', price: 3600, img: 'lp1', tags: ['bestseller'] },
+    { name: 'Yoke-Pattern Cardigan', category: 'Lopapeysa Knits', price: 3400, img: 'lp2' },
+    { name: 'Wool Base Layer', category: 'Wool Layers', price: 1900, img: 'lp3', tags: ['new'] },
+    { name: 'Felted Wool Skirt', category: 'Wool Layers', price: 2200, img: 'lp4' },
+    { name: 'Glacier Shell Parka', category: 'Glacier Outer', price: 5600, img: 'lp5' },
+    { name: 'Quilted Wool Vest', category: 'Glacier Outer', price: 2800, img: 'lp6' },
+    { name: 'Wool Mittens', category: 'Wool Accents', price: 600, img: 'lp7' },
+    { name: 'Wool Beanie', category: 'Wool Accents', price: 500, img: 'lp8' },
   ]),
   entry('swiss-precision', 'Grid & Line', 'Grid-aligned typography, neutral tones, engineered clarity.', ['Precision Tailoring', 'Technical Knits', 'Structured Bottoms', 'Minimal Accents'], [
     { name: 'Structured Shirt Dress', category: 'Precision Tailoring', price: 3200, img: 'w28', tags: ['bestseller'] },

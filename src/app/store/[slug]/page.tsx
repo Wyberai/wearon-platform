@@ -70,6 +70,8 @@ import { UbudHome } from '@/components/flagship-generic/balinese-batik-style/Ubu
 import { OPEN_UBUD_MECHANIC_EVENT } from '@/components/flagship-generic/balinese-batik-style/UbudShell'
 import { DustHome } from '@/components/flagship-generic/outback-style/DustHome'
 import { OPEN_DUST_MECHANIC_EVENT } from '@/components/flagship-generic/outback-style/DustShell'
+import { LopapeysaHome } from '@/components/flagship-generic/icelandic-wool-style/LopapeysaHome'
+import { OPEN_LOPAPEYSA_MECHANIC_EVENT } from '@/components/flagship-generic/icelandic-wool-style/LopapeysaShell'
 import { FONTS } from '@/lib/constants'
 import { getOrCreateDeviceToken } from '@/lib/device-token'
 import { StoreFeedLayout } from '@/components/store/StoreFeedLayout'
@@ -403,6 +405,12 @@ function StorePageRouter() {
     const entry = FLAGSHIP_REGISTRY[slug]
     const b = previewName ? { ...entry.brand, name: previewName } : entry.brand
     return <>{banner}<DustHome brand={b} products={entry.products} mechanicLabel={entry.mechanicLabel} mechanicIntro={entry.mechanicIntro} onOpenMechanic={() => window.dispatchEvent(new CustomEvent(OPEN_DUST_MECHANIC_EVENT))} /></>
+  }
+
+  if (slug === 'icelandic-wool' && FLAGSHIP_REGISTRY[slug]) {
+    const entry = FLAGSHIP_REGISTRY[slug]
+    const b = previewName ? { ...entry.brand, name: previewName } : entry.brand
+    return <>{banner}<LopapeysaHome brand={b} products={entry.products} mechanicLabel={entry.mechanicLabel} mechanicIntro={entry.mechanicIntro} onOpenMechanic={() => window.dispatchEvent(new CustomEvent(OPEN_LOPAPEYSA_MECHANIC_EVENT))} /></>
   }
 
   // Generic-kit flagship stores (src/lib/flagship-generic/registry.ts) — same
