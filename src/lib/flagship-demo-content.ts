@@ -293,6 +293,11 @@ const IMG = {
   cf3: 'photo-1622782045724-5c7cddda7e70', cf4: 'photo-1600075113742-7548019e70ff',
   cf5: 'photo-1593504891806-cc4c04398e7c', cf6: 'photo-1601637025250-ebb0d9e7faeb',
   cf7: 'photo-1587477444258-096b2d514c12', cf8: 'photo-1507006899057-6a72c95e8ef4',
+  // Hand-curated for indian-block-print.
+  rp1: 'photo-1632826727450-996172449d21', rp2: 'photo-1610623427901-297bde0df882',
+  rp3: 'photo-1605763904409-a712a9a50323', rp4: 'photo-1601314907697-6b861883aa10',
+  rp5: 'photo-1558703374-f9a51255e1cc', rp6: 'photo-1627359212239-3d82a215af75',
+  rp7: 'photo-1609252908235-20aeac3bbf8f', rp8: 'photo-1591548244205-3c9b9ad258f6',
 } as const
 type ImgKey = keyof typeof IMG
 
@@ -556,14 +561,14 @@ export const FLAGSHIP_DEMO_CONTENT: Record<string, FlagshipDemoEntry> = Object.f
     { name: 'Tile-Inspired Earrings', category: 'Brass Accents', price: 700, img: 'ms8' },
   ]),
   entry('indian-block-print', 'Rajwada Print House', 'Hand-blocked cotton, indigo and madder, artisan-slow craft.', ['Block Print Sets', 'Hand-Loom Tops', 'Indigo Layers', 'Artisan Accents'], [
-    { name: 'Hand-Block Anarkali', category: 'Block Print Sets', price: 3600, img: 'w24', tags: ['bestseller'] },
-    { name: 'Madder Print Kurta Set', category: 'Block Print Sets', price: 2900, img: 'w57' },
-    { name: 'Hand-Loom Cotton Top', category: 'Hand-Loom Tops', price: 1600, img: 'w58', tags: ['new'] },
-    { name: 'Block Print Blouse', category: 'Hand-Loom Tops', price: 1500, img: 'w59' },
-    { name: 'Indigo Wrap Jacket', category: 'Indigo Layers', price: 2400, img: 'w60' },
-    { name: 'Indigo Dyed Stole', category: 'Indigo Layers', price: 1100, img: 'w61' },
-    { name: 'Terracotta Earrings', category: 'Artisan Accents', price: 500, img: 'w62' },
-    { name: 'Hand-Woven Jhola Bag', category: 'Artisan Accents', price: 900, img: 'w63' },
+    { name: 'Hand-Block Anarkali', category: 'Block Print Sets', price: 3600, img: 'rp1', tags: ['bestseller'] },
+    { name: 'Madder Print Kurta Set', category: 'Block Print Sets', price: 2900, img: 'rp2' },
+    { name: 'Hand-Loom Cotton Top', category: 'Hand-Loom Tops', price: 1600, img: 'rp3', tags: ['new'] },
+    { name: 'Block Print Blouse', category: 'Hand-Loom Tops', price: 1500, img: 'rp4' },
+    { name: 'Indigo Wrap Jacket', category: 'Indigo Layers', price: 2400, img: 'rp5' },
+    { name: 'Indigo Dyed Stole', category: 'Indigo Layers', price: 1100, img: 'rp6' },
+    { name: 'Terracotta Earrings', category: 'Artisan Accents', price: 500, img: 'rp7' },
+    { name: 'Hand-Woven Jhola Bag', category: 'Artisan Accents', price: 900, img: 'rp8' },
   ]),
   entry('balinese-batik', 'Ubud Batik House', 'Wax-resist patterns, warm browns, island-temple serenity.', ['Batik Wraps', 'Resort Sets', 'Temple Layers', 'Wood & Bead Accents'], [
     { name: 'Batik Wrap Dress', category: 'Batik Wraps', price: 2900, img: 'w25', tags: ['bestseller'] },

@@ -60,6 +60,7 @@ import { CampusShell } from '@/components/flagship-generic/ivy-varsity-style/Cam
 import { HedgerowShell } from '@/components/flagship-generic/countryside-tweed-style/HedgerowShell'
 import { GlenmoreShell } from '@/components/flagship-generic/highland-tartan-style/GlenmoreShell'
 import { FlamencaShell } from '@/components/flagship-generic/andalusian-flamenco-style/FlamencaShell'
+import { RajwadaShell } from '@/components/flagship-generic/indian-block-print-style/RajwadaShell'
 
 // Fetch tenant config server-side and inject CSS variables
 export default async function StoreLayout({
@@ -281,6 +282,14 @@ export default async function StoreLayout({
   // product styling, a craft-copy passage in Spanish).
   if (slug === 'andalusian-flamenco' && FLAGSHIP_REGISTRY[slug]) {
     return <FlamencaShell entry={FLAGSHIP_REGISTRY[slug]}>{children}</FlamencaShell>
+  }
+
+  // indian-block-print — a faithful clone of injiri.com (hamburger +
+  // wide-letter-spaced wordmark, poetic seasonal hero headline, a
+  // "Craft" section naming real Indian block-print techniques and
+  // towns, an "Our Story" etymology note).
+  if (slug === 'indian-block-print' && FLAGSHIP_REGISTRY[slug]) {
+    return <RajwadaShell entry={FLAGSHIP_REGISTRY[slug]}>{children}</RajwadaShell>
   }
 
   // Generic-kit flagship stores (see src/lib/flagship-generic/registry.ts) —
