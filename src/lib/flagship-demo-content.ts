@@ -283,6 +283,11 @@ const IMG = {
   hh3: 'photo-1629580626780-7fe7fb0523e9', hh4: 'photo-1613824535575-c19019486149',
   hh5: 'photo-1607125439463-3a4512abb7b4', hh6: 'photo-1603289242110-544e9ea77419',
   hh7: 'photo-1479219136056-56bb6495a005', hh8: 'photo-1707302923174-e0cf4293ac67',
+  // Hand-curated for highland-tartan.
+  gm1: 'photo-1533220223327-8a56200c18bd', gm2: 'photo-1577910473177-707e8bb847ae',
+  gm3: 'photo-1619622376461-28732c2b88c8', gm4: 'photo-1744566737679-e79b2ba735a4',
+  gm5: 'photo-1608457006016-1a561c3ab15c', gm6: 'photo-1612302368183-df27217bfb4e',
+  gm7: 'photo-1608253458784-355ada87ba76', gm8: 'photo-1782776853128-f2bda42ef8ae',
 } as const
 type ImgKey = keyof typeof IMG
 
@@ -516,14 +521,14 @@ export const FLAGSHIP_DEMO_CONTENT: Record<string, FlagshipDemoEntry> = Object.f
     { name: 'Flat Cap', category: 'Countryside Accents', price: 900, img: 'hh8' },
   ]),
   entry('highland-tartan', 'Glenmore Clan', 'Clan plaid, kilts, rugged Scottish highland character.', ['Tartan Kilts', 'Highland Knitwear', 'Wool Outer', 'Clan Accents'], [
-    { name: 'Clan Tartan Kilt', category: 'Tartan Kilts', price: 4200, img: 'w21', tags: ['bestseller'] },
-    { name: 'Tartan Wrap Skirt', category: 'Tartan Kilts', price: 2600, img: 'w36' },
-    { name: 'Highland Wool Jumper', category: 'Highland Knitwear', price: 2800, img: 'w37', tags: ['new'] },
-    { name: 'Cable Knit Vest', category: 'Highland Knitwear', price: 2100, img: 'w38' },
-    { name: 'Wool Highland Coat', category: 'Wool Outer', price: 6600, img: 'w39' },
-    { name: 'Tweed Cape', category: 'Wool Outer', price: 4400, img: 'w40' },
-    { name: 'Clan Brooch', category: 'Clan Accents', price: 900, img: 'w41' },
-    { name: 'Sporran Bag', category: 'Clan Accents', price: 1600, img: 'w42' },
+    { name: 'Clan Tartan Kilt', category: 'Tartan Kilts', price: 4200, img: 'gm1', tags: ['bestseller'] },
+    { name: 'Tartan Wrap Skirt', category: 'Tartan Kilts', price: 2600, img: 'gm2' },
+    { name: 'Highland Wool Jumper', category: 'Highland Knitwear', price: 2800, img: 'gm3', tags: ['new'] },
+    { name: 'Cable Knit Vest', category: 'Highland Knitwear', price: 2100, img: 'gm4' },
+    { name: 'Wool Highland Coat', category: 'Wool Outer', price: 6600, img: 'gm5' },
+    { name: 'Tweed Cape', category: 'Wool Outer', price: 4400, img: 'gm6' },
+    { name: 'Clan Brooch', category: 'Clan Accents', price: 900, img: 'gm7' },
+    { name: 'Sporran Bag', category: 'Clan Accents', price: 1600, img: 'gm8' },
   ]),
   entry('andalusian-flamenco', 'Casa Flamenca', 'Ruffled polka-dot, deep reds, passionate southern-Spain flair.', ['Flamenco Dresses', 'Ruffle Tops', 'Polka Dot Layers', 'Fan & Comb Accents'], [
     { name: 'Ruffled Flamenco Dress', category: 'Flamenco Dresses', price: 4200, img: 'w22', tags: ['bestseller'] },

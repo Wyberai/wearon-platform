@@ -60,6 +60,8 @@ import { CampusHome } from '@/components/flagship-generic/ivy-varsity-style/Camp
 import { OPEN_CAMPUS_MECHANIC_EVENT } from '@/components/flagship-generic/ivy-varsity-style/CampusShell'
 import { HedgerowHome } from '@/components/flagship-generic/countryside-tweed-style/HedgerowHome'
 import { OPEN_HEDGEROW_MECHANIC_EVENT } from '@/components/flagship-generic/countryside-tweed-style/HedgerowShell'
+import { GlenmoreHome } from '@/components/flagship-generic/highland-tartan-style/GlenmoreHome'
+import { OPEN_GLENMORE_MECHANIC_EVENT } from '@/components/flagship-generic/highland-tartan-style/GlenmoreShell'
 import { FONTS } from '@/lib/constants'
 import { getOrCreateDeviceToken } from '@/lib/device-token'
 import { StoreFeedLayout } from '@/components/store/StoreFeedLayout'
@@ -363,6 +365,12 @@ function StorePageRouter() {
     const entry = FLAGSHIP_REGISTRY[slug]
     const b = previewName ? { ...entry.brand, name: previewName } : entry.brand
     return <>{banner}<HedgerowHome brand={b} products={entry.products} mechanicLabel={entry.mechanicLabel} mechanicIntro={entry.mechanicIntro} onOpenMechanic={() => window.dispatchEvent(new CustomEvent(OPEN_HEDGEROW_MECHANIC_EVENT))} /></>
+  }
+
+  if (slug === 'highland-tartan' && FLAGSHIP_REGISTRY[slug]) {
+    const entry = FLAGSHIP_REGISTRY[slug]
+    const b = previewName ? { ...entry.brand, name: previewName } : entry.brand
+    return <>{banner}<GlenmoreHome brand={b} products={entry.products} mechanicLabel={entry.mechanicLabel} mechanicIntro={entry.mechanicIntro} onOpenMechanic={() => window.dispatchEvent(new CustomEvent(OPEN_GLENMORE_MECHANIC_EVENT))} /></>
   }
 
   // Generic-kit flagship stores (src/lib/flagship-generic/registry.ts) — same

@@ -58,6 +58,7 @@ import { OceanShell } from '@/components/flagship-generic/miami-vice-style/Ocean
 import { MagnoliaShell } from '@/components/flagship-generic/southern-prep-style/MagnoliaShell'
 import { CampusShell } from '@/components/flagship-generic/ivy-varsity-style/CampusShell'
 import { HedgerowShell } from '@/components/flagship-generic/countryside-tweed-style/HedgerowShell'
+import { GlenmoreShell } from '@/components/flagship-generic/highland-tartan-style/GlenmoreShell'
 
 // Fetch tenant config server-side and inject CSS variables
 export default async function StoreLayout({
@@ -263,6 +264,14 @@ export default async function StoreLayout({
   // heritage-craft passage reframed as a mending room).
   if (slug === 'countryside-tweed' && FLAGSHIP_REGISTRY[slug]) {
     return <HedgerowShell entry={FLAGSHIP_REGISTRY[slug]}>{children}</HedgerowShell>
+  }
+
+  // highland-tartan — a faithful clone of kinlochanderson.com (crest
+  // emblem beside a serif wordmark, a heritage/delivery info bar, a
+  // "Find Your Tartan" highlighted nav link, craft-copy callout blocks,
+  // a "Refurbish your kilt" heritage-repair section, a dated magazine).
+  if (slug === 'highland-tartan' && FLAGSHIP_REGISTRY[slug]) {
+    return <GlenmoreShell entry={FLAGSHIP_REGISTRY[slug]}>{children}</GlenmoreShell>
   }
 
   // Generic-kit flagship stores (see src/lib/flagship-generic/registry.ts) —
