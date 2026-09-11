@@ -323,6 +323,11 @@ const IMG = {
   ds3: 'photo-1571164150048-fd78f5a72363', ds4: 'photo-1604174221575-8202b9390064',
   ds5: 'photo-1778693626876-dbdac85db4d3', ds6: 'photo-1716004359569-052b4d8b3713',
   ds7: 'photo-1765475705237-77a034d79e58', ds8: 'photo-1611511455867-7a81b52b6be5',
+  // Hand-curated for danish-hygge.
+  hy1: 'photo-1759229874914-c1ffdb3ebd0c', hy2: 'photo-1630313626009-26da82467f8c',
+  hy3: 'photo-1770294759055-2fddfc606537', hy4: 'photo-1603339730012-add8415388a6',
+  hy5: 'photo-1767679456819-9921c2bd7275', hy6: 'photo-1613824535575-c19019486149',
+  hy7: 'photo-1773747203069-c4ed5b1200ac', hy8: 'photo-1746516355499-ae180c3e701e',
 } as const
 type ImgKey = keyof typeof IMG
 
@@ -646,14 +651,14 @@ export const FLAGSHIP_DEMO_CONTENT: Record<string, FlagshipDemoEntry> = Object.f
     { name: 'Block-Color Belt', category: 'Geometric Accents', price: 600, img: 'ds8' },
   ]),
   entry('danish-hygge', 'Hygge & Co.', 'Candlelit neutrals, soft knits, cozy contentment.', ['Soft Knitwear', 'Loungewear', 'Cozy Layers', 'Warm Accents'], [
-    { name: 'Oversized Cashmere Knit', category: 'Soft Knitwear', price: 3800, img: 'w30', tags: ['bestseller'] },
-    { name: 'Waffle Knit Cardigan', category: 'Soft Knitwear', price: 2600, img: 'w99' },
-    { name: 'Brushed Cotton Loungeset', category: 'Loungewear', price: 2400, img: 'w100', tags: ['new'] },
-    { name: 'Fleece-Lined Joggers', category: 'Loungewear', price: 1900, img: 'w101' },
-    { name: 'Shearling Wrap Coat', category: 'Cozy Layers', price: 5400, img: 'w102' },
-    { name: 'Wool Poncho', category: 'Cozy Layers', price: 2200, img: 'w103' },
-    { name: 'Knit Headband', category: 'Warm Accents', price: 300, img: 'w104' },
-    { name: 'Wool Slippers', category: 'Warm Accents', price: 500, img: 'w105' },
+    { name: 'Oversized Cashmere Knit', category: 'Soft Knitwear', price: 3800, img: 'hy1', tags: ['bestseller'] },
+    { name: 'Waffle Knit Cardigan', category: 'Soft Knitwear', price: 2600, img: 'hy2' },
+    { name: 'Brushed Cotton Loungeset', category: 'Loungewear', price: 2400, img: 'hy3', tags: ['new'] },
+    { name: 'Fleece-Lined Joggers', category: 'Loungewear', price: 1900, img: 'hy4' },
+    { name: 'Shearling Wrap Coat', category: 'Cozy Layers', price: 5400, img: 'hy5' },
+    { name: 'Wool Poncho', category: 'Cozy Layers', price: 2200, img: 'hy6' },
+    { name: 'Knit Headband', category: 'Warm Accents', price: 300, img: 'hy7' },
+    { name: 'Wool Slippers', category: 'Warm Accents', price: 500, img: 'hy8' },
   ]),
   entry('bauhaus', 'Werkstatt 1919', 'Geometric shapes, primary color accents, functionalist rigor.', ['Geometric Sets', 'Primary Knits', 'Structured Outer', 'Circle & Square Accents'], [
     { name: 'Geometric Panel Dress', category: 'Geometric Sets', price: 3200, img: 'w31', tags: ['bestseller'] },

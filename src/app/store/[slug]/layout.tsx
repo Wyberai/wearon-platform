@@ -66,6 +66,7 @@ import { DustShell } from '@/components/flagship-generic/outback-style/DustShell
 import { LopapeysaShell } from '@/components/flagship-generic/icelandic-wool-style/LopapeysaShell'
 import { GridShell } from '@/components/flagship-generic/swiss-precision-style/GridShell'
 import { StijlShell } from '@/components/flagship-generic/dutch-design-style/StijlShell'
+import { HyggeShell } from '@/components/flagship-generic/danish-hygge-style/HyggeShell'
 
 // Fetch tenant config server-side and inject CSS variables
 export default async function StoreLayout({
@@ -337,6 +338,13 @@ export default async function StoreLayout({
   // block panel in the hero.
   if (slug === 'dutch-design' && FLAGSHIP_REGISTRY[slug]) {
     return <StijlShell entry={FLAGSHIP_REGISTRY[slug]}>{children}</StijlShell>
+  }
+
+  // danish-hygge — a faithful clone of Tekla's real chrome (promo strip,
+  // bold wordmark + text nav, split negative-space/photo hero, a stream
+  // of full-bleed named product blocks captioned bottom-left).
+  if (slug === 'danish-hygge' && FLAGSHIP_REGISTRY[slug]) {
+    return <HyggeShell entry={FLAGSHIP_REGISTRY[slug]}>{children}</HyggeShell>
   }
 
   // Generic-kit flagship stores (see src/lib/flagship-generic/registry.ts) —

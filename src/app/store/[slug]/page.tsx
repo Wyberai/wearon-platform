@@ -76,6 +76,8 @@ import { GridHome } from '@/components/flagship-generic/swiss-precision-style/Gr
 import { OPEN_GRID_MECHANIC_EVENT } from '@/components/flagship-generic/swiss-precision-style/GridShell'
 import { StijlHome } from '@/components/flagship-generic/dutch-design-style/StijlHome'
 import { OPEN_STIJL_MECHANIC_EVENT } from '@/components/flagship-generic/dutch-design-style/StijlShell'
+import { HyggeHome } from '@/components/flagship-generic/danish-hygge-style/HyggeHome'
+import { OPEN_HYGGE_MECHANIC_EVENT } from '@/components/flagship-generic/danish-hygge-style/HyggeShell'
 import { FONTS } from '@/lib/constants'
 import { getOrCreateDeviceToken } from '@/lib/device-token'
 import { StoreFeedLayout } from '@/components/store/StoreFeedLayout'
@@ -427,6 +429,12 @@ function StorePageRouter() {
     const entry = FLAGSHIP_REGISTRY[slug]
     const b = previewName ? { ...entry.brand, name: previewName } : entry.brand
     return <>{banner}<StijlHome brand={b} products={entry.products} mechanicLabel={entry.mechanicLabel} mechanicIntro={entry.mechanicIntro} onOpenMechanic={() => window.dispatchEvent(new CustomEvent(OPEN_STIJL_MECHANIC_EVENT))} /></>
+  }
+
+  if (slug === 'danish-hygge' && FLAGSHIP_REGISTRY[slug]) {
+    const entry = FLAGSHIP_REGISTRY[slug]
+    const b = previewName ? { ...entry.brand, name: previewName } : entry.brand
+    return <>{banner}<HyggeHome brand={b} products={entry.products} mechanicLabel={entry.mechanicLabel} mechanicIntro={entry.mechanicIntro} onOpenMechanic={() => window.dispatchEvent(new CustomEvent(OPEN_HYGGE_MECHANIC_EVENT))} /></>
   }
 
   // Generic-kit flagship stores (src/lib/flagship-generic/registry.ts) — same
