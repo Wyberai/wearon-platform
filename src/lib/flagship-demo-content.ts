@@ -318,6 +318,11 @@ const IMG = {
   sw3: 'photo-1574201635302-388dd92a4c3f', sw4: 'photo-1762796159038-053707dab326',
   sw5: 'photo-1767631338127-8cd80ee2f9df', sw6: 'photo-1762343038913-2d0b726c291e',
   sw7: 'photo-1681091639096-a7b2eb1d4990', sw8: 'photo-1601592996763-f05c9c80a7f1',
+  // Hand-curated for dutch-design.
+  ds1: 'photo-1618165345657-a002acf6cf41', ds2: 'photo-1761850620120-411100be0a2c',
+  ds3: 'photo-1571164150048-fd78f5a72363', ds4: 'photo-1604174221575-8202b9390064',
+  ds5: 'photo-1778693626876-dbdac85db4d3', ds6: 'photo-1716004359569-052b4d8b3713',
+  ds7: 'photo-1765475705237-77a034d79e58', ds8: 'photo-1611511455867-7a81b52b6be5',
 } as const
 type ImgKey = keyof typeof IMG
 
@@ -631,14 +636,14 @@ export const FLAGSHIP_DEMO_CONTENT: Record<string, FlagshipDemoEntry> = Object.f
     { name: 'Canvas Card Holder', category: 'Minimal Accents', price: 400, img: 'sw8' },
   ]),
   entry('dutch-design', 'De Stijl Studio', 'Bold primary color-blocking, graphic confidence.', ['Color-Block Sets', 'Graphic Knits', 'Structured Outer', 'Geometric Accents'], [
-    { name: 'Color-Block Shift Dress', category: 'Color-Block Sets', price: 3100, img: 'w29', tags: ['bestseller'] },
-    { name: 'Primary Block Jumpsuit', category: 'Color-Block Sets', price: 3400, img: 'w92' },
-    { name: 'Graphic Panel Sweater', category: 'Graphic Knits', price: 2300, img: 'w93', tags: ['new'] },
-    { name: 'Grid Print Tee', category: 'Graphic Knits', price: 1200, img: 'w94' },
-    { name: 'Boxy Primary Jacket', category: 'Structured Outer', price: 3600, img: 'w95' },
-    { name: 'Structured Trench', category: 'Structured Outer', price: 4200, img: 'w96' },
-    { name: 'Geometric Earrings', category: 'Geometric Accents', price: 500, img: 'w97' },
-    { name: 'Block-Color Belt', category: 'Geometric Accents', price: 600, img: 'w98' },
+    { name: 'Color-Block Shift Dress', category: 'Color-Block Sets', price: 3100, img: 'ds1', tags: ['bestseller'] },
+    { name: 'Primary Block Jumpsuit', category: 'Color-Block Sets', price: 3400, img: 'ds2' },
+    { name: 'Graphic Panel Sweater', category: 'Graphic Knits', price: 2300, img: 'ds3', tags: ['new'] },
+    { name: 'Grid Print Tee', category: 'Graphic Knits', price: 1200, img: 'ds4' },
+    { name: 'Boxy Primary Jacket', category: 'Structured Outer', price: 3600, img: 'ds5' },
+    { name: 'Structured Trench', category: 'Structured Outer', price: 4200, img: 'ds6' },
+    { name: 'Geometric Earrings', category: 'Geometric Accents', price: 500, img: 'ds7' },
+    { name: 'Block-Color Belt', category: 'Geometric Accents', price: 600, img: 'ds8' },
   ]),
   entry('danish-hygge', 'Hygge & Co.', 'Candlelit neutrals, soft knits, cozy contentment.', ['Soft Knitwear', 'Loungewear', 'Cozy Layers', 'Warm Accents'], [
     { name: 'Oversized Cashmere Knit', category: 'Soft Knitwear', price: 3800, img: 'w30', tags: ['bestseller'] },

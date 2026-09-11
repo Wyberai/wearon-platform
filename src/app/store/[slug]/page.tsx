@@ -74,6 +74,8 @@ import { LopapeysaHome } from '@/components/flagship-generic/icelandic-wool-styl
 import { OPEN_LOPAPEYSA_MECHANIC_EVENT } from '@/components/flagship-generic/icelandic-wool-style/LopapeysaShell'
 import { GridHome } from '@/components/flagship-generic/swiss-precision-style/GridHome'
 import { OPEN_GRID_MECHANIC_EVENT } from '@/components/flagship-generic/swiss-precision-style/GridShell'
+import { StijlHome } from '@/components/flagship-generic/dutch-design-style/StijlHome'
+import { OPEN_STIJL_MECHANIC_EVENT } from '@/components/flagship-generic/dutch-design-style/StijlShell'
 import { FONTS } from '@/lib/constants'
 import { getOrCreateDeviceToken } from '@/lib/device-token'
 import { StoreFeedLayout } from '@/components/store/StoreFeedLayout'
@@ -419,6 +421,12 @@ function StorePageRouter() {
     const entry = FLAGSHIP_REGISTRY[slug]
     const b = previewName ? { ...entry.brand, name: previewName } : entry.brand
     return <>{banner}<GridHome brand={b} products={entry.products} mechanicLabel={entry.mechanicLabel} mechanicIntro={entry.mechanicIntro} onOpenMechanic={() => window.dispatchEvent(new CustomEvent(OPEN_GRID_MECHANIC_EVENT))} /></>
+  }
+
+  if (slug === 'dutch-design' && FLAGSHIP_REGISTRY[slug]) {
+    const entry = FLAGSHIP_REGISTRY[slug]
+    const b = previewName ? { ...entry.brand, name: previewName } : entry.brand
+    return <>{banner}<StijlHome brand={b} products={entry.products} mechanicLabel={entry.mechanicLabel} mechanicIntro={entry.mechanicIntro} onOpenMechanic={() => window.dispatchEvent(new CustomEvent(OPEN_STIJL_MECHANIC_EVENT))} /></>
   }
 
   // Generic-kit flagship stores (src/lib/flagship-generic/registry.ts) — same

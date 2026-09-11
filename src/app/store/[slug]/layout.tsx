@@ -65,6 +65,7 @@ import { UbudShell } from '@/components/flagship-generic/balinese-batik-style/Ub
 import { DustShell } from '@/components/flagship-generic/outback-style/DustShell'
 import { LopapeysaShell } from '@/components/flagship-generic/icelandic-wool-style/LopapeysaShell'
 import { GridShell } from '@/components/flagship-generic/swiss-precision-style/GridShell'
+import { StijlShell } from '@/components/flagship-generic/dutch-design-style/StijlShell'
 
 // Fetch tenant config server-side and inject CSS variables
 export default async function StoreLayout({
@@ -327,6 +328,15 @@ export default async function StoreLayout({
   // materials passage).
   if (slug === 'swiss-precision' && FLAGSHIP_REGISTRY[slug]) {
     return <GridShell entry={FLAGSHIP_REGISTRY[slug]}>{children}</GridShell>
+  }
+
+  // dutch-design — a faithful clone of Scotch & Soda's real chrome (promo
+  // strip, text nav left, italic serif wordmark with an accent-colored
+  // inner word, split hero, 3-column editorial grid, bottom-left-labeled
+  // category tiles) paired with an original De Stijl / Mondrian color-
+  // block panel in the hero.
+  if (slug === 'dutch-design' && FLAGSHIP_REGISTRY[slug]) {
+    return <StijlShell entry={FLAGSHIP_REGISTRY[slug]}>{children}</StijlShell>
   }
 
   // Generic-kit flagship stores (see src/lib/flagship-generic/registry.ts) —
