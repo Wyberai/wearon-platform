@@ -328,6 +328,11 @@ const IMG = {
   hy3: 'photo-1770294759055-2fddfc606537', hy4: 'photo-1603339730012-add8415388a6',
   hy5: 'photo-1767679456819-9921c2bd7275', hy6: 'photo-1613824535575-c19019486149',
   hy7: 'photo-1773747203069-c4ed5b1200ac', hy8: 'photo-1746516355499-ae180c3e701e',
+  // Hand-curated for bauhaus.
+  bh1: 'photo-1654653105004-c81a5b8fe410', bh2: 'photo-1784549758741-7783a2eadc24',
+  bh3: 'photo-1545205597-ad550b48864f', bh4: 'photo-1770367358800-277b98dfa7a1',
+  bh5: 'photo-1591097537389-f430ae6d3860', bh6: 'photo-1776864045728-c5f12a12c390',
+  bh7: 'photo-1723361656146-f201d215c49c', bh8: 'photo-1752386246982-3dbb244eb5b3',
 } as const
 type ImgKey = keyof typeof IMG
 
@@ -661,14 +666,14 @@ export const FLAGSHIP_DEMO_CONTENT: Record<string, FlagshipDemoEntry> = Object.f
     { name: 'Wool Slippers', category: 'Warm Accents', price: 500, img: 'hy8' },
   ]),
   entry('bauhaus', 'Werkstatt 1919', 'Geometric shapes, primary color accents, functionalist rigor.', ['Geometric Sets', 'Primary Knits', 'Structured Outer', 'Circle & Square Accents'], [
-    { name: 'Geometric Panel Dress', category: 'Geometric Sets', price: 3200, img: 'w31', tags: ['bestseller'] },
-    { name: 'Primary Block Skirt Set', category: 'Geometric Sets', price: 2900, img: 'w106' },
-    { name: 'Color-Field Sweater', category: 'Primary Knits', price: 2400, img: 'w107', tags: ['new'] },
-    { name: 'Circle-Print Tee', category: 'Primary Knits', price: 1300, img: 'w108' },
-    { name: 'Boxy Function Coat', category: 'Structured Outer', price: 4600, img: 'w109' },
-    { name: 'Geometric Vest', category: 'Structured Outer', price: 2400, img: 'w110' },
-    { name: 'Circle Drop Earrings', category: 'Circle & Square Accents', price: 500, img: 'w111' },
-    { name: 'Square Buckle Belt', category: 'Circle & Square Accents', price: 600, img: 'w112' },
+    { name: 'Geometric Panel Dress', category: 'Geometric Sets', price: 3200, img: 'bh1', tags: ['bestseller'] },
+    { name: 'Primary Block Skirt Set', category: 'Geometric Sets', price: 2900, img: 'bh2' },
+    { name: 'Color-Field Sweater', category: 'Primary Knits', price: 2400, img: 'bh3', tags: ['new'] },
+    { name: 'Circle-Print Tee', category: 'Primary Knits', price: 1300, img: 'bh4' },
+    { name: 'Boxy Function Coat', category: 'Structured Outer', price: 4600, img: 'bh5' },
+    { name: 'Geometric Vest', category: 'Structured Outer', price: 2400, img: 'bh6' },
+    { name: 'Circle Drop Earrings', category: 'Circle & Square Accents', price: 500, img: 'bh7' },
+    { name: 'Square Buckle Belt', category: 'Circle & Square Accents', price: 600, img: 'bh8' },
   ]),
   entry('italian-riviera', 'Portofino Stripe Co.', 'Striped linen, citrus brights, dolce-vita ease.', ['Riviera Stripes', 'Citrus Resortwear', 'Linen Layers', 'Coastal Accents'], [
     { name: 'Striped Linen Dress', category: 'Riviera Stripes', price: 2900, img: 'w32', tags: ['bestseller'] },

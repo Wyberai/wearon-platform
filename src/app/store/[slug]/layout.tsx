@@ -67,6 +67,7 @@ import { LopapeysaShell } from '@/components/flagship-generic/icelandic-wool-sty
 import { GridShell } from '@/components/flagship-generic/swiss-precision-style/GridShell'
 import { StijlShell } from '@/components/flagship-generic/dutch-design-style/StijlShell'
 import { HyggeShell } from '@/components/flagship-generic/danish-hygge-style/HyggeShell'
+import { WerkstattShell } from '@/components/flagship-generic/bauhaus-style/WerkstattShell'
 
 // Fetch tenant config server-side and inject CSS variables
 export default async function StoreLayout({
@@ -345,6 +346,14 @@ export default async function StoreLayout({
   // of full-bleed named product blocks captioned bottom-left).
   if (slug === 'danish-hygge' && FLAGSHIP_REGISTRY[slug]) {
     return <HyggeShell entry={FLAGSHIP_REGISTRY[slug]}>{children}</HyggeShell>
+  }
+
+  // bauhaus — a faithful clone of the real Bauhaus-Shop's chrome (promo
+  // strip, lowercase stacked wordmark + a geometric circle/radial-line
+  // mark, a big stacked display headline with a black pill CTA, a
+  // "Bestseller" grid, and a "Design for the good." mission passage).
+  if (slug === 'bauhaus' && FLAGSHIP_REGISTRY[slug]) {
+    return <WerkstattShell entry={FLAGSHIP_REGISTRY[slug]}>{children}</WerkstattShell>
   }
 
   // Generic-kit flagship stores (see src/lib/flagship-generic/registry.ts) —

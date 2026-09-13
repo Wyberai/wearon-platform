@@ -78,6 +78,8 @@ import { StijlHome } from '@/components/flagship-generic/dutch-design-style/Stij
 import { OPEN_STIJL_MECHANIC_EVENT } from '@/components/flagship-generic/dutch-design-style/StijlShell'
 import { HyggeHome } from '@/components/flagship-generic/danish-hygge-style/HyggeHome'
 import { OPEN_HYGGE_MECHANIC_EVENT } from '@/components/flagship-generic/danish-hygge-style/HyggeShell'
+import { WerkstattHome } from '@/components/flagship-generic/bauhaus-style/WerkstattHome'
+import { OPEN_WERKSTATT_MECHANIC_EVENT } from '@/components/flagship-generic/bauhaus-style/WerkstattShell'
 import { FONTS } from '@/lib/constants'
 import { getOrCreateDeviceToken } from '@/lib/device-token'
 import { StoreFeedLayout } from '@/components/store/StoreFeedLayout'
@@ -435,6 +437,12 @@ function StorePageRouter() {
     const entry = FLAGSHIP_REGISTRY[slug]
     const b = previewName ? { ...entry.brand, name: previewName } : entry.brand
     return <>{banner}<HyggeHome brand={b} products={entry.products} mechanicLabel={entry.mechanicLabel} mechanicIntro={entry.mechanicIntro} onOpenMechanic={() => window.dispatchEvent(new CustomEvent(OPEN_HYGGE_MECHANIC_EVENT))} /></>
+  }
+
+  if (slug === 'bauhaus' && FLAGSHIP_REGISTRY[slug]) {
+    const entry = FLAGSHIP_REGISTRY[slug]
+    const b = previewName ? { ...entry.brand, name: previewName } : entry.brand
+    return <>{banner}<WerkstattHome brand={b} products={entry.products} mechanicLabel={entry.mechanicLabel} mechanicIntro={entry.mechanicIntro} onOpenMechanic={() => window.dispatchEvent(new CustomEvent(OPEN_WERKSTATT_MECHANIC_EVENT))} /></>
   }
 
   // Generic-kit flagship stores (src/lib/flagship-generic/registry.ts) — same
